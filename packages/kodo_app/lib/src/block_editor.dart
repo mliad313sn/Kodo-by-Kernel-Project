@@ -10,6 +10,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:kodo_access/kodo_access.dart';
 import 'package:kodo_lang/kodo_lang.dart';
 
 import 'block_family.dart';
@@ -166,7 +167,10 @@ class BlockEditorState extends State<BlockEditor> {
                     key: Key('family-${family.name}'),
                     label: _familyName(family),
                     family: family,
-                    semanticsLabel: 'Famille ${_familyName(family)}',
+                    semanticsLabel: uiStrings.render(
+                        'a11y.family_tab',
+                        UiLocale.byCode(widget.locale),
+                        {'family': _familyName(family)}),
                     selected: family == _openFamily,
                     onTap: () => openFamilyTab(family),
                   ),

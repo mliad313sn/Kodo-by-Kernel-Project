@@ -17,6 +17,8 @@ dependencies:
     path: ../kodo_content
   kodo_grader:
     path: ../kodo_grader
+  kodo_access:
+    path: ../kodo_access
   kodo_lang:
     path: ../kodo_lang
   kodo_stage:

@@ -1164,8 +1164,8 @@
       "priority": "M",
       "verification": "Locale coverage report",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M15 squad"
     },
     {
       "id": "FR-M15-02",
@@ -1176,8 +1176,8 @@
       "priority": "M",
       "verification": "Coverage gate at 100%",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M15 squad"
     },
     {
       "id": "FR-M15-03",
@@ -1189,7 +1189,7 @@
       "verification": "Swap test",
       "gate": "G3",
       "status": "Done",
-      "owner": ""
+      "owner": "M15 squad"
     },
     {
       "id": "FR-M15-04",
@@ -1200,8 +1200,8 @@
       "priority": "M",
       "verification": "CMS lint rule",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M15 squad"
     },
     {
       "id": "FR-M15-05",
@@ -1212,8 +1212,8 @@
       "priority": "S",
       "verification": "Audio review",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M15 squad"
     },
     {
       "id": "FR-M16-01",
@@ -1224,8 +1224,8 @@
       "priority": "M",
       "verification": "External accessibility audit",
       "gate": "G4",
-      "status": "In progress",
-      "owner": ""
+      "status": "Done",
+      "owner": "M16 squad"
     },
     {
       "id": "FR-M16-02",
@@ -1236,8 +1236,8 @@
       "priority": "M",
       "verification": "Audio coverage report",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M16 squad"
     },
     {
       "id": "FR-M16-03",
@@ -1248,8 +1248,8 @@
       "priority": "S",
       "verification": "Functional test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M16 squad"
     },
     {
       "id": "FR-M16-04",
@@ -1260,8 +1260,8 @@
       "priority": "M",
       "verification": "Screen-reader test script",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M16 squad"
     },
     {
       "id": "FR-M16-05",
@@ -1273,7 +1273,7 @@
       "verification": "Simulation audit",
       "gate": "G4",
       "status": "Done",
-      "owner": "M4 squad"
+      "owner": "M16 squad"
     },
     {
       "id": "FR-M17-01",

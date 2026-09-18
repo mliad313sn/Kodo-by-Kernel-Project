@@ -1,0 +1,20 @@
+name: kodo_access
+description: >-
+  KODO modules M15 and M16 — localisation and accessibility. One package because they are
+  the same question asked twice: can a child reach this? Once about the language they
+  speak, once about the body they have.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  kodo_lang:
+    path: ../kodo_lang
+  kodo_stage:
+    path: ../kodo_stage
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0

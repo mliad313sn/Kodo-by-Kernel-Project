@@ -70,7 +70,7 @@
     "FR-M3-08": "Not started",
     "FR-M3-09": "In progress",
     "FR-M15-03": "Done",
-    "FR-M16-01": "In progress",
+    "FR-M16-01": "Done",
     "FR-M8-01": "Done",
     "FR-M8-02": "Done",
     "FR-M8-03": "Done",
@@ -110,7 +110,14 @@
     "FR-M10-05": "Done",
     "FR-M10-06": "Done",
     "FR-M10-07": "Done",
-    "FR-M9-05": "In progress"
+    "FR-M9-05": "In progress",
+    "FR-M15-01": "Done",
+    "FR-M15-04": "Done",
+    "FR-M15-05": "Done",
+    "FR-M16-02": "Done",
+    "FR-M16-03": "Done",
+    "FR-M16-04": "Done",
+    "FR-M15-02": "In progress"
   },
   "owner": {
     "FR-M1-01": "M1 squad",
@@ -134,7 +141,7 @@
     "FR-M4-07": "M4 squad",
     "FR-M4-08": "M4 squad",
     "FR-M4-09": "M4 squad",
-    "FR-M16-05": "M4 squad",
+    "FR-M16-05": "M16 squad",
     "FR-M6-01": "M6 squad",
     "FR-M6-02": "M6 squad",
     "FR-M6-03": "M6 squad",
@@ -219,6 +226,15 @@
     "FR-M10-05": "M10 squad",
     "FR-M10-06": "M10 squad",
     "FR-M10-07": "M10 squad",
-    "FR-M9-05": "M9 squad"
+    "FR-M9-05": "M9 squad",
+    "FR-M15-01": "M15 squad",
+    "FR-M15-03": "M15 squad",
+    "FR-M15-04": "M15 squad",
+    "FR-M15-05": "M15 squad",
+    "FR-M16-01": "M16 squad",
+    "FR-M16-02": "M16 squad",
+    "FR-M16-03": "M16 squad",
+    "FR-M16-04": "M16 squad",
+    "FR-M15-02": "M15 squad"
   }
 }
