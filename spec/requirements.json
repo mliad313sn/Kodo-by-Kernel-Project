@@ -948,8 +948,8 @@
       "priority": "M",
       "verification": "Child panel attempt test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M11 squad"
     },
     {
       "id": "FR-M11-02",
@@ -960,8 +960,8 @@
       "priority": "M",
       "verification": "Parent panel test (10 parents)",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M11 squad"
     },
     {
       "id": "FR-M11-03",
@@ -972,8 +972,8 @@
       "priority": "M",
       "verification": "Functional + compliance test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M11 squad"
     },
     {
       "id": "FR-M11-04",
@@ -984,8 +984,8 @@
       "priority": "M",
       "verification": "Seat 13 audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M11 squad"
     },
     {
       "id": "FR-M12-01",
@@ -1056,8 +1056,8 @@
       "priority": "M",
       "verification": "Functional test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M13 squad"
     },
     {
       "id": "FR-M13-02",
@@ -1068,8 +1068,8 @@
       "priority": "M",
       "verification": "Seat 13 audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M13 squad"
     },
     {
       "id": "FR-M13-03",
@@ -1080,8 +1080,8 @@
       "priority": "M",
       "verification": "Functional test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M13 squad"
     },
     {
       "id": "FR-M13-04",
@@ -1092,8 +1092,8 @@
       "priority": "M",
       "verification": "Conflict test matrix",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M13 squad"
     },
     {
       "id": "FR-M13-05",
@@ -1104,8 +1104,8 @@
       "priority": "M",
       "verification": "Compliance test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M13 squad"
     },
     {
       "id": "FR-M14-01",

@@ -1,0 +1,24 @@
+name: kodo_account
+description: >-
+  KODO modules M13 and M11 — identity, sync, and the parent space. They are one package
+  because §13 makes them one promise: the minimum data, held locally by default, and a
+  guardian who can see all of it, export it and delete it.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  kodo_grader:
+    path: ../kodo_grader
+  kodo_insight:
+    path: ../kodo_insight
+  kodo_progress:
+    path: ../kodo_progress
+  kodo_stage:
+    path: ../kodo_stage
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0
