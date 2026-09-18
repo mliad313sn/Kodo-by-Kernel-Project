@@ -19,7 +19,8 @@ import 'package:kodo_progress/kodo_progress.dart';
 /// **First name only** (`FR-M12-01`). There is no surname field and no email field, so the
 /// module prompt's two `Do not`s are not rules a screen has to remember.
 class Pupil {
-  const Pupil({required this.id, required this.firstName, required this.joinedAt});
+  const Pupil(
+      {required this.id, required this.firstName, required this.joinedAt});
 
   final String id;
   final String firstName;
@@ -123,7 +124,10 @@ class Classroom {
   /// Joining needs the code and a first name. Nothing else — no email, no password, no
   /// parental email address, because a class of thirty-five cannot wait for thirty-five
   /// inboxes.
-  Pupil join({required String firstName, required ClassCode using, required DateTime at}) {
+  Pupil join(
+      {required String firstName,
+      required ClassCode using,
+      required DateTime at}) {
     if (using.value != code.value) {
       throw ArgumentError('wrong class code');
     }
@@ -298,7 +302,8 @@ class ClassroomSeeder {
     required SeedTransport transport,
   }) {
     final rate = switch (transport) {
-      SeedTransport.hotspot => hotspotBytesPerSecond / (1 + deviceIds.length / 8),
+      SeedTransport.hotspot =>
+        hotspotBytesPerSecond / (1 + deviceIds.length / 8),
       SeedTransport.sdCard => sdCardBytesPerSecond.toDouble(),
       SeedTransport.usb => usbBytesPerSecond.toDouble(),
     };
@@ -316,7 +321,8 @@ class ClassroomSeeder {
   /// every pupil device is talking to.
   Duration collectionDuration(List<CollectOutcome> outcomes) => Duration(
       milliseconds:
-          (outcomes.fold<double>(0, (sum, o) => sum + o.seconds) * 1000).round());
+          (outcomes.fold<double>(0, (sum, o) => sum + o.seconds) * 1000)
+              .round());
 
   /// The whole no-internet drill: seed everybody, then collect from everybody.
   Duration wholeDrill({
@@ -325,7 +331,8 @@ class ClassroomSeeder {
     required SeedTransport transport,
     required int progressBytesPerDevice,
   }) {
-    final seeded = seed(bundle: bundle, deviceIds: deviceIds, transport: transport);
+    final seeded =
+        seed(bundle: bundle, deviceIds: deviceIds, transport: transport);
     final collected = collect(
       deviceIds: deviceIds,
       bytesPerDevice: progressBytesPerDevice,
@@ -357,7 +364,8 @@ class CollectOutcome {
 /// built from **characters, not colour**: a concept's state is a glyph a child or parent
 /// can read after the toner has given up.
 class ProgressSheet {
-  const ProgressSheet({required this.className, required this.rows, required this.conceptIds});
+  const ProgressSheet(
+      {required this.className, required this.rows, required this.conceptIds});
 
   final String className;
   final List<GridCell> rows;
@@ -393,8 +401,10 @@ class ProgressSheet {
     final buffer = StringBuffer()
       ..writeln(className)
       ..writeln();
-    final width = pupils.fold<int>(6, (w, p) => p.firstName.length > w ? p.firstName.length : w);
-    buffer.writeln('${' '.padRight(width)}  ${conceptIds.map((c) => c.padRight(6)).join()}');
+    final width = pupils.fold<int>(
+        6, (w, p) => p.firstName.length > w ? p.firstName.length : w);
+    buffer.writeln(
+        '${' '.padRight(width)}  ${conceptIds.map((c) => c.padRight(6)).join()}');
     for (final pupil in pupils) {
       final line = StringBuffer(pupil.firstName.padRight(width))..write('  ');
       for (final conceptId in conceptIds) {
@@ -408,7 +418,10 @@ class ProgressSheet {
     }
     buffer
       ..writeln()
-      ..writeln(legend[locale]!.entries.map((e) => '${e.key} ${e.value}').join('   '));
+      ..writeln(legend[locale]!
+          .entries
+          .map((e) => '${e.key} ${e.value}')
+          .join('   '));
     return buffer.toString();
   }
 }
@@ -424,5 +437,6 @@ class ProjectionSettings {
   /// which the back row can read a line of code from six metres.
   static const minimumFontSize = 28.0;
 
-  bool get isLegibleFromTheBackRow => fontSize >= minimumFontSize && highContrast;
+  bool get isLegibleFromTheBackRow =>
+      fontSize >= minimumFontSize && highContrast;
 }

@@ -154,4 +154,5 @@ const Map<String, Map<String, Pronunciation>> keywordPronunciation = {
 
 /// What the narrator says for [keyword] in [locale].
 String pronounce(String keyword, UiLocale locale) =>
-    keywordPronunciation[locale.code]?[keyword.toLowerCase()]?.spoken ?? keyword;
+    keywordPronunciation[locale.code]?[keyword.toLowerCase()]?.spoken ??
+    keyword;

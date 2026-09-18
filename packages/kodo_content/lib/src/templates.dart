@@ -315,6 +315,7 @@ Item parsons({
   required List<String> wrong,
   required List<Hint> itemHints,
   List<String> paletteScope = const [],
+
   /// Needed whenever a wrong ordering retraces the right one: a staircase assembled in the
   /// wrong order can leave exactly the same pixels and only a different final pose.
   bool requireFinalPose = false,

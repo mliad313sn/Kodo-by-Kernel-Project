@@ -50,7 +50,8 @@ Project blankProject({
     );
 
 VectorCanvas drawnCanvas() {
-  final parsed = parse('répète 4 { avance 80 tournedroite 90 }', KeywordTables.fr);
+  final parsed =
+      parse('répète 4 { avance 80 tournedroite 90 }', KeywordTables.fr);
   final canvas = VectorCanvas();
   Interpreter(parsed.program, canvas).run();
   return canvas;
@@ -61,8 +62,10 @@ void main() {
   // M9 — the Studio
   // =====================================================================================
 
-  group('FR-M9-02 · M9 `Do not` — the Studio gates nothing behind progression', () {
-    test('the Studio palette is every opcode, and takes no learner as input', () {
+  group('FR-M9-02 · M9 `Do not` — the Studio gates nothing behind progression',
+      () {
+    test('the Studio palette is every opcode, and takes no learner as input',
+        () {
       expect(studioPalette, hasLength(Opcode.values.length));
       for (final opcode in Opcode.values) {
         expect(studioPalette, contains(opcode));
@@ -73,7 +76,8 @@ void main() {
     });
   });
 
-  group('FR-M9-01, FR-M9-03 · acceptance 1 — a force-kill loses at most 20 s', () {
+  group('FR-M9-01, FR-M9-03 · acceptance 1 — a force-kill loses at most 20 s',
+      () {
     test('measured 50 times, at pseudo-random kill points', () {
       final random = Random(20260504);
       final losses = <Duration>[];
@@ -107,12 +111,15 @@ void main() {
       expect(losses.any((l) => l > Duration.zero), isTrue);
     });
 
-    test('going to the background writes immediately, whatever the timer thinks', () {
+    test(
+        'going to the background writes immediately, whatever the timer thinks',
+        () {
       final store = ProjectStore();
       final saver = Autosaver(store, projectId: 'p1');
       saver.edited(blankProject());
       saver.tick(_epoch.add(const Duration(seconds: 1)));
-      expect(store.current('p1'), isNotNull, reason: 'the first save is not delayed');
+      expect(store.current('p1'), isNotNull,
+          reason: 'the first save is not delayed');
 
       saver.edited(blankProject(name: 'Ma course 2'));
       // One second later: far inside the 20 s interval.
@@ -133,7 +140,8 @@ void main() {
       expect(store.versions('p1').first.name, 'v13');
       expect(store.versions('p1').last.name, 'v4');
       // Restoring is a save, so the version being replaced survives.
-      final restored = store.restore('p1', 3, at: _epoch.add(const Duration(hours: 1)));
+      final restored =
+          store.restore('p1', 3, at: _epoch.add(const Duration(hours: 1)));
       expect(restored.name, 'v10');
       expect(store.current('p1')!.name, 'v10');
       expect(store.versions('p1').any((v) => v.name == 'v13'), isTrue);
@@ -148,7 +156,8 @@ void main() {
     });
   });
 
-  group('FR-M9-02, FR-M9-05 · acceptance 4 — an exported project reimports identically',
+  group(
+      'FR-M9-02, FR-M9-05 · acceptance 4 — an exported project reimports identically',
       () {
     final rich = Project(
       id: 'p-rich',
@@ -200,9 +209,11 @@ void main() {
       final exported = ProjectFile(rich).encode();
       final reimported = ProjectFile.decode(exported);
       expect(ProjectFile(reimported.project).encode(), exported);
-      expect(ProjectFile(reimported.project).checksum, ProjectFile(rich).checksum);
+      expect(
+          ProjectFile(reimported.project).checksum, ProjectFile(rich).checksum);
       expect(reimported.project.sprites, hasLength(6));
-      expect(reimported.project.assets.where((a) => a.kind == AssetKind.costume),
+      expect(
+          reimported.project.assets.where((a) => a.kind == AssetKind.costume),
           hasLength(40));
       expect(reimported.project.assets.where((a) => a.kind == AssetKind.sound),
           hasLength(12));
@@ -210,7 +221,8 @@ void main() {
       expect(reimported.project.lists.single.values, ['3', '7', '12']);
     });
 
-    test('acceptance 2 — decoding 6 sprites, 40 costumes and 12 sounds is not the '
+    test(
+        'acceptance 2 — decoding 6 sprites, 40 costumes and 12 sounds is not the '
         'thing that costs the 4 seconds', () {
       final encoded = ProjectFile(rich).encode();
       final watch = Stopwatch()..start();
@@ -228,20 +240,24 @@ void main() {
     });
 
     test('an unknown schema is refused rather than guessed at', () {
-      expect(() => ProjectFile.decode('{"schema":"kodo.project/9","project":{}}'),
+      expect(
+          () => ProjectFile.decode('{"schema":"kodo.project/9","project":{}}'),
           throwsFormatException);
     });
 
     test('screen capture is offered on desktop only, per FR-M9-05', () {
       const export = StudioExport();
-      expect(export.kindsOn(StudioPlatform.desktop), contains(ExportKind.screenCapture));
+      expect(export.kindsOn(StudioPlatform.desktop),
+          contains(ExportKind.screenCapture));
       for (final platform in [
         StudioPlatform.android,
         StudioPlatform.ios,
         StudioPlatform.web,
       ]) {
-        expect(export.kindsOn(platform), isNot(contains(ExportKind.screenCapture)),
-            reason: 'offering a 30 s capture on $platform and then failing is worse '
+        expect(
+            export.kindsOn(platform), isNot(contains(ExportKind.screenCapture)),
+            reason:
+                'offering a 30 s capture on $platform and then failing is worse '
                 'than not offering it');
         // The other three are everywhere.
         expect(export.kindsOn(platform), hasLength(3));
@@ -269,7 +285,8 @@ void main() {
       for (final recipe in recettes) {
         final parsed = parse(recipe.source, KeywordTables.fr);
         expect(parsed.errors, isEmpty,
-            reason: '${recipe.id}: ${parsed.errors.map((e) => e.message('fr')).join('; ')}');
+            reason:
+                '${recipe.id}: ${parsed.errors.map((e) => e.message('fr')).join('; ')}');
         final canvas = HeadlessCanvas();
         final interpreter = Interpreter(parsed.program, canvas,
             // A recipe that asks the player something still has to run in the panel.
@@ -297,8 +314,10 @@ void main() {
       }
     });
 
-    test('a child finds a recipe by what they want, not by what it is called', () {
-      expect(recipesMatching('rebondir').map((r) => r.id), contains('rebondir'));
+    test('a child finds a recipe by what they want, not by what it is called',
+        () {
+      expect(
+          recipesMatching('rebondir').map((r) => r.id), contains('rebondir'));
       expect(recipesMatching('bord').map((r) => r.id), contains('rebondir'));
       expect(recipesMatching('score', locale: 'en').map((r) => r.id),
           contains('compter-les-points'));
@@ -308,20 +327,25 @@ void main() {
     test('D-011 · a child can use the answer to a question as a number', () {
       // The gap this decision closed: `demande` returns text, and before `nombre` there
       // was no way to move with it.
-      final without = parse(r'$p = demande "combien ?" avance $p', KeywordTables.fr);
+      final without =
+          parse(r'$p = demande "combien ?" avance $p', KeywordTables.fr);
       final canvas = HeadlessCanvas();
-      final failing = Interpreter(without.program, canvas, inputs: const ['40'])..run();
+      final failing = Interpreter(without.program, canvas, inputs: const ['40'])
+        ..run();
       expect(failing.status, RunStatus.failed);
 
-      final with_ = parse(r'$p = demande "combien ?" avance nombre $p', KeywordTables.fr);
+      final with_ =
+          parse(r'$p = demande "combien ?" avance nombre $p', KeywordTables.fr);
       final canvas2 = HeadlessCanvas();
-      final running = Interpreter(with_.program, canvas2, inputs: const ['40'])..run();
+      final running = Interpreter(with_.program, canvas2, inputs: const ['40'])
+        ..run();
       expect(running.status, RunStatus.finished);
       expect(canvas2.segments, hasLength(1));
 
       // And a child who typed a word is told, not silently scored zero.
       final canvas3 = HeadlessCanvas();
-      final wordy = Interpreter(with_.program, canvas3, inputs: const ['trois'])..run();
+      final wordy = Interpreter(with_.program, canvas3, inputs: const ['trois'])
+        ..run();
       expect(wordy.status, RunStatus.failed);
       expect(wordy.error, isNotNull);
     });
@@ -331,7 +355,8 @@ void main() {
     test('a project handed to somebody cannot be edited by them', () {
       expect(const PresentationMode().isSafeToHandOver, isTrue);
       expect(const PresentationMode(editable: true).isSafeToHandOver, isFalse);
-      expect(const PresentationMode(showsPalette: true).isSafeToHandOver, isFalse);
+      expect(
+          const PresentationMode(showsPalette: true).isSafeToHandOver, isFalse);
     });
   });
 
@@ -342,9 +367,12 @@ void main() {
   ConsentGate sharingOn() =>
       ConsentGate(granted: const {Capability.sharing: true});
 
-  group('FR-M10-01, FR-M10-07 · acceptance 3 — sharing is unreachable without the '
+  group(
+      'FR-M10-01, FR-M10-07 · acceptance 3 — sharing is unreachable without the '
       'guardian flag', () {
-    test('the default gate refuses, and there is no other way to make a shared item', () {
+    test(
+        'the default gate refuses, and there is no other way to make a shared item',
+        () {
       const gate = SharingGate();
       // Nobody has answered: `notAsked`, which is not `granted`.
       final untouched = ConsentGate();
@@ -375,7 +403,9 @@ void main() {
           isTrue);
     });
 
-    test('the public gallery does not exist in v1 (D-003), whatever the consent says', () {
+    test(
+        'the public gallery does not exist in v1 (D-003), whatever the consent says',
+        () {
       final outcome = const SharingGate().share(blankProject(),
           consent: sharingOn(),
           as: DisplayName.roll(1),
@@ -385,7 +415,8 @@ void main() {
       expect(outcome.refusals, contains(ShareRefusal.scopeNotInThisVersion));
     });
 
-    test('an approval does not survive a guardian turning sharing back off', () {
+    test('an approval does not survive a guardian turning sharing back off',
+        () {
       const gate = SharingGate();
       final queue = ModerationQueue();
       final project = blankProject();
@@ -400,7 +431,9 @@ void main() {
               .pending,
           isTrue);
       queue.reviewPublication(project.id,
-          approved: true, by: 'seat-13', at: _epoch.add(const Duration(hours: 2)));
+          approved: true,
+          by: 'seat-13',
+          at: _epoch.add(const Duration(hours: 2)));
 
       // The guardian changes their mind between the approval and the publication.
       final outcome = gate.publishApproved(project,
@@ -413,17 +446,21 @@ void main() {
     });
   });
 
-  group('FR-M10-02, FR-M10-03, FR-M10-04 · acceptance 1 — the adversarial review, all '
+  group(
+      'FR-M10-02, FR-M10-03, FR-M10-04 · acceptance 1 — the adversarial review, all '
       'four surfaces', () {
     const gate = SharingGate();
 
-    test('1 · a display name cannot carry personal data, because it cannot be typed', () {
-      final names = [for (var seed = 0; seed < 500; seed++) DisplayName.roll(seed)];
+    test(
+        '1 · a display name cannot carry personal data, because it cannot be typed',
+        () {
+      final names = [
+        for (var seed = 0; seed < 500; seed++) DisplayName.roll(seed)
+      ];
       for (final name in names) {
         expect(scanForPersonalData(name.value), isEmpty, reason: name.value);
         // Every name is two curated words and a number, and nothing else.
-        expect(
-            RegExp(r'^[A-ZÉÈÀ][\wÀ-ÿ-]+\d{2}$').hasMatch(name.value), isTrue,
+        expect(RegExp(r'^[A-ZÉÈÀ][\wÀ-ÿ-]+\d{2}$').hasMatch(name.value), isTrue,
             reason: name.value);
         expect(
             DisplayName.creatures.any((c) => name.value.startsWith(c)), isTrue,
@@ -478,7 +515,9 @@ void main() {
           contains(ShareRefusal.personalDataInText));
     });
 
-    test('3 · a thumbnail is a render of the program, so it has no other source', () {
+    test(
+        '3 · a thumbnail is a render of the program, so it has no other source',
+        () {
       final thumbnail = Thumbnail.ofCanvas(drawnCanvas());
       expect(thumbnail.svg, contains('<svg'));
       // The protection is structural, not a filter over markup: `Thumbnail` has one
@@ -493,7 +532,8 @@ void main() {
       // thumbnail can only have been made this way — `Thumbnail` has no other constructor
       // and no bytes field.
       final shared = gate
-          .share(blankProject(), consent: sharingOn(), as: DisplayName.roll(1), at: _epoch)
+          .share(blankProject(),
+              consent: sharingOn(), as: DisplayName.roll(1), at: _epoch)
           .project!;
       expect(shared.thumbnailSvg, '<svg/>');
     });
@@ -539,15 +579,28 @@ void main() {
               consent: sharingOn(), as: DisplayName.roll(42), at: _epoch)
           .project!;
       final encoded = shared.toJson().toString();
-      for (final forbidden in ['profile', 'account', 'device', 'pupil', 'email']) {
-        expect(encoded.toLowerCase(), isNot(contains(forbidden)), reason: forbidden);
+      for (final forbidden in [
+        'profile',
+        'account',
+        'device',
+        'pupil',
+        'email'
+      ]) {
+        expect(encoded.toLowerCase(), isNot(contains(forbidden)),
+            reason: forbidden);
       }
       expect(shared.authorDisplayName.value, DisplayName.roll(42).value);
 
       // FR-M10-02: a shared project carries title, thumbnail, instructions and, when it
       // is a remix, the credit — and the card is those four things plus a display name.
       expect(shared.toJson().keys.toSet(), {
-        'shareId', 'title', 'instructions', 'thumbnail', 'author', 'scope', 'sharedAt',
+        'shareId',
+        'title',
+        'instructions',
+        'thumbnail',
+        'author',
+        'scope',
+        'sharedAt',
       });
       final remixed = const SharingGate()
           .share(
@@ -565,7 +618,9 @@ void main() {
     });
   });
 
-  group('FR-M10-07 · M10 `Do not` — there is no child-to-child free-text channel', () {
+  group(
+      'FR-M10-07 · M10 `Do not` — there is no child-to-child free-text channel',
+      () {
     test('reactions are a closed set, and none of them can be unkind', () {
       expect(Reaction.values, hasLength(4));
       for (final reaction in Reaction.values) {
@@ -624,13 +679,15 @@ void main() {
 
       final remix = gate.remix(first, newProjectId: 'p2', at: _epoch);
       expect(remix.origin, ProjectOrigin.remix);
-      expect(remix.remixOf!.originalAuthorDisplayName, first.authorDisplayName.value);
+      expect(remix.remixOf!.originalAuthorDisplayName,
+          first.authorDisplayName.value);
       expect(remix.remixOf!.depth, 1);
       // The work came with it — a remix that loses the program is a copy of a title.
       expect(remix.sprites.single.source, contains('avance 80'));
 
       final sharedRemix = gate
-          .share(remix, consent: sharingOn(), as: DisplayName.roll(2), at: _epoch)
+          .share(remix,
+              consent: sharingOn(), as: DisplayName.roll(2), at: _epoch)
           .project!;
       expect(sharedRemix.credit, isNotNull);
       final second = gate.remix(sharedRemix, newProjectId: 'p3', at: _epoch);
@@ -643,11 +700,13 @@ void main() {
           .share(blankProject(),
               consent: sharingOn(), as: DisplayName.roll(9), at: _epoch)
           .project!;
-      final remix = const SharingGate().remix(shared, newProjectId: 'p2', at: _epoch);
+      final remix =
+          const SharingGate().remix(shared, newProjectId: 'p2', at: _epoch);
       // The credit names the shared item and its author, taken from the shared item
       // itself — there is no parameter for the remixer to get wrong or leave out.
       expect(remix.remixOf!.originalProjectId, shared.shareId);
-      expect(remix.remixOf!.originalAuthorDisplayName, DisplayName.roll(9).value);
+      expect(
+          remix.remixOf!.originalAuthorDisplayName, DisplayName.roll(9).value);
     });
   });
 
@@ -662,7 +721,8 @@ void main() {
         cases.add(queue.report(Report(
           id: 'r$i',
           shareId: 'share-${i % 17}',
-          reason: ReportReason.values[random.nextInt(ReportReason.values.length)],
+          reason:
+              ReportReason.values[random.nextInt(ReportReason.values.length)],
           reportedAt: reportedAt,
         )));
       }
@@ -674,7 +734,8 @@ void main() {
       var clock = byAge.first.report.reportedAt.add(const Duration(hours: 1));
       for (final moderationCase in byAge) {
         if (clock.isBefore(moderationCase.report.reportedAt)) {
-          clock = moderationCase.report.reportedAt.add(const Duration(minutes: 20));
+          clock =
+              moderationCase.report.reportedAt.add(const Duration(minutes: 20));
         }
         queue.triage(moderationCase, at: clock, by: 'seat-13');
         clock = clock.add(const Duration(minutes: 8));
@@ -717,7 +778,8 @@ void main() {
       expect(gallery.items, isEmpty);
     });
 
-    test('keeping an item leaves it up, so the test above is about the doubt', () {
+    test('keeping an item leaves it up, so the test above is about the doubt',
+        () {
       final queue = ModerationQueue();
       final gallery = ClassGallery(classId: 'c1', moderation: queue);
       final shared = const SharingGate()
@@ -731,7 +793,8 @@ void main() {
           reason: ReportReason.broken,
           reportedAt: _epoch));
       queue
-        ..triage(moderationCase, at: _epoch.add(const Duration(hours: 1)), by: 'seat-13')
+        ..triage(moderationCase,
+            at: _epoch.add(const Duration(hours: 1)), by: 'seat-13')
         ..decide(moderationCase,
             decision: ModerationDecision.keep,
             at: _epoch.add(const Duration(hours: 1)),
@@ -747,7 +810,8 @@ void main() {
           reason: ReportReason.personalData,
           reportedAt: _epoch));
       queue
-        ..triage(moderationCase, at: _epoch.add(const Duration(hours: 1)), by: 'seat-13')
+        ..triage(moderationCase,
+            at: _epoch.add(const Duration(hours: 1)), by: 'seat-13')
         ..decide(moderationCase,
             decision: ModerationDecision.remove,
             at: _epoch.add(const Duration(hours: 2)),
@@ -775,7 +839,9 @@ void main() {
       expect(queue.isApprovedForPublication(project.id), isFalse);
 
       queue.reviewPublication(project.id,
-          approved: true, by: 'seat-13', at: _epoch.add(const Duration(hours: 1)));
+          approved: true,
+          by: 'seat-13',
+          at: _epoch.add(const Duration(hours: 1)));
       final published = const SharingGate().publishApproved(project,
           consent: sharingOn(),
           as: DisplayName.roll(1),
@@ -786,14 +852,20 @@ void main() {
           ['publication-submitted', 'publication-approved']);
     });
 
-    test('a rejected text is not published, however many times it is asked', () {
+    test('a rejected text is not published, however many times it is asked',
+        () {
       final queue = ModerationQueue();
       final project = blankProject();
       const gate = SharingGate();
       gate.share(project,
-          consent: sharingOn(), as: DisplayName.roll(1), at: _epoch, review: queue);
+          consent: sharingOn(),
+          as: DisplayName.roll(1),
+          at: _epoch,
+          review: queue);
       queue.reviewPublication(project.id,
-          approved: false, by: 'seat-13', at: _epoch.add(const Duration(hours: 1)));
+          approved: false,
+          by: 'seat-13',
+          at: _epoch.add(const Duration(hours: 1)));
       for (var i = 0; i < 3; i++) {
         expect(
             gate

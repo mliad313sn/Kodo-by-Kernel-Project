@@ -1339,7 +1339,8 @@ void main() {
     itemAudioKeys: {
       for (final item in items)
         item.id: {
-          for (final locale in requiredLocales) locale: 'audio/$locale/${item.id}.opus',
+          for (final locale in requiredLocales)
+            locale: 'audio/$locale/${item.id}.opus',
         },
     },
     audioKeys: [

@@ -72,7 +72,9 @@ jobs:
       - name: Re-author and verify the content packs
         working-directory: packages/kodo_content
         run: |
+          dart run tool/author_world0.dart
           dart run tool/author_world1.dart
+          dart run tool/author_world2.dart
       - name: Content is in step with its source
         run: |
           git diff --exit-code content/ || {

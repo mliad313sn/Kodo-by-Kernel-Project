@@ -28,8 +28,16 @@ const growthFactor = 1.4;
 /// pseudo-locale breaks the app.
 String pseudo(String text) {
   const map = {
-    'a': 'á', 'e': 'é', 'i': 'í', 'o': 'ó', 'u': 'ú',
-    'A': 'Á', 'E': 'É', 'I': 'Í', 'O': 'Ó', 'U': 'Ú',
+    'a': 'á',
+    'e': 'é',
+    'i': 'í',
+    'o': 'ó',
+    'u': 'ú',
+    'A': 'Á',
+    'E': 'É',
+    'I': 'Í',
+    'O': 'Ó',
+    'U': 'Ú',
   };
   final buffer = StringBuffer('[');
   var index = 0;
@@ -99,15 +107,18 @@ class PseudoLocaleRun {
   LayoutSlot? slotFor(String key) {
     String? best;
     for (final prefix in slots.keys) {
-      if (key.startsWith(prefix) && (best == null || prefix.length > best.length)) {
+      if (key.startsWith(prefix) &&
+          (best == null || prefix.length > best.length)) {
         best = prefix;
       }
     }
     return best == null ? null : slots[best];
   }
 
-  List<String> get unslottedKeys =>
-      [for (final s in catalogue.all) if (slotFor(s.key) == null) s.key];
+  List<String> get unslottedKeys => [
+        for (final s in catalogue.all)
+          if (slotFor(s.key) == null) s.key
+      ];
 
   /// Every string that would clip, in either shipping locale.
   List<Truncation> truncations() {
@@ -118,7 +129,8 @@ class PseudoLocaleRun {
       for (final locale in UiLocale.v1) {
         final grown = pseudo(string.textIn(locale));
         if (grown.length > slot.capacity) {
-          found.add(Truncation(string.key, slot.name, grown.length, slot.capacity));
+          found.add(
+              Truncation(string.key, slot.name, grown.length, slot.capacity));
         }
       }
     }
@@ -142,7 +154,13 @@ class HardCodedString {
 }
 
 /// Widget constructors that put text on a screen.
-const _textSinks = ['Text(', 'SelectableText(', 'Tooltip(', 'semanticsLabel:', 'label:'];
+const _textSinks = [
+  'Text(',
+  'SelectableText(',
+  'Tooltip(',
+  'semanticsLabel:',
+  'label:'
+];
 
 /// Finds string literals handed to a text sink.
 ///
@@ -159,7 +177,8 @@ List<HardCodedString> scanForHardCodedStrings(String file, String source) {
     if (trimmed.startsWith('//') || trimmed.startsWith('///')) continue;
     if (!_textSinks.any(line.contains)) continue;
 
-    for (final match in RegExp(r"""(['"])((?:\\.|(?!\1).)*)\1""").allMatches(line)) {
+    for (final match
+        in RegExp(r"""(['"])((?:\\.|(?!\1).)*)\1""").allMatches(line)) {
       final text = match.group(2)!;
       if (text.isEmpty) continue;
       // Strip interpolations before deciding. `'#$text'` and `'${line.error.line}'` are

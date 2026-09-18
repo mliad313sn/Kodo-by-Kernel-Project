@@ -40,11 +40,14 @@ void main() {
     });
   });
 
-  group('FR-M15-02, FR-M15-04 · acceptance 1 — coverage is 100 %, enforced here', () {
+  group(
+      'FR-M15-02, FR-M15-04 · acceptance 1 — coverage is 100 %, enforced here',
+      () {
     test('every string exists in FR and EN', () {
       for (final locale in UiLocale.v1) {
         expect(uiStrings.coverageOf(locale), 1.0,
-            reason: 'missing in ${locale.code}: ${uiStrings.missingIn(locale)}');
+            reason:
+                'missing in ${locale.code}: ${uiStrings.missingIn(locale)}');
       }
       expect(uiStrings.length, greaterThan(30));
     });
@@ -71,7 +74,8 @@ void main() {
             const UiString(
                 key: 'editor.dangling',
                 texts: {'fr': 'Choisis un bloc et.', 'en': 'Pick a block and.'},
-                context: 'Ends on a connector, which means it continues elsewhere.')
+                context:
+                    'Ends on a connector, which means it continues elsewhere.')
           ]).map((f) => f.rule),
           contains('fragment'));
 
@@ -101,7 +105,8 @@ void main() {
             const UiString(
                 key: 'editor.lost_value',
                 texts: {'fr': 'Il y a des blocs.', 'en': 'There are blocks.'},
-                context: 'The count never appears, so the value is silently lost.',
+                context:
+                    'The count never appears, so the value is silently lost.',
                 placeholders: ['count'])
           ]).map((f) => f.rule),
           contains('placeholder-missing'));
@@ -109,8 +114,12 @@ void main() {
           lintCatalogue([
             const UiString(
                 key: 'editor.undeclared',
-                texts: {'fr': 'Il y a {count} blocs.', 'en': 'There are {count} blocks.'},
-                context: 'Uses a placeholder nobody declared, so nothing fills it.')
+                texts: {
+                  'fr': 'Il y a {count} blocs.',
+                  'en': 'There are {count} blocks.'
+                },
+                context:
+                    'Uses a placeholder nobody declared, so nothing fills it.')
           ]).map((f) => f.rule),
           contains('placeholder-undeclared'));
 
@@ -120,7 +129,8 @@ void main() {
             const UiString(
                 key: 'button.go',
                 texts: {'fr': 'Essayer', 'en': 'Try it'},
-                context: 'A button label, which is a complete utterance already.')
+                context:
+                    'A button label, which is a complete utterance already.')
           ]),
           isEmpty);
     });
@@ -128,11 +138,13 @@ void main() {
     test('a missing value is an error, and a missing key is too', () {
       expect(() => uiStrings.render('a11y.text_size', UiLocale.fr),
           throwsArgumentError);
-      expect(uiStrings.render('a11y.text_size', UiLocale.fr, {'percent': '150'}),
+      expect(
+          uiStrings.render('a11y.text_size', UiLocale.fr, {'percent': '150'}),
           'Taille du texte : 150 %.');
       // Never a silent fallback to the key: `editor.run_button` on a child's screen must
       // be impossible to miss.
-      expect(() => uiStrings.render('editor.nope', UiLocale.fr), throwsArgumentError);
+      expect(() => uiStrings.render('editor.nope', UiLocale.fr),
+          throwsArgumentError);
     });
   });
 
@@ -146,11 +158,15 @@ void main() {
       // A field label sits above its field and may wrap; a button may not, which is why
       // the button slot stays at one line and the button strings were shortened instead.
       'label.': const LayoutSlot(name: 'field label', characters: 24, lines: 2),
-      'editor.': const LayoutSlot(name: 'status line', characters: 29, lines: 3),
-      'language.': const LayoutSlot(name: 'settings row', characters: 29, lines: 3),
+      'editor.':
+          const LayoutSlot(name: 'status line', characters: 29, lines: 3),
+      'language.':
+          const LayoutSlot(name: 'settings row', characters: 29, lines: 3),
       'a11y.': const LayoutSlot(name: 'settings row', characters: 29, lines: 3),
-      'share.': const LayoutSlot(name: 'notice panel', characters: 29, lines: 4),
-      'class.': const LayoutSlot(name: 'notice panel', characters: 29, lines: 4),
+      'share.':
+          const LayoutSlot(name: 'notice panel', characters: 29, lines: 4),
+      'class.':
+          const LayoutSlot(name: 'notice panel', characters: 29, lines: 4),
     };
 
     test('zero truncation at 140 % string length', () {
@@ -165,7 +181,8 @@ void main() {
     test('the pseudo-locale really does grow and really is visible', () {
       const source = 'Try it';
       final grown = pseudo(source);
-      expect(grown.length, greaterThanOrEqualTo((source.length * growthFactor).ceil()));
+      expect(grown.length,
+          greaterThanOrEqualTo((source.length * growthFactor).ceil()));
       expect(grown, startsWith('['));
       expect(grown, endsWith(']'));
       expect(grown, isNot(source));
@@ -173,7 +190,9 @@ void main() {
       expect(pseudo('Text size: {percent} %.'), contains('{percent}'));
     });
 
-    test('the truncation check is not vacuous — a long string in a small slot fails', () {
+    test(
+        'the truncation check is not vacuous — a long string in a small slot fails',
+        () {
       final tight = PseudoLocaleRun(
         StringCatalogue([
           const UiString(
@@ -195,26 +214,31 @@ void main() {
           .whereType<File>()
           .where((f) => f.path.endsWith('.dart'))
           .toList();
-      expect(uiFiles, isNotEmpty, reason: 'the scan found no UI source to scan');
+      expect(uiFiles, isNotEmpty,
+          reason: 'the scan found no UI source to scan');
 
       final found = <HardCodedString>[];
       for (final file in uiFiles) {
-        found.addAll(scanForHardCodedStrings(file.path, file.readAsStringSync()));
+        found.addAll(
+            scanForHardCodedStrings(file.path, file.readAsStringSync()));
       }
       expect(found, isEmpty, reason: found.join('\n'));
     });
 
     test('the scanner catches a hard-coded string when there is one', () {
-      expect(
-          scanForHardCodedStrings('x.dart', "Text('Essaie encore')"), hasLength(1));
+      expect(scanForHardCodedStrings('x.dart', "Text('Essaie encore')"),
+          hasLength(1));
       // A key, an asset path and a variable are not findings.
-      expect(scanForHardCodedStrings('x.dart', "Text(strings['button.run'])"), isEmpty);
+      expect(scanForHardCodedStrings('x.dart', "Text(strings['button.run'])"),
+          isEmpty);
       expect(scanForHardCodedStrings('x.dart', "Text(label)"), isEmpty);
-      expect(scanForHardCodedStrings('x.dart', "// Text('a comment')"), isEmpty);
+      expect(
+          scanForHardCodedStrings('x.dart', "// Text('a comment')"), isEmpty);
     });
   });
 
-  group('FR-M15-03 · acceptance 3 — switching keyword language mid-program', () {
+  group('FR-M15-03 · acceptance 3 — switching keyword language mid-program',
+      () {
     test('the program survives byte-for-byte, over 500 random programs', () {
       final random = Random(20260918);
       const opcodes = [
@@ -230,7 +254,8 @@ void main() {
         for (var i = 0; i < 1 + random.nextInt(8); i++) {
           final opcode = opcodes[random.nextInt(opcodes.length)];
           final word = KeywordTables.fr.write(opcode);
-          lines.add(opcode.minArgs == 0 ? word : '$word ${random.nextInt(200)}');
+          lines
+              .add(opcode.minArgs == 0 ? word : '$word ${random.nextInt(200)}');
         }
         final source = lines.join('\n');
         final parsed = parse(source, KeywordTables.fr);
@@ -252,13 +277,15 @@ void main() {
       expect(parsed.errors, isNotEmpty);
       // Rendering still produces something, and re-rendering it is stable.
       final once = render(parsed.program, KeywordTables.en);
-      final twice = render(parse(once, KeywordTables.en).program, KeywordTables.en);
+      final twice =
+          render(parse(once, KeywordTables.en).program, KeywordTables.en);
       expect(twice.trim(), once.trim());
     });
   });
 
   group('FR-M15-05 · numbers and pronunciation are locale-specific', () {
-    test('the display uses the language\'s own convention; the parser does not', () {
+    test('the display uses the language\'s own convention; the parser does not',
+        () {
       expect(formatNumber(1.5, UiLocale.fr), '1,5');
       expect(formatNumber(1.5, UiLocale.en), '1.5');
       expect(formatNumber(12345, UiLocale.fr), '12 345');
@@ -277,7 +304,8 @@ void main() {
       expect(parse('avance 1,5', KeywordTables.fr).errors, isNotEmpty);
     });
 
-    test('a number typed into a data field is read in the child\'s convention', () {
+    test('a number typed into a data field is read in the child\'s convention',
+        () {
       expect(parseLocalNumber('1,5', UiLocale.fr), 1.5);
       expect(parseLocalNumber('1.5', UiLocale.en), 1.5);
       expect(parseLocalNumber('12 345', UiLocale.fr), 12345);
@@ -286,7 +314,8 @@ void main() {
 
     test('every compound keyword has a spoken form, in both languages', () {
       for (final locale in UiLocale.v1) {
-        final table = locale == UiLocale.fr ? KeywordTables.fr : KeywordTables.en;
+        final table =
+            locale == UiLocale.fr ? KeywordTables.fr : KeywordTables.en;
         for (final opcode in Opcode.values) {
           final written = table.write(opcode);
           final spoken = pronounce(written, locale);
@@ -295,7 +324,8 @@ void main() {
           final isCompound = _looksCompound(written, locale);
           if (isCompound) {
             expect(spoken, isNot(written),
-                reason: '"$written" (${locale.code}) has no spoken form, so the '
+                reason:
+                    '"$written" (${locale.code}) has no spoken form, so the '
                     'narrator would read it as one word');
             expect(spoken, contains(' '));
           }
@@ -412,10 +442,18 @@ void main() {
     });
 
     test('the preference range is exactly what FR-M16-03 commits to', () {
-      expect(const AccessibilityPreferences(textScale: 1.0).textScaleIsSupported, isTrue);
-      expect(const AccessibilityPreferences(textScale: 2.0).textScaleIsSupported, isTrue);
-      expect(const AccessibilityPreferences(textScale: 2.1).textScaleIsSupported, isFalse);
-      expect(const AccessibilityPreferences(textScale: 0.9).textScaleIsSupported, isFalse);
+      expect(
+          const AccessibilityPreferences(textScale: 1.0).textScaleIsSupported,
+          isTrue);
+      expect(
+          const AccessibilityPreferences(textScale: 2.0).textScaleIsSupported,
+          isTrue);
+      expect(
+          const AccessibilityPreferences(textScale: 2.1).textScaleIsSupported,
+          isFalse);
+      expect(
+          const AccessibilityPreferences(textScale: 0.9).textScaleIsSupported,
+          isFalse);
     });
 
     test('reduced motion and the dyslexia font are one preference each', () {
@@ -423,7 +461,8 @@ void main() {
       expect(defaults.reducedMotion, isFalse);
       expect(defaults.font, ReadingFont.standard);
       expect(defaults.narrationOn, isTrue,
-          reason: 'narration is on by default; a child who cannot read yet gets it '
+          reason:
+              'narration is on by default; a child who cannot read yet gets it '
               'without anybody having to know to turn it on');
       final set = defaults.copyWith(
           reducedMotion: true, font: ReadingFont.dyslexiaFriendly);
@@ -436,7 +475,8 @@ void main() {
     });
   });
 
-  group('FR-M16-04 · complete keyboard operation, block placement included', () {
+  group('FR-M16-04 · complete keyboard operation, block placement included',
+      () {
     test('every editor action has a key — that is what "complete" means', () {
       for (final action in EditorAction.values) {
         expect(desktopKeyMap.containsKey(action), isTrue,
@@ -454,7 +494,8 @@ void main() {
       for (final entry in desktopKeyMap.entries) {
         final printed = entry.value.printed;
         expect(seen.containsKey(printed), isFalse,
-            reason: '"$printed" is both ${seen[printed]?.name} and ${entry.key.name}');
+            reason:
+                '"$printed" is both ${seen[printed]?.name} and ${entry.key.name}');
         seen[printed] = entry.key;
       }
     });
@@ -462,7 +503,8 @@ void main() {
 
   group('FR-M16-02, FR-M16-04 · a canvas and a block can be heard', () {
     test('the canvas announcement is M4\'s description, not a second one', () {
-      final parsed = parse('répète 4 { avance 80 tournedroite 90 }', KeywordTables.fr);
+      final parsed =
+          parse('répète 4 { avance 80 tournedroite 90 }', KeywordTables.fr);
       final canvas = HeadlessCanvas();
       Interpreter(parsed.program, canvas).run();
 
@@ -505,7 +547,17 @@ void main() {
 /// True when a keyword is built from more than one word and would be read as noise.
 bool _looksCompound(String keyword, UiLocale locale) {
   const parts = {
-    'fr': ['tourne', 'crayon', 'canevas', 'nettoie', 'taille', 'position', 'tantque', 'obtenir', 'va'],
+    'fr': [
+      'tourne',
+      'crayon',
+      'canevas',
+      'nettoie',
+      'taille',
+      'position',
+      'tantque',
+      'obtenir',
+      'va'
+    ],
     'en': ['turn', 'pen', 'canvas', 'font', 'position', 'get', 'go'],
   };
   if (keyword.length < 5) return false;

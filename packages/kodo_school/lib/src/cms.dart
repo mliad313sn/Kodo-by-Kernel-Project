@@ -181,10 +181,12 @@ class ItemDraft {
         promptAudioKeys: promptAudioKeys ?? this.promptAudioKeys,
         revision: revision ?? this.revision,
         state: state ?? this.state,
-        pedagogicalApprovalBy:
-            clearApprovals ? null : pedagogicalApprovalBy ?? this.pedagogicalApprovalBy,
-        localisationApprovalBy:
-            clearApprovals ? null : localisationApprovalBy ?? this.localisationApprovalBy,
+        pedagogicalApprovalBy: clearApprovals
+            ? null
+            : pedagogicalApprovalBy ?? this.pedagogicalApprovalBy,
+        localisationApprovalBy: clearApprovals
+            ? null
+            : localisationApprovalBy ?? this.localisationApprovalBy,
       );
 }
 
@@ -273,7 +275,8 @@ class ChildPreview {
 
     final prompt = (item.promptKeys[locale] ?? '').trim();
     if (prompt.isEmpty) {
-      notes.add(PreviewNote('blocking', 'prompt-missing', 'no prompt in "$locale"'));
+      notes.add(
+          PreviewNote('blocking', 'prompt-missing', 'no prompt in "$locale"'));
     }
 
     List<String> wrap(String text) {
@@ -311,11 +314,13 @@ class ChildPreview {
       final text = item.hints[i].textIn(locale).trim();
       hintLines.add(text);
       if (text.isEmpty) {
-        notes.add(PreviewNote('blocking', 'hint-missing', 'hint ${i + 1} has no "$locale" text'));
+        notes.add(PreviewNote(
+            'blocking', 'hint-missing', 'hint ${i + 1} has no "$locale" text'));
         continue;
       }
       for (final problem in readabilityOf(text).problems) {
-        notes.add(PreviewNote('warning', 'reading-level', 'hint ${i + 1}: $problem'));
+        notes.add(
+            PreviewNote('warning', 'reading-level', 'hint ${i + 1}: $problem'));
       }
     }
 
@@ -330,7 +335,9 @@ class ChildPreview {
         final canvas = HeadlessCanvas();
         Interpreter(parsed.program, canvas, seed: item.seed).run();
         strokes = canvas.segments.length;
-        if (strokes == 0 && item.type.wantsProgram && item.requireFinalPose == false) {
+        if (strokes == 0 &&
+            item.type.wantsProgram &&
+            item.requireFinalPose == false) {
           notes.add(PreviewNote('warning', 'draws-nothing',
               'the reference solution draws nothing a child can see'));
         }
@@ -365,7 +372,8 @@ class ChildPreview {
 /// grader*, and because CI must be able to apply it to a content pack without starting a
 /// CMS. What is added here is what only exists in the editing shape: the audio keys, and
 /// the rule that a reviewer's approval must be of the revision being published.
-List<PublishFailure> checkDraft(ItemDraft draft, {Grader grader = const Grader()}) {
+List<PublishFailure> checkDraft(ItemDraft draft,
+    {Grader grader = const Grader()}) {
   final failures = <PublishFailure>[...checkItem(draft.item, grader: grader)];
   for (final locale in requiredLocales) {
     if ((draft.promptAudioKeys[locale] ?? '').trim().isEmpty) {
@@ -374,12 +382,12 @@ List<PublishFailure> checkDraft(ItemDraft draft, {Grader grader = const Grader()
     }
   }
   if (draft.pedagogicalApprovalBy == null) {
-    failures.add(PublishFailure(
-        draft.id, 'pedagogical-review', 'no pedagogical reviewer has approved it'));
+    failures.add(PublishFailure(draft.id, 'pedagogical-review',
+        'no pedagogical reviewer has approved it'));
   }
   if (draft.localisationApprovalBy == null) {
-    failures.add(PublishFailure(
-        draft.id, 'localisation-review', 'no localisation reviewer has approved it'));
+    failures.add(PublishFailure(draft.id, 'localisation-review',
+        'no localisation reviewer has approved it'));
   }
   return failures;
 }
@@ -450,7 +458,8 @@ class ItemBankFile {
         items: bank.items,
         audio: {
           for (final item in bank.items)
-            if (bank.audioFor(item.id).isNotEmpty) item.id: bank.audioFor(item.id),
+            if (bank.audioFor(item.id).isNotEmpty)
+              item.id: bank.audioFor(item.id),
         },
       );
 
@@ -483,8 +492,11 @@ class ItemBankFile {
           Item.fromJson(raw! as Map<String, Object?>),
       ],
       audio: {
-        for (final entry in ((document['audio'] as Map<String, Object?>?) ?? const {}).entries)
-          entry.key: (entry.value! as Map<String, Object?>).cast<String, String>(),
+        for (final entry
+            in ((document['audio'] as Map<String, Object?>?) ?? const {})
+                .entries)
+          entry.key:
+              (entry.value! as Map<String, Object?>).cast<String, String>(),
       },
     );
   }
@@ -503,15 +515,18 @@ class ItemBankFile {
         differences.add('items/$id: only on the other side');
         continue;
       }
-      _diffJson('items/$id', _sorted(mine[id]!.toJson()), _sorted(theirs[id]!.toJson()),
-          differences);
+      _diffJson('items/$id', _sorted(mine[id]!.toJson()),
+          _sorted(theirs[id]!.toJson()), differences);
     }
     _diffJson('audio', _sorted(audio), _sorted(other.audio), differences);
-    if (bankId != other.bankId) differences.add('bank: "$bankId" vs "${other.bankId}"');
+    if (bankId != other.bankId) {
+      differences.add('bank: "$bankId" vs "${other.bankId}"');
+    }
     return differences;
   }
 
-  static void _diffJson(String path, Object? mine, Object? theirs, List<String> into) {
+  static void _diffJson(
+      String path, Object? mine, Object? theirs, List<String> into) {
     if (mine is Map && theirs is Map) {
       for (final key in {...mine.keys, ...theirs.keys}) {
         _diffJson('$path/$key', mine[key], theirs[key], into);
@@ -548,7 +563,8 @@ Object? _sorted(Object? value) {
 
 /// The authoring CMS: drafts, the workflow, the trail and the bank.
 class ContentCms {
-  ContentCms({required this.clock, Grader grader = const Grader()}) : _grader = grader;
+  ContentCms({required this.clock, Grader grader = const Grader()})
+      : _grader = grader;
 
   /// Injected so the audit trail is reproducible in a test and honest in production.
   final DateTime Function() clock;
@@ -573,7 +589,8 @@ class ContentCms {
       _trail.where((e) => e.draftId == draftId).toList();
 
   void _record(String draftId, String actorId, String action, DraftState from,
-          DraftState to, [String? note]) =>
+          DraftState to,
+          [String? note]) =>
       _trail.add(AuditEntry(
         at: clock(),
         draftId: draftId,
@@ -597,7 +614,8 @@ class ContentCms {
       throw WorkflowError('a draft with id "${item.id}" already exists');
     }
     if (bank[item.id] != null) {
-      throw WorkflowError('"${item.id}" is already published; edit it to make revision 2');
+      throw WorkflowError(
+          '"${item.id}" is already published; edit it to make revision 2');
     }
     final draft = ItemDraft(
       item: item,
@@ -647,8 +665,8 @@ class ContentCms {
     }
     final next = current.copyWith(state: DraftState.pedagogicalReview);
     _drafts[id] = next;
-    _record(id, actor.id, 'submitted', DraftState.draft, DraftState.pedagogicalReview,
-        'revision ${current.revision}');
+    _record(id, actor.id, 'submitted', DraftState.draft,
+        DraftState.pedagogicalReview, 'revision ${current.revision}');
     return next;
   }
 
@@ -670,8 +688,13 @@ class ContentCms {
           pedagogicalApprovalBy: actor.id,
         );
         _drafts[id] = next;
-        _record(id, actor.id, 'approved', DraftState.pedagogicalReview,
-            DraftState.localisationReview, note ?? 'revision ${current.revision}');
+        _record(
+            id,
+            actor.id,
+            'approved',
+            DraftState.pedagogicalReview,
+            DraftState.localisationReview,
+            note ?? 'revision ${current.revision}');
         return next;
       case DraftState.localisationReview:
         _require(actor, CmsRole.localisationReviewer, 'approve localisation');
@@ -686,7 +709,8 @@ class ContentCms {
       case DraftState.draft:
       case DraftState.approved:
       case DraftState.published:
-        throw WorkflowError('"$id" is in ${current.state.name}; there is nothing to approve');
+        throw WorkflowError(
+            '"$id" is in ${current.state.name}; there is nothing to approve');
     }
   }
 
@@ -703,9 +727,11 @@ class ContentCms {
     if (current.state != DraftState.pedagogicalReview &&
         current.state != DraftState.localisationReview &&
         current.state != DraftState.approved) {
-      throw WorkflowError('"$id" is in ${current.state.name}; there is nothing to reject');
+      throw WorkflowError(
+          '"$id" is in ${current.state.name}; there is nothing to reject');
     }
-    final next = current.copyWith(state: DraftState.draft, clearApprovals: true);
+    final next =
+        current.copyWith(state: DraftState.draft, clearApprovals: true);
     _drafts[id] = next;
     _record(id, actor.id, 'rejected', current.state, DraftState.draft, reason);
     return next;
@@ -728,7 +754,8 @@ class ContentCms {
     if (current.state != DraftState.approved) {
       final refusal = PublishFailure(id, 'workflow',
           'is in ${current.state.name}, needs both reviews before publication');
-      _record(id, actor.id, 'publish-refused', current.state, current.state, refusal.detail);
+      _record(id, actor.id, 'publish-refused', current.state, current.state,
+          refusal.detail);
       return [refusal];
     }
     final failures = checkDraft(current, grader: _grader);
@@ -739,8 +766,8 @@ class ContentCms {
     }
     bank._put(current.item, current.promptAudioKeys);
     _drafts[id] = current.copyWith(state: DraftState.published);
-    _record(id, actor.id, 'published', DraftState.approved, DraftState.published,
-        'revision ${current.revision}');
+    _record(id, actor.id, 'published', DraftState.approved,
+        DraftState.published, 'revision ${current.revision}');
     return const [];
   }
 
@@ -782,8 +809,8 @@ class ContentCms {
       bank._put(item, audio);
       _drafts[item.id] = asDraft.copyWith(state: DraftState.published);
       accepted.add(item.id);
-      _record(item.id, actor.id, 'published', DraftState.approved, DraftState.published,
-          'imported from "${file.bankId}"');
+      _record(item.id, actor.id, 'published', DraftState.approved,
+          DraftState.published, 'imported from "${file.bankId}"');
     }
     return ImportReport(accepted: accepted, refused: refused);
   }
@@ -798,7 +825,8 @@ class ContentCms {
 
   void _require(CmsUser actor, CmsRole role, String what) {
     if (!actor.can(role)) {
-      throw WorkflowError('${actor.name} does not hold ${role.name} and cannot $what');
+      throw WorkflowError(
+          '${actor.name} does not hold ${role.name} and cannot $what');
     }
   }
 }

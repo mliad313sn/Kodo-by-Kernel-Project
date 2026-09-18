@@ -144,7 +144,8 @@ void main() {
       for (final item in world1.items) {
         for (final locale in ['fr', 'en']) {
           final key = world1.itemAudioKeys[item.id]?[locale];
-          expect(key, isNotNull, reason: '${item.id} has no $locale prompt recording');
+          expect(key, isNotNull,
+              reason: '${item.id} has no $locale prompt recording');
           expect(world1.audioKeys, contains(key));
         }
       }

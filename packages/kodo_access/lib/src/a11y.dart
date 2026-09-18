@@ -136,7 +136,7 @@ List<LayoutBreak> checkTextScaling(Iterable<ScalableBox> boxes) {
       final scale = AccessibilityPreferences.minimumTextScale +
           step *
               (AccessibilityPreferences.maximumTextScale -
-                      AccessibilityPreferences.minimumTextScale) /
+                  AccessibilityPreferences.minimumTextScale) /
               10;
       if (!box.survivesAt(scale)) {
         breaks.add(LayoutBreak(
@@ -233,7 +233,8 @@ const Map<EditorAction, KeyBinding> desktopKeyMap = {
 /// also feeds the SVG `<desc>` and the grading diagnostics. There is no second describer
 /// here for the same reason there is no second parser: two descriptions of one picture
 /// drift, and the one that drifts is always the one only blind children read.
-String canvasAnnouncement(HeadlessCanvas canvas, {UiLocale locale = UiLocale.fr}) =>
+String canvasAnnouncement(HeadlessCanvas canvas,
+        {UiLocale locale = UiLocale.fr}) =>
     describeCanvas(canvas, locale: locale.code);
 
 /// The label for one block, built from the catalogue rather than from the block's own

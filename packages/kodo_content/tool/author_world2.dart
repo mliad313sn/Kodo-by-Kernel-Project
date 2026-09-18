@@ -35,7 +35,8 @@ const palette = [
 
 /// A regular polygon, written out the long way. What the loop replaces.
 String unrolled(int sides, int side) => [
-      for (var i = 0; i < sides; i++) 'avance $side\ntournedroite ${360 ~/ sides}',
+      for (var i = 0; i < sides; i++)
+        'avance $side\ntournedroite ${360 ~/ sides}',
     ].join('\n');
 
 String looped(int sides, int side) =>
@@ -129,7 +130,10 @@ List<Item> conceptC21() {
         looped(sides + 1, side),
         'répète $sides {\n  avance $side\n}',
       ],
-      alternatives: [unrolled(sides, side), '# une autre façon\n${looped(sides, side)}'],
+      alternatives: [
+        unrolled(sides, side),
+        '# une autre façon\n${looped(sides, side)}'
+      ],
       itemHints: hints(
         'Une figure fermée tourne en tout de 360 degrés.',
         'A closed shape turns 360 degrees in total.',
@@ -154,7 +158,8 @@ List<Item> conceptC21() {
       id: id(),
       conceptId: 'C2.1',
       difficulty: Difficulty.d2,
-      broken: 'répète ${sides + 1} {\n  avance $side\n  tournedroite ${360 ~/ sides}\n}',
+      broken:
+          'répète ${sides + 1} {\n  avance $side\n  tournedroite ${360 ~/ sides}\n}',
       solution: looped(sides, side),
       promptKeys: fillBoth(
         b('Ce programme devrait faire {n} côtés. Répare-le.',
@@ -210,8 +215,10 @@ List<Item> conceptC21() {
         'Compte : une fois par tour.',
         'Count: once each time round.',
       ),
-      wrongChoiceFr: 'Compte un trait par tour de boucle. Le nombre dans répète dit combien de tours.',
-      wrongChoiceEn: 'Count one line for each time round. The number in repeat says how many times.',
+      wrongChoiceFr:
+          'Compte un trait par tour de boucle. Le nombre dans répète dit combien de tours.',
+      wrongChoiceEn:
+          'Count one line for each time round. The number in repeat says how many times.',
     ));
   }
 
@@ -344,7 +351,8 @@ List<Item> conceptC22() {
       // pixels and the same pose, so the extra body lines this item is *about* would be
       // invisible to the grader. The gate caught it; the fix is a body whose every line
       // goes somewhere new.
-      solution: 'répète $sides {\n  avance $side\n  tournedroite ${360 ~/ sides}\n'
+      solution:
+          'répète $sides {\n  avance $side\n  tournedroite ${360 ~/ sides}\n'
           '  avance ${side ~/ 2}\n  tournegauche ${360 ~/ sides}\n}',
       promptKeys: fillBoth(
         b('À chaque tour : avance {s}, tourne, avance {h}, retourne-toi. Fais-le {n} fois.',
@@ -384,9 +392,11 @@ List<Item> conceptC22() {
       id: id(),
       conceptId: 'C2.2',
       difficulty: Difficulty.d2,
-      broken: 'répète $sides {\n  avance $side\n}\ntournedroite ${360 ~/ sides}',
+      broken:
+          'répète $sides {\n  avance $side\n}\ntournedroite ${360 ~/ sides}',
       solution: looped(sides, side),
-      promptKeys: b('Ce programme devrait dessiner une figure fermée. Répare-le.',
+      promptKeys: b(
+          'Ce programme devrait dessiner une figure fermée. Répare-le.',
           'This program should draw a closed shape. Fix it.'),
       wrong: [
         'répète $sides {\n  tournedroite ${360 ~/ sides}\n}\navance $side',
@@ -423,7 +433,8 @@ List<Item> conceptC22() {
       ),
       choices: [
         Choice(
-            labelKeys: b('${times * linesInBody} traits', '${times * linesInBody} lines'),
+            labelKeys: b('${times * linesInBody} traits',
+                '${times * linesInBody} lines'),
             correct: true),
         Choice(
             labelKeys: b('$times traits', '$times lines'),
@@ -491,7 +502,8 @@ List<Item> conceptC22() {
       difficulty: Difficulty.d3,
       solution: 'répète $sides {\n  baissecrayon\n  avance 50\n  lèvecrayon\n'
           '  avance 20\n  tournedroite ${360 ~/ sides}\n}',
-      promptKeys: b('Remets les lignes en ordre : un trait, un espace, puis on tourne.',
+      promptKeys: b(
+          'Remets les lignes en ordre : un trait, un espace, puis on tourne.',
           'Put the lines in order: a line, a gap, then a turn.'),
       wrong: [
         'répète $sides {\n  avance 50\n  tournedroite ${360 ~/ sides}\n}',
@@ -523,7 +535,8 @@ List<Item> conceptC22() {
       ),
       choices: [
         Choice(
-            labelKeys: b('Tout ce qui est entre les accolades se refait à chaque tour.',
+            labelKeys: b(
+                'Tout ce qui est entre les accolades se refait à chaque tour.',
                 'Everything between the braces happens again each time round.'),
             correct: true),
         Choice(
@@ -843,7 +856,8 @@ List<Item> conceptC24() {
       ),
       choices: [
         Choice(
-            labelKeys: b('Exactement le même dessin.', 'Exactly the same drawing.'),
+            labelKeys:
+                b('Exactement le même dessin.', 'Exactly the same drawing.'),
             correct: true),
         Choice(
             labelKeys: b('Le plus long fait un plus grand dessin.',
@@ -851,7 +865,8 @@ List<Item> conceptC24() {
             correct: false,
             misconception: 'a longer program is a better program'),
         Choice(
-            labelKeys: b('Le répète en fait moins.', 'The repeat one does less.'),
+            labelKeys:
+                b('Le répète en fait moins.', 'The repeat one does less.'),
             correct: false,
             misconception: 'a loop does the body fewer times than the copies'),
       ],
@@ -887,8 +902,8 @@ List<Item> conceptC24() {
                 'Because if I change a number, I only change it once.'),
             correct: true),
         Choice(
-            labelKeys:
-                b('Parce que le dessin sera plus beau.', 'Because the drawing will be nicer.'),
+            labelKeys: b('Parce que le dessin sera plus beau.',
+                'Because the drawing will be nicer.'),
             correct: false,
             misconception: 'a loop changes what is drawn'),
         Choice(
@@ -1019,7 +1034,8 @@ List<Tutorial> world2Tutorials() => [
           TutorialStep(
             id: 'C2.1-s3',
             beat: Beat.jeFais,
-            narrationKeys: b('Fais un triangle. Trois côtés, et on tourne à chaque fois.',
+            narrationKeys: b(
+                'Fais un triangle. Trois côtés, et on tourne à chaque fois.',
                 'Make a triangle. Three sides, and we turn each time.'),
             audioKeys: b('audio/fr/C2.1-s3.opus', 'audio/en/C2.1-s3.opus'),
             expectedAction: ExpectedAction.buildProgram,
@@ -1049,7 +1065,8 @@ List<Tutorial> world2Tutorials() => [
           TutorialStep(
             id: 'C2.2-s2',
             beat: Beat.onFaitEnsemble,
-            narrationKeys: b('Ajoute une ligne dans le bloc répète. Elle aussi se refera.',
+            narrationKeys: b(
+                'Ajoute une ligne dans le bloc répète. Elle aussi se refera.',
                 'Add a line inside the repeat block. It will happen again too.'),
             audioKeys: b('audio/fr/C2.2-s2.opus', 'audio/en/C2.2-s2.opus'),
             expectedAction: ExpectedAction.placeBlock,
@@ -1061,13 +1078,15 @@ List<Tutorial> world2Tutorials() => [
           TutorialStep(
             id: 'C2.2-s3',
             beat: Beat.jeFais,
-            narrationKeys: b('Sors le bloc tourner des accolades. Regarde ce qui change.',
+            narrationKeys: b(
+                'Sors le bloc tourner des accolades. Regarde ce qui change.',
                 'Take the turn block out of the braces. Watch what changes.'),
             audioKeys: b('audio/fr/C2.2-s3.opus', 'audio/en/C2.2-s3.opus'),
             expectedAction: ExpectedAction.buildProgram,
             spotlight: SpotlightTarget.scriptArea,
             successCondition: const SuccessCondition(opcodeId: 'TURN_RIGHT'),
-            retryHintKeys: b('Fais glisser le bloc tourner sous l\'accolade fermante.',
+            retryHintKeys: b(
+                'Fais glisser le bloc tourner sous l\'accolade fermante.',
                 'Drag the turn block below the closing brace.'),
           ),
         ],
@@ -1079,7 +1098,8 @@ List<Tutorial> world2Tutorials() => [
           TutorialStep(
             id: 'C2.3-s1',
             beat: Beat.jeRegarde,
-            narrationKeys: b('Regarde. Un carré. Puis on tourne un peu et on recommence.',
+            narrationKeys: b(
+                'Regarde. Un carré. Puis on tourne un peu et on recommence.',
                 'Watch. A square. Then we turn a little and start again.'),
             audioKeys: b('audio/fr/C2.3-s1.opus', 'audio/en/C2.3-s1.opus'),
             expectedAction: ExpectedAction.watch,
@@ -1096,8 +1116,10 @@ List<Tutorial> world2Tutorials() => [
             audioKeys: b('audio/fr/C2.3-s2.opus', 'audio/en/C2.3-s2.opus'),
             expectedAction: ExpectedAction.placeBlock,
             spotlight: SpotlightTarget.paletteFamilyControl,
-            successCondition: const SuccessCondition(opcodeId: 'TURN_RIGHT', minCount: 2),
-            retryHintKeys: b('Le carré entier va à l\'intérieur du nouveau bloc.',
+            successCondition:
+                const SuccessCondition(opcodeId: 'TURN_RIGHT', minCount: 2),
+            retryHintKeys: b(
+                'Le carré entier va à l\'intérieur du nouveau bloc.',
                 'The whole square goes inside the new block.'),
           ),
           TutorialStep(
@@ -1109,7 +1131,8 @@ List<Tutorial> world2Tutorials() => [
             expectedAction: ExpectedAction.buildProgram,
             spotlight: SpotlightTarget.scriptArea,
             successCondition: const SuccessCondition(opcodeId: 'MOVE_FORWARD'),
-            retryHintKeys: b('Huit branches : tourne de 45 degrés entre chacune.',
+            retryHintKeys: b(
+                'Huit branches : tourne de 45 degrés entre chacune.',
                 'Eight arms: turn 45 degrees between each one.'),
           ),
         ],
@@ -1121,7 +1144,8 @@ List<Tutorial> world2Tutorials() => [
           TutorialStep(
             id: 'C2.4-s1',
             beat: Beat.jeRegarde,
-            narrationKeys: b('Regarde ces deux programmes. Ils dessinent la même chose.',
+            narrationKeys: b(
+                'Regarde ces deux programmes. Ils dessinent la même chose.',
                 'Look at these two programs. They draw the same thing.'),
             audioKeys: b('audio/fr/C2.4-s1.opus', 'audio/en/C2.4-s1.opus'),
             expectedAction: ExpectedAction.watch,
@@ -1132,7 +1156,8 @@ List<Tutorial> world2Tutorials() => [
           TutorialStep(
             id: 'C2.4-s2',
             beat: Beat.onFaitEnsemble,
-            narrationKeys: b('Change la longueur. Il y a un seul nombre à changer.',
+            narrationKeys: b(
+                'Change la longueur. Il y a un seul nombre à changer.',
                 'Change the length. There is only one number to change.'),
             audioKeys: b('audio/fr/C2.4-s2.opus', 'audio/en/C2.4-s2.opus'),
             expectedAction: ExpectedAction.editNumber,
@@ -1182,7 +1207,8 @@ void main() {
     for (final f in tutorialFailures) {
       stderr.writeln('  $f');
     }
-    stderr.writeln('\n${itemFailures.length + tutorialFailures.length} failure(s)');
+    stderr.writeln(
+        '\n${itemFailures.length + tutorialFailures.length} failure(s)');
     exit(1);
   }
 
@@ -1193,12 +1219,14 @@ void main() {
     stdout.writeln('  $concept: ${mine.length} items, ${types.length} types '
         '(${(types.toList()..sort((a, b) => a.code.compareTo(b.code))).map((t) => t.code).join(' ')})');
     if (types.length < 5) {
-      stderr.writeln('REFUSED: §6.1 requires at least five item types per concept; '
+      stderr.writeln(
+          'REFUSED: §6.1 requires at least five item types per concept; '
           '$concept has ${types.length}');
       exit(1);
     }
     if (mine.length < committed[concept]!) {
-      stderr.writeln('REFUSED: §6.3 commits ${committed[concept]} items for $concept; '
+      stderr.writeln(
+          'REFUSED: §6.3 commits ${committed[concept]} items for $concept; '
           'this pack has ${mine.length}');
       exit(1);
     }
@@ -1214,7 +1242,8 @@ void main() {
     itemAudioKeys: {
       for (final item in items)
         item.id: {
-          for (final locale in requiredLocales) locale: 'audio/$locale/${item.id}.opus',
+          for (final locale in requiredLocales)
+            locale: 'audio/$locale/${item.id}.opus',
         },
     },
     audioKeys: [
@@ -1241,7 +1270,8 @@ void main() {
       '${const JsonEncoder.withIndent('  ').convert(manifest.toJson())}\n');
 
   stdout.writeln('\nPublished content/world2.json');
-  stdout.writeln('  ${sized.sizeBytes} bytes of ${ContentPack.worldBudgetBytes} budget '
+  stdout.writeln(
+      '  ${sized.sizeBytes} bytes of ${ContentPack.worldBudgetBytes} budget '
       '(${(sized.sizeBytes / ContentPack.worldBudgetBytes * 100).toStringAsFixed(1)} %)');
   stdout.writeln('  sha256 ${manifest.contentHash.substring(0, 16)}…');
   stdout.writeln('  audio keys: ${sized.audioKeys.length}');

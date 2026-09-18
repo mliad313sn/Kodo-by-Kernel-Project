@@ -59,7 +59,9 @@ class ProjectStore {
     );
     final list = _versions.putIfAbsent(project.id, () => <Project>[])
       ..insert(0, saved);
-    if (list.length > retainedVersions) list.removeRange(retainedVersions, list.length);
+    if (list.length > retainedVersions) {
+      list.removeRange(retainedVersions, list.length);
+    }
     return saved;
   }
 
@@ -271,10 +273,12 @@ const List<Recipe> recettes = [
     },
     source: 'répète 12 {\n'
         '  avance 30\n'
-        r'  si positionx > 150 {' '\n'
+        r'  si positionx > 150 {'
+        '\n'
         '    tournedroite 180\n'
         '  }\n'
-        r'  si positionx < -150 {' '\n'
+        r'  si positionx < -150 {'
+        '\n'
         '    tournedroite 180\n'
         '  }\n'
         '}\n',
@@ -286,10 +290,13 @@ const List<Recipe> recettes = [
       'fr': 'Je veux un score qui monte.',
       'en': 'I want a score that goes up.',
     },
-    source: r'$points = 0' '\n'
+    source: r'$points = 0'
+        '\n'
         'répète 5 {\n'
-        r'  $points = $points + 1' '\n'
-        r'  écris $points' '\n'
+        r'  $points = $points + 1'
+        '\n'
+        r'  écris $points'
+        '\n'
         '}\n',
   ),
   Recipe(
@@ -299,8 +306,10 @@ const List<Recipe> recettes = [
       'fr': 'Je veux passer du menu au jeu.',
       'en': 'I want to go from the menu to the game.',
     },
-    source: r'$écran = "menu"' '\n'
-        r'si $écran == "menu" {' '\n'
+    source: r'$écran = "menu"'
+        '\n'
+        r'si $écran == "menu" {'
+        '\n'
         '  nettoietout\n'
         '  écris "Appuie pour jouer"\n'
         '} sinon {\n'
@@ -315,8 +324,10 @@ const List<Recipe> recettes = [
       'fr': 'Je veux que le joueur choisisse le nombre de pas.',
       'en': 'I want the player to choose how many steps.',
     },
-    source: r'$pas = demande "combien de pas ?"' '\n'
-        r'avance nombre $pas' '\n'
+    source: r'$pas = demande "combien de pas ?"'
+        '\n'
+        r'avance nombre $pas'
+        '\n'
         'montre\n',
   ),
   Recipe(
@@ -326,8 +337,10 @@ const List<Recipe> recettes = [
       'fr': "Je veux dire si c'est gagné.",
       'en': 'I want to say whether it is won.',
     },
-    source: r'$points = 3' '\n'
-        r'si $points >= 3 {' '\n'
+    source: r'$points = 3'
+        '\n'
+        r'si $points >= 3 {'
+        '\n'
         '  message "Gagné !"\n'
         '} sinon {\n'
         '  message "Encore une fois"\n'
@@ -340,8 +353,10 @@ const List<Recipe> recettes = [
       'fr': 'Je veux que ça tourne en grandissant.',
       'en': 'I want it to spin and grow.',
     },
-    source: r'pour $i = 1 à 40 {' '\n'
-        r'  avance $i * 3' '\n'
+    source: r'pour $i = 1 à 40 {'
+        '\n'
+        r'  avance $i * 3'
+        '\n'
         '  tournedroite 91\n'
         '}\n',
   ),
@@ -374,8 +389,10 @@ const List<Recipe> recettes = [
       'fr': 'Je veux demander quelque chose au joueur.',
       'en': 'I want to ask the player something.',
     },
-    source: r'$couleur = demande "Ta couleur ?"' '\n'
-        r'écris $couleur' '\n',
+    source: r'$couleur = demande "Ta couleur ?"'
+        '\n'
+        r'écris $couleur'
+        '\n',
   ),
   Recipe(
     id: 'attendre',
@@ -414,9 +431,12 @@ const List<Recipe> recettes = [
       'fr': 'Je veux ranger plusieurs choses ensemble.',
       'en': 'I want to keep several things together.',
     },
-    source: r'$amis = ["Awa", "Moussa", "Fatou"]' '\n'
-        r'pour $i = 1 à 3 {' '\n'
-        r'  écris $amis[$i]' '\n'
+    source: r'$amis = ["Awa", "Moussa", "Fatou"]'
+        '\n'
+        r'pour $i = 1 à 3 {'
+        '\n'
+        r'  écris $amis[$i]'
+        '\n'
         '}\n',
   ),
   Recipe(
@@ -426,9 +446,11 @@ const List<Recipe> recettes = [
       'fr': 'Je veux réutiliser la même chose partout.',
       'en': 'I want to reuse the same thing everywhere.',
     },
-    source: r'apprends carré $côté {' '\n'
+    source: r'apprends carré $côté {'
+        '\n'
         '  répète 4 {\n'
-        r'    avance $côté' '\n'
+        r'    avance $côté'
+        '\n'
         '    tournedroite 90\n'
         '  }\n'
         '}\n'
@@ -442,10 +464,13 @@ const List<Recipe> recettes = [
       'fr': "Je veux continuer tant que ce n'est pas fini.",
       'en': 'I want to keep going until it is done.',
     },
-    source: r'$faits = 0' '\n'
-        r'tantque $faits < 5 {' '\n'
+    source: r'$faits = 0'
+        '\n'
+        r'tantque $faits < 5 {'
+        '\n'
         '  avance 30\n'
-        r'  $faits = $faits + 1' '\n'
+        r'  $faits = $faits + 1'
+        '\n'
         '}\n',
   ),
   Recipe(
@@ -455,9 +480,11 @@ const List<Recipe> recettes = [
       'fr': 'Je veux sortir avant la fin.',
       'en': 'I want to get out before the end.',
     },
-    source: r'pour $i = 1 à 20 {' '\n'
+    source: r'pour $i = 1 à 20 {'
+        '\n'
         '  avance 20\n'
-        r'  si $i > 5 {' '\n'
+        r'  si $i > 5 {'
+        '\n'
         '    coupure\n'
         '  }\n'
         '}\n',
@@ -497,8 +524,10 @@ const List<Recipe> recettes = [
       'fr': "Je veux compter jusqu'à zéro.",
       'en': 'I want to count down to zero.',
     },
-    source: r'pour $i = 5 à 1 pas -1 {' '\n'
-        r'  écris $i' '\n'
+    source: r'pour $i = 5 à 1 pas -1 {'
+        '\n'
+        r'  écris $i'
+        '\n'
         '}\n'
         'message "Partez !"\n',
   ),

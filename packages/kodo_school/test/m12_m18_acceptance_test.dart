@@ -63,20 +63,32 @@ void main() {
       // No confusable pair may have both members in the alphabet, or the code gets read
       // back wrongly when it is shouted across a room at 35 children.
       const confusable = [
-        ('0', 'O'), ('1', 'I'), ('1', 'L'), ('I', 'L'),
-        ('5', 'S'), ('8', 'B'), ('2', 'Z'), ('6', 'G'),
+        ('0', 'O'),
+        ('1', 'I'),
+        ('1', 'L'),
+        ('I', 'L'),
+        ('5', 'S'),
+        ('8', 'B'),
+        ('2', 'Z'),
+        ('6', 'G'),
       ];
       for (final (a, b) in confusable) {
-        expect(ClassCode.alphabet.contains(a) && ClassCode.alphabet.contains(b), isFalse,
+        expect(ClassCode.alphabet.contains(a) && ClassCode.alphabet.contains(b),
+            isFalse,
             reason: '"$a" and "$b" are both in the alphabet and look alike');
       }
     });
 
     test('joining needs the code and a first name — nothing else', () {
       final room = Classroom(
-          id: 'c1', name: 'CM1 B', code: const ClassCode('ABCDEF'), teacherName: 'T');
-      final pupil =
-          room.join(firstName: 'Awa', using: const ClassCode('ABCDEF'), at: DateTime.utc(2026, 3, 2));
+          id: 'c1',
+          name: 'CM1 B',
+          code: const ClassCode('ABCDEF'),
+          teacherName: 'T');
+      final pupil = room.join(
+          firstName: 'Awa',
+          using: const ClassCode('ABCDEF'),
+          at: DateTime.utc(2026, 3, 2));
       expect(pupil.firstName, 'Awa');
       expect(room.pupils, hasLength(1));
       expect(
@@ -89,11 +101,17 @@ void main() {
 
     test('two children called Awa are told apart without a surname', () {
       final room = Classroom(
-          id: 'c1', name: 'CM1 B', code: const ClassCode('ABCDEF'), teacherName: 'T');
+          id: 'c1',
+          name: 'CM1 B',
+          code: const ClassCode('ABCDEF'),
+          teacherName: 'T');
       final at = DateTime.utc(2026, 3, 2);
-      final one = room.join(firstName: 'Awa', using: const ClassCode('ABCDEF'), at: at);
-      final two = room.join(firstName: 'Awa', using: const ClassCode('ABCDEF'), at: at);
-      final alone = room.join(firstName: 'Moussa', using: const ClassCode('ABCDEF'), at: at);
+      final one =
+          room.join(firstName: 'Awa', using: const ClassCode('ABCDEF'), at: at);
+      final two =
+          room.join(firstName: 'Awa', using: const ClassCode('ABCDEF'), at: at);
+      final alone = room.join(
+          firstName: 'Moussa', using: const ClassCode('ABCDEF'), at: at);
 
       expect(one.displayNameAmong(room.pupils), startsWith('Awa '));
       expect(two.displayNameAmong(room.pupils), startsWith('Awa '));
@@ -109,13 +127,18 @@ void main() {
   });
 
   group('FR-M12-02 · assignment and the live mastery grid', () {
-    test('a world is assigned with a due date and the grid is pupil × concept', () {
+    test('a world is assigned with a due date and the grid is pupil × concept',
+        () {
       final room = Classroom(
-          id: 'c1', name: 'CM1 B', code: const ClassCode('ABCDEF'), teacherName: 'T');
+          id: 'c1',
+          name: 'CM1 B',
+          code: const ClassCode('ABCDEF'),
+          teacherName: 'T');
       final at = DateTime.utc(2026, 3, 2);
-      final awa = room.join(firstName: 'Awa', using: const ClassCode('ABCDEF'), at: at);
-      final moussa =
-          room.join(firstName: 'Moussa', using: const ClassCode('ABCDEF'), at: at);
+      final awa =
+          room.join(firstName: 'Awa', using: const ClassCode('ABCDEF'), at: at);
+      final moussa = room.join(
+          firstName: 'Moussa', using: const ClassCode('ABCDEF'), at: at);
 
       room.assignments.add(Assignment(
         id: 'a1',
@@ -141,8 +164,8 @@ void main() {
       expect(awaC11.stars, 3);
       // A concept nobody has touched is "not seen", not a blank the teacher has to read
       // as either "no data" or "failed".
-      final untouched =
-          grid.firstWhere((c) => c.pupilId == moussa.id && c.conceptId == 'C1.5');
+      final untouched = grid
+          .firstWhere((c) => c.pupilId == moussa.id && c.conceptId == 'C1.5');
       expect(untouched.state, ConceptState.nonVu);
     });
   });
@@ -164,7 +187,8 @@ void main() {
     final devices = [for (var i = 1; i <= 35; i++) 'tab-$i'];
     const seeder = ClassroomSeeder();
 
-    test('35 devices are seeded and collected in under 20 minutes, no internet', () {
+    test('35 devices are seeded and collected in under 20 minutes, no internet',
+        () {
       final total = seeder.wholeDrill(
         bundle: bundle,
         deviceIds: devices,
@@ -173,32 +197,44 @@ void main() {
         progressBytesPerDevice: 64 * 1024,
       );
       expect(total, lessThan(const Duration(minutes: 20)),
-          reason: 'the drill took ${total.inMinutes} min ${total.inSeconds % 60} s');
+          reason:
+              'the drill took ${total.inMinutes} min ${total.inSeconds % 60} s');
       expect(total, greaterThan(Duration.zero));
     });
 
-    test('a hotspot is modelled as contended, or the drill passes only on paper', () {
+    test(
+        'a hotspot is modelled as contended, or the drill passes only on paper',
+        () {
       final few = seeder.seed(
-          bundle: bundle, deviceIds: devices.take(5).toList(), transport: SeedTransport.hotspot);
-      final many =
-          seeder.seed(bundle: bundle, deviceIds: devices, transport: SeedTransport.hotspot);
+          bundle: bundle,
+          deviceIds: devices.take(5).toList(),
+          transport: SeedTransport.hotspot);
+      final many = seeder.seed(
+          bundle: bundle, deviceIds: devices, transport: SeedTransport.hotspot);
       expect(many.first.seconds, greaterThan(few.first.seconds),
           reason: 'one hotspot for 35 devices is slower per device than for 5');
     });
 
-    test('a card is faster per device but serial, and the drill still fits', () {
-      final outcomes =
-          seeder.seed(bundle: bundle, deviceIds: devices, transport: SeedTransport.sdCard);
-      expect(outcomes.first.seconds,
+    test('a card is faster per device but serial, and the drill still fits',
+        () {
+      final outcomes = seeder.seed(
+          bundle: bundle, deviceIds: devices, transport: SeedTransport.sdCard);
+      expect(
+          outcomes.first.seconds,
           lessThan(seeder
-              .seed(bundle: bundle, deviceIds: devices, transport: SeedTransport.hotspot)
+              .seed(
+                  bundle: bundle,
+                  deviceIds: devices,
+                  transport: SeedTransport.hotspot)
               .first
               .seconds));
       expect(seeder.drillDuration(outcomes, SeedTransport.sdCard),
           lessThan(const Duration(minutes: 20)));
     });
 
-    test('the checksum is recomputed on the receiving device, so tampering is caught', () {
+    test(
+        'the checksum is recomputed on the receiving device, so tampering is caught',
+        () {
       expect(bundle.verifies(), isTrue);
       final tampered = SeedBundle(
         worlds: bundle.worlds,
@@ -217,7 +253,10 @@ void main() {
 
   group('FR-M12-04 · printed sheets survive a low-toner printer', () {
     final room = Classroom(
-        id: 'c1', name: 'CM1 B', code: const ClassCode('ABCDEF'), teacherName: 'T');
+        id: 'c1',
+        name: 'CM1 B',
+        code: const ClassCode('ABCDEF'),
+        teacherName: 'T');
     final at = DateTime.utc(2026, 3, 2);
     final pupils = [
       for (final name in ['Awa', 'Moussa', 'Fatou', 'Ibrahima'])
@@ -234,7 +273,8 @@ void main() {
       }, conceptIds),
     );
 
-    test('every state is a distinct character, never a colour or a grey blob', () {
+    test('every state is a distinct character, never a colour or a grey blob',
+        () {
       final glyphs = ProgressSheet.glyphs.values.toList();
       expect(glyphs.toSet(), hasLength(ConceptState.values.length));
       for (final glyph in glyphs) {
@@ -257,7 +297,8 @@ void main() {
       final rendered = sheet.render(pupils);
       for (final line in rendered.split('\n')) {
         // 80 columns is what a 10 pt monospace gives on A4 portrait.
-        expect(line.length, lessThanOrEqualTo(80), reason: 'line overflows A4: "$line"');
+        expect(line.length, lessThanOrEqualTo(80),
+            reason: 'line overflows A4: "$line"');
       }
       for (final pupil in pupils) {
         expect(rendered, contains(pupil.firstName));
@@ -272,10 +313,13 @@ void main() {
   group('FR-M12-05 · projection mode', () {
     test('the back row can read it, or it is not projection mode', () {
       expect(const ProjectionSettings().isLegibleFromTheBackRow, isTrue);
-      expect(const ProjectionSettings(fontSize: 18).isLegibleFromTheBackRow, isFalse);
+      expect(const ProjectionSettings(fontSize: 18).isLegibleFromTheBackRow,
+          isFalse);
       // High contrast is not optional: a projector in a lit classroom loses most of it.
-      expect(const ProjectionSettings(fontSize: 48, highContrast: false)
-          .isLegibleFromTheBackRow, isFalse);
+      expect(
+          const ProjectionSettings(fontSize: 48, highContrast: false)
+              .isLegibleFromTheBackRow,
+          isFalse);
     });
   });
 
@@ -286,7 +330,9 @@ void main() {
     // hold the shape of the path so a regression does not quietly make the stopwatch
     // reading worse. The observation itself is scheduled evidence at G3 — see
     // docs/modules/M12_M18_DONE.md.
-    test('the path is three actions and asks for nothing the teacher must go and find', () {
+    test(
+        'the path is three actions and asks for nothing the teacher must go and find',
+        () {
       final at = DateTime.utc(2026, 3, 2, 9);
       // 1 — create.
       final room = Classroom(
@@ -307,7 +353,8 @@ void main() {
       expect(empty, isEmpty);
 
       final awa = room.join(firstName: 'Awa', using: room.code, at: at);
-      expect(room.grid({awa.id: const {}}, conceptIds), hasLength(conceptIds.length));
+      expect(room.grid({awa.id: const {}}, conceptIds),
+          hasLength(conceptIds.length));
 
       // Nothing on the path needed an email address, a password, a payment, or a network
       // call — the four things that turn a ten-minute first run into a lost hour.
@@ -333,18 +380,21 @@ void main() {
     return ContentCms(clock: clock);
   }
 
-  const teacher = CmsUser(
-      id: 'u-partner', name: 'M. Diallo', roles: {CmsRole.author});
+  const teacher =
+      CmsUser(id: 'u-partner', name: 'M. Diallo', roles: {CmsRole.author});
   const pedagogue = CmsUser(
       id: 'u-ped', name: 'Seat 3', roles: {CmsRole.pedagogicalReviewer});
   const translator = CmsUser(
       id: 'u-loc', name: 'Seat 11', roles: {CmsRole.localisationReviewer});
-  const admin = CmsUser(
-      id: 'u-admin', name: 'Ops', roles: {CmsRole.administrator});
+  const admin =
+      CmsUser(id: 'u-admin', name: 'Ops', roles: {CmsRole.administrator});
 
   group('FR-M18-01 · preview as child, on the reference device', () {
-    test('the preview runs the item\'s own reference solution, not a second renderer', () {
-      final item = world1.items.firstWhere((i) => i.type == ItemType.t1BuildToTarget);
+    test(
+        'the preview runs the item\'s own reference solution, not a second renderer',
+        () {
+      final item =
+          world1.items.firstWhere((i) => i.type == ItemType.t1BuildToTarget);
       final preview = ChildPreview.of(ItemDraft(
         item: item,
         authorId: teacher.id,
@@ -353,10 +403,12 @@ void main() {
       expect(preview.strokes, greaterThan(0),
           reason: '${item.id}: the reference solution draws nothing');
       expect(preview.hintLines, hasLength(item.hints.length));
-      expect(preview.hasBlockingNotes, isFalse, reason: preview.notes.join('\n'));
+      expect(preview.hasBlockingNotes, isFalse,
+          reason: preview.notes.join('\n'));
     });
 
-    test('a prompt that overflows the panel is flagged before a child meets it', () {
+    test('a prompt that overflows the panel is flagged before a child meets it',
+        () {
       final item = worldItem(0);
       final wordy = Item.fromJson({
         ...item.toJson(),
@@ -380,7 +432,9 @@ void main() {
       }
     });
 
-    test('a missing recording key is blocking in the preview, not a surprise at publish', () {
+    test(
+        'a missing recording key is blocking in the preview, not a surprise at publish',
+        () {
       final preview = ChildPreview.of(ItemDraft(
         item: worldItem(0),
         authorId: teacher.id,
@@ -392,8 +446,11 @@ void main() {
     });
   });
 
-  group('FR-M18-03 · acceptance 1 — a partner teacher publishes five items', () {
-    test('five items go author → pedagogy → localisation → publish, with no engineer', () {
+  group('FR-M18-03 · acceptance 1 — a partner teacher publishes five items',
+      () {
+    test(
+        'five items go author → pedagogy → localisation → publish, with no engineer',
+        () {
       final cms = freshCms();
       final chosen = world1.items.take(5).toList();
 
@@ -419,7 +476,8 @@ void main() {
           {teacher.id, pedagogue.id, translator.id});
     });
 
-    test('the audit trail records who did what, in order, and cannot be edited', () {
+    test('the audit trail records who did what, in order, and cannot be edited',
+        () {
       final cms = freshCms();
       final item = worldItem(0);
       cms.create(teacher, item: item, promptAudioKeys: audioFor(item));
@@ -431,11 +489,23 @@ void main() {
       cms.publish(teacher, item.id);
 
       final trail = cms.trailFor(item.id);
-      expect(trail.map((e) => e.action).toList(),
-          ['created', 'submitted', 'rejected', 'submitted', 'approved', 'approved', 'published']);
+      expect(trail.map((e) => e.action).toList(), [
+        'created',
+        'submitted',
+        'rejected',
+        'submitted',
+        'approved',
+        'approved',
+        'published'
+      ]);
       expect(trail.map((e) => e.actorId).toList(), [
-        teacher.id, teacher.id, pedagogue.id, teacher.id, pedagogue.id,
-        translator.id, teacher.id,
+        teacher.id,
+        teacher.id,
+        pedagogue.id,
+        teacher.id,
+        pedagogue.id,
+        translator.id,
+        teacher.id,
       ]);
       // The rejection carries its reason, not a status code.
       expect(trail[2].note, 'the second hint gives the answer away');
@@ -451,10 +521,12 @@ void main() {
       final item = worldItem(0);
       cms.create(teacher, item: item, promptAudioKeys: audioFor(item));
       cms.submit(teacher, item.id);
-      expect(() => cms.reject(pedagogue, item.id, '   '), throwsA(isA<WorkflowError>()));
+      expect(() => cms.reject(pedagogue, item.id, '   '),
+          throwsA(isA<WorkflowError>()));
     });
 
-    test('an author cannot review their own draft, even holding both roles', () {
+    test('an author cannot review their own draft, even holding both roles',
+        () {
       final cms = freshCms();
       const both = CmsUser(
           id: 'u-both',
@@ -466,7 +538,9 @@ void main() {
       expect(() => cms.approve(both, item.id), throwsA(isA<WorkflowError>()));
     });
 
-    test('an edit under review is refused; an edit in draft clears both approvals', () {
+    test(
+        'an edit under review is refused; an edit in draft clears both approvals',
+        () {
       final cms = freshCms();
       final item = worldItem(2);
       cms.create(teacher, item: item, promptAudioKeys: audioFor(item));
@@ -479,18 +553,22 @@ void main() {
       expect(cms.draft(item.id)!.state, DraftState.approved);
 
       // A reviewer who signed off and then spotted a problem can still send it back.
-      cms.reject(translator, item.id, 'the English prompt reads like a translation');
+      cms.reject(
+          translator, item.id, 'the English prompt reads like a translation');
       expect(cms.draft(item.id)!.state, DraftState.draft);
       final edited = cms.edit(teacher, item.id, item: item);
       expect(edited.revision, 2);
       expect(edited.pedagogicalApprovalBy, isNull);
       expect(edited.localisationApprovalBy, isNull);
       // Which means it cannot be published on yesterday's approval.
-      expect(cms.publish(teacher, item.id).map((f) => f.rule), contains('workflow'));
+      expect(cms.publish(teacher, item.id).map((f) => f.rule),
+          contains('workflow'));
     });
   });
 
-  group('FR-M18-02 · acceptance 2 — ten incomplete items, ten specific refusals', () {
+  group(
+      'FR-M18-02 · acceptance 2 — ten incomplete items, ten specific refusals',
+      () {
     /// Ten ways an item is not finished. Each one is a real authoring mistake, not a
     /// mutation chosen to trip a branch.
     List<(String, ItemDraft)> brokenDrafts() {
@@ -512,9 +590,18 @@ void main() {
       final hints = (good.toJson()['hints']! as List<Object?>);
       return [
         ('concept-link', draft('BAD-01', {'concept': '  '})),
-        ('prompt-localised',
-            draft('BAD-02', {'prompt': {'fr': 'Fais avancer Tika de 50 pas.'}})),
-        ('two-hints', draft('BAD-03', {'hints': [hints.first]})),
+        (
+          'prompt-localised',
+          draft('BAD-02', {
+            'prompt': {'fr': 'Fais avancer Tika de 50 pas.'}
+          })
+        ),
+        (
+          'two-hints',
+          draft('BAD-03', {
+            'hints': [hints.first]
+          })
+        ),
         ('diagnostic-message', draft('BAD-04', {'diagnostics': const []})),
         (
           'generic-message',
@@ -528,7 +615,12 @@ void main() {
           })
         ),
         ('reference-solution', draft('BAD-06', {'reference': '   '})),
-        ('three-wrong', draft('BAD-07', {'wrong': const ['avance 25']})),
+        (
+          'three-wrong',
+          draft('BAD-07', {
+            'wrong': const ['avance 25']
+          })
+        ),
         ('two-alternatives', draft('BAD-08', {'alternatives': const []})),
         // Asserted wrong, but it is the reference solution again.
         (
@@ -548,7 +640,8 @@ void main() {
         refusals[draft.id] = failures;
         expect(failures, isNotEmpty, reason: '${draft.id} was let through');
         expect(failures.map((f) => f.rule), contains(expected),
-            reason: '${draft.id} was refused for ${failures.map((f) => f.rule)} '
+            reason:
+                '${draft.id} was refused for ${failures.map((f) => f.rule)} '
                 'rather than $expected');
       }
       expect(refusals, hasLength(10));
@@ -562,7 +655,9 @@ void main() {
       }
     });
 
-    test('the gate refuses them through the CMS too, and writes the refusal down', () {
+    test(
+        'the gate refuses them through the CMS too, and writes the refusal down',
+        () {
       final cms = freshCms();
       for (final (expected, broken) in brokenDrafts()) {
         cms.create(teacher,
@@ -602,7 +697,8 @@ void main() {
       final item = worldItem(0);
       cms.create(teacher, item: item, promptAudioKeys: audioFor(item));
       // Straight to publish, skipping both reviews.
-      expect(cms.publish(teacher, item.id).map((f) => f.rule), contains('workflow'));
+      expect(cms.publish(teacher, item.id).map((f) => f.rule),
+          contains('workflow'));
       expect(cms.bank.length, 0);
       // The bank has no public constructor and no public mutator: `bank.items` is a
       // copy, so writing to it changes nothing.
@@ -630,7 +726,8 @@ void main() {
     test('an imported item is gated exactly like an authored one', () {
       final cms = freshCms();
       final good = worldItem(0);
-      final bad = Item.fromJson({...good.toJson(), 'id': 'IMP-BAD', 'hints': const []});
+      final bad =
+          Item.fromJson({...good.toJson(), 'id': 'IMP-BAD', 'hints': const []});
       final file = ItemBankFile(
         schema: ItemBankFile.currentSchema,
         bankId: 'partner-school',
@@ -648,7 +745,9 @@ void main() {
     });
   });
 
-  group('FR-M18-04 · acceptance 3 — an exported bank reimports with zero differences', () {
+  group(
+      'FR-M18-04 · acceptance 3 — an exported bank reimports with zero differences',
+      () {
     test('the round trip is byte-for-byte, over the whole World 1 bank', () {
       final cms = freshCms();
       final source = ItemBankFile(
@@ -681,26 +780,36 @@ void main() {
         schema: ItemBankFile.currentSchema,
         bankId: 'b',
         items: [item],
-        audio: {item.id: const {'fr': 'a.opus', 'en': 'b.opus'}},
+        audio: {
+          item.id: const {'fr': 'a.opus', 'en': 'b.opus'}
+        },
       );
       final backwards = ItemBankFile(
         schema: ItemBankFile.currentSchema,
         bankId: 'b',
         items: [item],
-        audio: {item.id: const {'en': 'b.opus', 'fr': 'a.opus'}},
+        audio: {
+          item.id: const {'en': 'b.opus', 'fr': 'a.opus'}
+        },
       );
       expect(forwards.encode(), backwards.encode());
       expect(forwards.checksum, backwards.checksum);
     });
 
-    test('a difference is reported by path, so a review can see what moved', () {
+    test('a difference is reported by path, so a review can see what moved',
+        () {
       final item = worldItem(0);
       final mine = ItemBankFile(
-          schema: ItemBankFile.currentSchema, bankId: 'b', items: [item], audio: const {});
+          schema: ItemBankFile.currentSchema,
+          bankId: 'b',
+          items: [item],
+          audio: const {});
       final theirs = ItemBankFile(
         schema: ItemBankFile.currentSchema,
         bankId: 'b',
-        items: [Item.fromJson({...item.toJson(), 'difficulty': 'D3'})],
+        items: [
+          Item.fromJson({...item.toJson(), 'difficulty': 'D3'})
+        ],
         audio: const {},
       );
       final differences = mine.differencesFrom(theirs);
@@ -709,7 +818,9 @@ void main() {
     });
 
     test('an unknown schema is refused rather than guessed at', () {
-      expect(() => ItemBankFile.decode('{"schema":"kodo.itembank/99","bank":"b","items":[]}'),
+      expect(
+          () => ItemBankFile.decode(
+              '{"schema":"kodo.itembank/99","bank":"b","items":[]}'),
           throwsFormatException);
     });
   });

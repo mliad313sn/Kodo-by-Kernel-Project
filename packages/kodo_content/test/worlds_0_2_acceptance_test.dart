@@ -26,9 +26,9 @@ ContentPack load(int world) {
       jsonDecode(file.readAsStringSync()) as Map<String, Object?>);
 }
 
-PackManifest manifestOf(int world) => PackManifest.fromJson(
-    jsonDecode(File('../../content/world$world.manifest.json').readAsStringSync())
-        as Map<String, Object?>);
+PackManifest manifestOf(int world) => PackManifest.fromJson(jsonDecode(
+        File('../../content/world$world.manifest.json').readAsStringSync())
+    as Map<String, Object?>);
 
 void main() {
   final world0 = load(0);
@@ -38,17 +38,29 @@ void main() {
 
   group('§6.3 · the three shipped worlds carry the committed item volume', () {
     const committed = {
-      'C0.1': 18, 'C0.2': 20, 'C0.3': 18, 'C0.4': 18,
-      'C1.1': 22, 'C1.2': 22, 'C1.3': 20, 'C1.4': 18, 'C1.5': 18,
-      'C2.1': 22, 'C2.2': 22, 'C2.3': 22, 'C2.4': 18,
+      'C0.1': 18,
+      'C0.2': 20,
+      'C0.3': 18,
+      'C0.4': 18,
+      'C1.1': 22,
+      'C1.2': 22,
+      'C1.3': 20,
+      'C1.4': 18,
+      'C1.5': 18,
+      'C2.1': 22,
+      'C2.2': 22,
+      'C2.3': 22,
+      'C2.4': 18,
     };
 
     test('every concept meets or beats the ledger', () {
       for (final entry in committed.entries) {
         final world = int.parse(entry.key.substring(1, 2));
-        final n = worlds[world]!.items.where((i) => i.conceptId == entry.key).length;
+        final n =
+            worlds[world]!.items.where((i) => i.conceptId == entry.key).length;
         expect(n, greaterThanOrEqualTo(entry.value),
-            reason: '${entry.key} has $n items, the ledger commits ${entry.value}');
+            reason:
+                '${entry.key} has $n items, the ledger commits ${entry.value}');
       }
     });
 
@@ -57,14 +69,17 @@ void main() {
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
       // 21 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(world0.items.length + world1.items.length + world2.items.length, 266);
+      expect(
+          world0.items.length + world1.items.length + world2.items.length, 266);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
       for (final pack in worlds.values) {
         for (final concept in pack.concepts.keys) {
-          final types =
-              pack.items.where((i) => i.conceptId == concept).map((i) => i.type).toSet();
+          final types = pack.items
+              .where((i) => i.conceptId == concept)
+              .map((i) => i.type)
+              .toSet();
           expect(types.length, greaterThanOrEqualTo(5),
               reason: '$concept uses only ${types.length} item types');
         }
@@ -72,7 +87,9 @@ void main() {
     });
 
     test('item ids are unique across all three worlds', () {
-      final ids = [for (final pack in worlds.values) ...pack.items.map((i) => i.id)];
+      final ids = [
+        for (final pack in worlds.values) ...pack.items.map((i) => i.id)
+      ];
       expect(ids.toSet(), hasLength(ids.length));
     });
   });
@@ -94,7 +111,8 @@ void main() {
   });
 
   group('the concept graph holds across worlds', () {
-    test('every prerequisite names a concept that exists and comes earlier', () {
+    test('every prerequisite names a concept that exists and comes earlier',
+        () {
       final known = <String>{
         for (final pack in worlds.values) ...pack.concepts.keys,
       };
@@ -102,7 +120,8 @@ void main() {
         for (final entry in pack.concepts.entries) {
           for (final prerequisite in entry.value) {
             expect(known, contains(prerequisite),
-                reason: '${entry.key} needs $prerequisite, which no shipped world has');
+                reason:
+                    '${entry.key} needs $prerequisite, which no shipped world has');
             // A prerequisite is in the same world or an earlier one. A forward edge would
             // let the scheduler offer a concept before the thing it is built on.
             final mine = int.parse(entry.key.substring(1, 2));
@@ -165,19 +184,22 @@ void main() {
       });
     }
 
-    test('FR-M18-02 · every item prompt has a recording key in both languages', () {
+    test('FR-M18-02 · every item prompt has a recording key in both languages',
+        () {
       for (final pack in worlds.values) {
         for (final item in pack.items) {
           for (final locale in requiredLocales) {
             final key = pack.itemAudioKeys[item.id]?[locale];
-            expect(key, isNotNull, reason: '${item.id} has no $locale recording');
+            expect(key, isNotNull,
+                reason: '${item.id} has no $locale recording');
             expect(pack.audioKeys, contains(key));
           }
         }
       }
     });
 
-    test('FR-M14-02 · each world is inside its 12 MB budget once audio arrives', () {
+    test('FR-M14-02 · each world is inside its 12 MB budget once audio arrives',
+        () {
       for (final entry in worlds.entries) {
         final pack = entry.value;
         final withAudio = pack.sizeBytes + pack.audioKeys.length * 40 * 1024;
@@ -252,11 +274,13 @@ void main() {
       for (final item in withProgram) {
         expect('répète'.allMatches(item.referenceSolutionSource!).length,
             greaterThanOrEqualTo(2),
-            reason: '${item.id} is a C2.3 item whose solution has no nested loop');
+            reason:
+                '${item.id} is a C2.3 item whose solution has no nested loop');
       }
     });
 
-    test('C2.4 is the shorter program, so every golf budget is smaller than the '
+    test(
+        'C2.4 is the shorter program, so every golf budget is smaller than the '
         'unrolled version', () {
       final golfItems =
           world2.items.where((i) => i.type == ItemType.t7Golf).toList();
@@ -265,7 +289,8 @@ void main() {
         expect(item.blockBudget, isNotNull, reason: item.id);
         final unrolled = item.wrongSolutionSources.first.split('\n').length;
         expect(item.blockBudget!, lessThan(unrolled),
-            reason: '${item.id}: a budget of ${item.blockBudget} is not a constraint '
+            reason:
+                '${item.id}: a budget of ${item.blockBudget} is not a constraint '
                 'against $unrolled lines');
       }
     });

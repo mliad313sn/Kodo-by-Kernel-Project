@@ -100,7 +100,8 @@ class ContentPack {
         ],
         itemAudioKeys: {
           for (final e
-              in ((j['itemAudio'] as Map<String, Object?>?) ?? const {}).entries)
+              in ((j['itemAudio'] as Map<String, Object?>?) ?? const {})
+                  .entries)
             e.key: (e.value! as Map<String, Object?>).cast<String, String>(),
         },
         audioKeys: ((j['audio'] as List<Object?>?) ?? const []).cast<String>(),

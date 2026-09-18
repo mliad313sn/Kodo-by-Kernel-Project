@@ -31,8 +31,10 @@ enum UiLocale {
 
   final bool shipsInV1;
 
-  static List<UiLocale> get v1 =>
-      [for (final l in UiLocale.values) if (l.shipsInV1) l];
+  static List<UiLocale> get v1 => [
+        for (final l in UiLocale.values)
+          if (l.shipsInV1) l
+      ];
 
   static UiLocale byCode(String code) =>
       UiLocale.values.firstWhere((l) => l.code == code,
@@ -95,8 +97,31 @@ class StringFault {
 const _terminators = ['.', '!', '?', '…', ':', '»'];
 
 /// Words that, at the end of a string, mean the sentence continues somewhere else.
-const _danglingFr = ['et', 'ou', 'de', 'à', 'le', 'la', 'les', 'du', 'des', 'en', 'pour'];
-const _danglingEn = ['and', 'or', 'of', 'to', 'the', 'a', 'an', 'in', 'for', 'with'];
+const _danglingFr = [
+  'et',
+  'ou',
+  'de',
+  'à',
+  'le',
+  'la',
+  'les',
+  'du',
+  'des',
+  'en',
+  'pour'
+];
+const _danglingEn = [
+  'and',
+  'or',
+  'of',
+  'to',
+  'the',
+  'a',
+  'an',
+  'in',
+  'for',
+  'with'
+];
 
 /// Labels short enough to be a button or a menu item, where a full stop would be wrong.
 ///
@@ -120,7 +145,8 @@ List<StringFault> lintCatalogue(Iterable<UiString> strings) {
 
     if (!seen.add(string.key)) fail('duplicate-key', 'appears twice');
     if (string.key != string.key.toLowerCase() || !string.key.contains('.')) {
-      fail('key-shape', 'a key is lowercase and dotted, e.g. "editor.run_button"');
+      fail('key-shape',
+          'a key is lowercase and dotted, e.g. "editor.run_button"');
     }
     if (string.context.trim().length < 12) {
       fail('context-note',
@@ -136,8 +162,7 @@ List<StringFault> lintCatalogue(Iterable<UiString> strings) {
       }
       if (!_isLabel(string.key)) {
         if (!_terminators.any(text.endsWith)) {
-          fail('fragment',
-              '"${locale.code}" does not end a sentence: "$text"');
+          fail('fragment', '"${locale.code}" does not end a sentence: "$text"');
         }
         final lastWord = text
             .replaceAll(RegExp(r'[^\wÀ-ÿ\s]'), '')
@@ -189,7 +214,8 @@ class StringCatalogue {
 
   /// The string, or a loud failure. Never a silent fallback to the key: a screen showing
   /// `editor.run_button` to a child is a bug that must be impossible to miss.
-  String render(String key, UiLocale locale, [Map<String, String> args = const {}]) {
+  String render(String key, UiLocale locale,
+      [Map<String, String> args = const {}]) {
     final string = _byKey[key];
     if (string == null) throw ArgumentError('no string "$key"');
     return string.render(locale, args);

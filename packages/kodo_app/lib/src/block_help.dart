@@ -262,7 +262,8 @@ final Map<Opcode, BlockHelp> blockHelp = {
     family: BlockFamily.operateurs,
     summaryKeys: _b('Transforme un texte en nombre, pour pouvoir compter avec.',
         'Turns text into a number, so you can count with it.'),
-    exampleSource: r'$r = demande "combien ?"' '\n' r'avance nombre $r' '\n' r'écris $r',
+    exampleSource:
+        r'$r = demande "combien ?"' '\n' r'avance nombre $r' '\n' r'écris $r',
   ),
   Opcode.wait: BlockHelp(
     family: BlockFamily.controle,

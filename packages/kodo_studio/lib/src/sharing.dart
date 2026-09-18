@@ -40,14 +40,37 @@ class DisplayName {
   /// Curated. Every word is a thing, a colour or a number — no names, no places, no
   /// adjectives that could describe a person.
   static const creatures = [
-    'Tortue', 'Baobab', 'Étoile', 'Lune', 'Rivière', 'Tam-tam', 'Mangue',
-    'Épervier', 'Calao', 'Dune', 'Pirogue', 'Comète', 'Fennec', 'Girafe',
-    'Hibou', 'Océan',
+    'Tortue',
+    'Baobab',
+    'Étoile',
+    'Lune',
+    'Rivière',
+    'Tam-tam',
+    'Mangue',
+    'Épervier',
+    'Calao',
+    'Dune',
+    'Pirogue',
+    'Comète',
+    'Fennec',
+    'Girafe',
+    'Hibou',
+    'Océan',
   ];
 
   static const colours = [
-    'Fuchsia', 'Indigo', 'Safran', 'Émeraude', 'Cobalt', 'Ocre', 'Turquoise',
-    'Ivoire', 'Écarlate', 'Bronze', 'Argent', 'Corail',
+    'Fuchsia',
+    'Indigo',
+    'Safran',
+    'Émeraude',
+    'Cobalt',
+    'Ocre',
+    'Turquoise',
+    'Ivoire',
+    'Écarlate',
+    'Bronze',
+    'Argent',
+    'Corail',
   ];
 
   /// `TortueFuchsia42`, the example in `FR-M10-04`.
@@ -93,8 +116,10 @@ enum Reaction {
         Reaction.bravo => const {'fr': 'Bravo', 'en': 'Well done'},
         Reaction.malin => const {'fr': 'Malin', 'en': 'Clever'},
         Reaction.joli => const {'fr': 'Joli', 'en': 'Beautiful'},
-        Reaction.jaiAppris =>
-          const {'fr': "J'ai appris quelque chose", 'en': 'I learned something'},
+        Reaction.jaiAppris => const {
+            'fr': "J'ai appris quelque chose",
+            'en': 'I learned something'
+          },
       };
 }
 
@@ -337,8 +362,7 @@ class SharingGate {
     // The gate is re-run in full. An approval is an approval of the *text*, and consent
     // can have been withdrawn in the meantime — a guardian turning sharing off must stop
     // the thing that was queued, not only the next one.
-    return share(
-        project, consent: consent, as: as, at: at, scope: scope);
+    return share(project, consent: consent, as: as, at: at, scope: scope);
   }
 
   ShareableProject _publish(
@@ -463,8 +487,7 @@ class ModerationCase {
 
   Duration? get timeToTriage => triagedAt?.difference(report.reportedAt);
 
-  bool get withinSla =>
-      timeToTriage != null && timeToTriage! <= triageSla;
+  bool get withinSla => timeToTriage != null && timeToTriage! <= triageSla;
 
   /// Removal on doubt.
   bool get removesItem =>
@@ -477,7 +500,8 @@ class ModerationCase {
         'reason': report.reason.name,
         'reportedAt': report.reportedAt.toUtc().toIso8601String(),
         'state': state.name,
-        if (triagedAt != null) 'triagedAt': triagedAt!.toUtc().toIso8601String(),
+        if (triagedAt != null)
+          'triagedAt': triagedAt!.toUtc().toIso8601String(),
         if (decision != null) 'decision': decision!.name,
         if (decidedBy != null) 'decidedBy': decidedBy,
         if (closedAt != null) 'closedAt': closedAt!.toUtc().toIso8601String(),
@@ -498,15 +522,19 @@ class ModerationQueue {
 
   List<ModerationCase> get cases => List.unmodifiable(_cases);
 
-  List<ModerationCase> get open =>
-      [for (final c in _cases) if (c.state == CaseState.open) c];
+  List<ModerationCase> get open => [
+        for (final c in _cases)
+          if (c.state == CaseState.open) c
+      ];
 
   bool isRemoved(String shareId) => _removedShareIds.contains(shareId);
 
   // --- publication review ------------------------------------------------------------
 
   void submitForPublication(
-      {required String projectId, required String title, required DateTime at}) {
+      {required String projectId,
+      required String title,
+      required DateTime at}) {
     _publicationApprovals.putIfAbsent(projectId, () => false);
     _record(at, 'publication-submitted', projectId, null);
   }
@@ -524,7 +552,8 @@ class ModerationQueue {
   // --- reports -------------------------------------------------------------------------
 
   ModerationCase report(Report report) {
-    final moderationCase = ModerationCase(report: report, state: CaseState.open);
+    final moderationCase =
+        ModerationCase(report: report, state: CaseState.open);
     _cases.add(moderationCase);
     _record(report.reportedAt, 'reported', report.shareId, null);
     return moderationCase;

@@ -157,7 +157,9 @@ List<Item> conceptC01() {
         {'k': blocks},
       ),
       choices: [
-        Choice(labelKeys: b('Tous les $blocks.', 'All $blocks of them.'), correct: true),
+        Choice(
+            labelKeys: b('Tous les $blocks.', 'All $blocks of them.'),
+            correct: true),
         Choice(
             labelKeys: b('Un seul, le premier.', 'Only one, the first.'),
             correct: false,
@@ -190,7 +192,8 @@ List<Item> conceptC01() {
       withHoles: 'avance ___',
       solution: 'avance $length',
       promptKeys: fillBoth(
-        b('Écris le nombre pour avancer de {n} pas.', 'Write the number to go {n} steps.'),
+        b('Écris le nombre pour avancer de {n} pas.',
+            'Write the number to go {n} steps.'),
         {'n': length},
       ),
       wrong: [
@@ -415,13 +418,15 @@ List<Item> conceptC02() {
       ),
       choices: [
         Choice(
-            labelKeys: b('Le deuxième avance.', 'The second forward.'), correct: true),
+            labelKeys: b('Le deuxième avance.', 'The second forward.'),
+            correct: true),
         Choice(
             labelKeys: b('Le bloc tourner.', 'The turn block.'),
             correct: false,
             misconception: 'the turn is what finishes a program'),
         Choice(
-            labelKeys: b('Ils se font tous ensemble.', 'They all happen together.'),
+            labelKeys:
+                b('Ils se font tous ensemble.', 'They all happen together.'),
             correct: false,
             misconception: 'blocks run all at once'),
       ],
@@ -488,7 +493,8 @@ List<Item> conceptC03() {
   /// A staircase. Every step depends on the one before it, so "all at once" draws
   /// nothing that looks like this.
   String stair(int steps, int side) => [
-        for (var i = 0; i < steps; i++) 'avance $side\ntournedroite 90\navance $side\ntournegauche 90',
+        for (var i = 0; i < steps; i++)
+          'avance $side\ntournedroite 90\navance $side\ntournegauche 90',
       ].join('\n');
 
   // T5 — Parsons on a staircase. The activity *is* the concept.
@@ -617,7 +623,8 @@ List<Item> conceptC03() {
       ),
       choices: [
         Choice(
-            labelKeys: b('Tout ce qui vient après.', 'Everything that comes after it.'),
+            labelKeys: b(
+                'Tout ce qui vient après.', 'Everything that comes after it.'),
             correct: true),
         Choice(
             labelKeys: b('Rien, c\'est le même programme.',
@@ -702,7 +709,8 @@ List<Item> conceptC04() {
       id: id(),
       conceptId: 'C0.4',
       difficulty: Difficulty.d1,
-      broken: 'avance $side\ntournedroite $angle\navance $side\navance ${side ~/ 2}',
+      broken:
+          'avance $side\ntournedroite $angle\navance $side\navance ${side ~/ 2}',
       solution: 'avance $side\ntournedroite $angle\navance $side',
       promptKeys: fillBoth(
         b('Il y a un bloc de trop. Enlève-le. Rien n\'est cassé.',
@@ -796,20 +804,26 @@ List<Item> conceptC04() {
   }
 
   // T6 — read and answer. The misconception, named and answered.
-  for (final what in ['un bloc en trop', 'un mauvais nombre', 'un bloc enlevé']) {
+  for (final what in [
+    'un bloc en trop',
+    'un mauvais nombre',
+    'un bloc enlevé'
+  ]) {
     items.add(choiceItem(
       id: id(),
       conceptId: 'C0.4',
       type: ItemType.t6ReadAndAnswer,
       difficulty: Difficulty.d1,
-      promptKeys: b('Tu as fait une erreur dans ton programme. Que peux-tu faire ?',
+      promptKeys: b(
+          'Tu as fait une erreur dans ton programme. Que peux-tu faire ?',
           'You made a mistake in your program. What can you do?'),
       choices: [
         Choice(
             labelKeys: b('Annuler, et réessayer.', 'Undo it, and try again.'),
             correct: true),
         Choice(
-            labelKeys: b('Rien, le projet est fichu.', 'Nothing, the project is ruined.'),
+            labelKeys: b('Rien, le projet est fichu.',
+                'Nothing, the project is ruined.'),
             correct: false,
             misconception: 'a mistake ruins the project'),
         Choice(
@@ -843,7 +857,8 @@ List<Item> conceptC04() {
       id: id(),
       conceptId: 'C0.4',
       difficulty: Difficulty.d2,
-      solution: 'baissecrayon\navance ${pair[0]}\ntournedroite ${pair[1]}\navance ${pair[0]}',
+      solution:
+          'baissecrayon\navance ${pair[0]}\ntournedroite ${pair[1]}\navance ${pair[0]}',
       promptKeys: fillBoth(
         b('Tu as tout effacé. Remets les blocs en ordre.',
             'You cleared everything. Put the blocks back in order.'),
@@ -918,7 +933,8 @@ List<Tutorial> world0Tutorials() => [
           TutorialStep(
             id: 'C0.1-s3',
             beat: Beat.jeFais,
-            narrationKeys: b('Appuie sur le bouton vert. C\'est toi qui fais partir Tika.',
+            narrationKeys: b(
+                'Appuie sur le bouton vert. C\'est toi qui fais partir Tika.',
                 'Press the green button. You are the one who starts Tika.'),
             audioKeys: b('audio/fr/C0.1-s3.opus', 'audio/en/C0.1-s3.opus'),
             expectedAction: ExpectedAction.runProgram,
@@ -947,7 +963,8 @@ List<Tutorial> world0Tutorials() => [
           TutorialStep(
             id: 'C0.2-s2',
             beat: Beat.onFaitEnsemble,
-            narrationKeys: b('À toi. Pose un bloc tourner entre les deux avance.',
+            narrationKeys: b(
+                'À toi. Pose un bloc tourner entre les deux avance.',
                 'Your turn. Put a turn block between the two forwards.'),
             audioKeys: b('audio/fr/C0.2-s2.opus', 'audio/en/C0.2-s2.opus'),
             expectedAction: ExpectedAction.placeBlock,
@@ -959,12 +976,14 @@ List<Tutorial> world0Tutorials() => [
           TutorialStep(
             id: 'C0.2-s3',
             beat: Beat.jeFais,
-            narrationKeys: b('Échange les deux premiers blocs. Regarde le coin bouger.',
+            narrationKeys: b(
+                'Échange les deux premiers blocs. Regarde le coin bouger.',
                 'Swap the first two blocks. Watch the corner move.'),
             audioKeys: b('audio/fr/C0.2-s3.opus', 'audio/en/C0.2-s3.opus'),
             expectedAction: ExpectedAction.buildProgram,
             spotlight: SpotlightTarget.scriptArea,
-            successCondition: const SuccessCondition(opcodeId: 'MOVE_FORWARD', minCount: 2),
+            successCondition:
+                const SuccessCondition(opcodeId: 'MOVE_FORWARD', minCount: 2),
             retryHintKeys: b('Fais glisser le bloc du haut vers le bas.',
                 'Drag the top block down.'),
           ),
@@ -982,7 +1001,8 @@ List<Tutorial> world0Tutorials() => [
             audioKeys: b('audio/fr/C0.3-s1.opus', 'audio/en/C0.3-s1.opus'),
             expectedAction: ExpectedAction.watch,
             spotlight: SpotlightTarget.scriptArea,
-            demoProgramSource: 'avance 40\ntournedroite 90\navance 40\ntournegauche 90',
+            demoProgramSource:
+                'avance 40\ntournedroite 90\navance 40\ntournegauche 90',
             newIdeas: ['un après l\'autre'],
           ),
           TutorialStep(
@@ -1006,7 +1026,8 @@ List<Tutorial> world0Tutorials() => [
             expectedAction: ExpectedAction.buildProgram,
             spotlight: SpotlightTarget.scriptArea,
             successCondition: const SuccessCondition(opcodeId: 'TURN_LEFT'),
-            retryHintKeys: b('Une marche : monte, tourne, avance, retourne-toi.',
+            retryHintKeys: b(
+                'Une marche : monte, tourne, avance, retourne-toi.',
                 'One step: up, turn, along, turn back.'),
           ),
         ],
@@ -1029,7 +1050,8 @@ List<Tutorial> world0Tutorials() => [
           TutorialStep(
             id: 'C0.4-s2',
             beat: Beat.onFaitEnsemble,
-            narrationKeys: b('Pose un bloc, puis appuie sur la flèche qui recule.',
+            narrationKeys: b(
+                'Pose un bloc, puis appuie sur la flèche qui recule.',
                 'Put a block down, then press the back arrow.'),
             audioKeys: b('audio/fr/C0.4-s2.opus', 'audio/en/C0.4-s2.opus'),
             expectedAction: ExpectedAction.placeBlock,
@@ -1079,7 +1101,8 @@ void main() {
     for (final f in tutorialFailures) {
       stderr.writeln('  $f');
     }
-    stderr.writeln('\n${itemFailures.length + tutorialFailures.length} failure(s)');
+    stderr.writeln(
+        '\n${itemFailures.length + tutorialFailures.length} failure(s)');
     exit(1);
   }
 
@@ -1090,12 +1113,14 @@ void main() {
     stdout.writeln('  $concept: ${mine.length} items, ${types.length} types '
         '(${(types.toList()..sort((a, b) => a.code.compareTo(b.code))).map((t) => t.code).join(' ')})');
     if (types.length < 5) {
-      stderr.writeln('REFUSED: §6.1 requires at least five item types per concept; '
+      stderr.writeln(
+          'REFUSED: §6.1 requires at least five item types per concept; '
           '$concept has ${types.length}');
       exit(1);
     }
     if (mine.length < committed[concept]!) {
-      stderr.writeln('REFUSED: §6.3 commits ${committed[concept]} items for $concept; '
+      stderr.writeln(
+          'REFUSED: §6.3 commits ${committed[concept]} items for $concept; '
           'this pack has ${mine.length}');
       exit(1);
     }
@@ -1111,7 +1136,8 @@ void main() {
     itemAudioKeys: {
       for (final item in items)
         item.id: {
-          for (final locale in requiredLocales) locale: 'audio/$locale/${item.id}.opus',
+          for (final locale in requiredLocales)
+            locale: 'audio/$locale/${item.id}.opus',
         },
     },
     audioKeys: [
@@ -1138,7 +1164,8 @@ void main() {
       '${const JsonEncoder.withIndent('  ').convert(manifest.toJson())}\n');
 
   stdout.writeln('\nPublished content/world0.json');
-  stdout.writeln('  ${sized.sizeBytes} bytes of ${ContentPack.worldBudgetBytes} budget '
+  stdout.writeln(
+      '  ${sized.sizeBytes} bytes of ${ContentPack.worldBudgetBytes} budget '
       '(${(sized.sizeBytes / ContentPack.worldBudgetBytes * 100).toStringAsFixed(1)} %)');
   stdout.writeln('  sha256 ${manifest.contentHash.substring(0, 16)}…');
   stdout.writeln('  audio keys: ${sized.audioKeys.length}');

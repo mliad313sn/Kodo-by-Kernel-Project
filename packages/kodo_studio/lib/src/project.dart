@@ -103,7 +103,8 @@ class ProjectSprite {
   static ProjectSprite fromJson(Map<String, Object?> j) => ProjectSprite(
         id: j['id']! as String,
         name: j['name']! as String,
-        costumeIds: ((j['costumes'] as List<Object?>?) ?? const []).cast<String>(),
+        costumeIds:
+            ((j['costumes'] as List<Object?>?) ?? const []).cast<String>(),
         source: (j['source'] as String?) ?? '',
       );
 }
@@ -138,7 +139,8 @@ class CustomBlock {
 
   static CustomBlock fromJson(Map<String, Object?> j) => CustomBlock(
         name: j['name']! as String,
-        parameterNames: ((j['params'] as List<Object?>?) ?? const []).cast<String>(),
+        parameterNames:
+            ((j['params'] as List<Object?>?) ?? const []).cast<String>(),
         source: (j['source'] as String?) ?? '',
       );
 }
@@ -248,8 +250,10 @@ class Project {
       );
 
   /// Every asset the child brought in from outside KODO.
-  List<Asset> get importedAssets =>
-      [for (final a in assets) if (a.origin == AssetOrigin.imported) a];
+  List<Asset> get importedAssets => [
+        for (final a in assets)
+          if (a.origin == AssetOrigin.imported) a
+      ];
 
   Map<String, Object?> toJson() => {
         'id': id,
