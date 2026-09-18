@@ -21,7 +21,9 @@ not work there, it does not ship.
 | `docs/modules/` | One Definition-of-Done record per module, with its defects and what is still owed |
 | `spec/` | The specification as data: 130 requirements, 58 concepts. Generated from the workbook, checked by CI |
 | `packages/kodo_lang/` | **M1 — the language core.** Pure Dart: one AST, one parser, one interpreter, one grader |
-| `tools/` | `gen_spec.py` regenerates `spec/`; `trace_check.dart` is the traceability gate |
+| `delivery/meridian/` | The programme as a Meridian portfolio, generated from `spec/`. Meridian is the delivery system of record (PO decision D-009) |
+| `docs/reports/` | Reports to other parties, including the Meridian product report |
+| `tools/` | `gen_spec.py` regenerates `spec/`; `meridian_book.py` regenerates the portfolio; `trace_check.dart` is the traceability gate |
 
 ## Status
 
@@ -48,6 +50,7 @@ dart test                    # the seven acceptance tests plus the semantics sui
 dart analyze --fatal-infos
 cd ../.. && dart tools/trace_check.dart   # requirement traceability
 python3 tools/gen_spec.py                 # regenerate spec/ from the workbook
+python3 tools/meridian_book.py            # regenerate the Meridian portfolio
 ```
 
 ```dart

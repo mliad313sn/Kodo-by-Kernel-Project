@@ -218,6 +218,35 @@ program; that is a property of M1, and it is provable now.
 
 **Reversal cost.** Low.
 
+### D-009 — Meridian is the delivery system of record
+
+**Decision.** [Meridian IT-PMO](https://github.com/mliad313sn/Meridian) drives KODO
+delivery. The portfolio is **generated** from the artefacts that are already true in this
+repository — the requirement register, the concept ledger, the risk register and this
+decision register — by `tools/meridian_book.py`, and loaded through Meridian's book import.
+It is never typed in twice.
+
+**Rationale.** Three of Meridian's convictions match how this programme has to be run and
+are implemented rather than claimed: authority is data and is decided server-side; the
+audit trail cannot be rewritten, because a change that is not audited does not commit; and
+the meeting is generated from the portfolio rather than assembled in a deck. §1.3 gives us
+a three-lines model and an external auditor who will eventually ask why a decision was
+taken; Meridian is built for exactly that question.
+
+**Four things it cannot yet hold**, recorded so nobody mistakes the portfolio for the whole
+truth. Meridian has four gates fixed in its schema and KODO has six that loop; its gates
+attach to a project and our G4 reviews the whole portfolio; it has no requirement entity,
+so our 130 requirements and their CI-enforced traceability are invisible in it; and it has
+no way to express a domain veto, so seats 3, 5 and 13 are enforced by people. All four,
+with the fixes, are in `docs/reports/MERIDIAN_PRODUCT_REPORT.md`.
+
+**Consequence.** Where Meridian and this repository disagree, **the repository wins** until
+`MER-01` and `MER-03` are closed, because the repository is the one CI can check. That is
+an uncomfortable answer for a system of record and it is the honest one.
+
+**Reversal cost.** **Low.** The book is generated, so moving to another tool costs one
+generator.
+
 ---
 
 ## Open items the PO has *not* decided
