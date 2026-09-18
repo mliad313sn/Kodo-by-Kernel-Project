@@ -540,8 +540,8 @@
       "priority": "M",
       "verification": "Grader test suite with negative cases",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M6-02",
@@ -552,8 +552,8 @@
       "priority": "M",
       "verification": "Equivalence-class tests",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M6-03",
@@ -564,8 +564,8 @@
       "priority": "M",
       "verification": "Content review of 100% of messages",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M6-04",
@@ -576,8 +576,8 @@
       "priority": "M",
       "verification": "Airplane-mode soak test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M6-05",
@@ -588,8 +588,8 @@
       "priority": "M",
       "verification": "Content completeness gate in the CMS",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M6-06",
@@ -600,8 +600,8 @@
       "priority": "M",
       "verification": "UI test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M6-07",
@@ -612,8 +612,8 @@
       "priority": "M",
       "verification": "Performance test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M6-08",
@@ -624,8 +624,8 @@
       "priority": "M",
       "verification": "Storage test + dashboard check",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M6-09",
@@ -636,8 +636,8 @@
       "priority": "M",
       "verification": "Migration test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M7-01",
@@ -1344,8 +1344,8 @@
       "priority": "M",
       "verification": "CMS rule test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M6 squad"
     },
     {
       "id": "FR-M18-03",

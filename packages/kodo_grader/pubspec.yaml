@@ -1,0 +1,20 @@
+name: kodo_grader
+description: >-
+  KODO module M6 — the machine that decides, fairly and on-device, whether a child has
+  actually understood. Nine item types, three grading signals, authored diagnostics, and a
+  publish gate that refuses an item which cannot be graded honestly.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  kodo_lang:
+    path: ../kodo_lang
+  kodo_stage:
+    path: ../kodo_stage
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0

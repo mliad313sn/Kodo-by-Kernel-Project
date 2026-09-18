@@ -1,0 +1,388 @@
+/// The item model (§6.1, FR-M6-05, FR-M6-06, FR-M6-09, FR-M18-02).
+///
+/// An item is data. It carries its own grading policy, its own two hints, its own
+/// diagnostic messages and its own reference solutions, because a content pack has to be
+/// gradable offline with no app release (`NFR-MAINT-01`) and because the publish gate of
+/// `FR-M18-02` has to be able to refuse an incomplete one.
+library;
+
+import 'package:kodo_lang/kodo_lang.dart';
+
+import 'assertions.dart';
+
+/// The nine types of §6.1.
+enum ItemType {
+  /// Construire vers la cible.
+  t1BuildToTarget('T1'),
+
+  /// Trouve le bug.
+  t2FixTheBug('T2'),
+
+  /// Devine le résultat.
+  t3Predict('T3'),
+
+  /// Complète.
+  t4FillTheGap('T4'),
+
+  /// Remets dans l'ordre.
+  t5Parsons('T5'),
+
+  /// Lis le code.
+  t6ReadAndAnswer('T6'),
+
+  /// Le plus court.
+  t7Golf('T7'),
+
+  /// Explique.
+  t8Explain('T8'),
+
+  /// Défi libre.
+  t9OpenBuild('T9');
+
+  const ItemType(this.code);
+  final String code;
+
+  static ItemType byCode(String code) =>
+      ItemType.values.firstWhere((t) => t.code == code,
+          orElse: () => throw ArgumentError('unknown item type "$code"'));
+
+  /// True when the child answers by writing a program rather than by choosing.
+  bool get wantsProgram => switch (this) {
+        ItemType.t3Predict ||
+        ItemType.t6ReadAndAnswer ||
+        ItemType.t8Explain =>
+          false,
+        _ => true,
+      };
+}
+
+/// D1–D5 of §5.3.
+enum Difficulty {
+  d1('D1'),
+  d2('D2'),
+  d3('D3'),
+  d4('D4'),
+  d5('D5');
+
+  const Difficulty(this.code);
+  final String code;
+
+  static Difficulty byCode(String code) =>
+      Difficulty.values.firstWhere((d) => d.code == code);
+}
+
+/// A hint. Two per item, and neither reveals the answer (`FR-M6-05`).
+class Hint {
+  const Hint({required this.textKeys, this.spotlightOpcodeId});
+
+  /// Localisation keys — one per shipped language, keyed by locale. Never a raw string:
+  /// `FR-M15-04` forbids child-facing text that is not authored and reviewed as content.
+  final Map<String, String> textKeys;
+
+  /// A block to make glow, per §4.7's three-failure escalation.
+  final String? spotlightOpcodeId;
+
+  String textIn(String locale) => textKeys[locale] ?? textKeys['fr'] ?? '';
+
+  Map<String, Object?> toJson() => {
+        'text': textKeys,
+        if (spotlightOpcodeId != null) 'spotlight': spotlightOpcodeId
+      };
+
+  static Hint fromJson(Map<String, Object?> j) => Hint(
+        textKeys: (j['text']! as Map<String, Object?>).cast<String, String>(),
+        spotlightOpcodeId: j['spotlight'] as String?,
+      );
+}
+
+/// An authored failure message, and the condition that selects it.
+///
+/// `FR-M6-03` requires the message to name the *observable difference* — "Ta figure a
+/// 4 côtés, la cible en a 6" — so a pattern is bound to a named situation the grader can
+/// actually detect, and a generic fallback is a build error rather than a default.
+class DiagnosticPattern {
+  const DiagnosticPattern({required this.when, required this.textKeys});
+
+  /// One of the [DiagnosticSituation] names.
+  final String when;
+  final Map<String, String> textKeys;
+
+  String textIn(String locale, Map<String, String> args) {
+    var text = textKeys[locale] ?? textKeys['fr'] ?? '';
+    for (final e in args.entries) {
+      text = text.replaceAll('{${e.key}}', e.value);
+    }
+    return text;
+  }
+
+  Map<String, Object?> toJson() => {'when': when, 'text': textKeys};
+
+  static DiagnosticPattern fromJson(Map<String, Object?> j) =>
+      DiagnosticPattern(
+        when: j['when']! as String,
+        textKeys: (j['text']! as Map<String, Object?>).cast<String, String>(),
+      );
+}
+
+/// The situations an author may write a message for.
+///
+/// A closed list, so that the publish gate can tell an author which ones they have not
+/// covered, and so that "the item has a diagnostic" means something checkable.
+enum DiagnosticSituation {
+  /// The program did not run at all.
+  programFailed,
+
+  /// The figure is a subset of the target.
+  drewTooLittle,
+
+  /// The figure covers the target and adds more.
+  drewTooMuch,
+
+  /// The figure is somewhere else entirely.
+  wrongShape,
+
+  /// The drawing is right but the required structure is not there.
+  structureMissing,
+
+  /// Over the block budget of a T7 item.
+  tooManyBlocks,
+
+  /// A choice item answered wrongly.
+  wrongChoice;
+
+  static DiagnosticSituation? byName(String name) {
+    for (final s in DiagnosticSituation.values) {
+      if (s.name == name) return s;
+    }
+    return null;
+  }
+}
+
+/// One candidate answer for a choice item (T3, T6, T8).
+class Choice {
+  const Choice(
+      {required this.labelKeys, required this.correct, this.misconception});
+
+  final Map<String, String> labelKeys;
+  final bool correct;
+
+  /// The misconception this wrong answer indicates, e.g. `C2.2-body-scope`.
+  ///
+  /// `FR-M6-01`'s process signals feed the misconception model, and a wrong answer that
+  /// does not say *which* wrong idea it evidences is a lost measurement (§4.5).
+  final String? misconception;
+
+  Map<String, Object?> toJson() => {
+        'label': labelKeys,
+        'correct': correct,
+        if (misconception != null) 'misconception': misconception,
+      };
+
+  static Choice fromJson(Map<String, Object?> j) => Choice(
+        labelKeys: (j['label']! as Map<String, Object?>).cast<String, String>(),
+        correct: j['correct']! as bool,
+        misconception: j['misconception'] as String?,
+      );
+}
+
+/// One rubric line of a T9 open build, shown to the child *before* they start
+/// (`FR-M6-06`).
+class RubricLine {
+  const RubricLine({required this.textKeys, required this.assertion});
+  final Map<String, String> textKeys;
+  final StructuralAssertion assertion;
+
+  Map<String, Object?> toJson() =>
+      {'text': textKeys, 'check': assertion.toJson()};
+
+  static RubricLine fromJson(Map<String, Object?> j) => RubricLine(
+        textKeys: (j['text']! as Map<String, Object?>).cast<String, String>(),
+        assertion:
+            StructuralAssertion.fromJson(j['check']! as Map<String, Object?>),
+      );
+}
+
+/// A graded exercise.
+class Item {
+  const Item({
+    required this.id,
+    required this.version,
+    required this.conceptId,
+    required this.type,
+    required this.difficulty,
+    required this.promptKeys,
+    this.targetProgramSource,
+    this.startingProgramSource,
+    this.referenceSolutionSource,
+    this.wrongSolutionSources = const [],
+    this.alternativeSolutionSources = const [],
+    this.assertions = const [],
+    this.hints = const [],
+    this.diagnostics = const [],
+    this.choices = const [],
+    this.rubric = const [],
+    this.paletteScope = const [],
+    this.blockBudget,
+    this.seed = 1,
+    this.inputs = const [],
+  });
+
+  final String id;
+
+  /// Bumped when the item is corrected. A stored attempt keeps the version it was graded
+  /// under, so a fix never retroactively invalidates a child's mastery (`FR-M6-09`).
+  final int version;
+
+  final String conceptId;
+  final ItemType type;
+  final Difficulty difficulty;
+
+  /// The question, per locale.
+  final Map<String, String> promptKeys;
+
+  /// The program that draws the target. Rendered once to produce the goal image; the
+  /// child never sees its source.
+  final String? targetProgramSource;
+
+  /// What the child starts with — the broken program of a T2, the holes of a T4, the
+  /// shuffled blocks of a T5.
+  final String? startingProgramSource;
+
+  /// One program the author asserts is correct. The publish gate runs it.
+  final String? referenceSolutionSource;
+
+  /// At least three programs the author asserts are wrong (`FR-M6` acceptance 1).
+  final List<String> wrongSolutionSources;
+
+  /// At least two *different* correct programs. This is the list that stops a grader
+  /// overfitting to one shape, and it is the reason a child who solves it their own way
+  /// passes.
+  final List<String> alternativeSolutionSources;
+
+  final List<StructuralAssertion> assertions;
+  final List<Hint> hints;
+  final List<DiagnosticPattern> diagnostics;
+  final List<Choice> choices;
+  final List<RubricLine> rubric;
+
+  /// Opcodes the palette may show (`FR-M2-08`).
+  final List<String> paletteScope;
+
+  /// The budget of a T7 item.
+  final int? blockBudget;
+
+  /// Seeded so `hasard` is reproducible for grading (`FR-M1-09`).
+  final int seed;
+
+  /// Scripted answers for `demande`, so an asking item can still be graded headlessly.
+  final List<String> inputs;
+
+  String promptIn(String locale) =>
+      promptKeys[locale] ?? promptKeys['fr'] ?? '';
+
+  DiagnosticPattern? diagnosticFor(DiagnosticSituation situation) {
+    for (final d in diagnostics) {
+      if (d.when == situation.name) return d;
+    }
+    return null;
+  }
+
+  Map<String, Object?> toJson() => {
+        'id': id,
+        'version': version,
+        'concept': conceptId,
+        'type': type.code,
+        'difficulty': difficulty.code,
+        'prompt': promptKeys,
+        if (targetProgramSource != null) 'target': targetProgramSource,
+        if (startingProgramSource != null) 'start': startingProgramSource,
+        if (referenceSolutionSource != null)
+          'reference': referenceSolutionSource,
+        'wrong': wrongSolutionSources,
+        'alternatives': alternativeSolutionSources,
+        'assertions': [for (final a in assertions) a.toJson()],
+        'hints': [for (final h in hints) h.toJson()],
+        'diagnostics': [for (final d in diagnostics) d.toJson()],
+        'choices': [for (final c in choices) c.toJson()],
+        'rubric': [for (final r in rubric) r.toJson()],
+        'palette': paletteScope,
+        if (blockBudget != null) 'budget': blockBudget,
+        'seed': seed,
+        if (inputs.isNotEmpty) 'inputs': inputs,
+      };
+
+  static Item fromJson(Map<String, Object?> j) => Item(
+        id: j['id']! as String,
+        version: j['version']! as int,
+        conceptId: j['concept']! as String,
+        type: ItemType.byCode(j['type']! as String),
+        difficulty: Difficulty.byCode(j['difficulty']! as String),
+        promptKeys:
+            (j['prompt']! as Map<String, Object?>).cast<String, String>(),
+        targetProgramSource: j['target'] as String?,
+        startingProgramSource: j['start'] as String?,
+        referenceSolutionSource: j['reference'] as String?,
+        wrongSolutionSources:
+            ((j['wrong'] as List<Object?>?) ?? const []).cast<String>(),
+        alternativeSolutionSources:
+            ((j['alternatives'] as List<Object?>?) ?? const []).cast<String>(),
+        assertions: [
+          for (final a in (j['assertions'] as List<Object?>?) ?? const [])
+            StructuralAssertion.fromJson(a! as Map<String, Object?>),
+        ],
+        hints: [
+          for (final h in (j['hints'] as List<Object?>?) ?? const [])
+            Hint.fromJson(h! as Map<String, Object?>),
+        ],
+        diagnostics: [
+          for (final d in (j['diagnostics'] as List<Object?>?) ?? const [])
+            DiagnosticPattern.fromJson(d! as Map<String, Object?>),
+        ],
+        choices: [
+          for (final c in (j['choices'] as List<Object?>?) ?? const [])
+            Choice.fromJson(c! as Map<String, Object?>),
+        ],
+        rubric: [
+          for (final r in (j['rubric'] as List<Object?>?) ?? const [])
+            RubricLine.fromJson(r! as Map<String, Object?>),
+        ],
+        paletteScope:
+            ((j['palette'] as List<Object?>?) ?? const []).cast<String>(),
+        blockBudget: j['budget'] as int?,
+        seed: (j['seed'] as int?) ?? 1,
+        inputs: ((j['inputs'] as List<Object?>?) ?? const []).cast<String>(),
+      );
+}
+
+/// What a child submitted.
+sealed class Response {
+  const Response();
+  Map<String, Object?> toJson();
+}
+
+/// A program, from the block editor or the text editor — they are the same tree.
+class ProgramResponse extends Response {
+  const ProgramResponse(this.program);
+  final Program program;
+
+  @override
+  Map<String, Object?> toJson() => {'kind': 'program', 'ast': program.toJson()};
+}
+
+/// A choice from T3, T6 or T8.
+class ChoiceResponse extends Response {
+  const ChoiceResponse(this.index);
+  final int index;
+
+  @override
+  Map<String, Object?> toJson() => {'kind': 'choice', 'index': index};
+}
+
+/// A number, for the numeric variant of T6.
+class NumericResponse extends Response {
+  const NumericResponse(this.value);
+  final num value;
+
+  @override
+  Map<String, Object?> toJson() => {'kind': 'numeric', 'value': value};
+}
