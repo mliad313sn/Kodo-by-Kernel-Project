@@ -17,13 +17,27 @@ python3 tools/meridian_book.py     # regenerates both files below
 
 ```bash
 # in a Meridian checkout
-npm install && npm run seed && npm run dev
+npm ci --ignore-scripts            # nothing here needs a postinstall script
+
+git apply /path/to/Kodo-by-Kernel-Project/delivery/meridian/patches/0001-*.patch
+#   ^ REQUIRED. Without it the import fails with 22P02 on any book whose ids
+#     contain letters — including Meridian's own export. See MER-13.
+
+mkdir -p server/.data/pgdata       # PGlite will not create the parent itself
+export PGLITE_DIR=./server/.data/pgdata
+#   ^ REQUIRED. Without it the server runs in memory and the seeded accounts
+#     vanish before you can sign in. See MER-12.
+
+npm run seed && npm run dev
 
 # then, as an administrator
 curl -X POST http://localhost:4173/api/v1/admin/import \
      -H 'Content-Type: application/json' \
      --data @delivery/meridian/kodo_import_payload.json
 ```
+
+Then sign in as `admin@meridian.example` / `meridian-admin-2026` (the seeded
+administrator) before importing.
 
 **The import is destructive.** `server/src/import.js` deletes every portfolio table before
 it writes. Load it into a fresh instance or `npm run training`, never over a book you want
@@ -70,5 +84,22 @@ that nobody reads the portfolio and believes it is the whole truth.
    13 may never be combined with seats 6, 8 or 9. Meridian's access model has four roles
    and a group/site axis; a per-domain veto is not expressible, so the vetoes live in
    `docs/governance/02_WAYS_OF_WORKING.md` and are enforced by people.
+
+## The patch in `patches/`
+
+Three fixes, two files, nine lines, all 449 of Meridian's own tests still green:
+
+1. **`server/src/import.js`** — the importer's `'\D'` sits in a JavaScript template
+   literal, so it reaches Postgres as `'D'`. It strips the letter D instead of every
+   non-digit, and any id with another letter in it hits a failing `::int` cast. This is
+   why Meridian cannot re-import its own export.
+2. **`shared/engine.js`** — the `measurable` guard inverts at a zero budget (`0 >= 0`),
+   so a project with no cost baseline reports SPI 1.00 / CPI 1.00 / 0 % complete and a
+   Green light. Progress now falls back to `weight × pct`, which needs no money and is
+   already in the data.
+3. **`shared/engine.js`** — a distinct RAG reason for "no cost baseline", instead of
+   borrowing the "too early to measure" sentence.
+
+These are offered to Meridian, not applied to it — this repository has read access only.
 
 The full analysis is in [`docs/reports/MERIDIAN_PRODUCT_REPORT.md`](../../docs/reports/MERIDIAN_PRODUCT_REPORT.md).

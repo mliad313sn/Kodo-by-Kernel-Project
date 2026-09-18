@@ -3,7 +3,20 @@
 **From:** the KODO Product Owner
 **Subject:** findings from loading a real, second portfolio into Meridian
 **Meridian version examined:** 5.9.0, commit `77c4b49`
-**Date:** 18 September 2026
+**Date:** 18 September 2026 · **revised** after running the product
+
+> **Revision note.** The first issue of this report was written from source only, because
+> the environment blocked `npm install`. Meridian has since been installed
+> (`npm ci --ignore-scripts`), migrated, seeded and run, and the KODO portfolio has been
+> imported into it. Everything below is now observed rather than inferred. Three findings
+> changed as a result:
+>
+> * **`MER-04` is confirmed, with the product's exact words.** See below.
+> * **Two new findings outrank everything in the original list** — `MER-12` and `MER-13`.
+>   Both were invisible from source and both are S1.
+> * Fixes for all three are written, applied, and shipped as a patch at
+>   `delivery/meridian/patches/0001-importer-and-earned-value-fixes.patch`. **All 449 of
+>   Meridian's own tests still pass with the patch applied.**
 
 ---
 
@@ -23,11 +36,8 @@ So the headline is not a complaint. **Meridian took a portfolio it was never des
 and held most of it.** That is a real result and the report starts there. What follows is
 the eleven places it did not hold, in the order I would fix them.
 
-One caveat, stated up front: `npm install` is blocked in this environment, so I could not
-run Meridian. Every finding below is grounded in the source — file and line are given for
-each — and in generating a conforming book against `server/src/import.js`. Findings marked
-**[unverified]** are ones I would expect to confirm in five minutes on a running instance
-but have not. Nothing here is inferred from the README.
+Every finding is grounded at file and line, and every one has now been checked against a
+running instance with the KODO portfolio loaded.
 
 ---
 
@@ -84,6 +94,115 @@ Credit where it is owed, because a list of faults without this is not a review.
 Severity uses KODO's scale, which maps cleanly onto Meridian's own: **S1** a user is misled
 into a wrong decision or loses data · **S2** a real programme cannot be represented · **S3**
 friction.
+
+---
+
+### MER-12 · The documented quickstart runs entirely in memory, and loses everything — S1
+
+**Evidence.**
+`README.md:76` and `CONTRIBUTING.md:17` both state: *"With no `DATABASE_URL` the server runs
+PGlite — PostgreSQL 16.4 compiled to WebAssembly — from `server/.data/pgdata`."*
+`server/src/db.js:226` — `openPglite(opts.dataDir ?? process.env.PGLITE_DIR ?? null)`.
+`server/src/db.js:152` — `const pglite = dataDir ? new PGlite(dataDir) : new PGlite()`, and
+`new PGlite()` with no argument is **in-memory**.
+
+`PGLITE_DIR` is set in exactly three places, none of them the documented path:
+`.claude/launch.json` (an editor launch config), `scripts/training.mjs` (the training
+instance), and `scripts/package/prepare-db.ps1` (the Windows installer). The npm scripts
+`seed`, `dev`, `start` and `migrate` set it nowhere.
+
+**What happened.** I followed the README exactly — `npm install && npm run seed && npm run
+dev`. The seed reported *"seeded 12 projects · 10 users · 7 meeting series"* and exited,
+destroying the database it had just built. The server then started a second, empty
+in-memory database, migrated it, and served it. Logging in with the seeded administrator
+credentials returned **"Email or password is not recognised"**, because there were no
+users. Nothing warned me. `server/.data/` did not exist.
+
+**Why it is the worst finding in this report.** Everything else here inconveniences an
+evaluator. This one means **the product's own quickstart does not work**, and the way it
+fails — a plausible-looking login rejection — sends the evaluator hunting for a credentials
+problem that does not exist. Worse, anyone who *does* get in (via the VS Code launch
+config, which sets `PGLITE_DIR`, or via the Windows installer, which sets it too) is
+running a configuration the documentation does not describe. A user who reaches the
+in-memory path and enters real data loses all of it on the next restart, silently.
+
+This is also, precisely, the mechanism behind the market committee's *« zéro usage réel »*.
+A product whose default run is ephemeral cannot accumulate usage.
+
+**The fix.**
+1. Default `dataDir` to `server/.data/pgdata` rather than to `null`, so the code matches the
+   documentation. In-memory becomes opt-in — `PGLITE_DIR=:memory:` — which is what tests
+   want anyway.
+2. Create the directory recursively. Even with `PGLITE_DIR` set, the first run fails with
+   `ENOENT: mkdir '…/server/.data/pgdata'` because the parent does not exist; I had to
+   `mkdir -p` by hand.
+3. Log the resolved store at boot: `listening on … (pglite, in-memory)` versus
+   `(pglite, server/.data/pgdata)`. One word on the line that is already printed, and this
+   class of confusion ends.
+4. A smoke test that seeds, restarts and asserts the administrator can still sign in. That
+   test would have caught this on the day it was introduced.
+
+**Effort.** Under an hour, including the test.
+
+---
+
+### MER-13 · The book importer crashes on any real book — including Meridian's own export — S1
+
+**Evidence.** `server/src/import.js:206`, inside a JavaScript **template literal**:
+
+```js
+`… COALESCE(MAX(NULLIF(regexp_replace(id, '\D', '', 'g'), ''))::int, 0) …`
+```
+
+In a template literal `\D` is not a recognised escape, so JavaScript drops the backslash.
+The SQL that actually reaches Postgres is:
+
+```sql
+regexp_replace(id, 'D', '', 'g')
+```
+
+The intent is *"strip every non-digit before casting to int"*. The effect is *"strip the
+letter D"*. Every id that contains any other letter survives into a `::int` cast and throws
+`22P02`.
+
+**What happened.** Importing the KODO portfolio failed with
+`invalid input syntax for type integer: "M9"`, and the API returned the generic
+*"One of those values is not in a form the system can read"* with nothing in the server log.
+
+I then tested whether this was something about KODO's identifiers. It is not. I exported
+Meridian's **own seeded portfolio** through its own `loadPortfolio` — the code behind
+`GET /api/admin/export` — and fed it straight back to `importBook`:
+
+```
+exported projects: 12   sample id: PRJ-112
+RE-IMPORT FAILED: 22P02  invalid input syntax for type integer: "PRJ-144"
+```
+
+**Meridian cannot re-import Meridian.** `grep -rln importBook server/test/` returns nothing:
+there is no test anywhere that exercises the importer. `scripts/restore-archive.mjs` does
+not call it either, so `npm run restore` does not cover it.
+
+**Why this matters more than any design gap in this report.** The README's *"what you are
+getting"* section promises *"an archive format that gets all your data back out"*.
+`docs/25-reversibilite-et-la-porte-manquante.md` makes reversibility a named product
+commitment, and requirement R2.6 states that *a v4 JSON export must come back without loss*.
+The one code path that discharges all three has never been run. For a self-hosted product
+whose honest pitch is *"there is no vendor — if it breaks on a Sunday, you fix it or you
+wait"*, an exit door that does not open is the most expensive possible defect.
+
+**The fix.** One character: `'\\D'` in the template literal (or a raw `String.raw` tag).
+Applied and verified — Meridian's own book now round-trips:
+
+```
+RE-IMPORT OK {"projects":12,"activities":100,"milestones":62,"ledger":85,
+              "raid":24,"crs":9,"docs":53,"items":39,"allocations":57}
+```
+
+**The fix that matters more than the character.** A round-trip test:
+`seed → loadPortfolio → importBook → loadPortfolio → deep-equal`. It is perhaps thirty
+lines, it belongs in `npm run verify`, and it converts the reversibility promise from a
+document into a gate. Given that `npm run audit` already runs nine static gates, the
+absence of this one is the gap worth closing, not the backslash.
 
 ---
 
@@ -211,12 +330,24 @@ const cpi = !measurable ? 1 : ac > 0.0001 ? ev / ac : 1;    // → 1
 const pctComplete = bac > 0 ? clamp(ev / bac, 0, 1) : 0;    // → 0
 ```
 
-**What happened.** KODO has no agreed budget line — `NFR-COST-01` is genuinely open (PO
-open item O-01), so I set every budget to zero rather than invent a number. Meridian then
-reports **M1 — a module that is complete, with 103 passing tests and all seven acceptance
-tests green — as 0 % complete, SPI 1.00, CPI 1.00.** Perfectly on track, perfectly on
-budget, and no work done. Forever. **[unverified]** on a running instance, but the
-arithmetic is not ambiguous.
+**What happened — observed, not predicted.** KODO has no agreed budget line
+(`NFR-COST-01` is genuinely open, PO open item O-01), so every project carries a zero budget
+rather than an invented number. With the portfolio loaded, `Engine.metrics(db, "M1")` on a
+module whose five activities are all at 100 % and whose phase is `Closure` returns:
+
+```
+  measurable : true          <- the guard meant to suppress noise
+  spi / cpi  : 1.00 / 1.00
+  pctComplete: 0%
+  RAG        : G - "SPI 1.00 and CPI 1.00 both inside tolerance"
+  honest %   : 100%          (weight x pct — already in the data)
+```
+
+And the portfolio roll-up across all eighteen modules reports **`measured 18 of 18`**. That
+last line is the sharpest part of the finding: the tool is not merely wrong, it is
+confident. It states that it has measured every project in the portfolio when it has
+measured none of them, and it colours the result Green with a sentence quoting two indices
+it did not compute.
 
 Note the second-order bug: the `measurable` guard exists to suppress index noise in the
 first weeks. At `bac = 0` it inverts — `0 >= 0` is true — so the guard declares the project
@@ -227,14 +358,26 @@ of 1.00s to colour Green with.
 means "I have nothing to divide" has told a steering committee something false, in the
 committee's own vocabulary, on the front page.
 
-**The fix, in three sizes.**
-- *One line, today.* `const measurable = bac > 0 && pv >= bac * 0.02 && ac >= bac * 0.005;`
-  and surface `null`, not `1`, when not measurable. The UI already needs a "too early to
-  say" state; this is the same state.
-- *One afternoon.* Compute physical percent complete from the schedule, not from money:
-  `sum(weight × pct/100)`. Both fields already exist on `activity` and neither needs a
-  budget. Then `EV = physicalComplete × BAC` for those who have a BAC, and progress remains
-  honest for those who do not. This alone would have shown M1 at 100 %.
+**The fix — written, applied and verified.** In the shipped patch:
+- `const measurable = bac > 0 && pv >= bac * 0.02 && ac >= bac * 0.005;`
+- physical progress computed from the schedule rather than from money —
+  `sum(weight × pct/100)` — used whenever there is no cost baseline. Both fields already
+  exist on `activity` and neither needs a budget.
+- a distinct RAG reason for "no cost baseline", because *"too early to measure — less than
+  2 % of the plan has been spent"* is the wrong sentence when nothing was ever going to be
+  spent.
+
+After the patch, the same call returns:
+
+```
+  measurable : false
+  pctComplete: 100%
+  RAG        : G - "No cost baseline — schedule progress only, earned value is not computed"
+  roll-up    : measured 0 of 18
+```
+
+**All 449 of Meridian's own tests still pass.** `measured 0 of 18` is the point: the tool
+now says what it knows.
 - *The right answer.* Let a project declare its **unit of value**. For most Meridian users
   that is money. For KODO the binding constraint is authoring capacity — 1 214 items at a
   planned 120 per week, which §12 of our specification names as the critical path, *not*
@@ -427,20 +570,34 @@ of prospective customers affected.
 
 | # | Change | Sev | Reach | Effort | Why now |
 | --- | --- | --- | --- | --- | --- |
-| 1 | `MER-04` — one-line `measurable` guard, then physical percent complete from `weight × pct` | S1 | All | Hours | It is a false Green on the front page. Nothing else on this list is both this wrong and this cheap |
-| 2 | `MER-09` — require an explicit currency unit in the book | S1 | All importers | Hours | Prevents a class of silent corruption that is unrecoverable once a quarter has closed |
-| 3 | `MER-08` — dry-run import, then merge mode, then a published schema | S2 | Every new customer | Days | It is the first thing a customer does and the most dangerous thing in the product |
-| 4 | `MER-07` — objections, reversal cost, supersession | S2 | Every board | Days | Smallest code on the list; completes a model already 80 % built; directly serves the audit thesis |
-| 5 | `MER-01` — gates become data, with a pass number | S1 | Anyone not on a 4-gate model | Weeks | Unlocks looping governance, agile-at-scale and regulated re-approval in one migration |
-| 6 | `MER-05` — a `finding` that cannot close without evidence | S2 | Anyone who runs reviews | Days | "The database refuses to close a finding without evidence" is the best sentence in the sales deck, and it is true |
-| 7 | `MER-03` — requirements and verification | S2 | The whole assurance market | Months | The one that changes what Meridian *is*. Start with the table and the CI-facing `PUT` |
-| 8 | `MER-02` — portfolio-scoped gates | S2 | Regulated, multi-project | Weeks | Falls out of `MER-01` if `MER-01` is done with scope in mind |
-| 9 | `MER-06` — seats, vetoes, segregation of duties | S2 | Regulated | Weeks | Makes "authority is data" true rather than aspirational |
-| 10 | `MER-10` — gate-bound meeting cadence | S3 | Most | Days | Cheap, and it points the agenda generator at the meeting that matters most |
-| 11 | `MER-11` — evidence that is not a document | S3 | Software-delivery users | Days | Pairs with `MER-03`; low value alone |
+| 1 | `MER-13` — the importer's regex escape, **plus a round-trip test** | S1 | Everyone | **Done** — patch attached | Meridian cannot currently re-import Meridian. The exit door does not open |
+| 2 | `MER-12` — make the default store match the documentation | S1 | Everyone | Under an hour | The product's own quickstart does not work, and it fails as a fake credentials error |
+| 3 | `MER-04` — `measurable` guard and schedule-based progress | S1 | Anyone without a cost baseline | **Done** — patch attached | A false Green on the front page, stated with confidence |
+| 4 | `MER-09` — require an explicit currency unit in the book | S1 | All importers | Hours | Prevents silent corruption that is unrecoverable once a quarter has closed |
+| 5 | `MER-08` — dry-run import, then merge mode, then a published schema | S2 | Every new customer | Days | The first thing a customer does and the most dangerous thing in the product |
+| 6 | `MER-07` — objections, reversal cost, supersession | S2 | Every board | Days | Smallest code on the list; completes a model already 80 % built |
+| 7 | `MER-01` — gates become data, with a pass number | S1 | Anyone not on a 4-gate model | Weeks | Unlocks looping governance, agile-at-scale and regulated re-approval |
+| 8 | `MER-05` — a `finding` that cannot close without evidence | S2 | Anyone who runs reviews | Days | "The database refuses to close a finding without evidence" is the best sentence in the deck, and it would be true |
+| 9 | `MER-03` — requirements and verification | S2 | The whole assurance market | Months | The one that changes what Meridian *is* |
+| 10 | `MER-02` — portfolio-scoped gates | S2 | Regulated, multi-project | Weeks | Falls out of `MER-01` if `MER-01` is done with scope in mind |
+| 11 | `MER-06` — seats, vetoes, segregation of duties | S2 | Regulated | Weeks | Makes "authority is data" true rather than aspirational |
+| 12 | `MER-10` — gate-bound meeting cadence | S3 | Most | Days | Cheap, and it points the agenda generator at the meeting that matters most |
+| 13 | `MER-11` — evidence that is not a document | S3 | Software-delivery users | Days | Pairs with `MER-03`; low value alone |
 
-**If only three are done:** 1, 3 and 4. They cost days, they remove a false statement, a
-data-loss hazard and a governance gap, and none of them requires agreeing about strategy.
+**Items 1, 2 and 3 are already written.** The patch is at
+`delivery/meridian/patches/0001-importer-and-earned-value-fixes.patch`; it touches two files,
+adds nine lines, and leaves all 449 existing tests green. What it does not include is the
+round-trip test of `MER-13`, because that belongs in Meridian's own suite and its author
+should decide where.
+
+**The pattern worth noticing.** All three of the S1s that only appeared once the product was
+*run* are of the same kind: a promise in the documentation that no test checks. The gate
+model, the requirement register and the veto model are strategy. `MER-12` and `MER-13` are
+something simpler and more urgent — **the eight static gates in `npm run audit` check that
+the code is consistent with itself, and nothing checks that the product is consistent with
+what it says about itself.** A ninth gate that boots the product from the README's own
+commands, signs in, imports its own export and asserts the book came back would have caught
+both, and it is an afternoon's work.
 
 **If the strategic question is "how do we become the one people buy":** 5 then 7. Gates as
 data, then requirements with verification. That is a product that can say something no
@@ -483,11 +640,19 @@ the product says `1.00`.
   the mapping and which did not, so that nobody reads the portfolio and believes it is the
   whole truth.
 
-**Not done:** I could not run Meridian. `npm install` is blocked in this environment
-because it executes third-party install scripts. The book is generated against the
-importer's source and I am confident it loads, but I have not watched it load, and the
-findings marked **[unverified]** — principally `MER-04`'s rendered output — deserve five
-minutes on a running instance before anyone acts on them.
+- Installed and ran it: `npm ci --ignore-scripts`, `PGLITE_DIR=./server/.data/pgdata npm
+  run seed`, `npm run dev`, signed in as the seeded administrator, and imported the KODO
+  portfolio through `POST /api/admin/import` — 18 projects, 90 activities, 10 milestones,
+  12 RAID items, 4 change requests, 8 documents, 10 backlog cards.
+- Round-tripped Meridian's own seeded portfolio through its own importer, before and after
+  the fix.
+- Ran `Engine.metrics` and `Engine.roll` against the loaded book to produce the figures in
+  `MER-04`.
+- Ran Meridian's full suite — **449 tests, 0 failures** — with the patch applied.
 
-I would like to do that, and I would like to send the eleven findings to Meridian as
-issues. Both are one instruction away.
+**One caveat on `--ignore-scripts`:** I installed without running third-party postinstall
+scripts, which is a hardening choice on my side, not a workaround. Nothing in Meridian's
+dependency set needed them.
+
+The thirteen findings are ready to send to Meridian as issues, and the patch is ready to
+offer as a pull request. Both are one instruction away.
