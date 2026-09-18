@@ -1,0 +1,23 @@
+name: kodo_studio
+description: >-
+  KODO modules M9 and M10 — the Studio, and the smallest safe social surface that still
+  lets a child be proud in public. One package because a project is only ever shared from
+  the Studio, and the gate between them is the thing §13 cares most about.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  crypto: ^3.0.6
+  kodo_lang:
+    path: ../kodo_lang
+  kodo_stage:
+    path: ../kodo_stage
+  kodo_account:
+    path: ../kodo_account
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0

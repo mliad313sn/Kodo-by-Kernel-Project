@@ -84,6 +84,15 @@ enum Opcode {
   message('MESSAGE', OpcodeKind.command, OpcodeFamily.apparence, 1, 1),
   ask('ASK', OpcodeKind.function, OpcodeFamily.capteurs, 1, 1),
 
+  /// Text to number.
+  ///
+  /// Added after M9: [ask] returns text, and without this there is no way for a child to
+  /// use the answer to *"combien de points ?"* as a number. Every game a nine-year-old
+  /// actually wants to write needs it, and the gap was invisible until the Studio's
+  /// Recettes panel tried to ship a recipe that asks the player something. See decision
+  /// D-011.
+  toNumber('TO_NUMBER', OpcodeKind.function, OpcodeFamily.operateurs, 1, 1),
+
   // --- Contrôle ------------------------------------------------------------------------
   wait('WAIT', OpcodeKind.command, OpcodeFamily.controle, 1, 1),
   assertion('ASSERT', OpcodeKind.command, OpcodeFamily.controle, 1, 1);

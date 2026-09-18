@@ -285,6 +285,42 @@ open to a reasoned, domain-relevant objection in the dissent log until G3.
 
 ---
 
+## D-011 — `nombre` / `number` joins the opcode set
+
+**Date.** Taken while building M9. **Status.** Decided. **Reversal cost.** Low before
+World 0 authoring begins; high afterwards.
+
+**The decision.** One opcode is added to the frozen set of Annex §515:
+`nombre` / `number` (`TO_NUMBER`), text to number, one argument, family *opérateurs*.
+
+**What was observed as fact.** `demande` / `ask` returns text. The language had no
+conversion, so `avance nombre-de-pas-que-le-joueur-a-tapé` could not be written at all:
+`$x = demande "combien ?"` followed by `avance $x` fails with *« avance » ne marche pas
+avec un texte*. Every counting game — the single commonest thing a nine-year-old wants to
+build — was unreachable, and `FR-M9-06`'s Recettes panel could not ship a recipe that asks
+the player anything numeric.
+
+**Why this is not scope creep.** The gap was not a missing feature; it was a hole in a set
+that Annex §515 presents as complete. `demande` is already in the annex, and an input verb
+whose result cannot be used is not a feature, it is a trap. The module build order exists
+precisely so that building M9 exposes what M1 got wrong, and this is that.
+
+**Why an opcode rather than a coercion.** Making `avance "50"` silently work would teach
+that text and numbers are the same thing, and the concept graph spends World 5 teaching
+that they are not. An explicit `nombre` is the thing the curriculum can point at. A value
+that cannot be converted raises the ordinary type error rather than yielding zero, because
+a child who typed *trois* must be told, not scored zero in silence.
+
+**Blast radius, and what was updated.** `Opcode.toNumber`, both keyword tables (with the
+`nb` abbreviation, symmetric in FR and EN), the interpreter, `BlockHelp`, and Annex §515 in
+the cahier. Opcode **ids never change**, so adding one cannot invalidate a stored AST or an
+authored item (`FR-M6-08`). No World-1 item uses it; nothing was re-authored.
+
+**Consulted.** Seat 3 (language and curriculum) owns the opcode set. This is recorded as
+the PO's decision on a defect found in delivery and is open to objection until G3.
+
+---
+
 ## Open items the PO has *not* decided
 
 Recorded so that silence is not mistaken for a decision.

@@ -887,7 +887,12 @@ class Interpreter {
     }
 
     // Every opcode below `message` takes numbers only; check once rather than in each case.
-    const takesText = {Opcode.print, Opcode.message, Opcode.ask};
+    const takesText = {
+      Opcode.print,
+      Opcode.message,
+      Opcode.ask,
+      Opcode.toNumber,
+    };
     if (!takesText.contains(op)) {
       for (final a in args) {
         if (a is VoidValue) {
@@ -981,6 +986,20 @@ class Interpreter {
             'expected': 'type.boolean'
           });
         }
+      case Opcode.toNumber:
+        final text = _asText(args[0]).trim().replaceAll(',', '.');
+        final parsed = num.tryParse(text);
+        if (parsed == null) {
+          // Not a silent zero. A child who typed "trois" has to be told, or the game
+          // scores nothing and nothing says why.
+          return _fail(ErrorCode.type, node, args: {
+            'word': 'opcode:${op.id}',
+            'got': 'type.text',
+            'expected': 'type.number',
+          });
+        }
+        _push(NumberValue(parsed));
+        return true;
       case Opcode.round:
         _push(NumberValue(n(0).round()));
         return true;

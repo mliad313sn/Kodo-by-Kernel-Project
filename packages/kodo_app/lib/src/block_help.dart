@@ -258,6 +258,12 @@ final Map<Opcode, BlockHelp> blockHelp = {
         'Asks a question and waits for the answer.'),
     exampleSource: r'$n = demande "ton âge ?"' '\n' r'écris $n' '\navance 50',
   ),
+  Opcode.toNumber: BlockHelp(
+    family: BlockFamily.operateurs,
+    summaryKeys: _b('Transforme un texte en nombre, pour pouvoir compter avec.',
+        'Turns text into a number, so you can count with it.'),
+    exampleSource: r'$r = demande "combien ?"' '\n' r'avance nombre $r' '\n' r'écris $r',
+  ),
   Opcode.wait: BlockHelp(
     family: BlockFamily.controle,
     summaryKeys: _b('Attend un moment avant de continuer.',

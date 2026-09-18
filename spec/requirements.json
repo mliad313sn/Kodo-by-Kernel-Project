@@ -792,8 +792,8 @@
       "priority": "M",
       "verification": "Functional test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M9 squad"
     },
     {
       "id": "FR-M9-02",
@@ -804,8 +804,8 @@
       "priority": "M",
       "verification": "Functional test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M9 squad"
     },
     {
       "id": "FR-M9-03",
@@ -816,8 +816,8 @@
       "priority": "M",
       "verification": "Force-kill test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M9 squad"
     },
     {
       "id": "FR-M9-04",
@@ -828,8 +828,8 @@
       "priority": "S",
       "verification": "UI test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M9 squad"
     },
     {
       "id": "FR-M9-05",
@@ -840,8 +840,8 @@
       "priority": "C",
       "verification": "Export test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M9 squad"
     },
     {
       "id": "FR-M9-06",
@@ -852,8 +852,8 @@
       "priority": "S",
       "verification": "Content count check",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M9 squad"
     },
     {
       "id": "FR-M10-01",
@@ -864,8 +864,8 @@
       "priority": "M",
       "verification": "Seat 13 audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M10 squad"
     },
     {
       "id": "FR-M10-02",
@@ -876,8 +876,8 @@
       "priority": "M",
       "verification": "Functional test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M10 squad"
     },
     {
       "id": "FR-M10-03",
@@ -888,8 +888,8 @@
       "priority": "M",
       "verification": "Seat 13 audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M10 squad"
     },
     {
       "id": "FR-M10-04",
@@ -900,8 +900,8 @@
       "priority": "M",
       "verification": "Seat 13 audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M10 squad"
     },
     {
       "id": "FR-M10-05",
@@ -912,8 +912,8 @@
       "priority": "S",
       "verification": "Functional test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M10 squad"
     },
     {
       "id": "FR-M10-06",
@@ -924,8 +924,8 @@
       "priority": "M",
       "verification": "Moderation drill",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M10 squad"
     },
     {
       "id": "FR-M10-07",
@@ -936,8 +936,8 @@
       "priority": "M",
       "verification": "Functional test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M10 squad"
     },
     {
       "id": "FR-M11-01",
@@ -996,8 +996,8 @@
       "priority": "M",
       "verification": "Functional test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M12 squad"
     },
     {
       "id": "FR-M12-02",
@@ -1008,8 +1008,8 @@
       "priority": "M",
       "verification": "Pilot classroom",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M12 squad"
     },
     {
       "id": "FR-M12-03",
@@ -1020,8 +1020,8 @@
       "priority": "M",
       "verification": "No-internet classroom drill",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M12 squad"
     },
     {
       "id": "FR-M12-04",
@@ -1032,8 +1032,8 @@
       "priority": "S",
       "verification": "Print test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M12 squad"
     },
     {
       "id": "FR-M12-05",
@@ -1044,8 +1044,8 @@
       "priority": "S",
       "verification": "Classroom test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M12 squad"
     },
     {
       "id": "FR-M13-01",
@@ -1332,8 +1332,8 @@
       "priority": "M",
       "verification": "Author usability test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M18 squad"
     },
     {
       "id": "FR-M18-02",
@@ -1345,7 +1345,7 @@
       "verification": "CMS rule test",
       "gate": "G3",
       "status": "Done",
-      "owner": "M6 squad"
+      "owner": "M18 squad"
     },
     {
       "id": "FR-M18-03",
@@ -1356,8 +1356,8 @@
       "priority": "M",
       "verification": "Workflow test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M18 squad"
     },
     {
       "id": "FR-M18-04",
@@ -1368,8 +1368,8 @@
       "priority": "S",
       "verification": "Round-trip export test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M18 squad"
     },
     {
       "id": "NFR-PERF-01",
