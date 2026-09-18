@@ -26,6 +26,7 @@ class ContentPack {
     required this.concepts,
     required this.tutorials,
     required this.items,
+    this.itemAudioKeys = const {},
     this.audioKeys = const [],
     this.assetKeys = const [],
     this.sizeBytes = 0,
@@ -46,7 +47,16 @@ class ContentPack {
   final List<Tutorial> tutorials;
   final List<Item> items;
 
-  /// Recording keys the pack expects to find in its audio bundle.
+  /// Item id → locale → recording key, for the item **prompt**.
+  ///
+  /// `FR-M18-02` makes a prompt recording a condition of publication, not a nice-to-have:
+  /// a child who cannot yet read the prompt cannot start the item. It is a map on the pack
+  /// rather than a field on [Item] because [Item] is the shape the grader runs and the
+  /// grader has no business knowing about audio.
+  final Map<String, Map<String, String>> itemAudioKeys;
+
+  /// Every recording key the pack expects to find in its audio bundle, tutorials and item
+  /// prompts alike.
   final List<String> audioKeys;
   final List<String> assetKeys;
 
@@ -66,6 +76,7 @@ class ContentPack {
         'concepts': concepts,
         'tutorials': [for (final t in tutorials) t.toJson()],
         'items': [for (final i in items) i.toJson()],
+        'itemAudio': itemAudioKeys,
         'audio': audioKeys,
         'assets': assetKeys,
         'sizeBytes': sizeBytes,
@@ -87,6 +98,11 @@ class ContentPack {
           for (final i in (j['items']! as List<Object?>))
             Item.fromJson(i! as Map<String, Object?>),
         ],
+        itemAudioKeys: {
+          for (final e
+              in ((j['itemAudio'] as Map<String, Object?>?) ?? const {}).entries)
+            e.key: (e.value! as Map<String, Object?>).cast<String, String>(),
+        },
         audioKeys: ((j['audio'] as List<Object?>?) ?? const []).cast<String>(),
         assetKeys: ((j['assets'] as List<Object?>?) ?? const []).cast<String>(),
         sizeBytes: (j['sizeBytes'] as int?) ?? 0,

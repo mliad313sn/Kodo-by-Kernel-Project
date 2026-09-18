@@ -1,0 +1,25 @@
+name: kodo_school
+description: >-
+  KODO modules M12 and M18 — classroom mode and the authoring CMS. One package because they
+  are the two surfaces built for adults, and both are judged the same way: can somebody who
+  has never seen KODO do the thing in ten minutes without help.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  crypto: ^3.0.6
+  kodo_content:
+    path: ../kodo_content
+  kodo_lang:
+    path: ../kodo_lang
+  kodo_grader:
+    path: ../kodo_grader
+  kodo_progress:
+    path: ../kodo_progress
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0

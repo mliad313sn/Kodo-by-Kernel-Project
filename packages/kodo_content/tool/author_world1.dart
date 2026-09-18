@@ -1333,9 +1333,20 @@ void main() {
     concepts: conceptGraph,
     tutorials: tutorials,
     items: items,
+    // Every item prompt is recorded in both languages. `FR-M18-02` makes this a publish
+    // gate, and a seven-year-old at the start of World 1 is still reading slowly enough
+    // that a prompt they can only see is a prompt they may skip.
+    itemAudioKeys: {
+      for (final item in items)
+        item.id: {
+          for (final locale in requiredLocales) locale: 'audio/$locale/${item.id}.opus',
+        },
+    },
     audioKeys: [
       for (final t in tutorials)
         for (final s in t.steps) ...s.audioKeys.values,
+      for (final item in items)
+        for (final locale in requiredLocales) 'audio/$locale/${item.id}.opus',
     ],
     assetKeys: const ['art/tika.svg', 'art/world1-island.svg'],
   );

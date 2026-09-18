@@ -139,7 +139,16 @@ void main() {
           }
         }
       }
-      expect(world1.audioKeys, hasLength(30));
+      // 5 tutorials x 3 steps x 2 locales = 30, plus one prompt recording per item per
+      // locale: `FR-M18-02` makes the item prompt recording a condition of publication.
+      for (final item in world1.items) {
+        for (final locale in ['fr', 'en']) {
+          final key = world1.itemAudioKeys[item.id]?[locale];
+          expect(key, isNotNull, reason: '${item.id} has no $locale prompt recording');
+          expect(world1.audioKeys, contains(key));
+        }
+      }
+      expect(world1.audioKeys, hasLength(30 + world1.items.length * 2));
     });
 
     test('a missing recording fails the gate, and not the runtime', () {
@@ -435,7 +444,9 @@ void main() {
       expect(world1.sizeBytes, greaterThan(0));
       expect(world1.sizeBytes, lessThan(ContentPack.worldBudgetBytes));
       // The JSON has no audio in it; the budget has to hold once audio arrives, so the
-      // headroom is the number worth watching. 30 Opus clips at ~40 kB is about 1.2 MB.
+      // headroom is the number worth watching. 230 Opus clips at ~40 kB is about 9 MB —
+      // most of the 12 MB world budget, and the reason World 2 onwards must be measured
+      // rather than assumed.
       final withAudio = world1.sizeBytes + world1.audioKeys.length * 40 * 1024;
       expect(withAudio, lessThan(ContentPack.worldBudgetBytes),
           reason: 'with audio the pack would be $withAudio bytes');

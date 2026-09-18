@@ -10120,6 +10120,408 @@
       "seed": 1
     }
   ],
+  "itemAudio": {
+    "C1.1-01": {
+      "fr": "audio/fr/C1.1-01.opus",
+      "en": "audio/en/C1.1-01.opus"
+    },
+    "C1.1-02": {
+      "fr": "audio/fr/C1.1-02.opus",
+      "en": "audio/en/C1.1-02.opus"
+    },
+    "C1.1-03": {
+      "fr": "audio/fr/C1.1-03.opus",
+      "en": "audio/en/C1.1-03.opus"
+    },
+    "C1.1-04": {
+      "fr": "audio/fr/C1.1-04.opus",
+      "en": "audio/en/C1.1-04.opus"
+    },
+    "C1.1-05": {
+      "fr": "audio/fr/C1.1-05.opus",
+      "en": "audio/en/C1.1-05.opus"
+    },
+    "C1.1-06": {
+      "fr": "audio/fr/C1.1-06.opus",
+      "en": "audio/en/C1.1-06.opus"
+    },
+    "C1.1-07": {
+      "fr": "audio/fr/C1.1-07.opus",
+      "en": "audio/en/C1.1-07.opus"
+    },
+    "C1.1-08": {
+      "fr": "audio/fr/C1.1-08.opus",
+      "en": "audio/en/C1.1-08.opus"
+    },
+    "C1.1-09": {
+      "fr": "audio/fr/C1.1-09.opus",
+      "en": "audio/en/C1.1-09.opus"
+    },
+    "C1.1-10": {
+      "fr": "audio/fr/C1.1-10.opus",
+      "en": "audio/en/C1.1-10.opus"
+    },
+    "C1.1-11": {
+      "fr": "audio/fr/C1.1-11.opus",
+      "en": "audio/en/C1.1-11.opus"
+    },
+    "C1.1-12": {
+      "fr": "audio/fr/C1.1-12.opus",
+      "en": "audio/en/C1.1-12.opus"
+    },
+    "C1.1-13": {
+      "fr": "audio/fr/C1.1-13.opus",
+      "en": "audio/en/C1.1-13.opus"
+    },
+    "C1.1-14": {
+      "fr": "audio/fr/C1.1-14.opus",
+      "en": "audio/en/C1.1-14.opus"
+    },
+    "C1.1-15": {
+      "fr": "audio/fr/C1.1-15.opus",
+      "en": "audio/en/C1.1-15.opus"
+    },
+    "C1.1-16": {
+      "fr": "audio/fr/C1.1-16.opus",
+      "en": "audio/en/C1.1-16.opus"
+    },
+    "C1.1-17": {
+      "fr": "audio/fr/C1.1-17.opus",
+      "en": "audio/en/C1.1-17.opus"
+    },
+    "C1.1-18": {
+      "fr": "audio/fr/C1.1-18.opus",
+      "en": "audio/en/C1.1-18.opus"
+    },
+    "C1.1-19": {
+      "fr": "audio/fr/C1.1-19.opus",
+      "en": "audio/en/C1.1-19.opus"
+    },
+    "C1.1-20": {
+      "fr": "audio/fr/C1.1-20.opus",
+      "en": "audio/en/C1.1-20.opus"
+    },
+    "C1.1-21": {
+      "fr": "audio/fr/C1.1-21.opus",
+      "en": "audio/en/C1.1-21.opus"
+    },
+    "C1.1-22": {
+      "fr": "audio/fr/C1.1-22.opus",
+      "en": "audio/en/C1.1-22.opus"
+    },
+    "C1.2-01": {
+      "fr": "audio/fr/C1.2-01.opus",
+      "en": "audio/en/C1.2-01.opus"
+    },
+    "C1.2-02": {
+      "fr": "audio/fr/C1.2-02.opus",
+      "en": "audio/en/C1.2-02.opus"
+    },
+    "C1.2-03": {
+      "fr": "audio/fr/C1.2-03.opus",
+      "en": "audio/en/C1.2-03.opus"
+    },
+    "C1.2-04": {
+      "fr": "audio/fr/C1.2-04.opus",
+      "en": "audio/en/C1.2-04.opus"
+    },
+    "C1.2-05": {
+      "fr": "audio/fr/C1.2-05.opus",
+      "en": "audio/en/C1.2-05.opus"
+    },
+    "C1.2-06": {
+      "fr": "audio/fr/C1.2-06.opus",
+      "en": "audio/en/C1.2-06.opus"
+    },
+    "C1.2-07": {
+      "fr": "audio/fr/C1.2-07.opus",
+      "en": "audio/en/C1.2-07.opus"
+    },
+    "C1.2-08": {
+      "fr": "audio/fr/C1.2-08.opus",
+      "en": "audio/en/C1.2-08.opus"
+    },
+    "C1.2-09": {
+      "fr": "audio/fr/C1.2-09.opus",
+      "en": "audio/en/C1.2-09.opus"
+    },
+    "C1.2-10": {
+      "fr": "audio/fr/C1.2-10.opus",
+      "en": "audio/en/C1.2-10.opus"
+    },
+    "C1.2-11": {
+      "fr": "audio/fr/C1.2-11.opus",
+      "en": "audio/en/C1.2-11.opus"
+    },
+    "C1.2-12": {
+      "fr": "audio/fr/C1.2-12.opus",
+      "en": "audio/en/C1.2-12.opus"
+    },
+    "C1.2-13": {
+      "fr": "audio/fr/C1.2-13.opus",
+      "en": "audio/en/C1.2-13.opus"
+    },
+    "C1.2-14": {
+      "fr": "audio/fr/C1.2-14.opus",
+      "en": "audio/en/C1.2-14.opus"
+    },
+    "C1.2-15": {
+      "fr": "audio/fr/C1.2-15.opus",
+      "en": "audio/en/C1.2-15.opus"
+    },
+    "C1.2-16": {
+      "fr": "audio/fr/C1.2-16.opus",
+      "en": "audio/en/C1.2-16.opus"
+    },
+    "C1.2-17": {
+      "fr": "audio/fr/C1.2-17.opus",
+      "en": "audio/en/C1.2-17.opus"
+    },
+    "C1.2-18": {
+      "fr": "audio/fr/C1.2-18.opus",
+      "en": "audio/en/C1.2-18.opus"
+    },
+    "C1.2-19": {
+      "fr": "audio/fr/C1.2-19.opus",
+      "en": "audio/en/C1.2-19.opus"
+    },
+    "C1.2-20": {
+      "fr": "audio/fr/C1.2-20.opus",
+      "en": "audio/en/C1.2-20.opus"
+    },
+    "C1.2-21": {
+      "fr": "audio/fr/C1.2-21.opus",
+      "en": "audio/en/C1.2-21.opus"
+    },
+    "C1.2-22": {
+      "fr": "audio/fr/C1.2-22.opus",
+      "en": "audio/en/C1.2-22.opus"
+    },
+    "C1.3-01": {
+      "fr": "audio/fr/C1.3-01.opus",
+      "en": "audio/en/C1.3-01.opus"
+    },
+    "C1.3-02": {
+      "fr": "audio/fr/C1.3-02.opus",
+      "en": "audio/en/C1.3-02.opus"
+    },
+    "C1.3-03": {
+      "fr": "audio/fr/C1.3-03.opus",
+      "en": "audio/en/C1.3-03.opus"
+    },
+    "C1.3-04": {
+      "fr": "audio/fr/C1.3-04.opus",
+      "en": "audio/en/C1.3-04.opus"
+    },
+    "C1.3-05": {
+      "fr": "audio/fr/C1.3-05.opus",
+      "en": "audio/en/C1.3-05.opus"
+    },
+    "C1.3-06": {
+      "fr": "audio/fr/C1.3-06.opus",
+      "en": "audio/en/C1.3-06.opus"
+    },
+    "C1.3-07": {
+      "fr": "audio/fr/C1.3-07.opus",
+      "en": "audio/en/C1.3-07.opus"
+    },
+    "C1.3-08": {
+      "fr": "audio/fr/C1.3-08.opus",
+      "en": "audio/en/C1.3-08.opus"
+    },
+    "C1.3-09": {
+      "fr": "audio/fr/C1.3-09.opus",
+      "en": "audio/en/C1.3-09.opus"
+    },
+    "C1.3-10": {
+      "fr": "audio/fr/C1.3-10.opus",
+      "en": "audio/en/C1.3-10.opus"
+    },
+    "C1.3-11": {
+      "fr": "audio/fr/C1.3-11.opus",
+      "en": "audio/en/C1.3-11.opus"
+    },
+    "C1.3-12": {
+      "fr": "audio/fr/C1.3-12.opus",
+      "en": "audio/en/C1.3-12.opus"
+    },
+    "C1.3-13": {
+      "fr": "audio/fr/C1.3-13.opus",
+      "en": "audio/en/C1.3-13.opus"
+    },
+    "C1.3-14": {
+      "fr": "audio/fr/C1.3-14.opus",
+      "en": "audio/en/C1.3-14.opus"
+    },
+    "C1.3-15": {
+      "fr": "audio/fr/C1.3-15.opus",
+      "en": "audio/en/C1.3-15.opus"
+    },
+    "C1.3-16": {
+      "fr": "audio/fr/C1.3-16.opus",
+      "en": "audio/en/C1.3-16.opus"
+    },
+    "C1.3-17": {
+      "fr": "audio/fr/C1.3-17.opus",
+      "en": "audio/en/C1.3-17.opus"
+    },
+    "C1.3-18": {
+      "fr": "audio/fr/C1.3-18.opus",
+      "en": "audio/en/C1.3-18.opus"
+    },
+    "C1.3-19": {
+      "fr": "audio/fr/C1.3-19.opus",
+      "en": "audio/en/C1.3-19.opus"
+    },
+    "C1.3-20": {
+      "fr": "audio/fr/C1.3-20.opus",
+      "en": "audio/en/C1.3-20.opus"
+    },
+    "C1.4-01": {
+      "fr": "audio/fr/C1.4-01.opus",
+      "en": "audio/en/C1.4-01.opus"
+    },
+    "C1.4-02": {
+      "fr": "audio/fr/C1.4-02.opus",
+      "en": "audio/en/C1.4-02.opus"
+    },
+    "C1.4-03": {
+      "fr": "audio/fr/C1.4-03.opus",
+      "en": "audio/en/C1.4-03.opus"
+    },
+    "C1.4-04": {
+      "fr": "audio/fr/C1.4-04.opus",
+      "en": "audio/en/C1.4-04.opus"
+    },
+    "C1.4-05": {
+      "fr": "audio/fr/C1.4-05.opus",
+      "en": "audio/en/C1.4-05.opus"
+    },
+    "C1.4-06": {
+      "fr": "audio/fr/C1.4-06.opus",
+      "en": "audio/en/C1.4-06.opus"
+    },
+    "C1.4-07": {
+      "fr": "audio/fr/C1.4-07.opus",
+      "en": "audio/en/C1.4-07.opus"
+    },
+    "C1.4-08": {
+      "fr": "audio/fr/C1.4-08.opus",
+      "en": "audio/en/C1.4-08.opus"
+    },
+    "C1.4-09": {
+      "fr": "audio/fr/C1.4-09.opus",
+      "en": "audio/en/C1.4-09.opus"
+    },
+    "C1.4-10": {
+      "fr": "audio/fr/C1.4-10.opus",
+      "en": "audio/en/C1.4-10.opus"
+    },
+    "C1.4-11": {
+      "fr": "audio/fr/C1.4-11.opus",
+      "en": "audio/en/C1.4-11.opus"
+    },
+    "C1.4-12": {
+      "fr": "audio/fr/C1.4-12.opus",
+      "en": "audio/en/C1.4-12.opus"
+    },
+    "C1.4-13": {
+      "fr": "audio/fr/C1.4-13.opus",
+      "en": "audio/en/C1.4-13.opus"
+    },
+    "C1.4-14": {
+      "fr": "audio/fr/C1.4-14.opus",
+      "en": "audio/en/C1.4-14.opus"
+    },
+    "C1.4-15": {
+      "fr": "audio/fr/C1.4-15.opus",
+      "en": "audio/en/C1.4-15.opus"
+    },
+    "C1.4-16": {
+      "fr": "audio/fr/C1.4-16.opus",
+      "en": "audio/en/C1.4-16.opus"
+    },
+    "C1.4-17": {
+      "fr": "audio/fr/C1.4-17.opus",
+      "en": "audio/en/C1.4-17.opus"
+    },
+    "C1.4-18": {
+      "fr": "audio/fr/C1.4-18.opus",
+      "en": "audio/en/C1.4-18.opus"
+    },
+    "C1.5-01": {
+      "fr": "audio/fr/C1.5-01.opus",
+      "en": "audio/en/C1.5-01.opus"
+    },
+    "C1.5-02": {
+      "fr": "audio/fr/C1.5-02.opus",
+      "en": "audio/en/C1.5-02.opus"
+    },
+    "C1.5-03": {
+      "fr": "audio/fr/C1.5-03.opus",
+      "en": "audio/en/C1.5-03.opus"
+    },
+    "C1.5-04": {
+      "fr": "audio/fr/C1.5-04.opus",
+      "en": "audio/en/C1.5-04.opus"
+    },
+    "C1.5-05": {
+      "fr": "audio/fr/C1.5-05.opus",
+      "en": "audio/en/C1.5-05.opus"
+    },
+    "C1.5-06": {
+      "fr": "audio/fr/C1.5-06.opus",
+      "en": "audio/en/C1.5-06.opus"
+    },
+    "C1.5-07": {
+      "fr": "audio/fr/C1.5-07.opus",
+      "en": "audio/en/C1.5-07.opus"
+    },
+    "C1.5-08": {
+      "fr": "audio/fr/C1.5-08.opus",
+      "en": "audio/en/C1.5-08.opus"
+    },
+    "C1.5-09": {
+      "fr": "audio/fr/C1.5-09.opus",
+      "en": "audio/en/C1.5-09.opus"
+    },
+    "C1.5-10": {
+      "fr": "audio/fr/C1.5-10.opus",
+      "en": "audio/en/C1.5-10.opus"
+    },
+    "C1.5-11": {
+      "fr": "audio/fr/C1.5-11.opus",
+      "en": "audio/en/C1.5-11.opus"
+    },
+    "C1.5-12": {
+      "fr": "audio/fr/C1.5-12.opus",
+      "en": "audio/en/C1.5-12.opus"
+    },
+    "C1.5-13": {
+      "fr": "audio/fr/C1.5-13.opus",
+      "en": "audio/en/C1.5-13.opus"
+    },
+    "C1.5-14": {
+      "fr": "audio/fr/C1.5-14.opus",
+      "en": "audio/en/C1.5-14.opus"
+    },
+    "C1.5-15": {
+      "fr": "audio/fr/C1.5-15.opus",
+      "en": "audio/en/C1.5-15.opus"
+    },
+    "C1.5-16": {
+      "fr": "audio/fr/C1.5-16.opus",
+      "en": "audio/en/C1.5-16.opus"
+    },
+    "C1.5-17": {
+      "fr": "audio/fr/C1.5-17.opus",
+      "en": "audio/en/C1.5-17.opus"
+    },
+    "C1.5-18": {
+      "fr": "audio/fr/C1.5-18.opus",
+      "en": "audio/en/C1.5-18.opus"
+    }
+  },
   "audio": [
     "audio/fr/C1.1-s1.opus",
     "audio/en/C1.1-s1.opus",
@@ -10150,11 +10552,211 @@
     "audio/fr/C1.5-s2.opus",
     "audio/en/C1.5-s2.opus",
     "audio/fr/C1.5-s3.opus",
-    "audio/en/C1.5-s3.opus"
+    "audio/en/C1.5-s3.opus",
+    "audio/fr/C1.1-01.opus",
+    "audio/en/C1.1-01.opus",
+    "audio/fr/C1.1-02.opus",
+    "audio/en/C1.1-02.opus",
+    "audio/fr/C1.1-03.opus",
+    "audio/en/C1.1-03.opus",
+    "audio/fr/C1.1-04.opus",
+    "audio/en/C1.1-04.opus",
+    "audio/fr/C1.1-05.opus",
+    "audio/en/C1.1-05.opus",
+    "audio/fr/C1.1-06.opus",
+    "audio/en/C1.1-06.opus",
+    "audio/fr/C1.1-07.opus",
+    "audio/en/C1.1-07.opus",
+    "audio/fr/C1.1-08.opus",
+    "audio/en/C1.1-08.opus",
+    "audio/fr/C1.1-09.opus",
+    "audio/en/C1.1-09.opus",
+    "audio/fr/C1.1-10.opus",
+    "audio/en/C1.1-10.opus",
+    "audio/fr/C1.1-11.opus",
+    "audio/en/C1.1-11.opus",
+    "audio/fr/C1.1-12.opus",
+    "audio/en/C1.1-12.opus",
+    "audio/fr/C1.1-13.opus",
+    "audio/en/C1.1-13.opus",
+    "audio/fr/C1.1-14.opus",
+    "audio/en/C1.1-14.opus",
+    "audio/fr/C1.1-15.opus",
+    "audio/en/C1.1-15.opus",
+    "audio/fr/C1.1-16.opus",
+    "audio/en/C1.1-16.opus",
+    "audio/fr/C1.1-17.opus",
+    "audio/en/C1.1-17.opus",
+    "audio/fr/C1.1-18.opus",
+    "audio/en/C1.1-18.opus",
+    "audio/fr/C1.1-19.opus",
+    "audio/en/C1.1-19.opus",
+    "audio/fr/C1.1-20.opus",
+    "audio/en/C1.1-20.opus",
+    "audio/fr/C1.1-21.opus",
+    "audio/en/C1.1-21.opus",
+    "audio/fr/C1.1-22.opus",
+    "audio/en/C1.1-22.opus",
+    "audio/fr/C1.2-01.opus",
+    "audio/en/C1.2-01.opus",
+    "audio/fr/C1.2-02.opus",
+    "audio/en/C1.2-02.opus",
+    "audio/fr/C1.2-03.opus",
+    "audio/en/C1.2-03.opus",
+    "audio/fr/C1.2-04.opus",
+    "audio/en/C1.2-04.opus",
+    "audio/fr/C1.2-05.opus",
+    "audio/en/C1.2-05.opus",
+    "audio/fr/C1.2-06.opus",
+    "audio/en/C1.2-06.opus",
+    "audio/fr/C1.2-07.opus",
+    "audio/en/C1.2-07.opus",
+    "audio/fr/C1.2-08.opus",
+    "audio/en/C1.2-08.opus",
+    "audio/fr/C1.2-09.opus",
+    "audio/en/C1.2-09.opus",
+    "audio/fr/C1.2-10.opus",
+    "audio/en/C1.2-10.opus",
+    "audio/fr/C1.2-11.opus",
+    "audio/en/C1.2-11.opus",
+    "audio/fr/C1.2-12.opus",
+    "audio/en/C1.2-12.opus",
+    "audio/fr/C1.2-13.opus",
+    "audio/en/C1.2-13.opus",
+    "audio/fr/C1.2-14.opus",
+    "audio/en/C1.2-14.opus",
+    "audio/fr/C1.2-15.opus",
+    "audio/en/C1.2-15.opus",
+    "audio/fr/C1.2-16.opus",
+    "audio/en/C1.2-16.opus",
+    "audio/fr/C1.2-17.opus",
+    "audio/en/C1.2-17.opus",
+    "audio/fr/C1.2-18.opus",
+    "audio/en/C1.2-18.opus",
+    "audio/fr/C1.2-19.opus",
+    "audio/en/C1.2-19.opus",
+    "audio/fr/C1.2-20.opus",
+    "audio/en/C1.2-20.opus",
+    "audio/fr/C1.2-21.opus",
+    "audio/en/C1.2-21.opus",
+    "audio/fr/C1.2-22.opus",
+    "audio/en/C1.2-22.opus",
+    "audio/fr/C1.3-01.opus",
+    "audio/en/C1.3-01.opus",
+    "audio/fr/C1.3-02.opus",
+    "audio/en/C1.3-02.opus",
+    "audio/fr/C1.3-03.opus",
+    "audio/en/C1.3-03.opus",
+    "audio/fr/C1.3-04.opus",
+    "audio/en/C1.3-04.opus",
+    "audio/fr/C1.3-05.opus",
+    "audio/en/C1.3-05.opus",
+    "audio/fr/C1.3-06.opus",
+    "audio/en/C1.3-06.opus",
+    "audio/fr/C1.3-07.opus",
+    "audio/en/C1.3-07.opus",
+    "audio/fr/C1.3-08.opus",
+    "audio/en/C1.3-08.opus",
+    "audio/fr/C1.3-09.opus",
+    "audio/en/C1.3-09.opus",
+    "audio/fr/C1.3-10.opus",
+    "audio/en/C1.3-10.opus",
+    "audio/fr/C1.3-11.opus",
+    "audio/en/C1.3-11.opus",
+    "audio/fr/C1.3-12.opus",
+    "audio/en/C1.3-12.opus",
+    "audio/fr/C1.3-13.opus",
+    "audio/en/C1.3-13.opus",
+    "audio/fr/C1.3-14.opus",
+    "audio/en/C1.3-14.opus",
+    "audio/fr/C1.3-15.opus",
+    "audio/en/C1.3-15.opus",
+    "audio/fr/C1.3-16.opus",
+    "audio/en/C1.3-16.opus",
+    "audio/fr/C1.3-17.opus",
+    "audio/en/C1.3-17.opus",
+    "audio/fr/C1.3-18.opus",
+    "audio/en/C1.3-18.opus",
+    "audio/fr/C1.3-19.opus",
+    "audio/en/C1.3-19.opus",
+    "audio/fr/C1.3-20.opus",
+    "audio/en/C1.3-20.opus",
+    "audio/fr/C1.4-01.opus",
+    "audio/en/C1.4-01.opus",
+    "audio/fr/C1.4-02.opus",
+    "audio/en/C1.4-02.opus",
+    "audio/fr/C1.4-03.opus",
+    "audio/en/C1.4-03.opus",
+    "audio/fr/C1.4-04.opus",
+    "audio/en/C1.4-04.opus",
+    "audio/fr/C1.4-05.opus",
+    "audio/en/C1.4-05.opus",
+    "audio/fr/C1.4-06.opus",
+    "audio/en/C1.4-06.opus",
+    "audio/fr/C1.4-07.opus",
+    "audio/en/C1.4-07.opus",
+    "audio/fr/C1.4-08.opus",
+    "audio/en/C1.4-08.opus",
+    "audio/fr/C1.4-09.opus",
+    "audio/en/C1.4-09.opus",
+    "audio/fr/C1.4-10.opus",
+    "audio/en/C1.4-10.opus",
+    "audio/fr/C1.4-11.opus",
+    "audio/en/C1.4-11.opus",
+    "audio/fr/C1.4-12.opus",
+    "audio/en/C1.4-12.opus",
+    "audio/fr/C1.4-13.opus",
+    "audio/en/C1.4-13.opus",
+    "audio/fr/C1.4-14.opus",
+    "audio/en/C1.4-14.opus",
+    "audio/fr/C1.4-15.opus",
+    "audio/en/C1.4-15.opus",
+    "audio/fr/C1.4-16.opus",
+    "audio/en/C1.4-16.opus",
+    "audio/fr/C1.4-17.opus",
+    "audio/en/C1.4-17.opus",
+    "audio/fr/C1.4-18.opus",
+    "audio/en/C1.4-18.opus",
+    "audio/fr/C1.5-01.opus",
+    "audio/en/C1.5-01.opus",
+    "audio/fr/C1.5-02.opus",
+    "audio/en/C1.5-02.opus",
+    "audio/fr/C1.5-03.opus",
+    "audio/en/C1.5-03.opus",
+    "audio/fr/C1.5-04.opus",
+    "audio/en/C1.5-04.opus",
+    "audio/fr/C1.5-05.opus",
+    "audio/en/C1.5-05.opus",
+    "audio/fr/C1.5-06.opus",
+    "audio/en/C1.5-06.opus",
+    "audio/fr/C1.5-07.opus",
+    "audio/en/C1.5-07.opus",
+    "audio/fr/C1.5-08.opus",
+    "audio/en/C1.5-08.opus",
+    "audio/fr/C1.5-09.opus",
+    "audio/en/C1.5-09.opus",
+    "audio/fr/C1.5-10.opus",
+    "audio/en/C1.5-10.opus",
+    "audio/fr/C1.5-11.opus",
+    "audio/en/C1.5-11.opus",
+    "audio/fr/C1.5-12.opus",
+    "audio/en/C1.5-12.opus",
+    "audio/fr/C1.5-13.opus",
+    "audio/en/C1.5-13.opus",
+    "audio/fr/C1.5-14.opus",
+    "audio/en/C1.5-14.opus",
+    "audio/fr/C1.5-15.opus",
+    "audio/en/C1.5-15.opus",
+    "audio/fr/C1.5-16.opus",
+    "audio/en/C1.5-16.opus",
+    "audio/fr/C1.5-17.opus",
+    "audio/en/C1.5-17.opus",
+    "audio/fr/C1.5-18.opus",
+    "audio/en/C1.5-18.opus"
   ],
   "assets": [
     "art/tika.svg",
     "art/world1-island.svg"
   ],
-  "sizeBytes": 344042
+  "sizeBytes": 359563
 }
