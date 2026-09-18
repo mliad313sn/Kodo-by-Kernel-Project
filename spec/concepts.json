@@ -1,0 +1,1194 @@
+{
+  "source": "02_KODO_Curriculum_Benchmark_Backlog.xlsx :: Curriculum",
+  "generatedBy": "tools/gen_spec.py",
+  "conceptCount": 58,
+  "itemsCommitted": 1214,
+  "concepts": [
+    {
+      "id": "C0.1",
+      "world": 0,
+      "worldName": "Bonjour Tika",
+      "fr": "Lancer un programme",
+      "en": "Run a program",
+      "prerequisites": [],
+      "band": "8-9",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T5",
+        "T6"
+      ],
+      "misconception": "the program runs only if I press something magic",
+      "source": "[SC p.3]"
+    },
+    {
+      "id": "C0.2",
+      "world": 0,
+      "worldName": "Bonjour Tika",
+      "fr": "Séquence",
+      "en": "Sequence",
+      "prerequisites": [
+        "C0.1"
+      ],
+      "band": "8-9",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T5",
+        "T6",
+        "T3"
+      ],
+      "misconception": "order does not matter",
+      "source": "[SC p.3]"
+    },
+    {
+      "id": "C0.3",
+      "world": 0,
+      "worldName": "Bonjour Tika",
+      "fr": "Ordre des instructions",
+      "en": "Instruction order",
+      "prerequisites": [
+        "C0.2"
+      ],
+      "band": "8-9",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T5",
+        "T2",
+        "T3",
+        "T6"
+      ],
+      "misconception": "blocks run all at once",
+      "source": "[SC p.5]"
+    },
+    {
+      "id": "C0.4",
+      "world": 0,
+      "worldName": "Bonjour Tika",
+      "fr": "Annuler / recommencer",
+      "en": "Undo / reset",
+      "prerequisites": [
+        "C0.1"
+      ],
+      "band": "8-9",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T6",
+        "T2"
+      ],
+      "misconception": "a mistake ruins the project",
+      "source": "[KT §2.5.2]"
+    },
+    {
+      "id": "C1.1",
+      "world": 1,
+      "worldName": "La tortue bouge",
+      "fr": "Avance et recule",
+      "en": "Forward / back",
+      "prerequisites": [
+        "C0.2"
+      ],
+      "band": "8-9",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "misconception": "recule turns around first",
+      "source": "[KT §4.3.1]"
+    },
+    {
+      "id": "C1.2",
+      "world": 1,
+      "worldName": "La tortue bouge",
+      "fr": "Tourner à gauche / à droite",
+      "en": "Turn left / right",
+      "prerequisites": [
+        "C1.1"
+      ],
+      "band": "8-9",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T8"
+      ],
+      "misconception": "tournegauche moves the turtle",
+      "source": "[KT §4.3.1]"
+    },
+    {
+      "id": "C1.3",
+      "world": 1,
+      "worldName": "La tortue bouge",
+      "fr": "Les degrés",
+      "en": "Degrees",
+      "prerequisites": [
+        "C1.2"
+      ],
+      "band": "8-9",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T3",
+        "T4",
+        "T6",
+        "T8",
+        "T1"
+      ],
+      "misconception": "90 degrees is a half turn",
+      "source": "[KT §5 glossaire]"
+    },
+    {
+      "id": "C1.4",
+      "world": 1,
+      "worldName": "La tortue bouge",
+      "fr": "Le crayon dessine",
+      "en": "The pen draws",
+      "prerequisites": [
+        "C1.1"
+      ],
+      "band": "8-9",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T3",
+        "T6"
+      ],
+      "misconception": "the turtle always draws",
+      "source": "[KT §4.3.3]"
+    },
+    {
+      "id": "C1.5",
+      "world": 1,
+      "worldName": "La tortue bouge",
+      "fr": "Nombres négatifs",
+      "en": "Negative numbers",
+      "prerequisites": [
+        "C1.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T8"
+      ],
+      "misconception": "avance -10 is an error",
+      "source": "[SC p.5]"
+    },
+    {
+      "id": "C2.1",
+      "world": 2,
+      "worldName": "Encore et encore",
+      "fr": "Répète n fois",
+      "en": "Repeat n times",
+      "prerequisites": [
+        "C1.2"
+      ],
+      "band": "8-9",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T7"
+      ],
+      "misconception": "repeat 4 always means 4 sides",
+      "source": "[SC p.6] [KT §4.5.5]"
+    },
+    {
+      "id": "C2.2",
+      "world": 2,
+      "worldName": "Encore et encore",
+      "fr": "Le corps de la boucle",
+      "en": "Loop body",
+      "prerequisites": [
+        "C2.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T8"
+      ],
+      "misconception": "only the first line repeats",
+      "source": "[SC p.6]"
+    },
+    {
+      "id": "C2.3",
+      "world": 2,
+      "worldName": "Encore et encore",
+      "fr": "Boucles imbriquées",
+      "en": "Nested loops",
+      "prerequisites": [
+        "C2.2"
+      ],
+      "band": "9-10",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T3",
+        "T7",
+        "T9"
+      ],
+      "misconception": "the inner loop runs once in total",
+      "source": "[KT §2 exemple rosace]"
+    },
+    {
+      "id": "C2.4",
+      "world": 2,
+      "worldName": "Encore et encore",
+      "fr": "Boucle ou copier-coller ?",
+      "en": "Loop vs copy-paste",
+      "prerequisites": [
+        "C2.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T7",
+        "T6",
+        "T8",
+        "T5"
+      ],
+      "misconception": "a longer program is a better program",
+      "source": "[COM]"
+    },
+    {
+      "id": "C3.1",
+      "world": 3,
+      "worldName": "Couleurs et crayon",
+      "fr": "Lève / baisse le crayon",
+      "en": "Pen up / pen down",
+      "prerequisites": [
+        "C1.4"
+      ],
+      "band": "8-9",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "misconception": "va draws a line",
+      "source": "[KT §4.3.3]"
+    },
+    {
+      "id": "C3.2",
+      "world": 3,
+      "worldName": "Couleurs et crayon",
+      "fr": "Largeur du crayon",
+      "en": "Pen width",
+      "prerequisites": [
+        "C3.1"
+      ],
+      "band": "8-9",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T6"
+      ],
+      "misconception": "width changes only the next line",
+      "source": "[KT §4.3.3]"
+    },
+    {
+      "id": "C3.3",
+      "world": 3,
+      "worldName": "Couleurs et crayon",
+      "fr": "Couleur RVB du crayon",
+      "en": "Pen colour RGB",
+      "prerequisites": [
+        "C3.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T6",
+        "T8"
+      ],
+      "misconception": "RGB values are percentages",
+      "source": "[KT §4.3.3, §5 table 5.2]"
+    },
+    {
+      "id": "C3.4",
+      "world": 3,
+      "worldName": "Couleurs et crayon",
+      "fr": "Couleur et taille du canevas",
+      "en": "Canvas colour and size",
+      "prerequisites": [
+        "C3.3"
+      ],
+      "band": "9-10",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T6"
+      ],
+      "misconception": "the canvas is the screen",
+      "source": "[KT §4.3.4]"
+    },
+    {
+      "id": "C3.5",
+      "world": 3,
+      "worldName": "Couleurs et crayon",
+      "fr": "Nettoie / initialise",
+      "en": "Clear / reset",
+      "prerequisites": [
+        "C3.4"
+      ],
+      "band": "9-10",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T2",
+        "T3",
+        "T6",
+        "T8"
+      ],
+      "misconception": "nettoietout also moves the turtle home",
+      "source": "[KT §4.3.5]"
+    },
+    {
+      "id": "C4.1",
+      "world": 4,
+      "worldName": "Le plan",
+      "fr": "Aller à x, y",
+      "en": "Go to x, y",
+      "prerequisites": [
+        "C3.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "misconception": "x,y is counted from the turtle",
+      "source": "[KT §4.3.1]"
+    },
+    {
+      "id": "C4.2",
+      "world": 4,
+      "worldName": "Le plan",
+      "fr": "vax / vay",
+      "en": "Go x / go y",
+      "prerequisites": [
+        "C4.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T6"
+      ],
+      "misconception": "vax also changes y",
+      "source": "[KT §4.3.1]"
+    },
+    {
+      "id": "C4.3",
+      "world": 4,
+      "worldName": "Le plan",
+      "fr": "positionx / positiony",
+      "en": "Position x / y",
+      "prerequisites": [
+        "C4.1"
+      ],
+      "band": "10-11",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T4",
+        "T6",
+        "T8",
+        "T1"
+      ],
+      "misconception": "position is a command, not a value",
+      "source": "[KT §4.3.2]"
+    },
+    {
+      "id": "C4.4",
+      "world": 4,
+      "worldName": "Le plan",
+      "fr": "Direction absolue",
+      "en": "Absolute heading",
+      "prerequisites": [
+        "C1.3"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T3",
+        "T8",
+        "T6"
+      ],
+      "misconception": "direction and tournedroite are the same",
+      "source": "[KT §3.1.2]"
+    },
+    {
+      "id": "C4.5",
+      "world": 4,
+      "worldName": "Le plan",
+      "fr": "Centre",
+      "en": "Centre",
+      "prerequisites": [
+        "C4.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T6"
+      ],
+      "misconception": "centre erases the drawing",
+      "source": "[KT §4.3.1]"
+    },
+    {
+      "id": "C5.1",
+      "world": 5,
+      "worldName": "Quand...",
+      "fr": "Quand le drapeau vert est cliqué",
+      "en": "Green flag event",
+      "prerequisites": [
+        "C0.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T6",
+        "T9"
+      ],
+      "misconception": "the script needs me to click the blocks",
+      "source": "[SC p.8]"
+    },
+    {
+      "id": "C5.2",
+      "world": 5,
+      "worldName": "Quand...",
+      "fr": "Quand une touche est pressée",
+      "en": "Key pressed event",
+      "prerequisites": [
+        "C5.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T9",
+        "T2"
+      ],
+      "misconception": "the key works only once",
+      "source": "[SC p.10]"
+    },
+    {
+      "id": "C5.3",
+      "world": 5,
+      "worldName": "Quand...",
+      "fr": "Quand on clique sur le lutin",
+      "en": "Sprite clicked",
+      "prerequisites": [
+        "C5.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T6",
+        "T9"
+      ],
+      "misconception": "any click anywhere triggers it",
+      "source": "[SC p.8]"
+    },
+    {
+      "id": "C5.4",
+      "world": 5,
+      "worldName": "Quand...",
+      "fr": "Deux scripts en même temps",
+      "en": "Two scripts at once",
+      "prerequisites": [
+        "C5.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T3",
+        "T6",
+        "T8",
+        "T9",
+        "T2"
+      ],
+      "misconception": "programs can only do one thing at a time",
+      "source": "[SC p.8-10]"
+    },
+    {
+      "id": "C6.1",
+      "world": 6,
+      "worldName": "Mes variables",
+      "fr": "Une variable, une boîte",
+      "en": "A variable is a box",
+      "prerequisites": [
+        "C4.3"
+      ],
+      "band": "9-10",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T3",
+        "T4",
+        "T6",
+        "T8",
+        "T1"
+      ],
+      "misconception": "the variable holds the whole program",
+      "source": "[KT §4.4]"
+    },
+    {
+      "id": "C6.2",
+      "world": 6,
+      "worldName": "Mes variables",
+      "fr": "Affecter une valeur",
+      "en": "Assignment",
+      "prerequisites": [
+        "C6.1"
+      ],
+      "band": "10-11",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T2",
+        "T3",
+        "T4",
+        "T6",
+        "T8"
+      ],
+      "misconception": "$x = $x/3 is a false equation",
+      "source": "[KT §4.4]"
+    },
+    {
+      "id": "C6.3",
+      "world": 6,
+      "worldName": "Mes variables",
+      "fr": "Opérateurs mathématiques",
+      "en": "Maths operators",
+      "prerequisites": [
+        "C6.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T3",
+        "T4",
+        "T6",
+        "T7",
+        "T1"
+      ],
+      "misconception": "operations always run left to right",
+      "source": "[KT §4.2.1]"
+    },
+    {
+      "id": "C6.4",
+      "world": 6,
+      "worldName": "Mes variables",
+      "fr": "Utiliser l'inspecteur",
+      "en": "Using the inspector",
+      "prerequisites": [
+        "C6.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T6",
+        "T8",
+        "T2",
+        "T3"
+      ],
+      "misconception": "I cannot see what is inside a variable",
+      "source": "[KT §2.3, §4.4]"
+    },
+    {
+      "id": "C6.5",
+      "world": 6,
+      "worldName": "Mes variables",
+      "fr": "Hasard",
+      "en": "Random",
+      "prerequisites": [
+        "C6.3"
+      ],
+      "band": "10-11",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T6",
+        "T9",
+        "T8"
+      ],
+      "misconception": "random means unpredictable therefore untestable",
+      "source": "[KT §4.3.8]"
+    },
+    {
+      "id": "C7.1",
+      "world": 7,
+      "worldName": "Si... sinon",
+      "fr": "Vrai / faux",
+      "en": "Booleans",
+      "prerequisites": [
+        "C6.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T3",
+        "T6",
+        "T8",
+        "T4"
+      ],
+      "misconception": "true/false are just words",
+      "source": "[KT §4.1.5]"
+    },
+    {
+      "id": "C7.2",
+      "world": 7,
+      "worldName": "Si... sinon",
+      "fr": "Comparer",
+      "en": "Comparison operators",
+      "prerequisites": [
+        "C7.1"
+      ],
+      "band": "10-11",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T2",
+        "T3",
+        "T4",
+        "T6",
+        "T8"
+      ],
+      "misconception": "the single = and the double == are the same",
+      "source": "[KT §4.2.3]"
+    },
+    {
+      "id": "C7.3",
+      "world": 7,
+      "worldName": "Si... sinon",
+      "fr": "Si",
+      "en": "If",
+      "prerequisites": [
+        "C7.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T9"
+      ],
+      "misconception": "the if block runs every time",
+      "source": "[KT §4.5.2]"
+    },
+    {
+      "id": "C7.4",
+      "world": 7,
+      "worldName": "Si... sinon",
+      "fr": "Sinon",
+      "en": "Else",
+      "prerequisites": [
+        "C7.3"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T8"
+      ],
+      "misconception": "else runs as well as if",
+      "source": "[KT §4.5.3]"
+    },
+    {
+      "id": "C7.5",
+      "world": 7,
+      "worldName": "Si... sinon",
+      "fr": "Et / ou / non",
+      "en": "And / or / not",
+      "prerequisites": [
+        "C7.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T3",
+        "T6",
+        "T8",
+        "T4"
+      ],
+      "misconception": "or means both must be true",
+      "source": "[KT §4.2.2]"
+    },
+    {
+      "id": "C8.1",
+      "world": 8,
+      "worldName": "Tant que",
+      "fr": "Tant que",
+      "en": "While",
+      "prerequisites": [
+        "C7.3"
+      ],
+      "band": "10-11",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T9"
+      ],
+      "misconception": "while and if behave the same",
+      "source": "[KT §4.5.4]"
+    },
+    {
+      "id": "C8.2",
+      "world": 8,
+      "worldName": "Tant que",
+      "fr": "Arrêter la boucle",
+      "en": "Loop termination",
+      "prerequisites": [
+        "C8.1"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T2",
+        "T3",
+        "T6",
+        "T8"
+      ],
+      "misconception": "a loop always ends by itself",
+      "source": "[KT §4.5.4, §4.5.7]"
+    },
+    {
+      "id": "C8.3",
+      "world": 8,
+      "worldName": "Tant que",
+      "fr": "Capteurs",
+      "en": "Sensing",
+      "prerequisites": [
+        "C8.1"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T6",
+        "T9",
+        "T3"
+      ],
+      "misconception": "touching is checked only once",
+      "source": "[SC p.8]"
+    },
+    {
+      "id": "C8.4",
+      "world": 8,
+      "worldName": "Tant que",
+      "fr": "Coupure",
+      "en": "Break",
+      "prerequisites": [
+        "C8.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T2",
+        "T3",
+        "T6",
+        "T4"
+      ],
+      "misconception": "break ends the whole program",
+      "source": "[KT §4.5.7]"
+    },
+    {
+      "id": "C9.1",
+      "world": 9,
+      "worldName": "Mes propres blocs",
+      "fr": "Apprends un nouveau bloc",
+      "en": "Define a block",
+      "prerequisites": [
+        "C2.3"
+      ],
+      "band": "10-11",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T5",
+        "T7",
+        "T9"
+      ],
+      "misconception": "defining a block runs it",
+      "source": "[KT §4.6]"
+    },
+    {
+      "id": "C9.2",
+      "world": 9,
+      "worldName": "Mes propres blocs",
+      "fr": "Paramètres",
+      "en": "Parameters",
+      "prerequisites": [
+        "C9.1"
+      ],
+      "band": "10-11",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T4",
+        "T6",
+        "T9"
+      ],
+      "misconception": "the parameter name is the value",
+      "source": "[KT §4.6]"
+    },
+    {
+      "id": "C9.3",
+      "world": 9,
+      "worldName": "Mes propres blocs",
+      "fr": "Retourne",
+      "en": "Return",
+      "prerequisites": [
+        "C9.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T2",
+        "T3",
+        "T4",
+        "T6",
+        "T8"
+      ],
+      "misconception": "return prints the value",
+      "source": "[KT §4.6]"
+    },
+    {
+      "id": "C9.4",
+      "world": 9,
+      "worldName": "Mes propres blocs",
+      "fr": "Décomposer un problème",
+      "en": "Decomposition",
+      "prerequisites": [
+        "C9.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T7",
+        "T9",
+        "T5",
+        "T6"
+      ],
+      "misconception": "a big program must be written in one piece",
+      "source": "[COM]"
+    },
+    {
+      "id": "C10.1",
+      "world": 10,
+      "worldName": "Lutins, costumes, sons",
+      "fr": "Un lutin est un objet",
+      "en": "A sprite is an object",
+      "prerequisites": [
+        "C5.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T6",
+        "T9"
+      ],
+      "misconception": "there can be only one character",
+      "source": "[SC p.10]"
+    },
+    {
+      "id": "C10.2",
+      "world": 10,
+      "worldName": "Lutins, costumes, sons",
+      "fr": "Costumes et animation",
+      "en": "Costumes and animation",
+      "prerequisites": [
+        "C10.1"
+      ],
+      "band": "9-10",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T6",
+        "T9",
+        "T3"
+      ],
+      "misconception": "animation needs a video",
+      "source": "[SC p.11]"
+    },
+    {
+      "id": "C10.3",
+      "world": 10,
+      "worldName": "Lutins, costumes, sons",
+      "fr": "Sons et tambours",
+      "en": "Sounds and drums",
+      "prerequisites": [
+        "C10.1"
+      ],
+      "band": "8-9",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T6",
+        "T9"
+      ],
+      "misconception": "the sound plays after the program ends",
+      "source": "[SC p.4, p.11]"
+    },
+    {
+      "id": "C10.4",
+      "world": 10,
+      "worldName": "Lutins, costumes, sons",
+      "fr": "Arrière-plans",
+      "en": "Backdrops",
+      "prerequisites": [
+        "C10.1"
+      ],
+      "band": "8-9",
+      "itemsMin": 18,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T6",
+        "T9"
+      ],
+      "misconception": "the backdrop is a sprite",
+      "source": "[SC p.9]"
+    },
+    {
+      "id": "C10.5",
+      "world": 10,
+      "worldName": "Lutins, costumes, sons",
+      "fr": "Effets graphiques",
+      "en": "Graphic effects",
+      "prerequisites": [
+        "C10.2"
+      ],
+      "band": "9-10",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T1",
+        "T3",
+        "T4",
+        "T6"
+      ],
+      "misconception": "effects are permanent",
+      "source": "[SC p.7]"
+    },
+    {
+      "id": "C11.1",
+      "world": 11,
+      "worldName": "Je passe au texte",
+      "fr": "Écrire son programme",
+      "en": "Typing a program",
+      "prerequisites": [
+        "C9.3"
+      ],
+      "band": "10-11",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T1",
+        "T2",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "misconception": "text code is a different language",
+      "source": "[KT §4.1]"
+    },
+    {
+      "id": "C11.2",
+      "world": 11,
+      "worldName": "Je passe au texte",
+      "fr": "Commentaires #",
+      "en": "Comments",
+      "prerequisites": [
+        "C11.1"
+      ],
+      "band": "10-11",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T2",
+        "T4",
+        "T6",
+        "T8"
+      ],
+      "misconception": "comments are executed",
+      "source": "[KT §4.1.1]"
+    },
+    {
+      "id": "C11.3",
+      "world": 11,
+      "worldName": "Je passe au texte",
+      "fr": "Lire une erreur",
+      "en": "Reading an error",
+      "prerequisites": [
+        "C11.1"
+      ],
+      "band": "10-11",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T2",
+        "T6",
+        "T8",
+        "T4"
+      ],
+      "misconception": "an error means I broke the computer",
+      "source": "[KT §1.2, §2.2]"
+    },
+    {
+      "id": "C11.4",
+      "world": 11,
+      "worldName": "Je passe au texte",
+      "fr": "Mots-clés en anglais",
+      "en": "English keywords",
+      "prerequisites": [
+        "C11.1"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T4",
+        "T6",
+        "T1",
+        "T5"
+      ],
+      "misconception": "English code is a new language to relearn",
+      "source": "[KT §1.1, §6]"
+    },
+    {
+      "id": "C12.1",
+      "world": 12,
+      "worldName": "Mon application",
+      "fr": "Planifier un projet",
+      "en": "Planning a project",
+      "prerequisites": [
+        "C9.4"
+      ],
+      "band": "10-11",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T9",
+        "T6",
+        "T5"
+      ],
+      "misconception": "you start by coding",
+      "source": "[SC p.13]"
+    },
+    {
+      "id": "C12.2",
+      "world": 12,
+      "worldName": "Mon application",
+      "fr": "Listes",
+      "en": "Lists",
+      "prerequisites": [
+        "C6.2"
+      ],
+      "band": "10-11",
+      "itemsMin": 24,
+      "itemTypes": [
+        "T2",
+        "T3",
+        "T4",
+        "T6",
+        "T9"
+      ],
+      "misconception": "a list is one variable with a long name",
+      "source": "[COM]"
+    },
+    {
+      "id": "C12.3",
+      "world": 12,
+      "worldName": "Mon application",
+      "fr": "Écrans et navigation",
+      "en": "Screens and navigation",
+      "prerequisites": [
+        "C7.3"
+      ],
+      "band": "10-11",
+      "itemsMin": 22,
+      "itemTypes": [
+        "T1",
+        "T4",
+        "T9",
+        "T6"
+      ],
+      "misconception": "an app is one screen",
+      "source": "[COM]"
+    },
+    {
+      "id": "C12.4",
+      "world": 12,
+      "worldName": "Mon application",
+      "fr": "Publier et améliorer",
+      "en": "Publish and iterate",
+      "prerequisites": [
+        "C12.3"
+      ],
+      "band": "10-11",
+      "itemsMin": 20,
+      "itemTypes": [
+        "T9",
+        "T6",
+        "T8"
+      ],
+      "misconception": "a project is finished when it runs once",
+      "source": "[SC p.14]"
+    }
+  ]
+}

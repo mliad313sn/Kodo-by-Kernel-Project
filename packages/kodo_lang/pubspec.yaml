@@ -1,0 +1,15 @@
+name: kodo_lang
+description: >-
+  KODO module M1 — the language core. One AST, one parser, one interpreter, one grader.
+  Pure Dart: no Flutter, no platform APIs, no dart:io, no dart:html. This constraint is
+  what lets the same semantics and the same grading verdict hold on Android, iOS, desktop
+  and the WASM web build.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0

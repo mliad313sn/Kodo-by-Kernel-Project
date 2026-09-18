@@ -1,0 +1,31 @@
+{
+  "_comment": "Squad-maintained delivery status. Merged over the workbook's Exigences sheet by tools/gen_spec.py. The workbook stays the Committee's record; this file is the squads'.",
+  "status": {
+    "FR-M1-01": "Done",
+    "FR-M1-02": "Done",
+    "FR-M1-03": "Done",
+    "FR-M1-04": "Done",
+    "FR-M1-05": "Done",
+    "FR-M1-06": "Done",
+    "FR-M1-07": "Done",
+    "FR-M1-08": "Done",
+    "FR-M1-09": "Done",
+    "FR-M1-10": "Done",
+    "FR-M1-11": "Done",
+    "FR-M1-12": "Done"
+  },
+  "owner": {
+    "FR-M1-01": "M1 squad",
+    "FR-M1-02": "M1 squad",
+    "FR-M1-03": "M1 squad",
+    "FR-M1-04": "M1 squad",
+    "FR-M1-05": "M1 squad",
+    "FR-M1-06": "M1 squad",
+    "FR-M1-07": "M1 squad",
+    "FR-M1-08": "M1 squad",
+    "FR-M1-09": "M1 squad",
+    "FR-M1-10": "M1 squad",
+    "FR-M1-11": "M1 squad",
+    "FR-M1-12": "M1 squad"
+  }
+}

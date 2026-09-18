@@ -1,0 +1,349 @@
+
+
+===== SHEET: Lisez-moi =====
+KODO — Curriculum, Benchmark & Improvement Backlog
+Companion workbook to 01_KODO_Cahier_des_Charges_v1.0.docx — Committee issue for Gate G1, 18 Sep 2026
+Sheet | What it holds and how to use it
+Comite & RACI | The 14 committee seats, what each owns, and the RACI across the six gates.
+Gates | Gate register G0-G5: exit criteria, owner, planned date, status. Update Status only.
+Curriculum | The concept ledger: 46 concepts across 12 worlds, prerequisites, item volume, misconceptions, source trace.
+Banque exercices | Exercise bank sizing and authoring burn-up. Totals are formulas; edit only the white input cells.
+Exigences | Requirement register. Every FR/NFR from the cahier des charges, with source tag, priority, verification method and gate.
+Benchmark | Gate G5 market challenge. 15 products x 20 criteria. Competitor scores are COMMITTEE ESTIMATES pending hands-on evidence.
+Backlog amelioration | Improvement backlog fed by G4, G5, child panel and item telemetry. RICE-scored with formulas.
+Revue G4 | Deep-review template: one row per finding, six review passes, severity scale.
+Risques | Risk register with response and owner.
+ | 
+ | BLUE text = an input you are expected to change. BLACK text = a formula or a committee statement. YELLOW fill = a decision the Product Owner must make.
+Traceability | [KT §x] = KTurtle manual, section x. [SC p.x] = Scratch starter guide, page x. [COM] = committee decision, not in either source.
+Warning on scores | Every score on the Benchmark sheet is provisional until a committee pair completes the hands-on protocol of §15.4 and records the evidence link.
+
+
+===== SHEET: Comite & RACI =====
+Committee composition and RACI
+R = does the work · A = accountable · C = consulted · I = informed. One A per gate column.
+# | Seat | Owns | G0 Mandate | G1 Cahier des charges | G2 Module prompts | G3 Build | G4 Deep review | G5 Market challenge
+1 | Product Owner | Scope, budget, release; final sign-off | A | A | C | I | A | A
+2 | Committee Chair / Programme Director | Agenda, minutes, dissent log, gate register | R | R | R | C | R | R
+3 | Pedagogical Lead (CS education) | The learning model (§4) — blocking veto | C | R | C | C | R | R
+4 | Curriculum & Assessment Designer | Concept ledger and exercise bank (§5,§6) | C | R | R | C | R | C
+5 | Child Development Psychologist | Age-appropriateness veto | C | C | I | C | R | C
+6 | Game Designer (ethical engagement) | Motivation system (§10) | I | C | R | C | C | R
+7 | Children's UX/UI + Accessibility | Design system (§9), WCAG | C | R | R | C | R | R
+8 | Language & Runtime Architect | Modules M1-M4 | C | C | A | R | C | C
+9 | Cross-platform Engineering Lead | Architecture (§11), device matrix | C | C | A | A | C | C
+10 | Backend, Data & Learning Analytics | M13, M17, item health telemetry | I | C | R | R | R | C
+11 | Localisation & Culture Lead | §15 localisation, content review | C | C | C | R | R | C
+12 | Teacher & Parent Representative | M11, M12, classroom reality | C | C | I | C | R | R
+13 | Child Safety, Privacy & Compliance | §13 — blocking veto on every gate | C | R | C | C | A | C
+14 | QA & Release Manager | §14 test strategy, defect taxonomy | I | C | C | R | A | C
+Obs | Children's panel (6 children, 8-11) | Voice, no vote — evidence for pass 3 of G4 |  |  |  | C | R | C
+Obs | Classroom pilot teacher | Voice, no vote — classroom evidence |  | C |  | C | R | C
+3L | Independent review (external) | External CS-education academic + child-safety auditor |  |  |  |  | C | R
+ | Decision rule: consent, not consensus. A proposal carries unless a seat records a reasoned, domain-relevant objection in the dissent log.
+
+
+===== SHEET: Gates =====
+Gate register
+Update the Status and Actual date columns only (blue).
+Gate | Name | Exit criteria | Accountable | Planned week | Status | Evidence link
+G0 | Mandate | Committee seated; both source documents ingested; glossary agreed | Chair | W1 | Done | 
+G1 | Cahier des charges | Spec accepted; every FR tagged and traceable; concept ledger complete; Annex E answered | Product Owner | W4 | In review | 
+G2 | Module prompts | 18 deployment prompts reviewed; each has inputs, outputs, acceptance tests, adjacent-module interfaces | Runtime + Eng leads | W5 | Not started | 
+G3 | Build & integrate | Vertical slice: one full world, blocks + text, graded, offline, on the reference device | QA & Release | W12 | Not started | 
+G4 | Deep review | Six review passes complete; zero S1; zero open safety finding; conformance matrix signed | Safety + QA | W26 / W40 / W52 | Not started | 
+G5 | Market challenge | 15 benchmark products scored with evidence; improvement backlog raised and re-planned | Chair + PO | W27 / W41 / W53 | Not started | 
+
+
+===== SHEET: Curriculum =====
+Concept ledger — 12 worlds, 46 concepts
+Items/concept is the Gate G1 minimum commitment. Item types per §6.1 (T1-T9). Source tag per the traceability convention.
+World | World name (FR) | Concept ID | Concept (FR) | Concept (EN) | Prereq | Band | Items (min) | Item types | Key misconception to break | Source
+0 | Bonjour Tika | C0.1 | Lancer un programme | Run a program | - | 8-9 | 18 | T1,T3,T5,T6 | the program runs only if I press something magic | [SC p.3]
+0 | Bonjour Tika | C0.2 | Séquence | Sequence | C0.1 | 8-9 | 20 | T1,T4,T5,T6,T3 | order does not matter | [SC p.3]
+0 | Bonjour Tika | C0.3 | Ordre des instructions | Instruction order | C0.2 | 8-9 | 18 | T5,T2,T3,T6 | blocks run all at once | [SC p.5]
+0 | Bonjour Tika | C0.4 | Annuler / recommencer | Undo / reset | C0.1 | 8-9 | 18 | T1,T4,T6,T2 | a mistake ruins the project | [KT §2.5.2]
+1 | La tortue bouge | C1.1 | Avance et recule | Forward / back | C0.2 | 8-9 | 22 | T1,T3,T4,T5,T6 | recule turns around first | [KT §4.3.1]
+1 | La tortue bouge | C1.2 | Tourner à gauche / à droite | Turn left / right | C1.1 | 8-9 | 22 | T1,T2,T3,T4,T8 | tournegauche moves the turtle | [KT §4.3.1]
+1 | La tortue bouge | C1.3 | Les degrés | Degrees | C1.2 | 8-9 | 20 | T3,T4,T6,T8,T1 | 90 degrees is a half turn | [KT §5 glossaire]
+1 | La tortue bouge | C1.4 | Le crayon dessine | The pen draws | C1.1 | 8-9 | 18 | T1,T2,T3,T6 | the turtle always draws | [KT §4.3.3]
+1 | La tortue bouge | C1.5 | Nombres négatifs | Negative numbers | C1.1 | 9-10 | 18 | T1,T3,T4,T8 | avance -10 is an error | [SC p.5]
+2 | Encore et encore | C2.1 | Répète n fois | Repeat n times | C1.2 | 8-9 | 22 | T1,T2,T3,T4,T5,T7 | repeat 4 always means 4 sides | [SC p.6] [KT §4.5.5]
+2 | Encore et encore | C2.2 | Le corps de la boucle | Loop body | C2.1 | 9-10 | 22 | T2,T3,T4,T5,T8 | only the first line repeats | [SC p.6]
+2 | Encore et encore | C2.3 | Boucles imbriquées | Nested loops | C2.2 | 9-10 | 22 | T1,T2,T3,T7,T9 | the inner loop runs once in total | [KT §2 exemple rosace]
+2 | Encore et encore | C2.4 | Boucle ou copier-coller ? | Loop vs copy-paste | C2.1 | 9-10 | 18 | T7,T6,T8,T5 | a longer program is a better program | [COM]
+3 | Couleurs et crayon | C3.1 | Lève / baisse le crayon | Pen up / pen down | C1.4 | 8-9 | 20 | T1,T2,T3,T4 | va draws a line | [KT §4.3.3]
+3 | Couleurs et crayon | C3.2 | Largeur du crayon | Pen width | C3.1 | 8-9 | 18 | T1,T3,T4,T6 | width changes only the next line | [KT §4.3.3]
+3 | Couleurs et crayon | C3.3 | Couleur RVB du crayon | Pen colour RGB | C3.1 | 9-10 | 22 | T1,T3,T4,T6,T8 | RGB values are percentages | [KT §4.3.3, §5 table 5.2]
+3 | Couleurs et crayon | C3.4 | Couleur et taille du canevas | Canvas colour and size | C3.3 | 9-10 | 20 | T1,T3,T4,T6 | the canvas is the screen | [KT §4.3.4]
+3 | Couleurs et crayon | C3.5 | Nettoie / initialise | Clear / reset | C3.4 | 9-10 | 18 | T2,T3,T6,T8 | nettoietout also moves the turtle home | [KT §4.3.5]
+4 | Le plan | C4.1 | Aller à x, y | Go to x, y | C3.1 | 9-10 | 22 | T1,T2,T3,T4,T5 | x,y is counted from the turtle | [KT §4.3.1]
+4 | Le plan | C4.2 | vax / vay | Go x / go y | C4.1 | 9-10 | 18 | T1,T3,T4,T6 | vax also changes y | [KT §4.3.1]
+4 | Le plan | C4.3 | positionx / positiony | Position x / y | C4.1 | 10-11 | 18 | T4,T6,T8,T1 | position is a command, not a value | [KT §4.3.2]
+4 | Le plan | C4.4 | Direction absolue | Absolute heading | C1.3 | 10-11 | 22 | T1,T2,T3,T8,T6 | direction and tournedroite are the same | [KT §3.1.2]
+4 | Le plan | C4.5 | Centre | Centre | C4.1 | 9-10 | 18 | T1,T3,T4,T6 | centre erases the drawing | [KT §4.3.1]
+5 | Quand... | C5.1 | Quand le drapeau vert est cliqué | Green flag event | C0.1 | 9-10 | 22 | T1,T3,T4,T6,T9 | the script needs me to click the blocks | [SC p.8]
+5 | Quand... | C5.2 | Quand une touche est pressée | Key pressed event | C5.1 | 9-10 | 22 | T1,T3,T4,T9,T2 | the key works only once | [SC p.10]
+5 | Quand... | C5.3 | Quand on clique sur le lutin | Sprite clicked | C5.1 | 9-10 | 18 | T1,T4,T6,T9 | any click anywhere triggers it | [SC p.8]
+5 | Quand... | C5.4 | Deux scripts en même temps | Two scripts at once | C5.2 | 10-11 | 22 | T3,T6,T8,T9,T2 | programs can only do one thing at a time | [SC p.8-10]
+6 | Mes variables | C6.1 | Une variable, une boîte | A variable is a box | C4.3 | 9-10 | 24 | T3,T4,T6,T8,T1 | the variable holds the whole program | [KT §4.4]
+6 | Mes variables | C6.2 | Affecter une valeur | Assignment | C6.1 | 10-11 | 24 | T2,T3,T4,T6,T8 | $x = $x/3 is a false equation | [KT §4.4]
+6 | Mes variables | C6.3 | Opérateurs mathématiques | Maths operators | C6.2 | 10-11 | 22 | T3,T4,T6,T7,T1 | operations always run left to right | [KT §4.2.1]
+6 | Mes variables | C6.4 | Utiliser l'inspecteur | Using the inspector | C6.2 | 10-11 | 18 | T6,T8,T2,T3 | I cannot see what is inside a variable | [KT §2.3, §4.4]
+6 | Mes variables | C6.5 | Hasard | Random | C6.3 | 10-11 | 20 | T1,T3,T6,T9,T8 | random means unpredictable therefore untestable | [KT §4.3.8]
+7 | Si... sinon | C7.1 | Vrai / faux | Booleans | C6.2 | 10-11 | 22 | T3,T6,T8,T4 | true/false are just words | [KT §4.1.5]
+7 | Si... sinon | C7.2 | Comparer | Comparison operators | C7.1 | 10-11 | 24 | T2,T3,T4,T6,T8 | the single = and the double == are the same | [KT §4.2.3]
+7 | Si... sinon | C7.3 | Si | If | C7.2 | 10-11 | 24 | T1,T2,T3,T4,T5,T9 | the if block runs every time | [KT §4.5.2]
+7 | Si... sinon | C7.4 | Sinon | Else | C7.3 | 10-11 | 22 | T2,T3,T4,T5,T8 | else runs as well as if | [KT §4.5.3]
+7 | Si... sinon | C7.5 | Et / ou / non | And / or / not | C7.2 | 10-11 | 22 | T3,T6,T8,T4 | or means both must be true | [KT §4.2.2]
+8 | Tant que | C8.1 | Tant que | While | C7.3 | 10-11 | 24 | T1,T2,T3,T4,T9 | while and if behave the same | [KT §4.5.4]
+8 | Tant que | C8.2 | Arrêter la boucle | Loop termination | C8.1 | 10-11 | 22 | T2,T3,T6,T8 | a loop always ends by itself | [KT §4.5.4, §4.5.7]
+8 | Tant que | C8.3 | Capteurs | Sensing | C8.1 | 10-11 | 22 | T1,T4,T6,T9,T3 | touching is checked only once | [SC p.8]
+8 | Tant que | C8.4 | Coupure | Break | C8.2 | 10-11 | 18 | T2,T3,T6,T4 | break ends the whole program | [KT §4.5.7]
+9 | Mes propres blocs | C9.1 | Apprends un nouveau bloc | Define a block | C2.3 | 10-11 | 24 | T1,T4,T5,T7,T9 | defining a block runs it | [KT §4.6]
+9 | Mes propres blocs | C9.2 | Paramètres | Parameters | C9.1 | 10-11 | 24 | T1,T2,T4,T6,T9 | the parameter name is the value | [KT §4.6]
+9 | Mes propres blocs | C9.3 | Retourne | Return | C9.2 | 10-11 | 22 | T2,T3,T4,T6,T8 | return prints the value | [KT §4.6]
+9 | Mes propres blocs | C9.4 | Décomposer un problème | Decomposition | C9.2 | 10-11 | 22 | T7,T9,T5,T6 | a big program must be written in one piece | [COM]
+10 | Lutins, costumes, sons | C10.1 | Un lutin est un objet | A sprite is an object | C5.1 | 9-10 | 20 | T1,T4,T6,T9 | there can be only one character | [SC p.10]
+10 | Lutins, costumes, sons | C10.2 | Costumes et animation | Costumes and animation | C10.1 | 9-10 | 22 | T1,T4,T6,T9,T3 | animation needs a video | [SC p.11]
+10 | Lutins, costumes, sons | C10.3 | Sons et tambours | Sounds and drums | C10.1 | 8-9 | 20 | T1,T4,T6,T9 | the sound plays after the program ends | [SC p.4, p.11]
+10 | Lutins, costumes, sons | C10.4 | Arrière-plans | Backdrops | C10.1 | 8-9 | 18 | T1,T4,T6,T9 | the backdrop is a sprite | [SC p.9]
+10 | Lutins, costumes, sons | C10.5 | Effets graphiques | Graphic effects | C10.2 | 9-10 | 20 | T1,T3,T4,T6 | effects are permanent | [SC p.7]
+11 | Je passe au texte | C11.1 | Écrire son programme | Typing a program | C9.3 | 10-11 | 24 | T1,T2,T4,T5,T6 | text code is a different language | [KT §4.1]
+11 | Je passe au texte | C11.2 | Commentaires # | Comments | C11.1 | 10-11 | 20 | T2,T4,T6,T8 | comments are executed | [KT §4.1.1]
+11 | Je passe au texte | C11.3 | Lire une erreur | Reading an error | C11.1 | 10-11 | 24 | T2,T6,T8,T4 | an error means I broke the computer | [KT §1.2, §2.2]
+11 | Je passe au texte | C11.4 | Mots-clés en anglais | English keywords | C11.1 | 10-11 | 22 | T4,T6,T1,T5 | English code is a new language to relearn | [KT §1.1, §6]
+12 | Mon application | C12.1 | Planifier un projet | Planning a project | C9.4 | 10-11 | 20 | T9,T6,T5 | you start by coding | [SC p.13]
+12 | Mon application | C12.2 | Listes | Lists | C6.2 | 10-11 | 24 | T2,T3,T4,T6,T9 | a list is one variable with a long name | [COM]
+12 | Mon application | C12.3 | Écrans et navigation | Screens and navigation | C7.3 | 10-11 | 22 | T1,T4,T9,T6 | an app is one screen | [COM]
+12 | Mon application | C12.4 | Publier et améliorer | Publish and iterate | C12.3 | 10-11 | 20 | T9,T6,T8 | a project is finished when it runs once | [SC p.14]
+ |  | 58 | TOTAL concepts |  |  |  | 1214 | items minimum committed at G1
+
+
+===== SHEET: Banque exercices =====
+Exercise bank sizing and authoring burn-up
+Blue cells are inputs. 'Authored to date' is the weekly input that drives the burn-up. Target pipeline: 120 published items/week at steady state (§12).
+World | Name | Concepts | Items committed | Debug defis | Mini-projects | Bosses | Total artefacts | Authored to date | % complete
+0 | Bonjour Tika | 4 | 74 | 5 | 1 | 1 | 81 | 0 | 0
+1 | La tortue bouge | 5 | 100 | 5 | 1 | 1 | 107 | 0 | 0
+2 | Encore et encore | 4 | 84 | 5 | 1 | 1 | 91 | 0 | 0
+3 | Couleurs et crayon | 5 | 98 | 5 | 1 | 1 | 105 | 0 | 0
+4 | Le plan | 5 | 98 | 5 | 1 | 1 | 105 | 0 | 0
+5 | Quand... | 4 | 84 | 5 | 1 | 1 | 91 | 0 | 0
+6 | Mes variables | 5 | 108 | 5 | 1 | 1 | 115 | 0 | 0
+7 | Si... sinon | 5 | 114 | 5 | 1 | 1 | 121 | 0 | 0
+8 | Tant que | 4 | 86 | 5 | 1 | 1 | 93 | 0 | 0
+9 | Mes propres blocs | 4 | 92 | 5 | 1 | 1 | 99 | 0 | 0
+10 | Lutins, costumes, sons | 5 | 100 | 5 | 1 | 1 | 107 | 0 | 0
+11 | Je passe au texte | 4 | 90 | 5 | 1 | 1 | 97 | 0 | 0
+12 | Mon application | 4 | 86 | 5 | 1 | 2 | 94 | 0 | 0
+ | TOTAL | 58 | 1214 | 65 | 13 | 14 | 1306 | 0 | 0
+ | Weeks of authoring required at 120 items/week |  | 10.9
+ | Assumption: 120 published artefacts per week at steady state — committee planning figure (§12), not yet observed.
+
+
+===== SHEET: Exigences =====
+Requirement register
+Every numbered requirement of the cahier des charges. Priority: M=Must, S=Should, C=Could (MoSCoW). Status is the only column the squads edit.
+ID | Module | Requirement (short) | Source | Priority | Verification method | Gate | Status | Owner
+FR-M1-01 | M1 Language core | Single AST; blocks and text are both projections of it | [COM] | M | Round-trip property test (1000 random programs) | G3 | Not started | 
+FR-M1-02 | M1 Language core | Keyword tables are locale data, incl. abbreviations | [KT §4.3] | M | Locale swap test, program preserved | G3 | Not started | 
+FR-M1-03 | M1 Language core | Types: number, string, boolean, list | [KT §4.1.3-4.1.5] | M | Unit tests per type | G3 | Not started | 
+FR-M1-04 | M1 Language core | Maths, comparison and boolean operators | [KT §4.2] | M | Operator conformance suite | G3 | Not started | 
+FR-M1-05 | M1 Language core | Control: si, sinon, tantque, répète, pour, coupure, sortie | [KT §4.5] | M | Control-flow conformance suite | G3 | Not started | 
+FR-M1-06 | M1 Language core | apprends with parameters and retourne; recursion depth 200 | [KT §4.6] | M | Procedure suite + depth-guard test | G3 | Not started | 
+FR-M1-07 | M1 Language core | Speed settings changeable while running | [KT §2.5.4] | M | Manual + automated step test | G3 | Not started | 
+FR-M1-08 | M1 Language core | Pause and stop at any moment | [KT §2.5.4] | M | Interrupt test under load | G3 | Not started | 
+FR-M1-09 | M1 Language core | Deterministic execution with a seed | [KT §4.3.8] | M | Replay equality test | G3 | Not started | 
+FR-M1-10 | M1 Language core | Child-language errors with code, node and repair; no stack traces | [KT §1.2] | M | Error catalogue review, pass 2 of G4 | G4 | Not started | 
+FR-M1-11 | M1 Language core | Step-resumable interpreter | [COM] | M | Pause/resume equivalence test | G3 | Not started | 
+FR-M1-12 | M1 Language core | Runtime ceilings with a friendly stop panel | [COM] | M | Fuzz + infinite-loop test | G3 | Not started | 
+FR-M2-01 | M2 Block editor | Coloured block families matching the known model | [SC p.3] | M | Design review + child panel | G4 | Not started | 
+FR-M2-02 | M2 Block editor | Drag to script area; click any block or stack to run | [SC p.3,p.5] | M | UI test | G3 | Not started | 
+FR-M2-03 | M2 Block editor | C-blocks visually enclose their body | [SC p.6] | M | Visual regression test | G3 | Not started | 
+FR-M2-04 | M2 Block editor | Editable literals incl. negative values | [SC p.5] | M | UI test | G3 | Not started | 
+FR-M2-05 | M2 Block editor | Dropdown parameters (sound, key, effect, sprite) | [SC p.4,p.8] | M | UI test | G3 | Not started | 
+FR-M2-06 | M2 Block editor | Grab a stack by its top block | [SC p.6] | M | UI test | G3 | Not started | 
+FR-M2-07 | M2 Block editor | Mobile: tap-to-place, bottom-sheet palette, 48dp targets | [COM] | M | Device matrix test + child panel | G4 | Not started | 
+FR-M2-08 | M2 Block editor | Palette scoping per exercise | [COM] | M | Item config test | G3 | Not started | 
+FR-M2-09 | M2 Block editor | Unlimited undo/redo | [KT §2.5.2] | S | UI test | G3 | Not started | 
+FR-M2-10 | M2 Block editor | One-tap contextual help with a runnable example | [KT §2.5.7] | M | Content coverage check (100% of blocks) | G4 | Not started | 
+FR-M3-01 | M3 Text editor | Syntax highlighting by category | [KT §5 t.5.1] | M | Visual regression + contrast audit | G4 | Not started | 
+FR-M3-02 | M3 Text editor | Toggleable line numbers | [KT §2.5.6] | S | UI test | G3 | Not started | 
+FR-M3-03 | M3 Text editor | Red error lines linked to the message | [KT §1.2,§2.2] | M | Error-mapping test | G3 | Not started | 
+FR-M3-04 | M3 Text editor | # comments and one-tap comment/uncomment | [KT §4.1.1] | M | UI test | G3 | Not started | 
+FR-M3-05 | M3 Text editor | Toggle never loses a program; safe fallback on invalid text | [COM] | M | Fuzz round-trip test | G3 | Not started | 
+FR-M3-06 | M3 Text editor | Keyword autocomplete with EN equivalent from World 9 | [COM] | S | UI test | G3 | Not started | 
+FR-M3-07 | M3 Text editor | Mobile programming keyboard row | [COM] | M | Child panel on phone | G4 | Not started | 
+FR-M3-08 | M3 Text editor | Export program as text and as a code image | [KT §2.5.1] | C | Export test | G4 | Not started | 
+FR-M4-01 | M4 Canvas & stage | Two surfaces: canevas (turtle) and scène (sprites) | [KT §4.3.4][SC p.9] | M | Functional test both surfaces | G3 | Not started | 
+FR-M4-02 | M4 Canvas & stage | Vector rendering, zoomable, PNG and SVG export | [KT §2.5.3] | M | Export fidelity test | G3 | Not started | 
+FR-M4-03 | M4 Canvas & stage | Sprites: show/hide, costumes, effects, multiple sprites | [SC p.7,p.10,p.11] | M | Functional test | G3 | Not started | 
+FR-M4-04 | M4 Canvas & stage | Backdrops: library, import, draw, camera (consent-gated) | [SC p.9,p.10][COM] | M | Consent-flow test (seat 13) | G4 | Not started | 
+FR-M4-05 | M4 Canvas & stage | Sound: library, drums/notes, import, record (consent-gated) | [SC p.4,p.11] | M | Consent-flow test (seat 13) | G4 | Not started | 
+FR-M4-06 | M4 Canvas & stage | Inspector: live variables, functions, execution tree | [KT §2.3] | M | Functional test + lesson C6.4 | G3 | Not started | 
+FR-M4-07 | M4 Canvas & stage | Slow/step highlights both the block and the text line | [KT §2.5.4] | M | Visual test | G3 | Not started | 
+FR-M4-08 | M4 Canvas & stage | Ghosted future-path overlay in step mode | [COM] | C | Child panel value test | G4 | Not started | 
+FR-M5-01 | M5 Tutorial engine | Tutorials are authored data, not code | [COM] | M | Add a tutorial without a build | G3 | Not started | 
+FR-M5-02 | M5 Tutorial engine | Spotlight, ghost-block demo, single call to action | [COM] | M | Design review | G4 | Not started | 
+FR-M5-03 | M5 Tutorial engine | FR+EN voice-over; text always visible; CE2/CM1 reading level | [COM] | M | Readability scoring of 100% of strings | G4 | Not started | 
+FR-M5-04 | M5 Tutorial engine | No skip on first pass; skippable on repeat | [COM] | S | UI test | G3 | Not started | 
+FR-M5-05 | M5 Tutorial engine | A tutorial never touches the child's own project | [COM] | M | Isolation test | G3 | Not started | 
+FR-M5-06 | M5 Tutorial engine | Every tutorial names the concept in child words | [COM] | M | Content review pass 2 | G4 | Not started | 
+FR-M6-01 | M6 Grading | Three grading signals: behavioural, structural, process | [COM] | M | Grader test suite with negative cases | G3 | Not started | 
+FR-M6-02 | M6 Grading | No pass depends on whitespace, layout or independent order | [COM] | M | Equivalence-class tests | G3 | Not started | 
+FR-M6-03 | M6 Grading | Diagnostic failure messages in the child's language | [COM] | M | Content review of 100% of messages | G4 | Not started | 
+FR-M6-04 | M6 Grading | Grading runs entirely on device | [COM] | M | Airplane-mode soak test | G3 | Not started | 
+FR-M6-05 | M6 Grading | Two hints per item; never reveals the solution | [COM] | M | Content completeness gate in the CMS | G4 | Not started | 
+FR-M6-06 | M6 Grading | Open-build rubric shown before the child starts | [COM] | M | UI test | G3 | Not started | 
+FR-M6-07 | M6 Grading | Item interactive in <=1.2s on the reference device | [COM] | M | Performance test | G3 | Not started | 
+FR-M6-08 | M6 Grading | Every attempt persists the program snapshot | [COM] | M | Storage test + dashboard check | G3 | Not started | 
+FR-M6-09 | M6 Grading | Items versioned; fixes never invalidate past mastery | [COM] | M | Migration test | G4 | Not started | 
+FR-M7-01 | M7 Progression | Mastery rule of §4.6 computed on device | [COM] | M | Simulation against synthetic learners | G3 | Not started | 
+FR-M7-02 | M7 Progression | Daily mix 60/20/20 current/interleaved/decayed | [COM] | M | Scheduler unit test | G3 | Not started | 
+FR-M7-03 | M7 Progression | Adaptive difficulty with a D1 floor after two failures | [COM] | M | Scheduler unit test | G3 | Not started | 
+FR-M7-04 | M7 Progression | 6-item adaptive placement at first launch | [COM] | S | Pilot with 30 children | G4 | Not started | 
+FR-M7-05 | M7 Progression | Concept state machine Non vu -> Maîtrisé -> À revoir | [COM] | M | State test | G3 | Not started | 
+FR-M7-06 | M7 Progression | Progress shown as a map with 0-3 stars | [COM] | S | Child panel | G4 | Not started | 
+FR-M7-07 | M7 Progression | No progression may be bought or unlocked by an ad | [COM] | M | Seat 13 audit | G4 | Not started | 
+FR-M8-01 | M8 Motivation | Rewards are competence-linked | [COM] | M | Design review seat 6 + seat 5 | G4 | Not started | 
+FR-M8-02 | M8 Motivation | Child-set daily goal with a stop message | [COM] | M | UI test + child panel | G4 | Not started | 
+FR-M8-03 | M8 Motivation | Forgiving streaks, two free days | [COM] | S | Logic test | G3 | Not started | 
+FR-M8-04 | M8 Motivation | Prohibited mechanics list is auditable and empty | [COM] | M | G4 pass 5 audit | G4 | Not started | 
+FR-M8-05 | M8 Motivation | Only self-comparison and opt-in class effort boards | [COM] | M | Design review | G4 | Not started | 
+FR-M9-01 | M9 Studio | Unlimited projects; blank, template or remix | [SC p.14] | M | Functional test | G3 | Not started | 
+FR-M9-02 | M9 Studio | Full palette, multi-sprite, sounds, custom blocks, lists | [SC p.4-11] | M | Functional test | G3 | Not started | 
+FR-M9-03 | M9 Studio | Autosave <=20s and on background; 10 local versions | [COM] | M | Force-kill test | G3 | Not started | 
+FR-M9-04 | M9 Studio | Full-screen presentation mode | [SC p.14] | S | UI test | G3 | Not started | 
+FR-M9-05 | M9 Studio | Export project, PNG/SVG, 30s screen capture | [COM] | C | Export test | G4 | Not started | 
+FR-M9-06 | M9 Studio | Recettes panel with 20+ patterns | [SC p.13] | S | Content count check | G4 | Not started | 
+FR-M10-01 | M10 Sharing | Sharing off by default; guardian/teacher action required | [COM] | M | Seat 13 audit | G4 | Not started | 
+FR-M10-02 | M10 Sharing | Shared item carries title, thumbnail, instructions, credits | [SC p.14] | M | Functional test | G4 | Not started | 
+FR-M10-03 | M10 Sharing | No free-text comments in v1; icon reactions only | [COM] | M | Seat 13 audit | G4 | Not started | 
+FR-M10-04 | M10 Sharing | Generated display names; never typed | [COM] | M | Seat 13 audit | G4 | Not started | 
+FR-M10-05 | M10 Sharing | One-tap remix with attribution | [SC p.14] | S | Functional test | G4 | Not started | 
+FR-M10-06 | M10 Sharing | Report button; triage <24h; remove on doubt | [COM] | M | Moderation drill | G4 | Not started | 
+FR-M10-07 | M10 Sharing | Class gallery is the default scope | [COM] | M | Functional test | G4 | Not started | 
+FR-M11-01 | M11 Parent space | PIN/biometric gate children cannot pass | [COM] | M | Child panel attempt test | G4 | Not started | 
+FR-M11-02 | M11 Parent space | Plain-language weekly summary in one screen | [COM] | M | Parent panel test (10 parents) | G4 | Not started | 
+FR-M11-03 | M11 Parent space | Controls: time cap, sharing, camera, mic, sync, export, delete | [COM] | M | Functional + compliance test | G4 | Not started | 
+FR-M11-04 | M11 Parent space | No ads; purchase surfaces only in the parent space | [COM] | M | Seat 13 audit | G4 | Not started | 
+FR-M12-01 | M12 Classroom | Class code join with first name only | [COM] | M | Functional test | G4 | Not started | 
+FR-M12-02 | M12 Classroom | Assign content; live mastery grid per pupil | [COM] | M | Pilot classroom | G4 | Not started | 
+FR-M12-03 | M12 Classroom | Offline classroom seeding and collection over local Wi-Fi | [COM] | M | No-internet classroom drill | G4 | Not started | 
+FR-M12-04 | M12 Classroom | Printable progress sheet and unplugged worksheets | [COM] | S | Print test | G4 | Not started | 
+FR-M12-05 | M12 Classroom | Projection mode, big font, high contrast | [COM] | S | Classroom test | G4 | Not started | 
+FR-M13-01 | M13 Accounts | Full functionality without an account; picture-password | [COM] | M | Functional test | G3 | Not started | 
+FR-M13-02 | M13 Accounts | Accounts created only by guardian/teacher; minimal data | [COM] | M | Seat 13 audit | G4 | Not started | 
+FR-M13-03 | M13 Accounts | Multi-profile on one device | [COM] | M | Functional test | G3 | Not started | 
+FR-M13-04 | M13 Accounts | Sync conflicts create copies, never silent overwrite | [COM] | M | Conflict test matrix | G4 | Not started | 
+FR-M13-05 | M13 Accounts | Self-service export and deletion within 30 days | [COM] | M | Compliance test | G4 | Not started | 
+FR-M14-01 | M14 Offline | Whole curriculum usable offline after one download | [COM] | M | Airplane-mode full-curriculum soak | G3 | Not started | 
+FR-M14-02 | M14 Offline | Signed versioned packs, <=12MB/world, <=25MB base app | [COM] | M | Size budget check in CI | G3 | Not started | 
+FR-M14-03 | M14 Offline | Resumable Wi-Fi download; sideload from teacher device or SD | [COM] | M | Field test | G4 | Not started | 
+FR-M14-04 | M14 Offline | Telemetry queues locally; nothing blocks on the network | [COM] | M | Network-chaos test | G3 | Not started | 
+FR-M15-01 | M15 Localisation | Interface, keywords and content localised independently | [KT §6] | M | Locale coverage report | G3 | Not started | 
+FR-M15-02 | M15 Localisation | FR and EN complete at v1; Wolof interface v1.2 | [COM] | M | Coverage gate at 100% | G4 | Not started | 
+FR-M15-03 | M15 Localisation | Keyword language hot-swappable mid-session | [KT §2.5.6] | M | Swap test | G3 | Not started | 
+FR-M15-04 | M15 Localisation | No concatenated fragments; full sentences with context notes | [COM] | M | CMS lint rule | G3 | Not started | 
+FR-M15-05 | M15 Localisation | Locale number format and keyword pronunciation | [KT §4.1.3] | S | Audio review | G4 | Not started | 
+FR-M16-01 | M16 Accessibility | WCAG 2.2 AA; never colour alone — icon and shape too | [COM] | M | External accessibility audit | G4 | Not started | 
+FR-M16-02 | M16 Accessibility | Narration of every instruction, question and error | [COM] | M | Audio coverage report | G4 | Not started | 
+FR-M16-03 | M16 Accessibility | Dyslexia font, 100-200% text, reduced motion | [COM] | S | Functional test | G4 | Not started | 
+FR-M16-04 | M16 Accessibility | Keyboard-only operation incl. block placement; SR labels | [COM] | M | Screen-reader test script | G4 | Not started | 
+FR-M16-05 | M16 Accessibility | Colour-blind safe palettes | [COM] | M | Simulation audit | G4 | Not started | 
+FR-M17-01 | M17 Analytics | Fixed event taxonomy | [COM] | M | Event schema test | G3 | Not started | 
+FR-M17-02 | M17 Analytics | Pseudonymous; no ad IDs; no data-sale SDKs | [COM] | M | Seat 13 SDK allow-list audit | G4 | Not started | 
+FR-M17-03 | M17 Analytics | Item health metrics; flag items outside 35-97% pass rate | [COM] | M | Report generation test | G4 | Not started | 
+FR-M17-04 | M17 Analytics | Weekly curriculum health report to the Committee | [COM] | M | Report delivered for 4 consecutive weeks | G4 | Not started | 
+FR-M18-01 | M18 CMS | Non-engineers author everything with preview-as-child | [COM] | M | Author usability test | G4 | Not started | 
+FR-M18-02 | M18 CMS | Publication gate: concept, difficulty, 2 hints, FR+EN, reference solution | [COM] | M | CMS rule test | G3 | Not started | 
+FR-M18-03 | M18 CMS | Author -> pedagogy -> localisation -> publish with audit trail | [COM] | M | Workflow test | G4 | Not started | 
+FR-M18-04 | M18 CMS | Bulk import/export of item banks | [COM] | S | Round-trip export test | G4 | Not started | 
+NFR-PERF-01 | NFR Performance | Cold start <=3.0s on the reference device | [COM] | M | Device matrix benchmark | G3 | Not started | 
+NFR-PERF-02 | NFR Performance | >=50fps drag; >=30fps with 2000 segments | [COM] | M | Frame-timing capture | G3 | Not started | 
+NFR-PERF-03 | NFR Performance | Run to first visible change <=300ms | [COM] | M | Instrumented timing | G3 | Not started | 
+NFR-SIZE-01 | NFR Footprint | Base <=25MB; full curriculum <=180MB | [COM] | M | CI size budget | G3 | Not started | 
+NFR-BATT-01 | NFR Battery | <=8% battery per 30-min session | [COM] | S | Battery historian run | G4 | Not started | 
+NFR-OFF-01 | NFR Availability | 100% of learning features work offline | [COM] | M | Airplane-mode soak | G3 | Not started | 
+NFR-REL-01 | NFR Reliability | >=99.5% crash-free sessions; no data loss on kill | [COM] | M | Field telemetry + kill test | G4 | Not started | 
+NFR-SEC-01 | NFR Security | TLS1.3; signed packs; no RCE path in the interpreter | [COM] | M | Pen test + interpreter fuzzing | G4 | Not started | 
+NFR-PRIV-01 | NFR Privacy | Data minimisation by default (§13) | [COM] | M | DPIA + seat 13 sign-off | G4 | Not started | 
+NFR-COMP-01 | NFR Compatibility | Android 8+, iOS 14+, Win10+, macOS12+, Linux LTS, browser | [COM] | M | Device matrix | G4 | Not started | 
+NFR-A11Y-01 | NFR Accessibility | WCAG 2.2 AA verified externally before launch | [COM] | M | External audit report | G4 | Not started | 
+NFR-I18N-01 | NFR Localisation | No hard-coded strings; coverage enforced in CI | [COM] | M | CI lint | G3 | Not started | 
+NFR-MAINT-01 | NFR Maintainability | Adding a world requires no app release | [COM] | M | Pack-only release drill | G4 | Not started | 
+NFR-COST-01 | NFR Economics | Marginal cost per child per month within budget line | [COM] | S | Cost model review | G5 | Not started | 
+128 | Total requirements | 108 Must / 17 Should / 3 Could
+
+
+===== SHEET: Benchmark =====
+Gate G5 — market challenge scoring matrix
+Scores 0-5. KODO target = the level we commit to. Competitor scores are COMMITTEE ESTIMATES, provisional until the §15.4 hands-on protocol is completed and an evidence link is recorded.
+Product | Category | Concept coverage 8-11 | Mastery evidence, not completion | Misconception handling | Volume of graded practice | Onboarding first 15 minutes | Clarity of instruction | Motivation without dark patterns | Fits a 20-min session | Works fully offline | Runs on 2GB Android | Free / affordable | French-first content quality | Creation ceiling | Publish and show others | Remix and learn from others | Block <-> text bridge | No ads, no purchase to the child | No open chat / safe social | Privacy and data minimisation | Parent and teacher control | Weighted score | Evidence link | Scored by / date
+WEIGHT (edit) | sum must be 100 | 7 | 7 | 5 | 6 | 5 | 5 | 5 | 4 | 6 | 5 | 5 | 5 | 5 | 3 | 3 | 6 | 5 | 5 | 4 | 4 | 100
+KODO (target v1) | This product | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 3 | 3 | 4 | 5 | 5 | 5 | 5 | 5 | 96.2 |  | 
+Scratch (MIT) | Block creation | 4 | 1 | 1 | 1 | 4 | 3 | 4 | 2 | 2 | 2 | 5 | 4 | 5 | 5 | 5 | 1 | 5 | 3 | 4 | 2 | 60.2 |  | 
+ScratchJr | Block creation (5-7) | 2 | 1 | 1 | 1 | 5 | 4 | 4 | 4 | 5 | 4 | 5 | 4 | 2 | 1 | 1 | 0 | 5 | 5 | 5 | 3 | 61.2 |  | 
+Snap! | Block creation (advanced) | 5 | 1 | 1 | 1 | 2 | 2 | 2 | 1 | 3 | 1 | 5 | 2 | 5 | 3 | 3 | 2 | 5 | 4 | 4 | 2 | 53.8 |  | 
+Code.org CS Fundamentals | Curriculum, free | 5 | 3 | 3 | 4 | 5 | 5 | 4 | 4 | 2 | 3 | 5 | 4 | 3 | 2 | 2 | 2 | 5 | 5 | 4 | 5 | 75.6 |  | 
+Tynker | Paid children's course | 4 | 3 | 2 | 4 | 4 | 4 | 3 | 4 | 2 | 3 | 2 | 2 | 4 | 3 | 3 | 3 | 3 | 4 | 3 | 4 | 64 |  | 
+Kodable | Paid children's course | 3 | 3 | 2 | 3 | 5 | 5 | 3 | 5 | 2 | 3 | 2 | 2 | 2 | 1 | 1 | 1 | 3 | 5 | 4 | 5 | 60 |  | 
+CodeSpark Academy | Paid children's course | 3 | 3 | 2 | 4 | 5 | 5 | 3 | 5 | 4 | 3 | 2 | 3 | 2 | 1 | 2 | 0 | 3 | 5 | 4 | 4 | 63.2 |  | 
+Lightbot | Puzzle game | 2 | 2 | 2 | 3 | 5 | 4 | 4 | 5 | 5 | 4 | 4 | 3 | 1 | 0 | 0 | 0 | 3 | 5 | 4 | 2 | 59 |  | 
+Blockly Games | Turtle lineage, free | 3 | 2 | 2 | 3 | 4 | 3 | 2 | 4 | 3 | 4 | 5 | 4 | 2 | 1 | 1 | 4 | 5 | 5 | 4 | 2 | 64.2 |  | 
+Turtle Academy | Turtle lineage, free | 3 | 2 | 2 | 3 | 3 | 3 | 2 | 4 | 2 | 3 | 5 | 3 | 2 | 1 | 1 | 4 | 5 | 5 | 4 | 2 | 60 |  | 
+KTurtle (KDE) | Turtle lineage, desktop | 4 | 1 | 2 | 2 | 3 | 4 | 1 | 3 | 5 | 2 | 5 | 5 | 3 | 1 | 1 | 3 | 5 | 5 | 5 | 2 | 63.2 |  | 
+Swift Playgrounds | Text-code learning | 4 | 2 | 2 | 3 | 5 | 5 | 4 | 4 | 4 | 0 | 5 | 3 | 5 | 3 | 2 | 2 | 5 | 5 | 4 | 3 | 70 |  | 
+Grasshopper / Mimo | Text-code learning | 3 | 3 | 2 | 4 | 5 | 4 | 3 | 5 | 2 | 4 | 4 | 2 | 1 | 1 | 1 | 1 | 3 | 5 | 3 | 2 | 59 |  | 
+MIT App Inventor / Thunkable | Child app building | 3 | 1 | 1 | 1 | 2 | 2 | 1 | 1 | 1 | 2 | 4 | 3 | 5 | 4 | 3 | 2 | 4 | 4 | 3 | 2 | 47.4 |  | 
+Minecraft Edu / Roblox Studio | Engagement ceiling | 2 | 1 | 1 | 1 | 3 | 2 | 5 | 1 | 3 | 1 | 2 | 3 | 5 | 5 | 5 | 3 | 2 | 1 | 2 | 3 | 48.4 |  | 
+Duolingo (mechanics benchmark) | Not a competitor | 0 | 5 | 4 | 5 | 5 | 5 | 3 | 5 | 3 | 5 | 5 | 5 | 0 | 0 | 0 | 0 | 2 | 4 | 3 | 2 | 62.6 |  | 
+Criterion family map
+ |  | Pedagogy | Pedagogy | Pedagogy | Pedagogy | Experience | Experience | Experience | Experience | Reach | Reach | Reach | Reach | Creation | Creation | Creation | Creation | Trust | Trust | Trust | Trust
+Method: for each product, a committee pair (one pedagogy seat, one experience seat) completes 60 minutes hands-on with a child present, a first-15-minutes teardown, three 'steal this' findings and one 'we are beaten here' finding. Findings go to the improvement backlog. No score is final without an evidence link. |  |  |  |  |  |  |  |  |  |  | 
+
+
+===== SHEET: Backlog amelioration =====
+Improvement backlog (RICE-scored)
+Fed by G4 findings, G5 challenge findings, child panel observation and item-health telemetry. RICE = Reach x Impact x Confidence / Effort.
+ID | Source | Finding / opportunity | Proposed response | Module | Severity | Reach (0-1) | Impact (0.25-3) | Confidence (0-1) | Effort (person-weeks) | RICE | Owner | Loop | Status
+IMP-001 | G5 Scratch | Scratch's creation ceiling and gallery scale will out-pull us once a child reaches World 10 | Do not compete on gallery; ship project export/import so a KODO graduate can continue in Scratch, and market the bridge | M9 | S2 | 0.6 | 2 | 0.8 | 4 | 0.24 |  |  | Loop 1 | Open
+IMP-002 | G5 Code.org | Code.org offers a complete free classroom ecosystem with teacher training | Ship printable unplugged worksheets + a 6-hour teacher onboarding, and price the school tier at zero for public schools in launch markets | M12 | S2 | 0.5 | 2 | 0.7 | 6 | 0.12 |  |  | Loop 1 | Open
+IMP-003 | G5 Duolingo | Their scheduling and mastery mechanics are more refined than our first scheduler | Adopt spaced-repetition scheduling with a forgetting curve per concept; A/B against the 60/20/20 fixed mix | M7 | S3 | 0.9 | 2 | 0.6 | 5 | 0.22 |  |  | Loop 1 | Open
+IMP-004 | G5 CodeSpark | Their production polish and non-reader onboarding beat ours at age 8 | Fund a dedicated illustration/motion pass for Worlds 0-2 and remove all reading dependency from the first 15 minutes | M5 | S2 | 0.4 | 2 | 0.8 | 8 | 0.08 |  |  | Loop 1 | Open
+IMP-005 | Child panel | Children abandon T1 build-to-target items when the target image is ambiguous | Add an animated target preview showing the drawing being made once, before the child starts | M6 | S2 | 0.8 | 2 | 0.9 | 2 | 0.72 |  |  | Loop 1 | Open
+IMP-006 | Item telemetry | Items below 35% pass rate cluster in C6.2 (assignment) and C7.2 (comparison) | Rewrite those item sets with a stronger worked-example fade; add three misconception items each | M18 | S2 | 0.5 | 3 | 0.9 | 3 | 0.45 |  |  | Loop 1 | Open
+IMP-007 | G4 pass 3 | Hesitation >8s at the block/text toggle: children do not know what it does | Replace the toggle icon with an animated first-use demonstration and a one-line label | M3 | S3 | 0.7 | 1 | 0.9 | 1 | 0.63 |  |  | Loop 1 | Open
+IMP-008 | Teacher pilot | Classroom offline seeding is too slow over one hotspot for 35 devices | Add SD-card and USB pack sideloading with a checksum verification screen | M14 | S2 | 0.3 | 2 | 0.7 | 3 | 0.14 |  |  | Loop 1 | Open
+IMP-009 | Seat 13 | Camera-based backdrop capture creates a moderation surface we cannot staff at launch | Disable camera capture in v1; keep import from gallery behind parental consent | M4 | S1 | 0.2 | 3 | 1 | 1 | 0.6 |  |  | Loop 1 | Open
+IMP-010 | G5 Swift Playgrounds | Their text-code experience on tablet is better than our mobile text editor | Invest in the programming keyboard row and inline error affordances before World 11 ships | M3 | S2 | 0.4 | 2 | 0.8 | 4 | 0.16 |  |  | Loop 1 | Open
+ |  | Severity: S1 = a child can be harmed, lose work or be blocked from learning · S2 = a concept is taught wrongly or a core flow fails on the reference device · S3 = friction or polish.
+
+
+===== SHEET: Revue G4 =====
+Gate G4 — deep review finding log (template)
+One row per finding. Six passes per §14.2. A finding closes on evidence, not on a merged fix.
+Finding ID | Pass | Module / artefact | Requirement | What was observed (fact) | Why it matters | Severity | Owner | Fix | Re-test date | Evidence link | Status
+G4-001 | Pass 1 — conformance | M6 Grading | FR-M6-02 | A correct square built with the turn before the move is graded as failed | The grader penalises a valid alternative program; children learn that only one order is 'right' | S2 | Runtime lead | Normalise by path signature, not statement order |  |  | 
+G4-002 | Pass 2 — content | World 3 items | FR-M6-03 | Failure message on item C3.3-07 reads 'Valeur invalide' | A technical string reached a child's screen; violates FR-M1-10 | S1 | Curriculum | Rewrite to the diagnostic pattern; add CMS lint for banned strings |  |  | 
+G4-003 | Pass 3 — child run | M2 Block editor | FR-M2-07 | Two 8-year-olds could not drag a block accurately on a 5-inch screen; both abandoned | Core interaction fails the reference device and the youngest band | S1 | UX + Eng | Ship tap-to-place as the default on phones |  |  | 
+G4-004 | Pass 5 — safety | M10 Sharing | FR-M10-04 | Display-name generator produced a name containing a real first name | A child could be identified from a shared project | S1 | Backend | Curate the word list; add a blocklist test in CI |  |  | 
+ |  |  |  |  |  |  |  |  |  |  | 
+Add one row per finding. The first four rows are worked examples of the expected level of detail; delete them before use.
+
+
+===== SHEET: Risques =====
+Risk register
+Probability and impact 1-5. Exposure = P x I (formula).
+# | Risk | Category | P (1-5) | I (1-5) | Exposure | Response | Owner | Review date
+R1 | Item authoring under-delivers; the bank is thin and mastery becomes a claim rather than a measurement | Content | 4 | 5 | 20 | Templates + partner-teacher pool + weekly burn-up at Committee. Scope is cut in worlds, never in items per concept. | Seat 4 | 
+R2 | Block editor performance fails on 2GB Android | Engineering | 3 | 5 | 15 | Performance budget fixed in P1; the reference device is the gate device; custom painter, no webview. | Seat 9 | 
+R3 | Dual representation round-tripping is harder than assumed | Engineering | 4 | 5 | 20 | Prototype the AST round-trip in P1 before anything else; fallback is read-only text through World 6. | Seat 8 | 
+R4 | Offline content packs exceed device storage | Engineering | 3 | 3 | 9 | Per-world size budget in CI; Opus audio; vector art. | Seat 9 | 
+R5 | Safety and compliance rework arrives late | Compliance | 2 | 5 | 10 | Seat 13 embedded from P1; consent flows designed before the first account screen exists. | Seat 13 | 
+R6 | We build a smaller Scratch and lose on every axis | Strategy | 3 | 5 | 15 | The G5 protocol exists to detect this; the differentiators of §15.3 are treated as requirements, not marketing. | Chair | 
+R7 | Voice-over cost and re-recording after content changes | Content | 4 | 2 | 8 | Freeze narration copy per world before recording; hold a 15% re-record reserve. | Seat 11 | 
+R8 | Committee decision drift: enthusiasm outranks evidence | Governance | 3 | 4 | 12 | Dissent log, consent rule, third-line independent review before G5 and before launch. | Seat 2 | 
+R9 | No sustainable funding model decided (Annex E, Q1) | Business | 4 | 4 | 16 | Product Owner decision required at G1; roadmap P2 onward depends on it. | Product Owner | 
+ | R9 is the only risk whose response is outside the Committee's authority.

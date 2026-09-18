@@ -1,0 +1,69 @@
+name: CI
+
+# Eight gates, and every one of them is a requirement from the cahier des charges rather
+# than a habit: a green build here is the evidence §14.1 asks for, not a feeling.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Gate 1 — the machine-readable spec still matches the Committee's workbook.
+      # A requirement that exists in one and not the other is how traceability dies.
+      - name: Spec is in step with the workbook
+        run: |
+          python3 tools/gen_spec.py
+          git diff --exit-code spec/ || {
+            echo "::error::spec/*.json is stale — run tools/gen_spec.py and commit"
+            exit 1
+          }
+
+      - name: Install package dependencies
+        working-directory: packages/kodo_lang
+        run: dart pub get
+
+      # Gate 2 — static analysis, warnings are failures.
+      - name: Analyse
+        working-directory: packages/kodo_lang
+        run: dart analyze --fatal-infos --fatal-warnings
+
+      # Gate 3 — formatting, so a diff shows a change of meaning and nothing else.
+      - name: Format
+        working-directory: packages/kodo_lang
+        run: dart format --output=none --set-exit-if-changed .
+
+      # Gate 4 — the seven M1 acceptance tests and the semantics suite. This includes the
+      # localisation coverage gate (NFR-I18N-01) and the error-catalogue completeness gate
+      # (FR-M1-10): a missing FR or EN message fails the build rather than reaching a child.
+      - name: Test
+        working-directory: packages/kodo_lang
+        run: dart test --reporter=expanded
+
+      # Gate 5 — every requirement marked done is named by a test, M1 imports no platform
+      # library, and no code references a requirement nobody agreed.
+      - name: Requirement traceability
+        run: dart tools/trace_check.dart
+
+      - name: Publish the evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-evidence
+          path: |
+            build/traceability.md
+            packages/kodo_lang/build/m1_performance.json
+          if-no-files-found: warn
