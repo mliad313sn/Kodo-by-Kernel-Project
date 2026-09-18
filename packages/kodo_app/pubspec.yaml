@@ -1,0 +1,28 @@
+name: kodo_app
+description: >-
+  KODO modules M2 and M3 — the block editor and the text editor, and the toggle between
+  them. This is the first package with a surface a child touches, so it is the first one
+  where the accessibility, touch-target and reading-level rules bite.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  kodo_content:
+    path: ../kodo_content
+  kodo_grader:
+    path: ../kodo_grader
+  kodo_lang:
+    path: ../kodo_lang
+  kodo_stage:
+    path: ../kodo_stage
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0

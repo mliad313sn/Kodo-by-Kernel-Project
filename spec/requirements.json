@@ -156,8 +156,8 @@
       "priority": "M",
       "verification": "Design review + child panel",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M2-02",
@@ -168,8 +168,8 @@
       "priority": "M",
       "verification": "UI test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M2-03",
@@ -180,8 +180,8 @@
       "priority": "M",
       "verification": "Visual regression test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M2-04",
@@ -192,8 +192,8 @@
       "priority": "M",
       "verification": "UI test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M2-05",
@@ -205,7 +205,7 @@
       "verification": "UI test",
       "gate": "G3",
       "status": "Not started",
-      "owner": ""
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M2-06",
@@ -217,7 +217,7 @@
       "verification": "UI test",
       "gate": "G3",
       "status": "Not started",
-      "owner": ""
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M2-07",
@@ -228,8 +228,8 @@
       "priority": "M",
       "verification": "Device matrix test + child panel",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M2-08",
@@ -240,8 +240,8 @@
       "priority": "M",
       "verification": "Item config test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M2-09",
@@ -252,8 +252,8 @@
       "priority": "S",
       "verification": "UI test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M2-10",
@@ -264,8 +264,8 @@
       "priority": "M",
       "verification": "Content coverage check (100% of blocks)",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M2 squad"
     },
     {
       "id": "FR-M3-01",
@@ -276,8 +276,8 @@
       "priority": "M",
       "verification": "Visual regression + contrast audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M3 squad"
     },
     {
       "id": "FR-M3-02",
@@ -288,8 +288,8 @@
       "priority": "S",
       "verification": "UI test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M3 squad"
     },
     {
       "id": "FR-M3-03",
@@ -300,8 +300,8 @@
       "priority": "M",
       "verification": "Error-mapping test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M3 squad"
     },
     {
       "id": "FR-M3-04",
@@ -312,8 +312,8 @@
       "priority": "M",
       "verification": "UI test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M3 squad"
     },
     {
       "id": "FR-M3-05",
@@ -324,8 +324,8 @@
       "priority": "M",
       "verification": "Fuzz round-trip test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M3 squad"
     },
     {
       "id": "FR-M3-06",
@@ -337,7 +337,7 @@
       "verification": "UI test",
       "gate": "G3",
       "status": "Not started",
-      "owner": ""
+      "owner": "M3 squad"
     },
     {
       "id": "FR-M3-07",
@@ -348,8 +348,8 @@
       "priority": "M",
       "verification": "Child panel on phone",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M3 squad"
     },
     {
       "id": "FR-M3-08",
@@ -361,7 +361,7 @@
       "verification": "Export test",
       "gate": "G4",
       "status": "Not started",
-      "owner": ""
+      "owner": "M3 squad"
     },
     {
       "id": "FR-M4-01",
@@ -1188,7 +1188,7 @@
       "priority": "M",
       "verification": "Swap test",
       "gate": "G3",
-      "status": "Not started",
+      "status": "Done",
       "owner": ""
     },
     {
@@ -1224,7 +1224,7 @@
       "priority": "M",
       "verification": "External accessibility audit",
       "gate": "G4",
-      "status": "Not started",
+      "status": "In progress",
       "owner": ""
     },
     {
@@ -1559,8 +1559,8 @@
       "priority": "S",
       "verification": "Renderer test over the shared AST; no second parser in the dependency graph",
       "gate": "G4",
-      "status": "Not started",
-      "owner": "",
+      "status": "In progress",
+      "owner": "M3 squad",
       "moduleId": "M3"
     }
   ]
