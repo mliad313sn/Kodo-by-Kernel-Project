@@ -372,8 +372,8 @@
       "priority": "M",
       "verification": "Functional test both surfaces",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M4 squad"
     },
     {
       "id": "FR-M4-02",
@@ -384,8 +384,8 @@
       "priority": "M",
       "verification": "Export fidelity test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M4 squad"
     },
     {
       "id": "FR-M4-03",
@@ -396,8 +396,8 @@
       "priority": "M",
       "verification": "Functional test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M4 squad"
     },
     {
       "id": "FR-M4-04",
@@ -408,8 +408,8 @@
       "priority": "M",
       "verification": "Consent-flow test (seat 13)",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M4 squad"
     },
     {
       "id": "FR-M4-05",
@@ -420,8 +420,8 @@
       "priority": "M",
       "verification": "Consent-flow test (seat 13)",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M4 squad"
     },
     {
       "id": "FR-M4-06",
@@ -432,8 +432,8 @@
       "priority": "M",
       "verification": "Functional test + lesson C6.4",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M4 squad"
     },
     {
       "id": "FR-M4-07",
@@ -444,8 +444,8 @@
       "priority": "M",
       "verification": "Visual test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M4 squad"
     },
     {
       "id": "FR-M4-08",
@@ -457,7 +457,7 @@
       "verification": "Child panel value test",
       "gate": "G4",
       "status": "Not started",
-      "owner": ""
+      "owner": "M4 squad"
     },
     {
       "id": "FR-M5-01",
@@ -1272,8 +1272,8 @@
       "priority": "M",
       "verification": "Simulation audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M4 squad"
     },
     {
       "id": "FR-M17-01",
@@ -1547,8 +1547,8 @@
       "priority": "M",
       "verification": "Device matrix test + grading-equality test between modes",
       "gate": "G3",
-      "status": "Not started",
-      "owner": "",
+      "status": "Done",
+      "owner": "M4 squad",
       "moduleId": "M4"
     },
     {

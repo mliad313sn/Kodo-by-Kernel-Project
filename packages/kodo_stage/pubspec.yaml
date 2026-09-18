@@ -1,0 +1,19 @@
+name: kodo_stage
+description: >-
+  KODO module M4 — the world a program acts on. The turtle canevas, the sprite scène, the
+  inspector, and the export and comparison surfaces the grader depends on. Pure Dart, so
+  the same drawing and the same verdict come out on every platform; the Flutter painter
+  sits on top of this and adds no geometry of its own.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  kodo_lang:
+    path: ../kodo_lang
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0

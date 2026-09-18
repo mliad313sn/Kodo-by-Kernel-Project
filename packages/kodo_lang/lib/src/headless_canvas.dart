@@ -19,6 +19,7 @@ class HeadlessCanvas implements Surface {
   double height;
 
   final List<Segment> segments = [];
+  final List<CanvasText> _texts = [];
   final List<TurtlePose> _trace = [];
   final List<String> output = [];
   final List<String> messages = [];
@@ -158,11 +159,15 @@ class HeadlessCanvas implements Surface {
       canvasBackground = (_channel(r) << 16) | (_channel(g) << 8) | _channel(b);
 
   @override
-  void clear() => segments.clear();
+  void clear() {
+    segments.clear();
+    _texts.clear();
+  }
 
   @override
   void reset() {
     segments.clear();
+    _texts.clear();
     _trace.clear();
     canvasBackground = 0xFFFFFF;
     _applyReset();
@@ -175,7 +180,13 @@ class HeadlessCanvas implements Surface {
   void hide() => visible = false;
 
   @override
-  void write(String text) => output.add(text);
+  void write(String text) {
+    output.add(text);
+    _texts.add(CanvasText(_x, _y, text, fontPointSize, _penColor));
+  }
+
+  @override
+  List<CanvasText> get texts => List.unmodifiable(_texts);
 
   @override
   void fontSize(num size) => fontPointSize = size.toDouble();
@@ -205,7 +216,11 @@ class HeadlessCanvas implements Surface {
     }
 
     final lines = segments.map(canonical).toList()..sort();
-    return lines.join(';');
+    final labels = _texts
+        .map((t) => 'T${(t.x * 10).round()},${(t.y * 10).round()}:${t.text}')
+        .toList()
+      ..sort();
+    return [...lines, ...labels].join(';');
   }
 
   /// The drawing in the order it was made. Used by tutorials that replay a figure and by

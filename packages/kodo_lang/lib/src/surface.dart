@@ -17,6 +17,18 @@ class Segment {
   final int color;
 }
 
+/// Text written onto the surface by `écris`.
+///
+/// It carries a position because it is part of the drawing, not part of a console: a child
+/// who writes a label on their figure has drawn something, and the grader has to see it.
+class CanvasText {
+  const CanvasText(this.x, this.y, this.text, this.size, this.color);
+  final double x, y;
+  final String text;
+  final double size;
+  final int color;
+}
+
 /// Turtle pose, used by the inspector and by the grader's path signature.
 class TurtlePose {
   const TurtlePose(this.x, this.y, this.heading, this.penDown);
@@ -71,6 +83,9 @@ abstract class Surface {
 
   /// How many segments have been drawn. The interpreter's 10 000-segment guard reads this.
   int get segmentCount;
+
+  /// Text drawn onto the surface, in order.
+  List<CanvasText> get texts;
 
   /// Ordered poses after every command that moved the turtle.
   ///

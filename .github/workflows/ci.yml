@@ -32,26 +32,23 @@ jobs:
             exit 1
           }
 
-      - name: Install package dependencies
-        working-directory: packages/kodo_lang
-        run: dart pub get
-
-      # Gate 2 — static analysis, warnings are failures.
-      - name: Analyse
-        working-directory: packages/kodo_lang
-        run: dart analyze --fatal-infos --fatal-warnings
-
-      # Gate 3 — formatting, so a diff shows a change of meaning and nothing else.
-      - name: Format
-        working-directory: packages/kodo_lang
-        run: dart format --output=none --set-exit-if-changed .
-
-      # Gate 4 — the seven M1 acceptance tests and the semantics suite. This includes the
-      # localisation coverage gate (NFR-I18N-01) and the error-catalogue completeness gate
-      # (FR-M1-10): a missing FR or EN message fails the build rather than reaching a child.
-      - name: Test
-        working-directory: packages/kodo_lang
-        run: dart test --reporter=expanded
+      # Gates 2 to 4 run over every package, so adding a module cannot quietly opt out
+      # of analysis, formatting or tests.
+      - name: Analyse, format and test every package
+        run: |
+          set -e
+          for package in packages/*/; do
+            echo "::group::$package"
+            ( cd "$package"
+              dart pub get
+              # Warnings are failures. The localisation coverage gate (NFR-I18N-01) and the
+              # error-catalogue completeness gate (FR-M1-10) run inside the test suite: a
+              # missing FR or EN string fails the build rather than reaching a child.
+              dart analyze --fatal-infos --fatal-warnings
+              dart format --output=none --set-exit-if-changed .
+              dart test --reporter=expanded )
+            echo "::endgroup::"
+          done
 
       # Gate 5 — every requirement marked done is named by a test, M1 imports no platform
       # library, and no code references a requirement nobody agreed.
