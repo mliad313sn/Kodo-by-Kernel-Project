@@ -69,13 +69,13 @@ PROGRAMMES = [
 # percent complete, health override
 MODULES = [
     ("M1", "Language core and interpreter", "RUN", "REM", "PE-08", "group", 5, 12, 100),
-    ("M4", "Canvas, stage, sprites and inspector", "RUN", "REM", "PE-08", "group", 7, 16, 0),
+    ("M4", "Canvas, stage, sprites and inspector", "RUN", "REM", "PE-08", "group", 7, 16, 85),
     ("M2", "Block editor", "RUN", "REM", "PE-07", "group", 9, 20, 0),
     ("M3", "Text editor and the block-text bridge", "RUN", "REM", "PE-08", "group", 12, 24, 0),
-    ("M5", "Tutorial engine", "PED", "PAR", "PE-03", "site", 13, 24, 0),
-    ("M6", "Exercise delivery and grading", "PED", "PAR", "PE-04", "group", 14, 26, 0),
-    ("M7", "Progression, mastery and scheduling", "PED", "PAR", "PE-04", "group", 16, 28, 0),
-    ("M14", "Offline-first content packs", "PLT", "REM", "PE-09", "group", 14, 26, 0),
+    ("M5", "Tutorial engine", "PED", "PAR", "PE-03", "site", 13, 24, 85),
+    ("M6", "Exercise delivery and grading", "PED", "PAR", "PE-04", "group", 14, 26, 85),
+    ("M7", "Progression, mastery and scheduling", "PED", "PAR", "PE-04", "group", 16, 28, 90),
+    ("M14", "Offline-first content packs", "PLT", "REM", "PE-09", "group", 14, 26, 75),
     ("M13", "Accounts, identity and sync", "PLT", "REM", "PE-10", "group", 18, 30, 0),
     ("M8", "Motivation system", "PED", "REM", "PE-06", "site", 20, 30, 0),
     ("M11", "Parent space", "PLT", "DKR", "PE-12", "site", 22, 32, 0),
@@ -120,6 +120,23 @@ RISKS = [
     ("R11", "Assumption", "120 published artefacts per week is achievable at steady state",
      "Committee planning figure, never observed. The whole 10.9-week authoring estimate rests on it; the first four weeks of real authoring either confirm it or reset the schedule.",
      3, 5, "Open", "Monitor", "PE-04", "M18"),
+    ("R13", "Issue", "M7-SIM-01 — the mastery rule needs a bigger bank than the curriculum commits",
+     "Measured over 10 000 synthetic learners: at §4.6's 8-item accuracy window the "
+     "95th-percentile CAPABLE child needs about 30 items on a concept, against the 18-24 "
+     "§6.3 commits. Answered by PO decision D-010 (widen the window to 10, a variance "
+     "reduction rather than a softening). Seats 3 and 4 hold the ruling until G3.",
+     4, 4, "Open", "Mitigate", "PE-03", "M7"),
+    ("R14", "Risk", "M14-SEC-01 — content packs are integrity-checked but not authenticated",
+     "SHA-256 detects a corrupted or truncated pack, which covers what a classroom meets. "
+     "It does not prove who made a pack. FR-M14-02 says signed; Ed25519 verification in "
+     "pure Dart is not written. Recorded rather than papered over with an HMAC, which "
+     "would put the signing key on every device.",
+     3, 4, "Open", "Mitigate", "PE-09", "M14"),
+    ("R15", "Issue", "World 1's 100 items have had no seat-3 or seat-4 pedagogical review",
+     "The bank is machine-gated — every item is failed by three wrong programs and passed "
+     "by two alternatives — but nobody has read it. The gate proves an item is GRADABLE, "
+     "never that it TEACHES.",
+     5, 3, "Open", "Fix", "PE-04", "M6"),
     ("R12", "Issue", "22 child-facing error messages have had no pedagogical or localisation review",
      "M1 ships a closed error catalogue in FR and EN. Neither seat 3 nor seat 11 has read them aloud. They reach a child as soon as M3 ships.",
      5, 3, "Open", "Fix", "PE-03", "M1"),
@@ -156,6 +173,18 @@ CHANGE_REQUESTS = [
      "launch. Class galleries ship; the public gallery is gated behind a staffed moderation "
      "function and a seat-13 adversarial review.",
      "PE-01", 4, -3, -6, "Approved"),
+    ("CR-005", "M7", "Widen mastery criterion 2's window from 8 items to 10",
+     "PO decision D-010, answering M7-SIM-01. A longer window is a better estimate of a "
+     "child's rate, not a kinder one, and the simulation confirms the half that matters: "
+     "no more weak learners get through. The alternative — raising the per-concept "
+     "commitment to ~30 — costs about +390 items on the programme's stated critical path.",
+     "PE-01", 12, 0, 0, "Approved"),
+    ("CR-006", "M6", "Add a final-pose signal to behavioural grading",
+     "Found by the publish gate while authoring World 1: 'go out and come back' draws "
+     "exactly the same pixels as 'go out', so thirteen items' wrong solutions all passed. "
+     "Item.requireFinalPose is authored per item, because most items are about a figure "
+     "and demanding a final pose on those would fail a child who drew it from the other end.",
+     "PE-08", 12, 0, 0, "Approved"),
     ("CR-004", "M4", "Remove camera capture from v1",
      "PO decision D-007, promoting IMP-009 from a backlog item to scope. An S1 finding at "
      "confidence 1.0 is not a backlog candidate; it is a decision nobody had taken.",
@@ -198,16 +227,23 @@ def build():
             "desc": f"Module {mid} of the eighteen. Built from its deployment prompt in "
                     f"docs/spec/03_module_build_prompts_v1.0.md against the requirements "
                     f"tagged {mid} in spec/requirements.json.",
-            "phase": "Closure" if pct == 100 else ("Execution" if start_w <= 12 else "Initiation"),
-            "gate": 4 if pct == 100 else (2 if start_w <= 12 else 1),
+            "phase": "Closure" if pct == 100
+                     else ("Execution" if pct > 0 else
+                           ("Execution" if start_w <= 12 else "Initiation")),
+            "gate": 4 if pct == 100 else (3 if pct >= 75 else (2 if start_w <= 12 else 1)),
             "closed": False,
         })
 
         span = finish_w - start_w
         cursor = start_w
+        # Spend the module's completion across its stages in order, so the earned-value
+        # curve reflects which stages are actually finished rather than a flat average.
+        remaining = pct / 100.0
         for i, (stage_name, weight) in enumerate(WBS):
             length = max(1, round(span * weight))
-            done = 100 if pct == 100 else 0
+            share = min(weight, remaining)
+            remaining -= share
+            done = round(share / weight * 100)
             activities.append({
                 "id": f"{mid}-A{i + 1}", "project": mid, "name": stage_name, "stage": i,
                 "start": week(cursor, 0), "end": week(cursor + length),
@@ -241,6 +277,17 @@ def build():
     milestones.append({"id": "MS-M1-DONE", "project": "M1",
                        "name": "M1 acceptance tests green (7/7)", "date": week(12),
                        "kind": "milestone", "owner": "PE-08", "done": True})
+    for mid, label, wk in [
+        ("M4", "M4 canvas, stage and inspector — 39 tests green", 12),
+        ("M6", "M6 grading and the publish gate — 36 tests green", 12),
+        ("M7", "M7 mastery and scheduling — 27 tests green", 12),
+        ("M14", "World 1 published: 100 items, 5 tutorials, all gated", 12),
+        ("M6", "G3 vertical slice runs end to end, offline", 12),
+    ]:
+        milestones.append({
+            "id": f"MS-{mid}-{label[:6].strip().replace(' ', '-')}",
+            "project": mid, "name": label, "date": week(wk),
+            "kind": "milestone", "owner": "PE-14", "done": True})
 
     for rid, kind, title, response_detail, p, i, status, response, owner, project in RISKS:
         raid.append({"id": rid, "project": project, "type": kind, "title": title,
@@ -321,6 +368,14 @@ def build():
                 "joint-highest risk in the register — is closed on evidence, not on a merged fix.",
                 "Five defects were found and closed during the M1 build. Three of them were "
                 "invisible until a child would have hit them.",
+                "M4, M6, M7, M5 and M14 delivered. 236 tests across five packages, every "
+                "module prompt's acceptance tests green.",
+                "World 1 authored and published: 100 items at exactly the volume §6.3 "
+                "commits, 5 tutorials, every one through the publish gate. The gate "
+                "refused the first attempt and was right to.",
+                "The G3 vertical slice runs end to end and offline: pack verified, "
+                "tutorial played, items scheduled, answers graded, mastery reached, next "
+                "concept unlocked. Every component is the real one.",
             ],
             "concerns": [
                 "Every performance and platform claim so far is CI-measured. No measurement "
@@ -332,8 +387,14 @@ def build():
                 "accident.",
                 f"{done} of {requirements['count']} requirements are done. The curriculum "
                 f"ledger commits {concepts['itemsCommitted']} items across "
-                f"{concepts['conceptCount']} concepts and none are authored yet — authoring "
-                "capacity, not engineering, sets the schedule (§12).",
+                f"{concepts['conceptCount']} concepts, of which World 1's 100 are now "
+                "authored — authoring capacity, not engineering, sets the schedule (§12).",
+                "Nobody has READ World 1. The bank is machine-gated, which proves every "
+                "item is gradable and proves nothing about whether it teaches. Seats 3 "
+                "and 4 owe a review before a child sees it.",
+                "M7-SIM-01 is an open S2 against G3: the mastery rule as specified needs "
+                "about 30 items per concept against the 18-24 committed. PO decision "
+                "D-010 proposes the fix; seats 3 and 4 hold the ruling.",
             ],
         },
         "settings": {"autoRag": True, "gateLock": True, "ccb": True},

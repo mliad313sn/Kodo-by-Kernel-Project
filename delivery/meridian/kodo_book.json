@@ -217,7 +217,7 @@
       "contingencyUsed": 0,
       "desc": "Module M4 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M4 in spec/requirements.json.",
       "phase": "Execution",
-      "gate": 2,
+      "gate": 3,
       "closed": false
     },
     {
@@ -273,8 +273,8 @@
       "contingency": 0,
       "contingencyUsed": 0,
       "desc": "Module M5 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M5 in spec/requirements.json.",
-      "phase": "Initiation",
-      "gate": 1,
+      "phase": "Execution",
+      "gate": 3,
       "closed": false
     },
     {
@@ -292,8 +292,8 @@
       "contingency": 0,
       "contingencyUsed": 0,
       "desc": "Module M6 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M6 in spec/requirements.json.",
-      "phase": "Initiation",
-      "gate": 1,
+      "phase": "Execution",
+      "gate": 3,
       "closed": false
     },
     {
@@ -311,8 +311,8 @@
       "contingency": 0,
       "contingencyUsed": 0,
       "desc": "Module M7 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M7 in spec/requirements.json.",
-      "phase": "Initiation",
-      "gate": 1,
+      "phase": "Execution",
+      "gate": 3,
       "closed": false
     },
     {
@@ -330,8 +330,8 @@
       "contingency": 0,
       "contingencyUsed": 0,
       "desc": "Module M14 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M14 in spec/requirements.json.",
-      "phase": "Initiation",
-      "gate": 1,
+      "phase": "Execution",
+      "gate": 3,
       "closed": false
     },
     {
@@ -602,7 +602,7 @@
       "start": "2026-10-26",
       "end": "2026-11-06",
       "weight": 0.15,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-08",
       "deps": []
     },
@@ -614,7 +614,7 @@
       "start": "2026-11-02",
       "end": "2026-12-04",
       "weight": 0.4,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-08",
       "deps": [
         "M4-A1"
@@ -628,7 +628,7 @@
       "start": "2026-11-30",
       "end": "2026-12-18",
       "weight": 0.2,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-08",
       "deps": [
         "M4-A2"
@@ -642,7 +642,7 @@
       "start": "2026-12-14",
       "end": "2026-12-25",
       "weight": 0.1,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-08",
       "deps": [
         "M4-A3"
@@ -806,7 +806,7 @@
       "start": "2026-12-07",
       "end": "2026-12-25",
       "weight": 0.15,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-03",
       "deps": []
     },
@@ -818,7 +818,7 @@
       "start": "2026-12-21",
       "end": "2027-01-22",
       "weight": 0.4,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-03",
       "deps": [
         "M5-A1"
@@ -832,7 +832,7 @@
       "start": "2027-01-18",
       "end": "2027-02-05",
       "weight": 0.2,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-03",
       "deps": [
         "M5-A2"
@@ -846,7 +846,7 @@
       "start": "2027-02-01",
       "end": "2027-02-12",
       "weight": 0.1,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-03",
       "deps": [
         "M5-A3"
@@ -874,7 +874,7 @@
       "start": "2026-12-14",
       "end": "2027-01-01",
       "weight": 0.15,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-04",
       "deps": []
     },
@@ -886,7 +886,7 @@
       "start": "2026-12-28",
       "end": "2027-02-05",
       "weight": 0.4,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-04",
       "deps": [
         "M6-A1"
@@ -900,7 +900,7 @@
       "start": "2027-02-01",
       "end": "2027-02-19",
       "weight": 0.2,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-04",
       "deps": [
         "M6-A2"
@@ -914,7 +914,7 @@
       "start": "2027-02-15",
       "end": "2027-02-26",
       "weight": 0.1,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-04",
       "deps": [
         "M6-A3"
@@ -942,7 +942,7 @@
       "start": "2026-12-28",
       "end": "2027-01-15",
       "weight": 0.15,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-04",
       "deps": []
     },
@@ -954,7 +954,7 @@
       "start": "2027-01-11",
       "end": "2027-02-19",
       "weight": 0.4,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-04",
       "deps": [
         "M7-A1"
@@ -968,7 +968,7 @@
       "start": "2027-02-15",
       "end": "2027-03-05",
       "weight": 0.2,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-04",
       "deps": [
         "M7-A2"
@@ -982,7 +982,7 @@
       "start": "2027-03-01",
       "end": "2027-03-12",
       "weight": 0.1,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-04",
       "deps": [
         "M7-A3"
@@ -996,7 +996,7 @@
       "start": "2027-03-08",
       "end": "2027-03-26",
       "weight": 0.15,
-      "pct": 0,
+      "pct": 33,
       "owner": "PE-04",
       "deps": [
         "M7-A4"
@@ -1010,7 +1010,7 @@
       "start": "2026-12-14",
       "end": "2027-01-01",
       "weight": 0.15,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-09",
       "deps": []
     },
@@ -1022,7 +1022,7 @@
       "start": "2026-12-28",
       "end": "2027-02-05",
       "weight": 0.4,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-09",
       "deps": [
         "M14-A1"
@@ -1036,7 +1036,7 @@
       "start": "2027-02-01",
       "end": "2027-02-19",
       "weight": 0.2,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-09",
       "deps": [
         "M14-A2"
@@ -1901,6 +1901,51 @@
       "kind": "milestone",
       "owner": "PE-08",
       "done": true
+    },
+    {
+      "id": "MS-M4-M4-can",
+      "project": "M4",
+      "name": "M4 canvas, stage and inspector — 39 tests green",
+      "date": "2026-12-04",
+      "kind": "milestone",
+      "owner": "PE-14",
+      "done": true
+    },
+    {
+      "id": "MS-M6-M6-gra",
+      "project": "M6",
+      "name": "M6 grading and the publish gate — 36 tests green",
+      "date": "2026-12-04",
+      "kind": "milestone",
+      "owner": "PE-14",
+      "done": true
+    },
+    {
+      "id": "MS-M7-M7-mas",
+      "project": "M7",
+      "name": "M7 mastery and scheduling — 27 tests green",
+      "date": "2026-12-04",
+      "kind": "milestone",
+      "owner": "PE-14",
+      "done": true
+    },
+    {
+      "id": "MS-M14-World",
+      "project": "M14",
+      "name": "World 1 published: 100 items, 5 tutorials, all gated",
+      "date": "2026-12-04",
+      "kind": "milestone",
+      "owner": "PE-14",
+      "done": true
+    },
+    {
+      "id": "MS-M6-G3-ver",
+      "project": "M6",
+      "name": "G3 vertical slice runs end to end, offline",
+      "date": "2026-12-04",
+      "kind": "milestone",
+      "owner": "PE-14",
+      "done": true
     }
   ],
   "ledger": [],
@@ -2060,6 +2105,48 @@
       "review": "2026-12-04"
     },
     {
+      "id": "R13",
+      "project": "M7",
+      "type": "Issue",
+      "title": "M7-SIM-01 — the mastery rule needs a bigger bank than the curriculum commits",
+      "detail": "Measured over 10 000 synthetic learners: at §4.6's 8-item accuracy window the 95th-percentile CAPABLE child needs about 30 items on a concept, against the 18-24 §6.3 commits. Answered by PO decision D-010 (widen the window to 10, a variance reduction rather than a softening). Seats 3 and 4 hold the ruling until G3.",
+      "p": 4,
+      "i": 4,
+      "status": "Open",
+      "response": "Mitigate",
+      "owner": "PE-03",
+      "opened": "2026-09-18",
+      "review": "2026-12-04"
+    },
+    {
+      "id": "R14",
+      "project": "M14",
+      "type": "Risk",
+      "title": "M14-SEC-01 — content packs are integrity-checked but not authenticated",
+      "detail": "SHA-256 detects a corrupted or truncated pack, which covers what a classroom meets. It does not prove who made a pack. FR-M14-02 says signed; Ed25519 verification in pure Dart is not written. Recorded rather than papered over with an HMAC, which would put the signing key on every device.",
+      "p": 3,
+      "i": 4,
+      "status": "Open",
+      "response": "Mitigate",
+      "owner": "PE-09",
+      "opened": "2026-09-18",
+      "review": "2026-12-04"
+    },
+    {
+      "id": "R15",
+      "project": "M6",
+      "type": "Issue",
+      "title": "World 1's 100 items have had no seat-3 or seat-4 pedagogical review",
+      "detail": "The bank is machine-gated — every item is failed by three wrong programs and passed by two alternatives — but nobody has read it. The gate proves an item is GRADABLE, never that it TEACHES.",
+      "p": 5,
+      "i": 3,
+      "status": "Open",
+      "response": "Fix",
+      "owner": "PE-04",
+      "opened": "2026-09-18",
+      "review": "2026-12-04"
+    },
+    {
       "id": "R12",
       "project": "M1",
       "type": "Issue",
@@ -2167,6 +2254,70 @@
           "role": "Product Owner",
           "state": "done",
           "when": "2026-10-09",
+          "comment": "Registered as an amendment, not a silent edit (§16)."
+        }
+      ]
+    },
+    {
+      "id": "CR-005",
+      "project": "M7",
+      "title": "Widen mastery criterion 2's window from 8 items to 10",
+      "desc": "PO decision D-010, answering M7-SIM-01. A longer window is a better estimate of a child's rate, not a kinder one, and the simulation confirms the half that matters: no more weak learners get through. The alternative — raising the per-concept commitment to ~30 — costs about +390 items on the programme's stated critical path.",
+      "raisedBy": "PE-01",
+      "raised": "2026-12-04",
+      "cost": 0,
+      "weeks": 0,
+      "funding": "Contingency",
+      "riskDelta": "0",
+      "status": "Approved",
+      "applied": true,
+      "steps": [
+        {
+          "role": "Raised",
+          "state": "done",
+          "when": "2026-12-04"
+        },
+        {
+          "role": "Committee consent",
+          "state": "done",
+          "when": "2026-12-04"
+        },
+        {
+          "role": "Product Owner",
+          "state": "done",
+          "when": "2026-12-04",
+          "comment": "Registered as an amendment, not a silent edit (§16)."
+        }
+      ]
+    },
+    {
+      "id": "CR-006",
+      "project": "M6",
+      "title": "Add a final-pose signal to behavioural grading",
+      "desc": "Found by the publish gate while authoring World 1: 'go out and come back' draws exactly the same pixels as 'go out', so thirteen items' wrong solutions all passed. Item.requireFinalPose is authored per item, because most items are about a figure and demanding a final pose on those would fail a child who drew it from the other end.",
+      "raisedBy": "PE-08",
+      "raised": "2026-12-04",
+      "cost": 0,
+      "weeks": 0,
+      "funding": "Contingency",
+      "riskDelta": "0",
+      "status": "Approved",
+      "applied": true,
+      "steps": [
+        {
+          "role": "Raised",
+          "state": "done",
+          "when": "2026-12-04"
+        },
+        {
+          "role": "Committee consent",
+          "state": "done",
+          "when": "2026-12-04"
+        },
+        {
+          "role": "Product Owner",
+          "state": "done",
+          "when": "2026-12-04",
           "comment": "Registered as an amendment, not a silent edit (§16)."
         }
       ]
@@ -2402,13 +2553,18 @@
       "G1 closed. All six Annex E questions answered in the PO decision register (D-001 … D-006), with rationale and reversal cost. R9, the only risk the workbook records as outside the Committee's authority, is closed with it.",
       "G2 closed. M1's interface contract is frozen and implemented.",
       "M1 delivered: 7/7 acceptance tests green, 103 tests in total. R3 — the joint-highest risk in the register — is closed on evidence, not on a merged fix.",
-      "Five defects were found and closed during the M1 build. Three of them were invisible until a child would have hit them."
+      "Five defects were found and closed during the M1 build. Three of them were invisible until a child would have hit them.",
+      "M4, M6, M7, M5 and M14 delivered. 236 tests across five packages, every module prompt's acceptance tests green.",
+      "World 1 authored and published: 100 items at exactly the volume §6.3 commits, 5 tutorials, every one through the publish gate. The gate refused the first attempt and was right to.",
+      "The G3 vertical slice runs end to end and offline: pack verified, tutorial played, items scheduled, answers graded, mastery reached, next concept unlocked. Every component is the real one."
     ],
     "concerns": [
       "Every performance and platform claim so far is CI-measured. No measurement exists on the reference device (Android 11, 2 GB). G3 cannot close without it.",
       "The 22 child-facing error messages M1 ships have had no seat-3 or seat-11 review. They reach a child the moment M3 ships.",
       "No budget line has been agreed (NFR-COST-01, PO open item O-01), so every earned-value figure in this portfolio is zero by construction rather than by accident.",
-      "12 of 130 requirements are done. The curriculum ledger commits 1214 items across 58 concepts and none are authored yet — authoring capacity, not engineering, sets the schedule (§12)."
+      "39 of 130 requirements are done. The curriculum ledger commits 1214 items across 58 concepts, of which World 1's 100 are now authored — authoring capacity, not engineering, sets the schedule (§12).",
+      "Nobody has READ World 1. The bank is machine-gated, which proves every item is gradable and proves nothing about whether it teaches. Seats 3 and 4 owe a review before a child sees it.",
+      "M7-SIM-01 is an open S2 against G3: the mastery rule as specified needs about 30 items per concept against the 18-24 committed. PO decision D-010 proposes the fix; seats 3 and 4 hold the ruling."
     ]
   },
   "settings": {
