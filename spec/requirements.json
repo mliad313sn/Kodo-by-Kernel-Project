@@ -1440,8 +1440,8 @@
       "priority": "M",
       "verification": "Airplane-mode soak",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "In progress",
+      "owner": "M14 squad"
     },
     {
       "id": "NFR-REL-01",
@@ -1512,8 +1512,8 @@
       "priority": "M",
       "verification": "CI lint",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M15 squad"
     },
     {
       "id": "NFR-MAINT-01",
@@ -1524,8 +1524,8 @@
       "priority": "M",
       "verification": "Pack-only release drill",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M14 squad"
     },
     {
       "id": "NFR-COST-01",

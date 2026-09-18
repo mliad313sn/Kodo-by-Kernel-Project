@@ -65,27 +65,32 @@ PROGRAMMES = [
     ("PLT", "Platform, School & Trust", "Cross-platform Engineering Lead", "PE-09"),
 ]
 
-# module id, name, programme, site, pm, governance, phase, gate, start week, finish week,
-# percent complete, health override
+# module id, name, programme, site, pm, governance, start week, finish week.
+#
+# Percent complete is NOT in this table. It is computed from `spec/requirements.json`, which
+# is generated from the Committee's workbook and the squads' status overrides — so the
+# portfolio moves when the delivery moves, and a module cannot be reported green here while
+# its requirements say otherwise. The rule is stated once, in `completion_of` below, and it
+# is deliberately unflattering: a requirement is finished or it is not.
 MODULES = [
-    ("M1", "Language core and interpreter", "RUN", "REM", "PE-08", "group", 5, 12, 100),
-    ("M4", "Canvas, stage, sprites and inspector", "RUN", "REM", "PE-08", "group", 7, 16, 85),
-    ("M2", "Block editor", "RUN", "REM", "PE-07", "group", 9, 20, 0),
-    ("M3", "Text editor and the block-text bridge", "RUN", "REM", "PE-08", "group", 12, 24, 0),
-    ("M5", "Tutorial engine", "PED", "PAR", "PE-03", "site", 13, 24, 85),
-    ("M6", "Exercise delivery and grading", "PED", "PAR", "PE-04", "group", 14, 26, 85),
-    ("M7", "Progression, mastery and scheduling", "PED", "PAR", "PE-04", "group", 16, 28, 90),
-    ("M14", "Offline-first content packs", "PLT", "REM", "PE-09", "group", 14, 26, 75),
-    ("M13", "Accounts, identity and sync", "PLT", "REM", "PE-10", "group", 18, 30, 0),
-    ("M8", "Motivation system", "PED", "REM", "PE-06", "site", 20, 30, 0),
-    ("M11", "Parent space", "PLT", "DKR", "PE-12", "site", 22, 32, 0),
-    ("M9", "Studio (free creation)", "CRE", "REM", "PE-07", "site", 27, 38, 0),
-    ("M18", "Authoring CMS", "PED", "PAR", "PE-04", "group", 26, 40, 0),
-    ("M12", "Classroom mode", "PLT", "DKR", "PE-12", "site", 41, 50, 0),
-    ("M10", "Sharing, gallery and moderation", "CRE", "PAR", "PE-13", "group", 41, 50, 0),
-    ("M15", "Localisation", "PLT", "DKR", "PE-11", "site", 20, 48, 0),
-    ("M16", "Accessibility", "PLT", "REM", "PE-07", "group", 9, 48, 0),
-    ("M17", "Analytics and learning telemetry", "PLT", "REM", "PE-10", "group", 24, 44, 0),
+    ("M1", "Language core and interpreter", "RUN", "REM", "PE-08", "group", 5, 12),
+    ("M4", "Canvas, stage, sprites and inspector", "RUN", "REM", "PE-08", "group", 7, 16),
+    ("M2", "Block editor", "RUN", "REM", "PE-07", "group", 9, 20),
+    ("M3", "Text editor and the block-text bridge", "RUN", "REM", "PE-08", "group", 12, 24),
+    ("M5", "Tutorial engine", "PED", "PAR", "PE-03", "site", 13, 24),
+    ("M6", "Exercise delivery and grading", "PED", "PAR", "PE-04", "group", 14, 26),
+    ("M7", "Progression, mastery and scheduling", "PED", "PAR", "PE-04", "group", 16, 28),
+    ("M14", "Offline-first content packs", "PLT", "REM", "PE-09", "group", 14, 26),
+    ("M13", "Accounts, identity and sync", "PLT", "REM", "PE-10", "group", 18, 30),
+    ("M8", "Motivation system", "PED", "REM", "PE-06", "site", 20, 30),
+    ("M11", "Parent space", "PLT", "DKR", "PE-12", "site", 22, 32),
+    ("M9", "Studio (free creation)", "CRE", "REM", "PE-07", "site", 27, 38),
+    ("M18", "Authoring CMS", "PED", "PAR", "PE-04", "group", 26, 40),
+    ("M12", "Classroom mode", "PLT", "DKR", "PE-12", "site", 41, 50),
+    ("M10", "Sharing, gallery and moderation", "CRE", "PAR", "PE-13", "group", 41, 50),
+    ("M15", "Localisation", "PLT", "DKR", "PE-11", "site", 20, 48),
+    ("M16", "Accessibility", "PLT", "REM", "PE-07", "group", 9, 48),
+    ("M17", "Analytics and learning telemetry", "PLT", "REM", "PE-10", "group", 24, 44),
 ]
 
 # The workbook's risk register, updated to reflect what is now true.
@@ -212,10 +217,60 @@ WBS = [
 ]
 
 
+REQUIREMENTS = json.loads((ROOT / "spec/requirements.json").read_text(encoding="utf-8"))
+_REQ_ROWS = REQUIREMENTS["requirements"] if isinstance(REQUIREMENTS, dict) else REQUIREMENTS
+
+
+# Which module carries each non-functional requirement, and what it is actually waiting
+# for. Used twice: to put a card on the improvement board, and to stop a module reporting
+# Closure while an NFR it owns is open.
+NFR_HOME = {
+    "PERF": ("M4", "a phone"), "SIZE": ("M14", "a phone"),
+    "BATT": ("M4", "a phone"), "OFF": ("M14", "a phone"),
+    "REL": ("M13", "a phone"), "COMP": ("M16", "a phone"),
+    "SEC": ("M14", "an external reviewer"),
+    "A11Y": ("M16", "an external reviewer"),
+    "PRIV": ("M13", "nothing — done"),
+    "I18N": ("M15", "nothing — done"),
+    "MAINT": ("M14", "nothing — done"),
+    "COST": ("M11", "PO open item O-01"),
+}
+
+
+def open_nfrs_of(module_id):
+    """The non-functional requirements this module owns that are not Done."""
+    return [
+        r["id"] for r in _REQ_ROWS
+        if r["id"].startswith("NFR-")
+        and NFR_HOME.get(r.get("moduleId", ""), (None, None))[0] == module_id
+        and r.get("status") != "Done"
+    ]
+
+
+def completion_of(module_id):
+    """Percent complete for a module, read off its requirements.
+
+    Done counts 1, In progress counts a half, Not started counts nothing. The half is the
+    only judgement in the whole book and it is generous on purpose: if the number looks
+    optimistic against the module's own DONE record, the DONE record wins, because that is
+    where the evidence is.
+
+    A module with no requirements of its own (none, currently) would report zero rather
+    than a hundred, because "nothing to do" and "everything done" must not look alike on a
+    portfolio screen.
+    """
+    mine = [r for r in _REQ_ROWS if r.get("moduleId") == module_id]
+    if not mine:
+        return 0
+    score = sum({"Done": 1.0, "In progress": 0.5}.get(r.get("status"), 0.0) for r in mine)
+    return round(score / len(mine) * 100)
+
+
 def build():
     projects, activities, milestones, raid, crs, items, docs = [], [], [], [], [], [], []
 
-    for mid, name, prog, site, pm, gov, start_w, finish_w, pct in MODULES:
+    for mid, name, prog, site, pm, gov, start_w, finish_w in MODULES:
+        pct = completion_of(mid)
         projects.append({
             "id": mid, "name": f"{mid} — {name}", "programme": prog, "site": site,
             "governanceLevel": gov, "pm": pm, "method": "Hybrid",
@@ -226,11 +281,20 @@ def build():
             "budget": 0, "contingency": 0, "contingencyUsed": 0,
             "desc": f"Module {mid} of the eighteen. Built from its deployment prompt in "
                     f"docs/spec/03_module_build_prompts_v1.0.md against the requirements "
-                    f"tagged {mid} in spec/requirements.json.",
-            "phase": "Closure" if pct == 100
-                     else ("Execution" if pct > 0 else
-                           ("Execution" if start_w <= 12 else "Initiation")),
-            "gate": 4 if pct == 100 else (3 if pct >= 75 else (2 if start_w <= 12 else 1)),
+                    f"tagged {mid} in spec/requirements.json. "
+                    + (f"Open non-functional requirements: {', '.join(open_nfrs_of(mid))}."
+                       if open_nfrs_of(mid)
+                       else "No open non-functional requirements."),
+            # A module is in Closure only when its functional requirements are all Done
+            # AND it owns no open non-functional requirement. M16 with the external
+            # accessibility audit outstanding is not closed, however green its FRs are.
+            "phase": "Closure" if (pct == 100 and not open_nfrs_of(mid))
+                     else ("Execution" if pct > 0 or start_w <= 12 else "Initiation"),
+            # Gate 4 is a PROGRAMME gate and G3 is not closed, so no module may report
+            # past 3. A module bar reading gate 4 above an open G3 is the false green this
+            # portfolio exists to prevent — and finding MER-05 of the product report is
+            # about exactly that kind of number.
+            "gate": 3 if pct == 100 else (2 if pct >= 60 or start_w <= 12 else 1),
             "closed": False,
         })
 
@@ -307,6 +371,31 @@ def build():
                          "comment": "Registered as an amendment, not a silent edit (§16)."},
                     ]})
 
+    # The non-functional requirements, as cards. A portfolio that shows eighteen module
+    # bars and hides fourteen NFRs is hiding precisely the part that is not finished, so
+    # each one is a card on the improvement board, carrying what it is actually waiting
+    # for. Grouped per `docs/governance/03_G3_ASSESSMENT.md`.
+    for requirement in _REQ_ROWS:
+        rid = requirement["id"]
+        if not rid.startswith("NFR-"):
+            continue
+        family = requirement.get("moduleId", "")
+        home, waiting = NFR_HOME.get(family, ("M1", "a decision"))
+        status = requirement.get("status", "Not started")
+        items.append({
+            "id": rid,
+            "project": home,
+            "column": "done" if status == "Done"
+                      else ("doing" if status == "In progress" else "next"),
+            "title": f"{rid} — {requirement.get('requirement', '')}",
+            "assignee": None,
+            "points": 0 if status == "Done" else 3,
+            "priority": "P1",
+            "created": week(1),
+            "note": f"Waiting on: {waiting}. Verification: "
+                    f"{requirement.get('verification', 'not stated')}.",
+        })
+
     for iid, title, module, priority, points in BACKLOG:
         items.append({"id": iid, "project": module, "column": "backlog", "title": title,
                       "assignee": None, "points": points, "priority": priority,
@@ -360,40 +449,59 @@ def build():
         "items": items,
         "narrative": {
             "highlights": [
-                "G1 closed. All six Annex E questions answered in the PO decision register "
-                "(D-001 … D-006), with rationale and reversal cost. R9, the only risk the "
-                "workbook records as outside the Committee's authority, is closed with it.",
-                "G2 closed. M1's interface contract is frozen and implemented.",
-                "M1 delivered: 7/7 acceptance tests green, 103 tests in total. R3 — the "
-                "joint-highest risk in the register — is closed on evidence, not on a merged fix.",
-                "Five defects were found and closed during the M1 build. Three of them were "
-                "invisible until a child would have hit them.",
-                "M4, M6, M7, M5 and M14 delivered. 236 tests across five packages, every "
-                "module prompt's acceptance tests green.",
-                "World 1 authored and published: 100 items at exactly the volume §6.3 "
-                "commits, 5 tutorials, every one through the publish gate. The gate "
-                "refused the first attempt and was right to.",
+                "G1 and G2 closed on evidence. All six Annex E questions answered in the "
+                "PO decision register (D-001 … D-011), each with rationale and reversal "
+                "cost. R9, the only risk the workbook records as outside the Committee's "
+                "authority, is closed with D-001.",
+                "All eighteen modules are built. Eleven packages, ~28 000 lines of Dart, "
+                "441 tests passing, every module prompt's automatable acceptance tests "
+                "green.",
+                f"{done} of {requirements['count']} requirements are Done, and every one "
+                "of them is named by a test — enforced in CI, which fails the build if a "
+                "requirement claims Done without one.",
+                "Three worlds authored and published: 266 items over 13 concepts, every "
+                "concept at or above its §6.3 commitment and using at least five item "
+                "types. Each pack is re-authored through the publish gate in CI and then "
+                "diffed, so a bank that ships and a bank that was checked are the same "
+                "bank.",
+                "The gates did their job. Thirty-four authoring faults were refused before "
+                "anything was written, and nine build defects were found — four of which "
+                "would have reached a child, including an editor that silently deleted a "
+                "line of a child's saved work (M3-001, S1).",
                 "The G3 vertical slice runs end to end and offline: pack verified, "
                 "tutorial played, items scheduled, answers graded, mastery reached, next "
                 "concept unlocked. Every component is the real one.",
+                "NFR-MAINT-01 is closed by demonstration rather than by architecture: "
+                "Worlds 0 and 2 were added after every package was built, with no change "
+                "to any lib/ file.",
             ],
             "concerns": [
-                "Every performance and platform claim so far is CI-measured. No measurement "
-                "exists on the reference device (Android 11, 2 GB). G3 cannot close without it.",
-                "The 22 child-facing error messages M1 ships have had no seat-3 or seat-11 "
-                "review. They reach a child the moment M3 ships.",
+                "G3 IS NOT CLOSED, and closes on one thing: its own criterion ends "
+                "'running on the reference low-end device', and nobody has run it on an "
+                "Android 11 phone with 2 GB of RAM. Twelve of the thirty open requirements "
+                "are waiting on that phone and nothing else. See "
+                "docs/governance/03_G3_ASSESSMENT.md for the protocol seat 14 should run.",
+                "Every performance, size, battery and soak figure in this portfolio is "
+                "CI-measured. A number measured on a build server is not a number measured "
+                "on the reference device, and reporting it as one is how a product ships "
+                "slow.",
+                "Nobody has READ the 266 items. The banks are machine-gated, which proves "
+                "every item is gradable and proves nothing about whether it teaches. Seats "
+                "3 and 4 owe a review before a child sees them.",
+                "The 22 child-facing error messages and every tutorial line have had no "
+                "seat-11 review. They are the strings a child meets when they are already "
+                "stuck.",
                 "No budget line has been agreed (NFR-COST-01, PO open item O-01), so every "
-                "earned-value figure in this portfolio is zero by construction rather than by "
-                "accident.",
-                f"{done} of {requirements['count']} requirements are done. The curriculum "
-                f"ledger commits {concepts['itemsCommitted']} items across "
-                f"{concepts['conceptCount']} concepts, of which World 1's 100 are now "
-                "authored — authoring capacity, not engineering, sets the schedule (§12).",
-                "Nobody has READ World 1. The bank is machine-gated, which proves every "
-                "item is gradable and proves nothing about whether it teaches. Seats 3 "
-                "and 4 owe a review before a child sees it.",
-                "M7-SIM-01 is an open S2 against G3: the mastery rule as specified needs "
-                "about 30 items per concept against the 18-24 committed. PO decision "
+                "earned-value figure in this portfolio is zero by construction rather than "
+                "by accident.",
+                "Seven requirements wait on platform plumbing Flutter has not been wired to "
+                "yet — sound, image import, screen capture, pack download, autocomplete. "
+                "The consent gate they sit behind is built and tested; the plumbing is not.",
+                "Two external reviews are preconditions of public launch and neither has "
+                "been commissioned: the WCAG 2.2 AA audit (NFR-A11Y-01) and the security "
+                "review (NFR-SEC-01).",
+                "M7-SIM-01 remains an open S2 against G3: the mastery rule as specified "
+                "needs about 30 items per concept against the 18-24 committed. PO decision "
                 "D-010 proposes the fix; seats 3 and 4 hold the ruling.",
             ],
         },

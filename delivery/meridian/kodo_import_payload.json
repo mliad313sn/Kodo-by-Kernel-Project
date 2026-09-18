@@ -197,9 +197,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M1 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M1 in spec/requirements.json.",
+        "desc": "Module M1 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M1 in spec/requirements.json. No open non-functional requirements.",
         "phase": "Closure",
-        "gate": 4,
+        "gate": 3,
         "closed": false
       },
       {
@@ -216,9 +216,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M4 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M4 in spec/requirements.json.",
+        "desc": "Module M4 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M4 in spec/requirements.json. Open non-functional requirements: NFR-PERF-01, NFR-PERF-02, NFR-PERF-03, NFR-BATT-01.",
         "phase": "Execution",
-        "gate": 3,
+        "gate": 2,
         "closed": false
       },
       {
@@ -235,7 +235,7 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M2 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M2 in spec/requirements.json.",
+        "desc": "Module M2 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M2 in spec/requirements.json. No open non-functional requirements.",
         "phase": "Execution",
         "gate": 2,
         "closed": false
@@ -254,7 +254,7 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M3 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M3 in spec/requirements.json.",
+        "desc": "Module M3 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M3 in spec/requirements.json. No open non-functional requirements.",
         "phase": "Execution",
         "gate": 2,
         "closed": false
@@ -273,9 +273,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M5 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M5 in spec/requirements.json.",
+        "desc": "Module M5 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M5 in spec/requirements.json. No open non-functional requirements.",
         "phase": "Execution",
-        "gate": 3,
+        "gate": 2,
         "closed": false
       },
       {
@@ -292,9 +292,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M6 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M6 in spec/requirements.json.",
+        "desc": "Module M6 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M6 in spec/requirements.json. No open non-functional requirements.",
         "phase": "Execution",
-        "gate": 3,
+        "gate": 2,
         "closed": false
       },
       {
@@ -311,8 +311,8 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M7 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M7 in spec/requirements.json.",
-        "phase": "Execution",
+        "desc": "Module M7 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M7 in spec/requirements.json. No open non-functional requirements.",
+        "phase": "Closure",
         "gate": 3,
         "closed": false
       },
@@ -330,9 +330,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M14 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M14 in spec/requirements.json.",
+        "desc": "Module M14 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M14 in spec/requirements.json. Open non-functional requirements: NFR-SIZE-01, NFR-OFF-01, NFR-SEC-01.",
         "phase": "Execution",
-        "gate": 3,
+        "gate": 2,
         "closed": false
       },
       {
@@ -349,9 +349,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M13 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M13 in spec/requirements.json.",
-        "phase": "Initiation",
-        "gate": 1,
+        "desc": "Module M13 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M13 in spec/requirements.json. Open non-functional requirements: NFR-REL-01.",
+        "phase": "Execution",
+        "gate": 3,
         "closed": false
       },
       {
@@ -368,9 +368,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M8 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M8 in spec/requirements.json.",
-        "phase": "Initiation",
-        "gate": 1,
+        "desc": "Module M8 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M8 in spec/requirements.json. No open non-functional requirements.",
+        "phase": "Closure",
+        "gate": 3,
         "closed": false
       },
       {
@@ -387,9 +387,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M11 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M11 in spec/requirements.json.",
-        "phase": "Initiation",
-        "gate": 1,
+        "desc": "Module M11 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M11 in spec/requirements.json. Open non-functional requirements: NFR-COST-01.",
+        "phase": "Execution",
+        "gate": 3,
         "closed": false
       },
       {
@@ -406,9 +406,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M9 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M9 in spec/requirements.json.",
-        "phase": "Initiation",
-        "gate": 1,
+        "desc": "Module M9 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M9 in spec/requirements.json. No open non-functional requirements.",
+        "phase": "Execution",
+        "gate": 2,
         "closed": false
       },
       {
@@ -425,9 +425,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M18 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M18 in spec/requirements.json.",
-        "phase": "Initiation",
-        "gate": 1,
+        "desc": "Module M18 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M18 in spec/requirements.json. No open non-functional requirements.",
+        "phase": "Closure",
+        "gate": 3,
         "closed": false
       },
       {
@@ -444,9 +444,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M12 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M12 in spec/requirements.json.",
-        "phase": "Initiation",
-        "gate": 1,
+        "desc": "Module M12 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M12 in spec/requirements.json. No open non-functional requirements.",
+        "phase": "Closure",
+        "gate": 3,
         "closed": false
       },
       {
@@ -463,9 +463,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M10 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M10 in spec/requirements.json.",
-        "phase": "Initiation",
-        "gate": 1,
+        "desc": "Module M10 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M10 in spec/requirements.json. No open non-functional requirements.",
+        "phase": "Closure",
+        "gate": 3,
         "closed": false
       },
       {
@@ -482,9 +482,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M15 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M15 in spec/requirements.json.",
-        "phase": "Initiation",
-        "gate": 1,
+        "desc": "Module M15 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M15 in spec/requirements.json. No open non-functional requirements.",
+        "phase": "Execution",
+        "gate": 2,
         "closed": false
       },
       {
@@ -501,9 +501,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M16 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M16 in spec/requirements.json.",
+        "desc": "Module M16 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M16 in spec/requirements.json. Open non-functional requirements: NFR-COMP-01, NFR-A11Y-01.",
         "phase": "Execution",
-        "gate": 2,
+        "gate": 3,
         "closed": false
       },
       {
@@ -520,9 +520,9 @@
         "budget": 0,
         "contingency": 0,
         "contingencyUsed": 0,
-        "desc": "Module M17 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M17 in spec/requirements.json.",
-        "phase": "Initiation",
-        "gate": 1,
+        "desc": "Module M17 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M17 in spec/requirements.json. No open non-functional requirements.",
+        "phase": "Closure",
+        "gate": 3,
         "closed": false
       }
     ],
@@ -629,7 +629,7 @@
         "start": "2026-11-30",
         "end": "2026-12-18",
         "weight": 0.2,
-        "pct": 100,
+        "pct": 60,
         "owner": "PE-08",
         "deps": [
           "M4-A2"
@@ -643,7 +643,7 @@
         "start": "2026-12-14",
         "end": "2026-12-25",
         "weight": 0.1,
-        "pct": 100,
+        "pct": 0,
         "owner": "PE-08",
         "deps": [
           "M4-A3"
@@ -671,7 +671,7 @@
         "start": "2026-11-09",
         "end": "2026-11-27",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": []
       },
@@ -683,7 +683,7 @@
         "start": "2026-11-23",
         "end": "2026-12-25",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": [
           "M2-A1"
@@ -697,7 +697,7 @@
         "start": "2026-12-21",
         "end": "2027-01-08",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 75,
         "owner": "PE-07",
         "deps": [
           "M2-A2"
@@ -739,7 +739,7 @@
         "start": "2026-11-30",
         "end": "2026-12-18",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-08",
         "deps": []
       },
@@ -751,7 +751,7 @@
         "start": "2026-12-14",
         "end": "2027-01-22",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-08",
         "deps": [
           "M3-A1"
@@ -765,7 +765,7 @@
         "start": "2027-01-18",
         "end": "2027-02-05",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 85,
         "owner": "PE-08",
         "deps": [
           "M3-A2"
@@ -861,7 +861,7 @@
         "start": "2027-02-08",
         "end": "2027-02-26",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 47,
         "owner": "PE-03",
         "deps": [
           "M5-A4"
@@ -929,7 +929,7 @@
         "start": "2027-02-22",
         "end": "2027-03-12",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 27,
         "owner": "PE-04",
         "deps": [
           "M6-A4"
@@ -997,7 +997,7 @@
         "start": "2027-03-08",
         "end": "2027-03-26",
         "weight": 0.15,
-        "pct": 33,
+        "pct": 100,
         "owner": "PE-04",
         "deps": [
           "M7-A4"
@@ -1037,7 +1037,7 @@
         "start": "2027-02-01",
         "end": "2027-02-19",
         "weight": 0.2,
-        "pct": 100,
+        "pct": 35,
         "owner": "PE-09",
         "deps": [
           "M14-A2"
@@ -1079,7 +1079,7 @@
         "start": "2027-01-11",
         "end": "2027-01-29",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": []
       },
@@ -1091,7 +1091,7 @@
         "start": "2027-01-25",
         "end": "2027-03-05",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": [
           "M13-A1"
@@ -1105,7 +1105,7 @@
         "start": "2027-03-01",
         "end": "2027-03-19",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": [
           "M13-A2"
@@ -1119,7 +1119,7 @@
         "start": "2027-03-15",
         "end": "2027-03-26",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": [
           "M13-A3"
@@ -1133,7 +1133,7 @@
         "start": "2027-03-22",
         "end": "2027-04-09",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": [
           "M13-A4"
@@ -1147,7 +1147,7 @@
         "start": "2027-01-25",
         "end": "2027-02-12",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-06",
         "deps": []
       },
@@ -1159,7 +1159,7 @@
         "start": "2027-02-08",
         "end": "2027-03-12",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-06",
         "deps": [
           "M8-A1"
@@ -1173,7 +1173,7 @@
         "start": "2027-03-08",
         "end": "2027-03-26",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-06",
         "deps": [
           "M8-A2"
@@ -1187,7 +1187,7 @@
         "start": "2027-03-22",
         "end": "2027-04-02",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-06",
         "deps": [
           "M8-A3"
@@ -1201,7 +1201,7 @@
         "start": "2027-03-29",
         "end": "2027-04-16",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-06",
         "deps": [
           "M8-A4"
@@ -1215,7 +1215,7 @@
         "start": "2027-02-08",
         "end": "2027-02-26",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": []
       },
@@ -1227,7 +1227,7 @@
         "start": "2027-02-22",
         "end": "2027-03-26",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": [
           "M11-A1"
@@ -1241,7 +1241,7 @@
         "start": "2027-03-22",
         "end": "2027-04-09",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": [
           "M11-A2"
@@ -1255,7 +1255,7 @@
         "start": "2027-04-05",
         "end": "2027-04-16",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": [
           "M11-A3"
@@ -1269,7 +1269,7 @@
         "start": "2027-04-12",
         "end": "2027-04-30",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": [
           "M11-A4"
@@ -1283,7 +1283,7 @@
         "start": "2027-03-15",
         "end": "2027-04-02",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": []
       },
@@ -1295,7 +1295,7 @@
         "start": "2027-03-29",
         "end": "2027-04-30",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": [
           "M9-A1"
@@ -1309,7 +1309,7 @@
         "start": "2027-04-26",
         "end": "2027-05-14",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": [
           "M9-A2"
@@ -1323,7 +1323,7 @@
         "start": "2027-05-10",
         "end": "2027-05-21",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": [
           "M9-A3"
@@ -1337,7 +1337,7 @@
         "start": "2027-05-17",
         "end": "2027-06-04",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 47,
         "owner": "PE-07",
         "deps": [
           "M9-A4"
@@ -1351,7 +1351,7 @@
         "start": "2027-03-08",
         "end": "2027-03-26",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-04",
         "deps": []
       },
@@ -1363,7 +1363,7 @@
         "start": "2027-03-22",
         "end": "2027-05-07",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-04",
         "deps": [
           "M18-A1"
@@ -1377,7 +1377,7 @@
         "start": "2027-05-03",
         "end": "2027-05-28",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-04",
         "deps": [
           "M18-A2"
@@ -1391,7 +1391,7 @@
         "start": "2027-05-24",
         "end": "2027-06-04",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-04",
         "deps": [
           "M18-A3"
@@ -1405,7 +1405,7 @@
         "start": "2027-05-31",
         "end": "2027-06-18",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-04",
         "deps": [
           "M18-A4"
@@ -1419,7 +1419,7 @@
         "start": "2027-06-21",
         "end": "2027-07-02",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": []
       },
@@ -1431,7 +1431,7 @@
         "start": "2027-06-28",
         "end": "2027-07-30",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": [
           "M12-A1"
@@ -1445,7 +1445,7 @@
         "start": "2027-07-26",
         "end": "2027-08-13",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": [
           "M12-A2"
@@ -1459,7 +1459,7 @@
         "start": "2027-08-09",
         "end": "2027-08-20",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": [
           "M12-A3"
@@ -1473,7 +1473,7 @@
         "start": "2027-08-16",
         "end": "2027-08-27",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-12",
         "deps": [
           "M12-A4"
@@ -1487,7 +1487,7 @@
         "start": "2027-06-21",
         "end": "2027-07-02",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-13",
         "deps": []
       },
@@ -1499,7 +1499,7 @@
         "start": "2027-06-28",
         "end": "2027-07-30",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-13",
         "deps": [
           "M10-A1"
@@ -1513,7 +1513,7 @@
         "start": "2027-07-26",
         "end": "2027-08-13",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-13",
         "deps": [
           "M10-A2"
@@ -1527,7 +1527,7 @@
         "start": "2027-08-09",
         "end": "2027-08-20",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-13",
         "deps": [
           "M10-A3"
@@ -1541,7 +1541,7 @@
         "start": "2027-08-16",
         "end": "2027-08-27",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-13",
         "deps": [
           "M10-A4"
@@ -1555,7 +1555,7 @@
         "start": "2027-01-25",
         "end": "2027-02-26",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-11",
         "deps": []
       },
@@ -1567,7 +1567,7 @@
         "start": "2027-02-22",
         "end": "2027-05-14",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-11",
         "deps": [
           "M15-A1"
@@ -1581,7 +1581,7 @@
         "start": "2027-05-10",
         "end": "2027-06-25",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-11",
         "deps": [
           "M15-A2"
@@ -1595,7 +1595,7 @@
         "start": "2027-06-21",
         "end": "2027-07-16",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-11",
         "deps": [
           "M15-A3"
@@ -1609,7 +1609,7 @@
         "start": "2027-07-12",
         "end": "2027-08-13",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 33,
         "owner": "PE-11",
         "deps": [
           "M15-A4"
@@ -1623,7 +1623,7 @@
         "start": "2026-11-09",
         "end": "2026-12-25",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": []
       },
@@ -1635,7 +1635,7 @@
         "start": "2026-12-21",
         "end": "2027-04-16",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": [
           "M16-A1"
@@ -1649,7 +1649,7 @@
         "start": "2027-04-12",
         "end": "2027-06-11",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": [
           "M16-A2"
@@ -1663,7 +1663,7 @@
         "start": "2027-06-07",
         "end": "2027-07-09",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": [
           "M16-A3"
@@ -1677,7 +1677,7 @@
         "start": "2027-07-05",
         "end": "2027-08-20",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-07",
         "deps": [
           "M16-A4"
@@ -1691,7 +1691,7 @@
         "start": "2027-02-22",
         "end": "2027-03-19",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": []
       },
@@ -1703,7 +1703,7 @@
         "start": "2027-03-15",
         "end": "2027-05-14",
         "weight": 0.4,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": [
           "M17-A1"
@@ -1717,7 +1717,7 @@
         "start": "2027-05-10",
         "end": "2027-06-11",
         "weight": 0.2,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": [
           "M17-A2"
@@ -1731,7 +1731,7 @@
         "start": "2027-06-07",
         "end": "2027-06-25",
         "weight": 0.1,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": [
           "M17-A3"
@@ -1745,7 +1745,7 @@
         "start": "2027-06-21",
         "end": "2027-07-16",
         "weight": 0.15,
-        "pct": 0,
+        "pct": 100,
         "owner": "PE-10",
         "deps": [
           "M17-A4"
@@ -2449,6 +2449,160 @@
     ],
     "items": [
       {
+        "id": "NFR-PERF-01",
+        "project": "M4",
+        "column": "next",
+        "title": "NFR-PERF-01 — Cold start <=3.0s on the reference device",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: a phone. Verification: Device matrix benchmark."
+      },
+      {
+        "id": "NFR-PERF-02",
+        "project": "M4",
+        "column": "next",
+        "title": "NFR-PERF-02 — >=50fps drag; >=30fps with 2000 segments",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: a phone. Verification: Frame-timing capture."
+      },
+      {
+        "id": "NFR-PERF-03",
+        "project": "M4",
+        "column": "next",
+        "title": "NFR-PERF-03 — Run to first visible change <=300ms",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: a phone. Verification: Instrumented timing."
+      },
+      {
+        "id": "NFR-SIZE-01",
+        "project": "M14",
+        "column": "next",
+        "title": "NFR-SIZE-01 — Base <=25MB; full curriculum <=180MB",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: a phone. Verification: CI size budget."
+      },
+      {
+        "id": "NFR-BATT-01",
+        "project": "M4",
+        "column": "next",
+        "title": "NFR-BATT-01 — <=8% battery per 30-min session",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: a phone. Verification: Battery historian run."
+      },
+      {
+        "id": "NFR-OFF-01",
+        "project": "M14",
+        "column": "doing",
+        "title": "NFR-OFF-01 — 100% of learning features work offline",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: a phone. Verification: Airplane-mode soak."
+      },
+      {
+        "id": "NFR-REL-01",
+        "project": "M13",
+        "column": "next",
+        "title": "NFR-REL-01 — >=99.5% crash-free sessions; no data loss on kill",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: a phone. Verification: Field telemetry + kill test."
+      },
+      {
+        "id": "NFR-SEC-01",
+        "project": "M14",
+        "column": "next",
+        "title": "NFR-SEC-01 — TLS1.3; signed packs; no RCE path in the interpreter",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: an external reviewer. Verification: Pen test + interpreter fuzzing."
+      },
+      {
+        "id": "NFR-PRIV-01",
+        "project": "M13",
+        "column": "done",
+        "title": "NFR-PRIV-01 — Data minimisation by default (§13)",
+        "assignee": null,
+        "points": 0,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: nothing — done. Verification: DPIA + seat 13 sign-off."
+      },
+      {
+        "id": "NFR-COMP-01",
+        "project": "M16",
+        "column": "next",
+        "title": "NFR-COMP-01 — Android 8+, iOS 14+, Win10+, macOS12+, Linux LTS, browser",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: a phone. Verification: Device matrix."
+      },
+      {
+        "id": "NFR-A11Y-01",
+        "project": "M16",
+        "column": "next",
+        "title": "NFR-A11Y-01 — WCAG 2.2 AA verified externally before launch",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: an external reviewer. Verification: External audit report."
+      },
+      {
+        "id": "NFR-I18N-01",
+        "project": "M15",
+        "column": "done",
+        "title": "NFR-I18N-01 — No hard-coded strings; coverage enforced in CI",
+        "assignee": null,
+        "points": 0,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: nothing — done. Verification: CI lint."
+      },
+      {
+        "id": "NFR-MAINT-01",
+        "project": "M14",
+        "column": "done",
+        "title": "NFR-MAINT-01 — Adding a world requires no app release",
+        "assignee": null,
+        "points": 0,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: nothing — done. Verification: Pack-only release drill."
+      },
+      {
+        "id": "NFR-COST-01",
+        "project": "M11",
+        "column": "next",
+        "title": "NFR-COST-01 — Marginal cost per child per month within budget line",
+        "assignee": null,
+        "points": 3,
+        "priority": "P1",
+        "created": "2026-09-18",
+        "note": "Waiting on: PO open item O-01. Verification: Cost model review."
+      },
+      {
         "id": "IMP-001",
         "project": "M9",
         "column": "backlog",
@@ -2551,21 +2705,23 @@
     ],
     "narrative": {
       "highlights": [
-        "G1 closed. All six Annex E questions answered in the PO decision register (D-001 … D-006), with rationale and reversal cost. R9, the only risk the workbook records as outside the Committee's authority, is closed with it.",
-        "G2 closed. M1's interface contract is frozen and implemented.",
-        "M1 delivered: 7/7 acceptance tests green, 103 tests in total. R3 — the joint-highest risk in the register — is closed on evidence, not on a merged fix.",
-        "Five defects were found and closed during the M1 build. Three of them were invisible until a child would have hit them.",
-        "M4, M6, M7, M5 and M14 delivered. 236 tests across five packages, every module prompt's acceptance tests green.",
-        "World 1 authored and published: 100 items at exactly the volume §6.3 commits, 5 tutorials, every one through the publish gate. The gate refused the first attempt and was right to.",
-        "The G3 vertical slice runs end to end and offline: pack verified, tutorial played, items scheduled, answers graded, mastery reached, next concept unlocked. Every component is the real one."
+        "G1 and G2 closed on evidence. All six Annex E questions answered in the PO decision register (D-001 … D-011), each with rationale and reversal cost. R9, the only risk the workbook records as outside the Committee's authority, is closed with D-001.",
+        "All eighteen modules are built. Eleven packages, ~28 000 lines of Dart, 441 tests passing, every module prompt's automatable acceptance tests green.",
+        "100 of 130 requirements are Done, and every one of them is named by a test — enforced in CI, which fails the build if a requirement claims Done without one.",
+        "Three worlds authored and published: 266 items over 13 concepts, every concept at or above its §6.3 commitment and using at least five item types. Each pack is re-authored through the publish gate in CI and then diffed, so a bank that ships and a bank that was checked are the same bank.",
+        "The gates did their job. Thirty-four authoring faults were refused before anything was written, and nine build defects were found — four of which would have reached a child, including an editor that silently deleted a line of a child's saved work (M3-001, S1).",
+        "The G3 vertical slice runs end to end and offline: pack verified, tutorial played, items scheduled, answers graded, mastery reached, next concept unlocked. Every component is the real one.",
+        "NFR-MAINT-01 is closed by demonstration rather than by architecture: Worlds 0 and 2 were added after every package was built, with no change to any lib/ file."
       ],
       "concerns": [
-        "Every performance and platform claim so far is CI-measured. No measurement exists on the reference device (Android 11, 2 GB). G3 cannot close without it.",
-        "The 22 child-facing error messages M1 ships have had no seat-3 or seat-11 review. They reach a child the moment M3 ships.",
+        "G3 IS NOT CLOSED, and closes on one thing: its own criterion ends 'running on the reference low-end device', and nobody has run it on an Android 11 phone with 2 GB of RAM. Twelve of the thirty open requirements are waiting on that phone and nothing else. See docs/governance/03_G3_ASSESSMENT.md for the protocol seat 14 should run.",
+        "Every performance, size, battery and soak figure in this portfolio is CI-measured. A number measured on a build server is not a number measured on the reference device, and reporting it as one is how a product ships slow.",
+        "Nobody has READ the 266 items. The banks are machine-gated, which proves every item is gradable and proves nothing about whether it teaches. Seats 3 and 4 owe a review before a child sees them.",
+        "The 22 child-facing error messages and every tutorial line have had no seat-11 review. They are the strings a child meets when they are already stuck.",
         "No budget line has been agreed (NFR-COST-01, PO open item O-01), so every earned-value figure in this portfolio is zero by construction rather than by accident.",
-        "39 of 130 requirements are done. The curriculum ledger commits 1214 items across 58 concepts, of which World 1's 100 are now authored — authoring capacity, not engineering, sets the schedule (§12).",
-        "Nobody has READ World 1. The bank is machine-gated, which proves every item is gradable and proves nothing about whether it teaches. Seats 3 and 4 owe a review before a child sees it.",
-        "M7-SIM-01 is an open S2 against G3: the mastery rule as specified needs about 30 items per concept against the 18-24 committed. PO decision D-010 proposes the fix; seats 3 and 4 hold the ruling."
+        "Seven requirements wait on platform plumbing Flutter has not been wired to yet — sound, image import, screen capture, pack download, autocomplete. The consent gate they sit behind is built and tested; the plumbing is not.",
+        "Two external reviews are preconditions of public launch and neither has been commissioned: the WCAG 2.2 AA audit (NFR-A11Y-01) and the security review (NFR-SEC-01).",
+        "M7-SIM-01 remains an open S2 against G3: the mastery rule as specified needs about 30 items per concept against the 18-24 committed. PO decision D-010 proposes the fix; seats 3 and 4 hold the ruling."
       ]
     },
     "settings": {

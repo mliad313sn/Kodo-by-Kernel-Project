@@ -249,6 +249,8 @@ void main() {
     });
   });
 
+  maintenanceTests(world0, world2);
+
   group('World 2 teaches the loop', () {
     test('every concept has items that actually contain a loop', () {
       for (final concept in world2.concepts.keys) {
@@ -306,6 +308,61 @@ void main() {
         expect(interpreter.status, RunStatus.finished,
             reason: '${item.id}: ${interpreter.error?.message('fr')}');
         expect(canvas.segments, isNotEmpty, reason: item.id);
+      }
+    });
+  });
+}
+
+/// `NFR-MAINT-01` — *"adding a world requires no app release"*.
+///
+/// The claim is now testable rather than architectural, because two worlds were added
+/// after every package was built. World 0 and World 2 are content: no `lib/` file in any
+/// package changed to make them work, and this test proves the runtime consequence — a
+/// pack the code has never seen installs, and its items run, on the shipped engine.
+void maintenanceTests(ContentPack world0, ContentPack world2) {
+  group('NFR-MAINT-01 · a new world needs no app release', () {
+    test('a pack the engine has never seen installs and its items run', () {
+      final library = ContentLibrary();
+      // Install World 2 into a library that has never held anything.
+      final refusal = library.install(world2, manifestOf(2));
+      expect(refusal, isNull);
+
+      // And an item out of it grades, on the same grader the app ships.
+      const grader = Grader();
+      var graded = 0;
+      for (final item in world2.items.take(20)) {
+        final source = item.referenceSolutionSource;
+        if (source == null) continue;
+        final parsed = parse(source, KeywordTables.fr);
+        expect(parsed.errors, isEmpty);
+        expect(
+            grader.grade(item, ProgramResponse(parsed.program)).passed, isTrue,
+            reason: '${item.id} does not pass on the shipped engine');
+        graded++;
+      }
+      expect(graded, greaterThan(10));
+    });
+
+    test('nothing in a pack names a version of the app', () {
+      for (final pack in [world0, world2]) {
+        final serialised = jsonEncode(pack.toJson());
+        // A pack that names an app version is a pack that needs an app release.
+        expect(serialised, isNot(contains('appVersion')));
+        expect(serialised, isNot(contains('minSdk')));
+        expect(serialised, isNot(contains('requiresApp')));
+      }
+    });
+
+    test('every opcode the packs use is one the shipped engine already has',
+        () {
+      for (final pack in [world0, world2]) {
+        for (final item in pack.items) {
+          for (final opcodeId in item.paletteScope) {
+            expect(Opcode.byId(opcodeId), isNotNull,
+                reason:
+                    '${item.id} offers "$opcodeId", which the engine does not have');
+          }
+        }
       }
     });
   });
