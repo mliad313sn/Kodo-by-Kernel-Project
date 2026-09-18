@@ -135,8 +135,9 @@ class Scheduler {
           .where((i) => i.difficulty == Difficulty.d1)
           .toList();
       final pick = _choose(easy);
-      if (pick != null)
+      if (pick != null) {
         return ScheduledItem(pick, SelectionReason.recoveryFloor);
+      }
     }
 
     // A concept that is only waiting for its retention window drops out of the 60 % band.
@@ -220,8 +221,9 @@ class Scheduler {
           .where((i) => unlocked.contains(i.conceptId) && !_tooRecent(i))
           .toList(),
     );
-    if (anything != null)
+    if (anything != null) {
       return ScheduledItem(anything, SelectionReason.fallback);
+    }
 
     // Everything unlocked has been shown inside the no-repeat window. Rather than return
     // null and leave a child with an empty screen, the window is the thing that gives way.

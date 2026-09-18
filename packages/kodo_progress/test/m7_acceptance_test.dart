@@ -629,10 +629,12 @@ void main() {
           }
         }
 
-        if (itemsWhenCriteriaMet != null)
+        if (itemsWhenCriteriaMet != null) {
           toCriteria[band]!.add(itemsWhenCriteriaMet);
-        if (state?.state == ConceptState.maitrise && aptitude < 0.5)
+        }
+        if (state?.state == ConceptState.maitrise && aptitude < 0.5) {
           falseMastery++;
+        }
       }
 
       reportFalseMastery(falseMastery);
