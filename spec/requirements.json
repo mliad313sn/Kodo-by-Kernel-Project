@@ -732,8 +732,8 @@
       "priority": "M",
       "verification": "Design review seat 6 + seat 5",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M8 squad"
     },
     {
       "id": "FR-M8-02",
@@ -744,8 +744,8 @@
       "priority": "M",
       "verification": "UI test + child panel",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M8 squad"
     },
     {
       "id": "FR-M8-03",
@@ -756,8 +756,8 @@
       "priority": "S",
       "verification": "Logic test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M8 squad"
     },
     {
       "id": "FR-M8-04",
@@ -768,8 +768,8 @@
       "priority": "M",
       "verification": "G4 pass 5 audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M8 squad"
     },
     {
       "id": "FR-M8-05",
@@ -780,8 +780,8 @@
       "priority": "M",
       "verification": "Design review",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M8 squad"
     },
     {
       "id": "FR-M9-01",
@@ -1284,8 +1284,8 @@
       "priority": "M",
       "verification": "Event schema test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M17 squad"
     },
     {
       "id": "FR-M17-02",
@@ -1296,8 +1296,8 @@
       "priority": "M",
       "verification": "Seat 13 SDK allow-list audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M17 squad"
     },
     {
       "id": "FR-M17-03",
@@ -1308,8 +1308,8 @@
       "priority": "M",
       "verification": "Report generation test",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M17 squad"
     },
     {
       "id": "FR-M17-04",
@@ -1320,8 +1320,8 @@
       "priority": "M",
       "verification": "Report delivered for 4 consecutive weeks",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M17 squad"
     },
     {
       "id": "FR-M18-01",
@@ -1476,7 +1476,7 @@
       "priority": "M",
       "verification": "DPIA + seat 13 sign-off",
       "gate": "G4",
-      "status": "Not started",
+      "status": "Done",
       "owner": ""
     },
     {

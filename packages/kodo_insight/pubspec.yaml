@@ -1,0 +1,21 @@
+name: kodo_insight
+description: >-
+  KODO modules M17 and M8 — learning telemetry, item health, and the motivation system.
+  They are one package because they are one argument: what we measure decides what we
+  reward, and §10 commits us to measuring wellbeing rather than only retention.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  crypto: ^3.0.6
+  kodo_grader:
+    path: ../kodo_grader
+  kodo_progress:
+    path: ../kodo_progress
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0

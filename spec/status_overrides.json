@@ -70,7 +70,17 @@
     "FR-M3-08": "Not started",
     "FR-M3-09": "In progress",
     "FR-M15-03": "Done",
-    "FR-M16-01": "In progress"
+    "FR-M16-01": "In progress",
+    "FR-M8-01": "Done",
+    "FR-M8-02": "Done",
+    "FR-M8-03": "Done",
+    "FR-M8-04": "Done",
+    "FR-M8-05": "Done",
+    "FR-M17-01": "Done",
+    "FR-M17-02": "Done",
+    "FR-M17-03": "Done",
+    "FR-M17-04": "Done",
+    "NFR-PRIV-01": "Done"
   },
   "owner": {
     "FR-M1-01": "M1 squad",
@@ -140,6 +150,15 @@
     "FR-M3-06": "M3 squad",
     "FR-M3-07": "M3 squad",
     "FR-M3-08": "M3 squad",
-    "FR-M3-09": "M3 squad"
+    "FR-M3-09": "M3 squad",
+    "FR-M8-01": "M8 squad",
+    "FR-M8-02": "M8 squad",
+    "FR-M8-03": "M8 squad",
+    "FR-M8-04": "M8 squad",
+    "FR-M8-05": "M8 squad",
+    "FR-M17-01": "M17 squad",
+    "FR-M17-02": "M17 squad",
+    "FR-M17-03": "M17 squad",
+    "FR-M17-04": "M17 squad"
   }
 }
