@@ -1,0 +1,20 @@
+name: kodo_progress
+description: >-
+  KODO module M7 — progression, mastery and scheduling. The claim KODO makes and its
+  competitors do not: that a concept is mastered, not merely visited. Computed entirely on
+  device, offline, from item-level evidence.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  kodo_grader:
+    path: ../kodo_grader
+  kodo_lang:
+    path: ../kodo_lang
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0

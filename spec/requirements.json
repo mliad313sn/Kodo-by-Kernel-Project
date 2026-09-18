@@ -648,8 +648,8 @@
       "priority": "M",
       "verification": "Simulation against synthetic learners",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M7 squad"
     },
     {
       "id": "FR-M7-02",
@@ -660,8 +660,8 @@
       "priority": "M",
       "verification": "Scheduler unit test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M7 squad"
     },
     {
       "id": "FR-M7-03",
@@ -672,8 +672,8 @@
       "priority": "M",
       "verification": "Scheduler unit test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M7 squad"
     },
     {
       "id": "FR-M7-04",
@@ -684,8 +684,8 @@
       "priority": "S",
       "verification": "Pilot with 30 children",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M7 squad"
     },
     {
       "id": "FR-M7-05",
@@ -696,8 +696,8 @@
       "priority": "M",
       "verification": "State test",
       "gate": "G3",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M7 squad"
     },
     {
       "id": "FR-M7-06",
@@ -708,8 +708,8 @@
       "priority": "S",
       "verification": "Child panel",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M7 squad"
     },
     {
       "id": "FR-M7-07",
@@ -720,8 +720,8 @@
       "priority": "M",
       "verification": "Seat 13 audit",
       "gate": "G4",
-      "status": "Not started",
-      "owner": ""
+      "status": "Done",
+      "owner": "M7 squad"
     },
     {
       "id": "FR-M8-01",

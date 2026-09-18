@@ -247,6 +247,42 @@ an uncomfortable answer for a system of record and it is the honest one.
 **Reversal cost.** **Low.** The book is generated, so moving to another tool costs one
 generator.
 
+### D-010 — Criterion 2's window widens from 8 items to 10
+
+**Decision.** §4.6's criterion 2 becomes *"≥ 80 % first-attempt success over the last **10**
+items"*. Raised as an amendment, not a silent edit; `FR-M7-01` is re-issued accordingly.
+The per-concept item commitment of §6.3 stays at 18–24.
+
+**Rationale.** Finding `M7-SIM-01`, measured over 10 000 synthetic learners before a single
+item has been authored. At a window of eight, the 95th-percentile *capable* child needs
+about 30 items on a concept to satisfy criteria 1–3, against a bank the curriculum sizes at
+18–24. The bank is undersized for its own rule by roughly a third.
+
+Widening the window reduces the variance of the estimate without lowering the bar — ten
+observations are a better measurement of a child's rate than eight, not a kinder one. The
+simulation prices both arms and confirms the part that matters: **the wider window does not
+let more weak learners through.** Had it done so, this decision would have gone the other
+way and the money would have gone into the bank.
+
+**The alternative, and why not.** Raising the commitment to ~30 items per concept costs
+about **+390 items** across 58 concepts. §12 already names authoring capacity — not
+engineering — as the critical path, and `R1` is the joint-highest risk in the register.
+Spending a third of a quarter of that capacity to buy a noisier statistic is the wrong
+trade.
+
+**What this decision is not.** It is not a relaxation of mastery. All four criteria stand,
+the retention check stands at 72 hours, and the measured false-positive rate is unchanged
+at roughly 3 in 10 000.
+
+**Source evidence.** `docs/modules/M7_DONE.md` § `M7-SIM-01`; the simulation runs in CI at
+both settings and is written to fail if the finding stops reproducing.
+
+**Reversal cost.** **Low** — one constant, and the simulation re-prices it on demand.
+
+**Consulted.** Seats 3 and 4 hold the learning model and the item bank and have the
+blocking veto here; this decision is recorded as the PO's answer to an escalation and is
+open to a reasoned, domain-relevant objection in the dissent log until G3.
+
 ---
 
 ## Open items the PO has *not* decided
