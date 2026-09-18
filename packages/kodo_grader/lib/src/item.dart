@@ -148,7 +148,10 @@ enum DiagnosticSituation {
   tooManyBlocks,
 
   /// A choice item answered wrongly.
-  wrongChoice;
+  wrongChoice,
+
+  /// The marks are right but the turtle did not end up where it should.
+  endedElsewhere;
 
   static DiagnosticSituation? byName(String name) {
     for (final s in DiagnosticSituation.values) {
@@ -225,6 +228,7 @@ class Item {
     this.blockBudget,
     this.seed = 1,
     this.inputs = const [],
+    this.requireFinalPose = false,
   });
 
   final String id;
@@ -277,6 +281,21 @@ class Item {
   /// Scripted answers for `demande`, so an asking item can still be graded headlessly.
   final List<String> inputs;
 
+  /// Whether the turtle must finish where the target's turtle finished.
+  ///
+  /// Raster comparison cannot see this, and neither can a path signature over segments:
+  /// `avance 50` and `avance 50 / recule 50` leave **identical marks**. World 1 asks a
+  /// child to "come back exactly to the start", which is a claim about the turtle and not
+  /// about the drawing, so the item has to be able to say so.
+  ///
+  /// It is authored per item, never inferred, for the same reason the structural
+  /// assertions are: most items are about a figure, and demanding a final pose on those
+  /// would fail a child who drew the right shape from the other end.
+  ///
+  /// Found by the publish gate while authoring World 1 — thirteen items whose "wrong"
+  /// solutions all passed.
+  final bool requireFinalPose;
+
   String promptIn(String locale) =>
       promptKeys[locale] ?? promptKeys['fr'] ?? '';
 
@@ -309,6 +328,7 @@ class Item {
         if (blockBudget != null) 'budget': blockBudget,
         'seed': seed,
         if (inputs.isNotEmpty) 'inputs': inputs,
+        if (requireFinalPose) 'requireFinalPose': true,
       };
 
   static Item fromJson(Map<String, Object?> j) => Item(
@@ -351,6 +371,7 @@ class Item {
         blockBudget: j['budget'] as int?,
         seed: (j['seed'] as int?) ?? 1,
         inputs: ((j['inputs'] as List<Object?>?) ?? const []).cast<String>(),
+        requireFinalPose: (j['requireFinalPose'] as bool?) ?? false,
       );
 }
 

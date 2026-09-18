@@ -229,6 +229,28 @@ class Grader {
       final samePath =
           attemptCanvas.pathSignature() == targetCanvas.pathSignature();
 
+      // The turtle's own final position and heading, when the item asks for it. Checked
+      // before the marks, because "you drew it right but did not come home" is a different
+      // sentence from "your figure is wrong" and the child deserves the right one.
+      if (item.requireFinalPose) {
+        const tolerance = 0.5;
+        final offBy = (attemptCanvas.positionX - targetCanvas.positionX).abs() +
+            (attemptCanvas.positionY - targetCanvas.positionY).abs();
+        final headingOff =
+            (attemptCanvas.direction - targetCanvas.direction).abs() % 360;
+        if (offBy > tolerance ||
+            (headingOff > tolerance && headingOff < 360 - tolerance)) {
+          return Verdict(
+            passed: false,
+            itemId: item.id,
+            itemVersion: item.version,
+            situation: DiagnosticSituation.endedElsewhere,
+            behavioural: behavioural,
+            messageArgs: _shapeArgs(attemptCanvas, targetCanvas),
+          );
+        }
+      }
+
       if (!behavioural.matches && !samePath) {
         return Verdict(
           passed: false,

@@ -1,0 +1,24 @@
+name: kodo_content
+description: >-
+  KODO modules M5 and M14 — the tutorial engine and offline-first content packs. Tutorials
+  are data, packs are signed and versioned, and the whole curriculum has to work in
+  airplane mode after one download.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  crypto: ^3.0.6
+  kodo_grader:
+    path: ../kodo_grader
+  kodo_lang:
+    path: ../kodo_lang
+  kodo_progress:
+    path: ../kodo_progress
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0
+  kodo_stage: any

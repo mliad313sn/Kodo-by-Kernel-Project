@@ -468,7 +468,8 @@ void main() {
     });
   });
 
-  group('FR-M6-04, NFR-OFF-01 · acceptance 3 — grading is entirely offline', () {
+  group('FR-M6-04, NFR-OFF-01 · acceptance 3 — grading is entirely offline',
+      () {
     test('200 items grade with no I/O of any kind', () {
       // The package declares no dart:io and no network dependency; the traceability gate
       // enforces that for M1 and the same rule applies here. This test is the behavioural
@@ -596,7 +597,8 @@ void main() {
       expect(Escalation.values, hasLength(5));
     });
 
-    test('FR-M6-05 · a hint reduces the search space without giving the answer', () {
+    test('FR-M6-05 · a hint reduces the search space without giving the answer',
+        () {
       final item = hexagon();
       for (final hint in item.hints) {
         final fr = hint.textIn('fr');

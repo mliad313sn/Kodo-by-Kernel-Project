@@ -50,7 +50,22 @@ jobs:
             echo "::endgroup::"
           done
 
-      # Gate 5 — every requirement marked done is named by a test, M1 imports no platform
+      # Gate 5 — content. The authoring tool re-publishes every world through M6's publish
+      # gate and M5's content gate, then the repository is diffed. A bank that ships and a
+      # bank that was checked have to be the same bank, and a world over its size budget
+      # fails the build (FR-M14-02).
+      - name: Re-author and verify the content packs
+        working-directory: packages/kodo_content
+        run: |
+          dart run tool/author_world1.dart
+      - name: Content is in step with its source
+        run: |
+          git diff --exit-code content/ || {
+            echo "::error::content/*.json is stale — re-run the authoring tool and commit"
+            exit 1
+          }
+
+      # Gate 6 — every requirement marked done is named by a test, M1 imports no platform
       # library, and no code references a requirement nobody agreed.
       - name: Requirement traceability
         run: dart tools/trace_check.dart
