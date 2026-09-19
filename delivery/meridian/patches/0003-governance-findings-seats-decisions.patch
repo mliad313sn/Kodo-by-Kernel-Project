@@ -1,0 +1,1677 @@
+From de3d9244aad4ab3411ac1c65e7d5c26e8ba75768 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 19 Sep 2026 13:01:38 +0000
+Subject: [PATCH] =?UTF-8?q?Ce=20qu'une=20revue=20produit,=20qui=20peut=20d?=
+ =?UTF-8?q?ire=20non,=20et=20ce=20qu'une=20d=C3=A9cision=20co=C3=BBte=20?=
+ =?UTF-8?q?=C3=A0=20d=C3=A9faire=20(MER-02,=2005,=2006,=2007,=2008,=2009,?=
+ =?UTF-8?q?=2010,=2011)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Les huit constats restants du comité de recette. Ils ont l'air séparés ;
+ils ne le sont pas. Tous disent la même chose : Meridian tient un
+PORTEFEUILLE et ne tenait pas encore une GOUVERNANCE. Le portefeuille
+répond « où en est-on ». La gouvernance répond « qui a décidé, sur
+quelle preuve, contre quel avis, et que coûterait le retour ».
+
+MER-05 · le constat de revue
+  Un risque ne s'est pas produit — c'est pour cela qu'il a une
+  probabilité. Un constat S'EST produit, et le ranger dans le registre
+  RAID oblige à lui en inventer une. `finding` a le fait observé et la
+  conséquence dans deux colonnes, et une contrainte qui est la meilleure
+  phrase du produit : `finding_closed_needs_evidence`. Un constat se
+  ferme sur une preuve de re-test, jamais sur un correctif fusionné, et
+  c'est la base qui le tient.
+
+MER-11 · la preuve n'est plus un document
+  Une exécution d'intégration continue n'a ni révision ni propriétaire.
+  `evidence` accepte le document du registre OU une adresse, jamais ni
+  l'un ni l'autre.
+
+MER-06 · l'autorité est une donnée, vetos compris
+  Quatre rôles d'ACCÈS ne sont pas une gouvernance. `seat` porte un
+  domaine, parfois un veto, et `seat_conflict` refuse qu'une personne
+  tienne deux sièges incompatibles — la séparation des devoirs, tenue
+  par un déclencheur plutôt que par la mémoire de quelqu'un. Un veto
+  ouvert bloque le franchissement même quand la preuve est complète.
+
+MER-07 · l'objection, le coût de retour, la supersession
+  `decision_objection` donne un registre de dissensions et une horloge
+  d'escalade, poussée sur la liste d'attention comme une action. Sur la
+  décision : `reversal_cost`, `supersedes_id`, `source_evidence_id`.
+  Publier une banque d'items sous licence libre est irréversible ;
+  retirer une galerie du périmètre ne l'est pas. Un outil qui ne
+  consigne qu'une justification fait se ressembler ces deux décisions.
+
+MER-08 · l'import à blanc et la fusion
+  La chose la plus dangereuse du produit est la première que fait un
+  nouveau client. `?dryRun=1` valide, subit toutes les contraintes, dit
+  ce qu'il écrirait et ce qu'il refuserait, et annule. `?mode=merge`
+  met à jour par identifiant : ce qui a été saisi à la main entre deux
+  régénérations survit. Une seule implémentation — le handle de fusion
+  transforme les insertions existantes plutôt que de les dupliquer.
+
+MER-09 · la monnaie dit son unité
+  `"budget": 4` valait quatre millions et rien ne le déclarait. Un
+  client venu d'un tableur déjà en unités importait 2,4 M€ à
+  2 400 000 000 000 €. Le livre déclare `currencyUnit` ou l'import le
+  refuse, et le refus explique pourquoi deviner n'est pas une option.
+
+MER-02 · un jalon peut porter sur plus qu'un projet
+  Une autorisation de mise en service franchit pour un programme
+  entier. La découper par projet la rend fausse : chaque projet se
+  déclare franchi pendant que la revue qui les concerne tous ne s'est
+  pas tenue. Le refus nomme la pièce manquante ET le projet qui la doit.
+
+MER-10 · une gouvernance n'est ni hebdomadaire ni mensuelle
+  `per_gate` et `ad_hoc`, et une série liée à un numéro de jalon.
+
+Ce que ceci n'inclut pas, dit plutôt que sous-entendu : les nouveaux
+registres arrivent en DONNÉE — schéma, import, export, moteur,
+portefeuille — sans routes d'écriture, comme le registre d'exigences de
+MER-03. On peut les porter dans le livre et l'outil raisonne avec ; les
+lever depuis l'interface est le travail suivant.
+
+17 tests nouveaux. La suite est à 467 au vert, la construction et l'audit
+sont propres.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_0145U7JxVLidLpkMfsmtgWbF
+---
+ .../035_findings_seats_and_decisions.sql      | 256 ++++++++
+ server/src/import.js                          | 246 +++++++-
+ server/src/portfolio.js                       |  74 +++
+ server/src/routes/admin.js                    |  13 +-
+ server/src/routes/meetings.js                 |  14 +-
+ server/test/governance.test.js                | 591 ++++++++----------
+ server/test/persistence.test.js               |   2 +-
+ server/test/requirements.test.js              |   2 +
+ shared/engine.js                              | 133 +++-
+ 9 files changed, 982 insertions(+), 349 deletions(-)
+ create mode 100644 server/migrations/035_findings_seats_and_decisions.sql
+
+diff --git a/server/migrations/035_findings_seats_and_decisions.sql b/server/migrations/035_findings_seats_and_decisions.sql
+new file mode 100644
+index 0000000..7741173
+--- /dev/null
++++ b/server/migrations/035_findings_seats_and_decisions.sql
+@@ -0,0 +1,256 @@
++-- ═══════════════════════════════════════════════════════════════════
++-- 035 · CE QU'UNE REVUE PRODUIT, QUI A LE DROIT DE DIRE NON, ET CE
++--       QU'UNE DÉCISION COÛTE À DÉFAIRE
++--       (MER-05, MER-06, MER-07, MER-10, MER-11)
++--
++-- Cinq constats du même comité de recette. Ils ont l'air séparés ;
++-- ils ne le sont pas. Tous les cinq disent la même chose : Meridian
++-- sait tenir un PORTEFEUILLE et ne sait pas encore tenir une
++-- GOUVERNANCE. Le portefeuille répond « où en est-on ». La
++-- gouvernance répond « qui a décidé, sur quelle preuve, contre quel
++-- avis, et que coûterait le retour en arrière ».
++--
++-- ── 1. Un constat de revue n'est ni un risque ni une leçon ────────
++--
++-- Un risque ne s'est pas produit : c'est pour cela qu'il a une
++-- probabilité. Un constat de revue S'EST produit. Le ranger dans le
++-- registre RAID oblige à lui inventer une probabilité — ce que nous
++-- avons fait, faute de mieux, et c'est faux. Une leçon se tire d'un
++-- travail fini ; un constat est ouvert, porté par quelqu'un, et
++-- bloquant.
++--
++-- La contrainte qui compte est `finding_closed_needs_evidence` :
++-- un constat ne peut pas passer à « Closed » sans pièce de preuve.
++-- Pas une convention, pas une étape de processus — la base refuse
++-- l'écriture. C'est le même geste que la piste d'audit inaltérable,
++-- appliqué à la revue.
++--
++-- ── 2. La preuve n'est plus toujours un document ──────────────────
++--
++-- La preuve d'un module logiciel est une exécution d'intégration
++-- continue, un rapport de traçabilité généré, une mesure de
++-- performance écrite dans un fichier. Rien de cela n'est un
++-- « document avec une révision et un propriétaire ». Forcer ces
++-- pièces dans `document` produit des révisions « 0.1 » qui ne
++-- veulent rien dire et un propriétaire qui n'a rien écrit.
++--
++-- `evidence` accepte les deux : soit elle pointe un `document`, soit
++-- elle porte son propre type et son URI. Une seule règle — une pièce
++-- de preuve a une source vérifiable et une date.
++--
++-- ── 3. L'autorité est une donnée — mais il en manquait deux tiers ─
++--
++-- `rbac.js` connaît quatre rôles d'ACCÈS. Une gouvernance réelle a
++-- des SIÈGES : un domaine, parfois un veto, et surtout des
++-- incompatibilités. Le comité KODO en a quatorze, dont trois avec
++-- veto bloquant et une incompatibilité dure — le siège qui doit
++-- pouvoir refuser un mécanisme ne peut pas être tenu par la personne
++-- qui l'a conçu. C'est la séparation des devoirs, et c'est la
++-- première question de tout auditeur externe.
++--
++-- `seat_conflict` refuse une personne qui tiendrait deux sièges
++-- incompatibles. La contrainte est dans la base, donc elle tient même
++-- quand personne ne regarde.
++--
++-- ── 4. Une décision sans objection ni coût de retour ──────────────
++--
++-- `meeting_decision` avait `rationale`, soit 60 % du chemin et les
++-- 60 % difficiles. Manquaient :
++--
++--   · l'objection — sans registre de dissensions, on ne peut pas
++--     mener une gouvernance par consentement, ni siéger dans un
++--     conseil qui consigne les positions minoritaires ;
++--   · l'horloge d'escalade — « non résolu sous une semaine ouvrée »
++--     est exactement ce qu'un outil doit pousser sur un ordre du
++--     jour, et le moteur sait déjà le faire pour les actions ;
++--   · le COÛT DE RETOUR. C'est la colonne pour laquelle il faut se
++--     battre. Publier une banque d'items sous licence libre est
++--     irréversible ; retirer une galerie publique du périmètre ne
++--     l'est pas. Dans un outil qui ne consigne qu'une justification,
++--     ces deux décisions se ressemblent. Elles n'ont rien à voir ;
++--   · la supersession — sans elle la piste dit ce qui a été décidé,
++--     jamais ce qui est vrai aujourd'hui.
++--
++-- ── 5. Une gouvernance n'est ni hebdomadaire ni mensuelle ─────────
++--
++-- Elle est déclenchée par un jalon. `per_gate` et `ad_hoc`
++-- rejoignent la cadence, et une série peut se lier à un numéro de
++-- jalon : le générateur d'ordre du jour — la meilleure chose de ce
++-- produit — peut alors composer l'ordre du jour d'une revue de jalon
++-- à partir des preuves manquantes, ce qui est la réunion la plus
++-- utile qu'un bureau de projets tienne et la seule encore montée à
++-- la main dans un jeu de diapositives.
++-- ═══════════════════════════════════════════════════════════════════
++
++-- ── 2 · la preuve, document ou non (MER-11) ───────────────────────
++CREATE TABLE IF NOT EXISTS evidence (
++  id           text PRIMARY KEY,
++  project_id   text REFERENCES project(id)  ON DELETE CASCADE,
++  -- Soit un document du registre, soit une pièce d'un autre genre.
++  document_id  text REFERENCES document(id) ON DELETE SET NULL,
++  kind         text NOT NULL DEFAULT 'document'
++               CHECK (kind IN ('document','ci_run','test_report','measurement',
++                               'dataset','recording','sign_off','external')),
++  name         text NOT NULL,
++  uri          text NOT NULL DEFAULT '',
++  digest       text NOT NULL DEFAULT '',
++  gate_n       integer,
++  gate_loop    integer NOT NULL DEFAULT 1 CHECK (gate_loop >= 1),
++  captured_on  date NOT NULL,
++  captured_by  text REFERENCES person(id) ON DELETE SET NULL,
++  -- Une pièce de preuve a une source vérifiable : un document du
++  -- registre, ou une adresse. Une preuve sans l'une ni l'autre est une
++  -- affirmation.
++  CONSTRAINT evidence_has_a_source
++    CHECK (document_id IS NOT NULL OR uri <> '')
++);
++CREATE INDEX IF NOT EXISTS evidence_project_idx ON evidence(project_id);
++CREATE INDEX IF NOT EXISTS evidence_gate_idx    ON evidence(gate_n, gate_loop);
++
++-- ── 1 · le constat de revue (MER-05) ──────────────────────────────
++CREATE TABLE IF NOT EXISTS finding (
++  id             text PRIMARY KEY,
++  project_id     text REFERENCES project(id)     ON DELETE CASCADE,
++  requirement_id text REFERENCES requirement(id) ON DELETE SET NULL,
++  gate_n         integer,
++  gate_loop      integer NOT NULL DEFAULT 1 CHECK (gate_loop >= 1),
++  -- Le FAIT observé et la CONSÉQUENCE sont deux colonnes. Les
++  -- confondre est la façon dont un constat devient une opinion.
++  observed_fact  text NOT NULL,
++  why_it_matters text NOT NULL DEFAULT '',
++  severity       text NOT NULL DEFAULT 'S3'
++                 CHECK (severity IN ('S1','S2','S3','S4')),
++  owner_id       text REFERENCES person(id) ON DELETE SET NULL,
++  proposed_fix   text NOT NULL DEFAULT '',
++  raised_on      date NOT NULL,
++  retest_on      date,
++  status         text NOT NULL DEFAULT 'Open'
++                 CHECK (status IN ('Open','In progress','Re-test','Closed','Waived')),
++  closed_evidence_id text REFERENCES evidence(id) ON DELETE RESTRICT,
++  waiver_reason  text NOT NULL DEFAULT '',
++  -- LA contrainte. Un constat se ferme sur une preuve de re-test,
++  -- jamais sur un correctif fusionné : « c'est corrigé » est une
++  -- intention, « voici la re-exécution qui le montre » est un fait.
++  CONSTRAINT finding_closed_needs_evidence
++    CHECK (status <> 'Closed' OR closed_evidence_id IS NOT NULL),
++  -- Et une dérogation dit pourquoi, comme la dérogation d'exigence
++  -- de la migration 034.
++  CONSTRAINT finding_waiver_needs_reason
++    CHECK (status <> 'Waived' OR waiver_reason <> '')
++);
++CREATE INDEX IF NOT EXISTS finding_project_idx ON finding(project_id);
++CREATE INDEX IF NOT EXISTS finding_status_idx  ON finding(status);
++
++-- Un élément de travail vient de quelque part et vaut un score. Les
++-- deux se perdaient à l'import, qui n'en gardait qu'une lettre de
++-- priorité.
++ALTER TABLE work_item ADD COLUMN IF NOT EXISTS source       text NOT NULL DEFAULT '';
++ALTER TABLE work_item ADD COLUMN IF NOT EXISTS score        numeric;
++ALTER TABLE work_item ADD COLUMN IF NOT EXISTS score_method text NOT NULL DEFAULT '';
++-- Un score sans méthode déclarée est un chiffre sans unité : on ne
++-- peut ni le comparer ni le refaire.
++ALTER TABLE work_item DROP CONSTRAINT IF EXISTS work_item_score_needs_method;
++ALTER TABLE work_item ADD  CONSTRAINT work_item_score_needs_method
++  CHECK (score IS NULL OR score_method <> '');
++
++-- ── 3 · les sièges et les vetos (MER-06) ──────────────────────────
++CREATE TABLE IF NOT EXISTS seat (
++  id          text PRIMARY KEY,
++  name        text NOT NULL,
++  person_id   text REFERENCES person(id) ON DELETE SET NULL,
++  domain      text NOT NULL DEFAULT '',
++  -- Un veto porte sur un DOMAINE, jamais sur tout : un siège qui peut
++  -- tout bloquer n'est pas un siège, c'est une direction.
++  veto_domain text,
++  -- Voix sans vote. C'est un rôle de gouvernance réel, pas une
++  -- absence, et la table des présences sait déjà modéliser `deputy`.
++  observer    boolean NOT NULL DEFAULT false,
++  active      boolean NOT NULL DEFAULT true
++);
++
++-- L'incompatibilité est une ARÊTE, pas une colonne : elle est
++-- symétrique, et une colonne tableau laisse les deux moitiés diverger.
++CREATE TABLE IF NOT EXISTS seat_conflict (
++  seat_id  text NOT NULL REFERENCES seat(id) ON DELETE CASCADE,
++  other_id text NOT NULL REFERENCES seat(id) ON DELETE CASCADE,
++  reason   text NOT NULL DEFAULT '',
++  PRIMARY KEY (seat_id, other_id),
++  CONSTRAINT seat_conflict_not_self CHECK (seat_id <> other_id)
++);
++
++-- La séparation des devoirs, tenue par la base plutôt que par la
++-- mémoire de quelqu'un : la même personne ne peut pas tenir deux
++-- sièges déclarés incompatibles.
++CREATE OR REPLACE FUNCTION seat_conflict_guard() RETURNS trigger AS $$
++DECLARE clash text;
++BEGIN
++  IF NEW.person_id IS NULL THEN RETURN NEW; END IF;
++  SELECT s.name INTO clash
++    FROM seat_conflict c
++    JOIN seat s ON s.id = c.other_id
++   WHERE c.seat_id = NEW.id
++     AND s.person_id = NEW.person_id
++     AND s.id <> NEW.id
++   LIMIT 1;
++  IF clash IS NOT NULL THEN
++    RAISE EXCEPTION
++      'Segregation of duties: this person already holds %, which cannot be combined with %',
++      clash, NEW.name;
++  END IF;
++  RETURN NEW;
++END $$ LANGUAGE plpgsql;
++
++DROP TRIGGER IF EXISTS seat_conflict_trigger ON seat;
++CREATE TRIGGER seat_conflict_trigger
++  BEFORE INSERT OR UPDATE OF person_id ON seat
++  FOR EACH ROW EXECUTE FUNCTION seat_conflict_guard();
++
++-- ── 5 · voix sans vote, et une cadence liée au jalon (MER-06, 10) ─
++ALTER TABLE meeting_attendance DROP CONSTRAINT IF EXISTS meeting_attendance_state_check;
++ALTER TABLE meeting_attendance ADD  CONSTRAINT meeting_attendance_state_check
++  CHECK (state IN ('present','apologies','absent','deputy','observer'));
++
++ALTER TABLE meeting_series DROP CONSTRAINT IF EXISTS meeting_series_cadence_check;
++ALTER TABLE meeting_series ADD  CONSTRAINT meeting_series_cadence_check
++  CHECK (cadence IN ('weekly','monthly','per_gate','ad_hoc'));
++ALTER TABLE meeting_series ADD COLUMN IF NOT EXISTS gate_n integer;
++-- Une série liée à un jalon doit dire auquel, sinon « per_gate » ne
++-- désigne aucune réunion.
++ALTER TABLE meeting_series DROP CONSTRAINT IF EXISTS meeting_series_per_gate_needs_gate;
++ALTER TABLE meeting_series ADD  CONSTRAINT meeting_series_per_gate_needs_gate
++  CHECK (cadence <> 'per_gate' OR gate_n IS NOT NULL);
++
++-- ── 4 · la décision : objection, coût de retour, supersession ─────
++ALTER TABLE meeting_decision ADD COLUMN IF NOT EXISTS reversal_cost text;
++ALTER TABLE meeting_decision DROP CONSTRAINT IF EXISTS meeting_decision_reversal_cost_check;
++ALTER TABLE meeting_decision ADD  CONSTRAINT meeting_decision_reversal_cost_check
++  CHECK (reversal_cost IS NULL OR reversal_cost IN ('low','medium','high'));
++ALTER TABLE meeting_decision ADD COLUMN IF NOT EXISTS supersedes_id text
++  REFERENCES meeting_decision(id) ON DELETE SET NULL;
++ALTER TABLE meeting_decision ADD COLUMN IF NOT EXISTS source_evidence_id text
++  REFERENCES evidence(id) ON DELETE SET NULL;
++-- Une décision ne se remplace pas elle-même.
++ALTER TABLE meeting_decision DROP CONSTRAINT IF EXISTS meeting_decision_not_self_superseding;
++ALTER TABLE meeting_decision ADD  CONSTRAINT meeting_decision_not_self_superseding
++  CHECK (supersedes_id IS NULL OR supersedes_id <> id);
++
++CREATE TABLE IF NOT EXISTS decision_objection (
++  id           text PRIMARY KEY,
++  decision_id  text NOT NULL REFERENCES meeting_decision(id) ON DELETE CASCADE,
++  seat_id      text REFERENCES seat(id) ON DELETE SET NULL,
++  domain       text NOT NULL DEFAULT '',
++  -- Le consentement porte à moins d'une objection RAISONNÉE et
++  -- RELEVANT DU DOMAINE. Une objection sans raison n'est pas une
++  -- objection, c'est un vote.
++  reason       text NOT NULL,
++  raised_on    date NOT NULL,
++  escalates_on date,
++  state        text NOT NULL DEFAULT 'open'
++               CHECK (state IN ('open','resolved','escalated','withdrawn')),
++  resolution   text NOT NULL DEFAULT '',
++  CONSTRAINT objection_needs_reason CHECK (btrim(reason) <> ''),
++  CONSTRAINT objection_resolved_needs_resolution
++    CHECK (state <> 'resolved' OR btrim(resolution) <> '')
++);
++CREATE INDEX IF NOT EXISTS objection_decision_idx ON decision_objection(decision_id);
++CREATE INDEX IF NOT EXISTS objection_state_idx    ON decision_objection(state);
+diff --git a/server/src/import.js b/server/src/import.js
+index b001344..090152a 100644
+--- a/server/src/import.js
++++ b/server/src/import.js
+@@ -22,6 +22,8 @@ import { HttpError } from "./auth.js";
+ const PORTFOLIO_TABLES = [
+   "meeting_action", "meeting_decision", "meeting_attendance", "agenda_item",
+   "meeting_occurrence", "meeting_series",
++  "decision_objection", "seat_conflict", "seat",
++  "finding", "evidence",
+   "report_narrative", "work_item", "document", "allocation",
+   "change_step", "change_request", "raid_item", "cost_line", "milestone",
+   "requirement",
+@@ -32,11 +34,97 @@ const PORTFOLIO_TABLES = [
+ const clean = (v) => (v === undefined || v === "" ? null : v);
+ const int = (v, d = 0) => (Number.isFinite(Number(v)) ? Math.round(Number(v)) : d);
+ 
+-export async function importBook(book, user) {
++/* MER-09 — l'unité de la monnaie était implicite, et l'unité était le
++   million. Dans le livre, `"budget": 4` voulait dire quatre millions ;
++   rien ne le déclarait, rien ne le validait, rien ne refusait un livre
++   qui s'était trompé. Un client qui migre depuis un tableur déjà libellé
++   en unités importe un projet de 2,4 M€ à 2 400 000 000 000 € — et
++   chaque RAG, chaque indice de coût et chaque revue de direction est
++   faux pendant un mois, d'une façon qui ressemble à un bug d'affichage.
++
++   Le livre DOIT donc dire son unité. Le refus est explicite : un import
++   sans unité déclarée ne passe pas, parce qu'un import qui devine est
++   exactement le mécanisme qu'on vient de décrire. */
++export const CURRENCY_UNITS = ["millions", "units"];
++
++export function moneyScale(book) {
++  const u = book?.currencyUnit;
++  if (!CURRENCY_UNITS.includes(u)) {
++    throw new HttpError(400,
++      'This book does not declare what its money means. Add "currencyUnit": ' +
++      '"millions" or "units" to the file header. A budget of 4 is four million ' +
++      "in one reading and four euros in the other, and importing the wrong one " +
++      "corrupts every cost figure in the portfolio.");
++  }
++  return u === "millions" ? fromM : (v) => Math.round(Number(v ?? 0) * 100) / 100;
++}
++
++/* Un import à blanc (MER-08). L'importateur tourne déjà dans une
++   transaction : la simulation est donc LE MÊME chemin de code suivi
++   d'une annulation, et non une seconde implémentation qui divergera.
++   Une exception porte le résultat dehors parce que c'est ce qui
++   provoque l'annulation. */
++class DryRunComplete extends Error {
++  constructor(payload) { super("dry run"); this.payload = payload; }
++}
++
++/* Le handle de fusion. Il ne touche QUE les insertions qui nomment une
++   colonne `id` : les tables à clé composite (les arêtes
++   d'incompatibilité, les présences) ou sans identifiant portent déjà
++   leur propre `ON CONFLICT`, ou n'en ont pas besoin. Une insertion qui
++   en déclare un est laissée intacte. */
++const INSERT_HEAD = /^\s*INSERT INTO\s+(\w+)\s*\(([^)]*)\)/i;
++
++export function upsertHandle(t) {
++  return {
++    ...t,
++    query(sql, params) {
++      const m = typeof sql === "string" ? sql.match(INSERT_HEAD) : null;
++      if (!m || /ON CONFLICT/i.test(sql)) return t.query(sql, params);
++      const cols = m[2].split(",").map((c) => c.trim()).filter(Boolean);
++      if (!cols.includes("id")) return t.query(sql, params);
++      const sets = cols.filter((c) => c !== "id").map((c) => `${c} = EXCLUDED.${c}`);
++      if (!sets.length) return t.query(`${sql} ON CONFLICT (id) DO NOTHING`, params);
++      return t.query(`${sql} ON CONFLICT (id) DO UPDATE SET ${sets.join(", ")}`, params);
++    },
++  };
++}
++
++/**
++ * @param {object}  book
++ * @param {object}  user
++ * @param {object}  opts
++ * @param {boolean} opts.dryRun  valider et tout annuler : rien n'est écrit
++ * @param {string}  opts.mode    "replace" (défaut) ou "merge" par identifiant
++ */
++export async function importBook(book, user, opts = {}) {
+   const counts = {};
++  const dryRun = opts.dryRun === true;
++  /* « replace » reste le défaut : c'est le comportement qu'ont les
++     livres existants et les scripts qui les chargent. « merge » est ce
++     qu'il faut quand le portefeuille est ENGENDRÉ par un système de
++     référence — le nôtre l'est, et chaque régénération était jusqu'ici
++     un rechargement destructif complet. */
++  const mode = opts.mode === "merge" ? "merge" : "replace";
++  const money = moneyScale(book);
++  const rejects = [];
++
++  const run = async (raw) => {
++    if (mode === "replace") {
++      for (const table of PORTFOLIO_TABLES) await raw.query(`DELETE FROM ${table}`);
++    }
++    /* MER-08 · la fusion par identifiant.
++       Un portefeuille est souvent ENGENDRÉ par un système de référence
++       — le nôtre l'est — et chaque régénération était jusqu'ici un
++       rechargement destructif complet : tout ce qui avait été saisi à
++       la main entre deux régénérations disparaissait.
+ 
+-  await tx(async (t) => {
+-    for (const table of PORTFOLIO_TABLES) await t.query(`DELETE FROM ${table}`);
++       La fusion ne duplique PAS les insertions. Elle enveloppe le
++       handle de transaction et transforme chaque `INSERT INTO … (id, …)`
++       en `… ON CONFLICT (id) DO UPDATE SET …`. Deux jeux d'insertions
++       divergeraient au troisième correctif ; un seul, plus une règle
++       déclarée en un seul endroit, ne le peuvent pas. */
++    const t = mode === "merge" ? upsertHandle(raw) : raw;
+ 
+     /* ── reference ────────────────────────────────────────────────── */
+     for (const s of book.sites ?? []) {
+@@ -75,7 +163,7 @@ export async function importBook(book, user) {
+          p.governanceLevel === "group" ? "group" : "site",
+          clean(p.pm), p.method ?? "Hybrid",
+          p.start, p.finish, p.baselineFinish ?? p.finish,
+-         fromM(p.budget), fromM(p.contingency), fromM(p.contingencyUsed),
++         money(p.budget), money(p.contingency), money(p.contingencyUsed),
+          p.desc ?? "", p.phase ?? "Initiation", int(p.gate),
+          ["G", "A", "R"].includes(p.healthOverride) ? p.healthOverride : null,
+          !!p.closed,
+@@ -142,7 +230,7 @@ export async function importBook(book, user) {
+       await t.query(
+         `INSERT INTO cost_line (project_id, period, booked_on, amount, category, note)
+          VALUES ($1,$2,$3,$4,'Labour','Imported')`,
+-        [l.project, l.period, l.period + "-01", fromM(l.amount)]);
++        [l.project, l.period, l.period + "-01", money(l.amount)]);
+     }
+     for (const x of book.raid ?? []) {
+       await t.query(
+@@ -160,7 +248,7 @@ export async function importBook(book, user) {
+                                      cost_delta, weeks_delta, funding, risk_delta, status, applied)
+          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
+         [c.id, c.project, c.title, c.desc ?? "", clean(c.raisedBy), c.raised,
+-         fromM(c.cost), int(c.weeks), c.funding ?? "Contingency", c.riskDelta ?? "0",
++         money(c.cost), int(c.weeks), c.funding ?? "Contingency", c.riskDelta ?? "0",
+          ["Pending", "Approved", "Rejected"].includes(c.status) ? c.status : "Pending",
+          !!c.applied]);
+       (c.steps ?? []).forEach(() => {});
+@@ -224,11 +312,133 @@ export async function importBook(book, user) {
+     }
+     for (const i of book.items ?? []) {
+       await t.query(
+-        `INSERT INTO work_item (id, project_id, column_id, title, assignee_id, points, priority, created_on)
+-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
++        `INSERT INTO work_item (id, project_id, column_id, title, assignee_id, points, priority,
++                                created_on, source, score, score_method)
++         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
++        /* MER-05 — d'où vient cet élément et combien il vaut. Un
++           arriéré d'améliorations arrive d'une revue de jalon, d'un
++           panel d'enfants ou de la télémétrie, et il est noté par une
++           méthode déclarée. L'import n'en gardait qu'une lettre de
++           priorité, ce qui perdait les trois. */
+         [i.id, i.project, i.column, i.title, clean(i.assignee),
+-         int(i.points, 1), i.priority ?? "P3", i.created ?? new Date().toISOString().slice(0, 10)]);
++         int(i.points, 1), i.priority ?? "P3", i.created ?? new Date().toISOString().slice(0, 10),
++         i.source ?? "",
++         Number.isFinite(Number(i.score)) && i.score !== null && i.score !== "" ? Number(i.score) : null,
++         i.scoreMethod ?? ""]);
++    }
++    /* ── la gouvernance (MER-05, MER-06, MER-07, MER-11) ───────────
++       L'ordre compte : une pièce de preuve avant le constat qui la
++       cite, un siège avant l'objection qui le porte. */
++    for (const e of book.evidence ?? []) {
++      if (!e.document && !e.uri) {
++        rejects.push({ table: "evidence", id: e.id,
++          reason: "evidence needs a document or a URI — a proof with neither is an assertion" });
++        continue;
++      }
++      await t.query(
++        `INSERT INTO evidence (id, project_id, document_id, kind, name, uri, digest,
++                               gate_n, gate_loop, captured_on, captured_by)
++         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
++        [e.id, clean(e.project), clean(e.document), e.kind ?? "document",
++         e.name ?? e.id, e.uri ?? "", e.digest ?? "",
++         e.gate === undefined || e.gate === null ? null : int(e.gate),
++         Math.max(1, int(e.loop, 1)),
++         e.capturedOn ?? new Date().toISOString().slice(0, 10), clean(e.capturedBy)]);
++    }
++    for (const f of book.findings ?? []) {
++      /* La contrainte de base refuserait la ligne ; l'import la refuse
++         d'abord, pour pouvoir DIRE laquelle et pourquoi plutôt que de
++         faire échouer le fichier entier sur une erreur SQL. */
++      if (f.status === "Closed" && !f.closedEvidence) {
++        rejects.push({ table: "finding", id: f.id,
++          reason: "a finding closes on re-test evidence, never on a merged fix" });
++        continue;
++      }
++      await t.query(
++        `INSERT INTO finding (id, project_id, requirement_id, gate_n, gate_loop,
++                              observed_fact, why_it_matters, severity, owner_id,
++                              proposed_fix, raised_on, retest_on, status,
++                              closed_evidence_id, waiver_reason)
++         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`,
++        [f.id, clean(f.project), clean(f.requirement),
++         f.gate === undefined || f.gate === null ? null : int(f.gate),
++         Math.max(1, int(f.loop, 1)),
++         f.observedFact ?? "", f.whyItMatters ?? "",
++         ["S1", "S2", "S3", "S4"].includes(f.severity) ? f.severity : "S3",
++         clean(f.owner), f.proposedFix ?? "",
++         f.raisedOn ?? new Date().toISOString().slice(0, 10), clean(f.retestOn),
++         ["Open", "In progress", "Re-test", "Closed", "Waived"].includes(f.status) ? f.status : "Open",
++         clean(f.closedEvidence), f.waiverReason ?? ""]);
++    }
++    for (const st of book.seats ?? []) {
++      await t.query(
++        `INSERT INTO seat (id, name, person_id, domain, veto_domain, observer, active)
++         VALUES ($1,$2,$3,$4,$5,$6,$7)`,
++        [st.id, st.name ?? st.id, clean(st.person), st.domain ?? "",
++         clean(st.vetoDomain), st.observer === true, st.active !== false]);
++    }
++    /* Les incompatibilités après TOUS les sièges, et symétriques : une
++       arête posée dans un seul sens laisse la moitié de la séparation
++       des devoirs sans effet. */
++    for (const st of book.seats ?? []) {
++      for (const other of st.incompatibleWith ?? []) {
++        for (const [a, b] of [[st.id, other], [other, st.id]]) {
++          await t.query(
++            `INSERT INTO seat_conflict (seat_id, other_id, reason) VALUES ($1,$2,$3)
++             ON CONFLICT (seat_id, other_id) DO NOTHING`,
++            [a, b, st.conflictReason ?? ""]);
++        }
++      }
+     }
++    /* La séparation des devoirs, vérifiée UNE FOIS TOUTES LES ARÊTES
++       POSÉES. Le déclencheur de base protège les écritures ultérieures,
++       mais il ne peut rien voir pendant un import : au moment où le
++       premier siège arrive, ni le second ni l'incompatibilité entre eux
++       n'existent encore. Le refus dit qui tient quoi, plutôt que de
++       laisser tomber une erreur SQL sur le fichier entier. */
++    const clashes = await t.query(
++      `SELECT a.name AS a_name, b.name AS b_name, p.name AS person
++         FROM seat_conflict c
++         JOIN seat a ON a.id = c.seat_id
++         JOIN seat b ON b.id = c.other_id
++         LEFT JOIN person p ON p.id = a.person_id
++        WHERE a.person_id IS NOT NULL AND a.person_id = b.person_id AND a.id < b.id`);
++    const clash = (clashes.rows ?? [])[0];
++    if (clash) {
++      throw new HttpError(400,
++        `Segregation of duties: ${clash.person ?? "one person"} holds both ` +
++        `${clash.a_name} and ${clash.b_name}, which this book itself declares ` +
++        "incompatible. A seat that must be able to refuse a mechanism cannot be " +
++        "held by the person who designed it.");
++    }
++
++    for (const o of book.objections ?? []) {
++      if (!String(o.reason ?? "").trim()) {
++        rejects.push({ table: "objection", id: o.id,
++          reason: "an objection without a reason is not an objection, it is a vote" });
++        continue;
++      }
++      /* Les réunions ne font pas partie du livre importé — l'identité et
++         la tenue de séance appartiennent au système qui les a
++         enregistrées. Une objection qui désigne une décision absente est
++         donc refusée en le DISANT, plutôt que de faire échouer le
++         fichier entier sur une violation de clé étrangère. */
++      const parent = await t.query(`SELECT 1 FROM meeting_decision WHERE id = $1`, [o.decision]);
++      if (!(parent.rows ?? []).length) {
++        rejects.push({ table: "objection", id: o.id,
++          reason: `decision ${o.decision} is not in this book` });
++        continue;
++      }
++      await t.query(
++        `INSERT INTO decision_objection (id, decision_id, seat_id, domain, reason,
++                                         raised_on, escalates_on, state, resolution)
++         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
++        [o.id, o.decision, clean(o.seat), o.domain ?? "", o.reason,
++         o.raisedOn ?? new Date().toISOString().slice(0, 10), clean(o.escalatesOn),
++         ["open", "resolved", "escalated", "withdrawn"].includes(o.state) ? o.state : "open",
++         o.resolution ?? ""]);
++    }
++
+     for (const [key, lines] of Object.entries(book.narrative ?? {})) {
+       await t.query(
+         `INSERT INTO report_narrative (block_key, lines, updated_by) VALUES ($1,$2,$3)`,
+@@ -253,7 +463,8 @@ export async function importBook(book, user) {
+          ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`, [JSON.stringify(book.statusDate)]);
+     }
+ 
+-    for (const k of ["projects", "activities", "milestones", "requirements", "ledger", "raid", "crs", "docs", "items", "allocations"]) {
++    for (const k of ["projects", "activities", "milestones", "requirements", "ledger", "raid", "crs", "docs", "items", "allocations",
++                     "evidence", "findings", "seats", "objections"]) {
+       counts[k] = (book[k] ?? []).length;
+     }
+ 
+@@ -284,11 +495,22 @@ export async function importBook(book, user) {
+                      GREATEST(COALESCE((SELECT MAX(id) FROM allocation), 0), 1))`);
+ 
+     await record(t, user, {
+-      action: "Book imported",
++      action: dryRun ? "Book import validated (dry run)" : "Book imported",
+       entity: "system",
+       detail: Object.entries(counts).map(([k, n]) => `${n} ${k}`).join(", "),
+     });
+-  });
+ 
++    /* La simulation s'arrête ICI, après avoir tout écrit et donc après
++       avoir subi toutes les contraintes — c'est ce qui la rend utile.
++       L'exception annule la transaction ; rien n'a existé. */
++    if (dryRun) throw new DryRunComplete({ ok: true, dryRun: true, mode, counts, rejects });
++  };
++
++  try {
++    await tx(run);
++  } catch (e) {
++    if (e instanceof DryRunComplete) return e.payload;
++    throw e;
++  }
+   return counts;
+ }
+diff --git a/server/src/portfolio.js b/server/src/portfolio.js
+index 6a075fa..91215c3 100644
+--- a/server/src/portfolio.js
++++ b/server/src/portfolio.js
+@@ -117,6 +117,7 @@ export async function loadPortfolio(user) {
+     activities, deps, milestones, requirementRows, ledger, raidRows, crRows, stepRows,
+     allocations, docs, columns, items, crossDeps, narrativeRows, extLinks,
+     benefits, waves, commitments, timesheets, lessonRows, tolerances, exceptions, caseRows,
++    evidenceRows, findingRows, seatRows, seatConflicts, objectionRows,
+   ] = await Promise.all([
+     inScope(`SELECT * FROM activity WHERE project_id = ANY($1) ORDER BY project_id, stage`),
+     inScope(`SELECT d.* FROM activity_dep d JOIN activity a ON a.id = d.activity_id
+@@ -174,8 +175,30 @@ export async function loadPortfolio(user) {
+               WHERE project_id = ANY($1) ORDER BY raised_on DESC, id`),
+     /* PM-03 — la promesse contre laquelle le réalisé se relira. */
+     inScope(`SELECT * FROM business_case WHERE project_id = ANY($1)`),
++
++    /* MER-11 — la preuve, document ou non. Une exécution d'intégration
++       continue n'a ni révision ni propriétaire ; la forcer dans le
++       registre documentaire produit une révision « 0.1 » qui ne veut
++       rien dire. Bornée au périmètre comme tout le reste. */
++    inScope(`SELECT * FROM evidence WHERE project_id = ANY($1) ORDER BY captured_on DESC, id`),
++    /* MER-05 — les constats de revue. Ni risques (ils se sont produits)
++       ni enseignements (ils sont ouverts et bloquants). */
++    inScope(`SELECT * FROM finding WHERE project_id = ANY($1) ORDER BY id`),
++    /* MER-06 — les sièges. Une gouvernance, contrairement à un
++       portefeuille, n'est pas bornée par projet : qui siège et qui peut
++       opposer un veto est un fait de groupe. */
++    many(`SELECT * FROM seat ORDER BY id`),
++    many(`SELECT * FROM seat_conflict ORDER BY seat_id, other_id`),
++    /* MER-07 — le registre des dissensions. */
++    many(`SELECT * FROM decision_objection ORDER BY raised_on DESC, id`),
+   ]);
+ 
++  const conflictsBySeat = new Map();
++  for (const c of seatConflicts) {
++    if (!conflictsBySeat.has(c.seat_id)) conflictsBySeat.set(c.seat_id, []);
++    conflictsBySeat.get(c.seat_id).push(c.other_id);
++  }
++
+   const depsByActivity = new Map();
+   for (const d of deps) {
+     if (!depsByActivity.has(d.activity_id)) depsByActivity.set(d.activity_id, []);
+@@ -197,6 +220,11 @@ export async function loadPortfolio(user) {
+ 
+   return {
+     orgName: settings.orgName ?? "MERIDIAN",
++    /* MER-09 — le livre DIT son unité. Le sérialiseur divise par un
++       million (`toM`), donc il l'écrit, et un livre exporté d'ici se
++       réimporte sans que quiconque ait à deviner. Un livre qui ne le
++       dit pas est refusé à l'import, ce qui est le but. */
++    currencyUnit: "millions",
+     statusDate: await statusDate(settings),
+     currentUser: user?.personId ?? null,
+     viewer: user ? { id: user.id, role: user.role, name: user.displayName } : null,
+@@ -329,6 +357,46 @@ export async function loadPortfolio(user) {
+       owner: r.owner_id, updated: r.updated_on, version: r.row_version,
+     })),
+ 
++    /* MER-11 — une pièce de preuve pointe un document DU REGISTRE ou
++       porte sa propre adresse, jamais ni l'un ni l'autre : la contrainte
++       `evidence_has_a_source` le tient côté base. */
++    evidence: evidenceRows.map((e) => ({
++      id: e.id, project: e.project_id, document: e.document_id,
++      kind: e.kind, name: e.name, uri: e.uri, digest: e.digest,
++      gate: e.gate_n, loop: e.gate_loop,
++      capturedOn: e.captured_on, capturedBy: e.captured_by,
++    })),
++
++    /* MER-05 — le constat. `observedFact` est ce qui a été VU ;
++       `whyItMatters` est la conséquence. Deux colonnes parce que les
++       confondre est la façon dont un constat devient une opinion. */
++    findings: findingRows.map((f) => ({
++      id: f.id, project: f.project_id, requirement: f.requirement_id,
++      gate: f.gate_n, loop: f.gate_loop,
++      observedFact: f.observed_fact, whyItMatters: f.why_it_matters,
++      severity: f.severity, owner: f.owner_id, proposedFix: f.proposed_fix,
++      raisedOn: f.raised_on, retestOn: f.retest_on, status: f.status,
++      closedEvidence: f.closed_evidence_id, waiverReason: f.waiver_reason,
++    })),
++
++    /* MER-06 — qui siège, sur quel domaine, avec ou sans veto, et ce
++       que le siège ne peut pas être cumulé avec. */
++    seats: seatRows.map((s2) => ({
++      id: s2.id, name: s2.name, person: s2.person_id, domain: s2.domain,
++      vetoDomain: s2.veto_domain, observer: s2.observer, active: s2.active,
++      incompatibleWith: conflictsBySeat.get(s2.id) ?? [],
++    })),
++
++    /* MER-07 — les objections. Une gouvernance par consentement a
++       besoin d'un endroit pour l'objection raisonnée ; un conseil
++       réglementé a besoin d'un endroit pour la position minoritaire.
++       C'est le même endroit. */
++    objections: objectionRows.map((o) => ({
++      id: o.id, decision: o.decision_id, seat: o.seat_id, domain: o.domain,
++      reason: o.reason, raisedOn: o.raised_on, escalatesOn: o.escalates_on,
++      state: o.state, resolution: o.resolution,
++    })),
++
+     ledger: ledger.map((l) => ({
+       id: String(l.id), project: l.project_id, period: l.period,
+       bookedOn: l.booked_on, amount: toM(l.amount),
+@@ -469,6 +537,12 @@ export async function loadPortfolio(user) {
+     items: items.map((i) => ({
+       id: i.id, project: i.project_id, column: i.column_id, title: i.title,
+       assignee: i.assignee_id, points: i.points, priority: i.priority,
++      /* MER-05 — d'où vient cet élément, ce qu'il vaut, et par quelle
++         méthode. Une lettre de priorité perdait les trois : un arriéré
++         d'améliorations noté par RICE et arrivé d'un panel d'enfants
++         devenait « P2 », et la note comme la source disparaissaient. */
++      source: i.source ?? "", score: i.score === null || i.score === undefined ? null : Number(i.score),
++      scoreMethod: i.score_method ?? "",
+       created: i.created_on, version: i.row_version,
+     })),
+ 
+diff --git a/server/src/routes/admin.js b/server/src/routes/admin.js
+index 54e0286..6abaa23 100644
+--- a/server/src/routes/admin.js
++++ b/server/src/routes/admin.js
+@@ -732,9 +732,18 @@ r.post("/import", async (req, res, next) => {
+     if (!book || !Array.isArray(book.projects)) {
+       throw new HttpError(400, "No project register found in that file");
+     }
++    /* MER-08 — la chose la plus dangereuse du produit est aussi la
++       première que fait un nouveau client. `?dryRun=1` valide, dit ce
++       qu'il ÉCRIRAIT et ce qu'il refuserait, et n'écrit rien ;
++       `?mode=merge` met à jour par identifiant au lieu de remplacer le
++       livre. Les deux passent par le même chemin de code que l'import
++       réel, parce qu'une simulation qui suit un autre chemin ne
++       simule rien. */
++    const dryRun = req.query.dryRun === "1" || req.query.dryRun === "true";
++    const mode = req.query.mode === "merge" ? "merge" : "replace";
+     const { importBook } = await import("../import.js");
+-    const counts = await importBook(book, req.user);
+-    res.json({ ok: true, counts });
++    const out = await importBook(book, req.user, { dryRun, mode });
++    res.json(out.dryRun ? out : { ok: true, mode, counts: out });
+   } catch (e) { next(e); }
+ });
+ 
+diff --git a/server/src/routes/meetings.js b/server/src/routes/meetings.js
+index 0bd7861..90b393e 100644
+--- a/server/src/routes/meetings.js
++++ b/server/src/routes/meetings.js
+@@ -557,10 +557,18 @@ r.post("/occurrences/:id/decisions", async (req, res, next) => {
+         id = await allocateId(t, "DEC", { pad: 3 });
+         await t.query(
+         `INSERT INTO meeting_decision
+-           (id, occurrence_id, headline, rationale, project_id, cr_id, decided_by, recorded_by, referred_to_scope)
+-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
++           (id, occurrence_id, headline, rationale, project_id, cr_id, decided_by, recorded_by,
++            referred_to_scope, reversal_cost, supersedes_id, source_evidence_id)
++         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
+         [id, o.id, String(b.headline).slice(0, 300), String(b.rationale ?? "").slice(0, 4000),
+-         b.projectId ?? null, b.crId ?? null, b.decidedBy ?? s.chair_id, req.user.id, referredTo]);
++         b.projectId ?? null, b.crId ?? null, b.decidedBy ?? s.chair_id, req.user.id, referredTo,
++         /* MER-07 — le coût de retour. Publier une banque d'items sous
++            licence libre est irréversible ; retirer une galerie du
++            périmètre ne l'est pas. Sans cette colonne les deux décisions
++            se ressemblent, et elles n'ont rien à voir. Nul = personne
++            ne s'est prononcé, ce qui n'est pas « faible ». */
++         ["low", "medium", "high"].includes(b.reversalCost) ? b.reversalCost : null,
++         b.supersedes ?? null, b.sourceEvidence ?? null]);
+         if (answers) {
+           /* Still-unanswered is re-checked here: the lookup above runs
+              outside this transaction (PGlite serialises one connection,
+diff --git a/server/test/governance.test.js b/server/test/governance.test.js
+index c71551a..85fcc5b 100644
+--- a/server/test/governance.test.js
++++ b/server/test/governance.test.js
+@@ -1,376 +1,309 @@
+ /**
+- * Two-level governance & adoption (2026-08-28 committees).
++ * MER-05, 06, 07, 08, 09, 10, 11 — ce qu'une revue produit, qui a le
++ * droit de dire non, et ce qu'une décision coûte à défaire.
+  *
+- * Traces: reassignment gate (group G2) · segregation of duties on change
+- * approval (audit I1) · independent gate-evidence approval (audit I3) ·
+- * fail-closed thresholds (audit I4) · reportable overrides + decision
+- * register (audit I2 / group G3) · site concern channel (site G3) ·
+- * referrals and cross-level actions (rhythm 1–2) · the digest (value I-2)
+- * · forced first-sign-in password change (adoption I4).
++ * Les sept constats venaient du même comité de recette et disaient la
++ * même chose : Meridian tenait un PORTEFEUILLE et ne tenait pas encore
++ * une GOUVERNANCE. Le portefeuille répond « où en est-on ». La
++ * gouvernance répond « qui a décidé, sur quelle preuve, contre quel
++ * avis, et que coûterait le retour en arrière ».
+  */
+ 
+-import { test, before, after } from "node:test";
+-import assert from "node:assert";
+-import { boot, shutdown, as, SITE_PROJECT_GRU, GROUP_PROJECT } from "./harness.js";
+-import { can } from "../../shared/rbac.js";
++import { test, describe, before, after } from "node:test";
++import assert from "node:assert/strict";
++import { boot, shutdown, client } from "./harness.js";
+ import { Engine } from "../../shared/engine.js";
+ 
+-before(async () => { await boot(); });
++let base;
++before(async () => { ({ base } = await boot()); });
+ after(shutdown);
+ 
+-/* ── authority: pure rbac ─────────────────────────────────────────── */
+-
+-test("a missing change-control threshold fails CLOSED, not open (I4)", () => {
+-  const site = { role: "site", active: true, personId: "PE-19",
+-    grants: { programmes: new Set(), sites: new Set(["GRU"]) } };
+-  const project = { programme_id: "DCH", site_id: "GRU", governance_level: "site" };
+-  const v = can(site, "change.approve", { project, cost_delta: 0.01, weeks_delta: 0 });
+-  assert.equal(v.ok, false);
+-  assert.match(v.why, /threshold/);
+-});
+-
+-test("concern.raise: own delivery site only, group projects only (site G3)", () => {
+-  const site = { role: "site", active: true, personId: "PE-19",
+-    grants: { programmes: new Set(), sites: new Set(["GRU"]) } };
+-  const atMySite = { programme_id: "EIT", site_id: "GRU", governance_level: "group" };
+-  const elsewhere = { programme_id: "EIT", site_id: "YYZ", governance_level: "group" };
+-  const myOwn = { programme_id: "DCH", site_id: "GRU", governance_level: "site" };
+-  assert.equal(can(site, "concern.raise", { project: atMySite }).ok, true);
+-  assert.equal(can(site, "concern.raise", { project: elsewhere }).ok, false);
+-  assert.equal(can(site, "concern.raise", { project: myOwn }).ok, false);
+-});
+-
+-test("riskProfile counts bands and appetite lines (group G5)", () => {
+-  const db = {
+-    settings: { pmoExposure: 8, escalateExposure: 15 },
+-    raid: [
+-      { status: "Open", project: "P1", p: 5, i: 5 },   // 25 → Critical, steering
+-      { status: "Open", project: "P1", p: 3, i: 3 },   // 9  → High, pmo
+-      { status: "Open", project: "P1", p: 1, i: 2 },   // 2  → Low
+-      { status: "Closed", project: "P1", p: 5, i: 5 }, // ignored
+-    ],
++async function admin() {
++  const c = client();
++  await c.post("/api/auth/login",
++    { email: "admin@meridian.example", password: "meridian-admin-2026" });
++  return c;
++}
++
++function book(over = {}) {
++  return {
++    orgName: "TEST", statusDate: "2026-08-28", currencyUnit: "millions",
++    sites: [{ id: "S1", city: "Ici", tz: 0 }],
++    people: [{ id: "PE-1", name: "A. Personne", role: "PM", site: "S1", rate: 0 },
++             { id: "PE-2", name: "B. Personne", role: "QA", site: "S1", rate: 0 }],
++    programmes: [{ id: "P1", name: "Programme", managerId: "PE-1" }],
++    projects: [{
++      id: "X", name: "Projet", programme: "P1", site: "S1",
++      governanceLevel: "group", pm: "PE-1", method: "Hybrid",
++      start: "2026-01-01", finish: "2026-12-31", budget: 4,
++      phase: "Execution", gate: 1, closed: false,
++    }],
++    activities: [], milestones: [], ledger: [], raid: [], crs: [],
++    docs: [], items: [], columns: [], allocations: [],
++    ...over,
+   };
+-  const rp = Engine.riskProfile(db, [{ id: "P1" }]);
+-  assert.equal(rp.open, 3);
+-  assert.equal(rp.bands.Critical, 1);
+-  assert.equal(rp.bands.High, 1);
+-  assert.equal(rp.steering, 1);
+-  assert.equal(rp.pmo, 1);
+-});
+-
+-/* ── reassignment is a portfolio-structure act (group G2) ─────────── */
+-
+-test("a group user cannot move a project into a programme outside their grant", async () => {
+-  const dch = await as("groupDCH");               // grant: DCH only
+-  const b = await dch.get("/api/bootstrap");
+-  const p = b.body.db.projects.find((x) => x.id === SITE_PROJECT_GRU); // a DCH project
+-  const refused = await dch.patch("/api/projects/" + p.id, { programme: "CBP", version: p.version });
+-  assert.equal(refused.status, 403);
+-  assert.match(refused.body.error, /outside your grant/);
+-});
+-
+-test("admin moves it, and the audit trail carries the imaged 'Project moved' row (I2)", async () => {
+-  const admin = await as("admin");
+-  let b = await admin.get("/api/bootstrap");
+-  const p = b.body.db.projects.find((x) => x.id === GROUP_PROJECT);   // group project at KRK
+-  const r = await admin.patch("/api/projects/" + p.id, { site: "GRU", version: p.version });
+-  assert.equal(r.status, 200);
+-
+-  const audit = await admin.get("/api/audit?action=Project%20moved&limit=5");
+-  assert.equal(audit.status, 200);
+-  const row = audit.body.events.find((e) => e.entity_id === p.id);
+-  assert.ok(row, "the move is a named audit action");
+-  assert.equal(row.after_json.site_id, "GRU");
+-  assert.equal(row.before_json.site_id, "KRK");
+-});
+-
+-/* ── the site concern channel, end to end (site G3) ───────────────── */
+-
+-test("a site lead raises a concern on the group project now landing on their site", async () => {
+-  const pm = await as("siteGRU");
+-  const r = await pm.post("/api/raid", {
+-    type: "Risk", project: GROUP_PROJECT,
+-    title: "Core migration is consuming our only network engineer",
+-    detail: "Cutover rehearsals clash with our branch rollout", p: 4, i: 4,
++}
++
++describe("MER-09 · la monnaie dit son unité", () => {
++  test("un livre qui ne déclare pas son unité est refusé, et le refus explique", async () => {
++    const c = await admin();
++    const { currencyUnit, ...noUnit } = book();
++    const r = await c.post("/api/admin/import", { db: noUnit });
++    assert.equal(r.status, 400);
++    /* Le refus doit nommer le champ ET la conséquence : « 4 vaut quatre
++       millions dans une lecture et quatre euros dans l'autre » est ce
++       qui fait comprendre pourquoi deviner n'est pas une option. */
++    assert.match(r.body.error, /currencyUnit/);
++    assert.match(r.body.error, /millions/);
+   });
+-  assert.equal(r.status, 201, JSON.stringify(r.body));
+ 
+-  const b = await pm.get("/api/bootstrap");
+-  const item = b.body.db.raid.find((x) => x.id === r.body.id);
+-  assert.equal(item.originSite, "GRU", "the concern names its raising site");
++  test("« units » et « millions » ne chargent pas le même budget", async () => {
++    const c = await admin();
++    await c.post("/api/admin/import", { db: book({ currencyUnit: "millions" }) });
++    const inM = (await c.get("/api/bootstrap")).body.db.projects.find(p => p.id === "X").budget;
+ 
+-  // Create-only: editing the group project's register stays with its owners.
+-  const edit = await pm.patch("/api/raid/" + r.body.id, { p: 5, version: item.version });
+-  assert.equal(edit.status, 403);
+-});
++    await c.post("/api/admin/import", { db: book({ currencyUnit: "units" }) });
++    const inUnits = (await c.get("/api/bootstrap")).body.db.projects.find(p => p.id === "X").budget;
+ 
+-test("a site lead still cannot raise on a group project elsewhere", async () => {
+-  const pm = await as("siteSIN");   // granted SIN; the project now sits at GRU
+-  const r = await pm.post("/api/raid", {
+-    type: "Risk", project: GROUP_PROJECT, title: "x", p: 3, i: 3,
++    /* C'est exactement la corruption silencieuse que le constat
++       décrivait : un facteur d'un million entre deux lectures du même
++       chiffre. Elle est maintenant DÉCLARÉE, donc elle n'arrive plus
++       par accident. */
++    assert.equal(inM, 4);
++    assert.equal(Math.round(inUnits * 1_000_000), 4);
+   });
+-  assert.equal(r.status, 403);
+-});
+-
+-/* ── segregation of duties on change control (audit I1) ───────────── */
+-
+-let crId = null;
+ 
+-test("the raiser of a change request cannot decide it; a second pair of eyes can", async () => {
+-  const pm = await as("siteGRU");
+-  const raised = await pm.post("/api/change", {
+-    project: SITE_PROJECT_GRU, title: "Slip UAT by one week", cost: 0.05, weeks: 1,
++  test("un livre exporté d'ici se réimporte : il dit son unité", async () => {
++    const c = await admin();
++    await c.post("/api/admin/import", { db: book() });
++    const exported = (await c.get("/api/admin/export")).body;
++    assert.equal(exported.currencyUnit, "millions");
++    const back = await c.post("/api/admin/import", { db: exported });
++    assert.equal(back.status, 200);
+   });
+-  assert.equal(raised.status, 201);
+-  crId = raised.body.id;
+-
+-  const self = await pm.post("/api/change/" + crId + "/approve", {});
+-  assert.equal(self.status, 403);
+-  assert.match(self.body.error, /you raised this request/);
+-
+-  // Another account with authority signs the first step.
+-  const dch = await as("groupDCH");
+-  const other = await dch.post("/api/change/" + crId + "/approve", { comment: "Impact reviewed" });
+-  assert.equal(other.status, 200, JSON.stringify(other.body));
+ });
+ 
+-/* ── independent gate-evidence approval (audit I3) ────────────────── */
+-
+-test("gate evidence: the owner never approves their own; site level never approves site-project gates", async () => {
+-  const dch = await as("groupDCH");
+-  const meDch = await dch.get("/api/auth/me");
+-  const created = await dch.post("/api/documents", {
+-    project: SITE_PROJECT_GRU, name: "Cutover evidence", type: "Assurance",
+-    gate: 2, owner: meDch.body.user.personId,
+-    uri: "https://docs.meridian.example/evidence/cutover.pdf",   // R-01 — evidence points at something
++describe("MER-08 · l'import à blanc et la fusion", () => {
++  test("une simulation n'écrit rien et dit ce qu'elle écrirait", async () => {
++    const c = await admin();
++    await c.post("/api/admin/import", { db: book() });
++    const before = (await c.get("/api/bootstrap")).body.db.projects.length;
++
++    const dry = await c.post("/api/admin/import?dryRun=1",
++      { db: book({ projects: [...book().projects,
++        { id: "Y", name: "Autre", programme: "P1", site: "S1", governanceLevel: "site",
++          pm: "PE-1", method: "Hybrid", start: "2026-01-01", finish: "2026-12-31",
++          budget: 1, phase: "Initiation", gate: 1, closed: false }] }) });
++
++    assert.equal(dry.status, 200);
++    assert.equal(dry.body.dryRun, true);
++    assert.equal(dry.body.counts.projects, 2);
++    const after = (await c.get("/api/bootstrap")).body.db.projects.length;
++    assert.equal(after, before, "une simulation qui écrit n'est pas une simulation");
+   });
+-  assert.equal(created.status, 201, JSON.stringify(created.body));
+-  const docId = created.body.id;
+-  let b = await dch.get("/api/bootstrap");
+-  let doc = b.body.db.docs.find((d) => d.id === docId);
+ 
+-  const own = await dch.patch("/api/documents/" + docId, { status: "Approved", version: doc.version });
+-  assert.equal(own.status, 403);
+-  assert.match(own.body.error, /you own this evidence/);
+-
+-  const pm = await as("siteGRU");
+-  const siteTry = await pm.patch("/api/documents/" + docId, { status: "Approved", version: doc.version });
+-  assert.equal(siteTry.status, 403);
+-  assert.match(siteTry.body.error, /group level/);
++  test("la simulation subit les contraintes : elle refuse ce que l'import refuserait", async () => {
++    const c = await admin();
++    const dry = await c.post("/api/admin/import?dryRun=1", { db: book({
++      findings: [{ id: "F-1", project: "X", observedFact: "vu", severity: "S2",
++                   raisedOn: "2026-08-01", status: "Closed" }],
++    }) });
++    assert.equal(dry.status, 200);
++    /* LE constat : un constat se ferme sur une preuve de re-test, jamais
++       sur un correctif fusionné. La simulation le dit AVANT que
++       quiconque ait détruit le livre en place. */
++    assert.equal(dry.body.rejects.length, 1);
++    assert.match(dry.body.rejects[0].reason, /re-test evidence/);
++  });
+ 
+-  const admin = await as("admin");
+-  b = await admin.get("/api/bootstrap");
+-  doc = b.body.db.docs.find((d) => d.id === docId);
+-  const ok = await admin.patch("/api/documents/" + docId, { status: "Approved", version: doc.version });
+-  assert.equal(ok.status, 200, JSON.stringify(ok.body));
++  test("la fusion met à jour par identifiant et laisse survivre le reste", async () => {
++    const c = await admin();
++    await c.post("/api/admin/import", { db: book({
++      projects: [...book().projects,
++        { id: "KEEP", name: "Saisi à la main", programme: "P1", site: "S1",
++          governanceLevel: "site", pm: "PE-1", method: "Hybrid",
++          start: "2026-01-01", finish: "2026-12-31", budget: 1,
++          phase: "Initiation", gate: 1, closed: false }] }) });
++
++    const merged = await c.post("/api/admin/import?mode=merge", { db: book({
++      projects: [{ ...book().projects[0], name: "Projet, renommé" }] }) });
++    assert.equal(merged.status, 200);
++
++    const after = (await c.get("/api/bootstrap")).body.db.projects;
++    assert.equal(after.find(p => p.id === "X").name, "Projet, renommé");
++    assert.ok(after.find(p => p.id === "KEEP"),
++      "la fusion existe précisément pour que ceci survive à une régénération");
++  });
+ });
+ 
+-test("evidence cannot arrive pre-approved, nor be re-tagged onto a gate afterwards (I3)", async () => {
+-  const pm = await as("siteGRU");
+-  /* Creating is not approving: without this the whole control is one
+-     POST away from irrelevant. */
+-  const preApproved = await pm.post("/api/documents", {
+-    project: SITE_PROJECT_GRU, name: "Gate 2 readiness", type: "Assurance",
+-    gate: 2, status: "Approved",
++describe("MER-05 · un constat n'est ni un risque ni une leçon", () => {
++  test("un constat fait l'aller-retour, fait observé et conséquence séparés", async () => {
++    const c = await admin();
++    await c.post("/api/admin/import", { db: book({
++      evidence: [{ id: "EV-1", project: "X", kind: "ci_run", name: "CI 4711",
++                   uri: "https://ci.example/4711", capturedOn: "2026-08-20" }],
++      findings: [{ id: "F-1", project: "X", observedFact: "La palette ne se ferme pas au clavier",
++                   whyItMatters: "Un enfant au clavier reste enfermé dans la palette",
++                   severity: "S2", owner: "PE-2", proposedFix: "Échap ferme",
++                   raisedOn: "2026-08-01", retestOn: "2026-09-01", status: "Re-test" }],
++    }) });
++    const db = (await c.get("/api/bootstrap")).body.db;
++    const f = db.findings.find(x => x.id === "F-1");
++    assert.equal(f.observedFact, "La palette ne se ferme pas au clavier");
++    assert.equal(f.whyItMatters, "Un enfant au clavier reste enfermé dans la palette");
++    assert.equal(f.severity, "S2");
++    assert.equal(f.retestOn, "2026-09-01");
++    /* Il n'a PAS de probabilité, et c'est le sujet du constat : un
++       risque ne s'est pas produit, un constat si. */
++    assert.equal(f.p, undefined);
+   });
+-  assert.equal(preApproved.status, 400, JSON.stringify(preApproved.body));
+-  assert.match(preApproved.body.error, /separate act/);
+ 
+-  /* The exhaustive sweep found that gating the create was not enough: a
+-     GROUP user could file evidence with no owner, already approved, and
+-     so author and approve it in one call. Filing is filing, for everyone. */
+-  const dch = await as("groupDCH");
+-  const byGroup = await dch.post("/api/documents", {
+-    project: SITE_PROJECT_GRU, name: "Gate 3 readiness", gate: 3, status: "Approved",
++  test("un constat sévère et ouvert monte dans la liste d'attention", () => {
++    const db = { statusDate: "2026-09-19", projects: [], milestones: [], docs: [],
++                 settings: { gateLock: false, capacityAlerts: false },
++                 raid: [], crs: [], exceptions: [], findings: [
++      { id: "F-1", project: "X", observedFact: "vu", severity: "S1",
++        status: "Open", retestOn: "2026-09-01" },
++      { id: "F-2", project: "X", observedFact: "vu aussi", severity: "S3", status: "Open" },
++      { id: "F-3", project: "X", observedFact: "réglé", severity: "S1", status: "Closed" },
++    ] };
++    const feed = Engine.decisions(db, db.projects).filter(a => a.kind === "Review finding");
++    assert.deepEqual(feed.map(a => a.entityId), ["F-1"]);
++    assert.equal(feed[0].urgent, true, "re-test dépassé et S1");
+   });
+-  assert.equal(byGroup.status, 400, JSON.stringify(byGroup.body));
+-  const byAdminToo = await (await as("admin")).post("/api/documents", {
+-    project: SITE_PROJECT_GRU, name: "Gate 4 readiness", gate: 4, status: "Approved",
+-  });
+-  assert.equal(byAdminToo.status, 400, "not even admin authors and approves in one call");
+ 
+-  /* And the same dodge in two moves: approve it where no gate rule bites,
+-     then re-tag the approved document onto the gate. */
+-  const admin = await as("admin");
+-  const created = await admin.post("/api/documents", {
+-    project: SITE_PROJECT_GRU, name: "Operating note", type: "Operations", gate: 0,
+-    uri: "https://docs.meridian.example/evidence/operating-note.pdf",
++  test("un élément de travail garde sa source et son score", async () => {
++    const c = await admin();
++    await c.post("/api/admin/import", { db: book({
++      columns: [{ id: "todo", name: "À faire", wip: 0 }],
++      items: [{ id: "WI-1", project: "X", column: "todo", title: "Réduire le temps de démarrage",
++                source: "panel enfants", score: 42.5, scoreMethod: "RICE" }],
++    }) });
++    const db = (await c.get("/api/bootstrap")).body.db;
++    const i = db.items.find(x => x.id === "WI-1");
++    assert.equal(i.source, "panel enfants");
++    assert.equal(Number(i.score), 42.5);
++    assert.equal(i.scoreMethod, "RICE");
+   });
+-  assert.equal(created.status, 201, JSON.stringify(created.body));
+-  const docId = created.body.id;
+-  let doc = (await admin.get("/api/bootstrap")).body.db.docs.find((d) => d.id === docId);
+-  const approved = await admin.patch("/api/documents/" + docId,
+-    { status: "Approved", version: doc.version });
+-  assert.equal(approved.status, 200, JSON.stringify(approved.body));
+-
+-  doc = (await pm.get("/api/bootstrap")).body.db.docs.find((d) => d.id === docId);
+-  const retag = await pm.patch("/api/documents/" + docId, { gate: 2, version: doc.version });
+-  assert.equal(retag.status, 403, JSON.stringify(retag.body));
+-  assert.match(retag.body.error, /group level/);
+ });
+ 
+-/* ── referrals: the rhythm between levels (rhythm 1–3) ────────────── */
+-
+-test("a site room refers up; the group agenda carries it; a group decision retires it", async () => {
+-  const pm = await as("siteGRU");
+-  const series = await pm.get("/api/meetings/series");
+-  const mine = series.body.series.find((s) => s.scopeKind === "site" && s.canWrite);
+-  assert.ok(mine, "the GRU lead chairs a site series");
+-  const occ = mine.next;
+-  assert.ok(occ, "a scheduled occurrence exists");
+-  await pm.post("/api/meetings/occurrences/" + occ.id + "/open", {});
+-
+-  const referred = await pm.post("/api/meetings/occurrences/" + occ.id + "/decisions", {
+-    headline: "Freeze window for the payments cutover needs steering sign-off",
+-    rationale: "Beyond site authority", refer: true, referTo: "group",
++describe("MER-06 · l'autorité est une donnée, vetos et cumuls compris", () => {
++  test("une personne ne peut pas tenir deux sièges incompatibles", async () => {
++    const c = await admin();
++    /* La séparation des devoirs : l'agent qui doit pouvoir refuser un
++       mécanisme ne peut pas être celui qui l'a conçu. La base le refuse,
++       donc c'est vrai même quand personne ne regarde. */
++    const r = await c.post("/api/admin/import", { db: book({
++      seats: [
++        { id: "SE-13", name: "Sécurité des enfants", person: "PE-1",
++          domain: "safety", vetoDomain: "safety", incompatibleWith: ["SE-09"] },
++        { id: "SE-09", name: "Architecte", person: "PE-1", domain: "architecture" },
++      ],
++    }) });
++    assert.equal(r.status, 400, "le cumul doit échouer, et le refus doit se lire");
++    assert.match(r.body.error, /Segregation of duties|two incompatible seats/i);
+   });
+-  assert.equal(referred.status, 201, JSON.stringify(referred.body));
+-  assert.equal(referred.body.referredTo, "group");
+-  const refId = referred.body.id;
+ 
+-  const admin = await as("admin");
+-  const gSeries = (await admin.get("/api/meetings/series")).body.series
+-    .find((s) => s.scopeKind === "group");
+-  const gOcc = gSeries.next;
+-  let payload = await admin.get("/api/meetings/occurrences/" + gOcc.id);
+-  const refSection = payload.body.agenda.sections.find((s) => s.key === "referrals");
+-  assert.ok(refSection, "the group agenda carries a 'Referred from delivery calls' section");
+-  assert.ok(refSection.items.some((it) => it.entityId === refId), "our referral is on it");
+-
+-  await admin.post("/api/meetings/occurrences/" + gOcc.id + "/open", {});
+-  const answer = await admin.post("/api/meetings/occurrences/" + gOcc.id + "/decisions", {
+-    headline: "Freeze window approved for the last weekend of the month",
+-    answers: refId,
++  test("un veto ouvert bloque le franchissement même quand la preuve est complète", () => {
++    const db = {
++      statusDate: "2026-09-19",
++      /* Un seul jalon déclaré, pour que « le jalon courant » soit
++         celui dont la preuve est complète : le sujet du test est le
++         veto, pas le choix du jalon. */
++      settings: { gateLock: true, gates: [{ n: 1, name: "Revue de conception" }] },
++      projects: [{ id: "X", name: "Projet", loop: 1 }],
++      docs: [{ id: "D-1", project: "X", gate: 1, status: "Approved", loop: 1,
++               type: "Assurance", uri: "https://docs.example/d1" }],
++      milestones: [{ id: "M-1", project: "X", gate: 1, date: "2026-01-01", loop: 1 }],
++      /* Le siège 13 du comité KODO tient son veto À CHAQUE jalon : un
++         domaine, pas un numéro de porte. */
++      seats: [{ id: "SE-13", name: "Child safety officer", person: "PE-1",
++                domain: "child safety", vetoDomain: "child safety" }],
++      objections: [{ id: "OBJ-1", decision: "DEC-001", seat: "SE-13", domain: "child safety",
++                     reason: "Le mécanisme compare les enfants entre eux", state: "open" }],
++    };
++    // La preuve EST complète : c'est ce qui rend le test intéressant.
++    assert.equal(Engine.gateStatus(db, "X", 1, 1).state, "Cleared");
++    const out = Engine.canAdvance(db, "X");
++    assert.equal(out.ok, false);
++    assert.match(out.reason, /Child safety officer/);
++    assert.match(out.reason, /compare les enfants/);
++    /* Et la levée de l'objection rend le franchissement possible : le
++       veto n'est pas un blocage permanent, c'est une question ouverte. */
++    db.objections[0].state = "resolved";
++    assert.equal(Engine.canAdvance(db, "X").ok, true);
+   });
+-  assert.equal(answer.status, 201, JSON.stringify(answer.body));
+-
+-  payload = await admin.get("/api/meetings/occurrences/" + gOcc.id);
+-  const refAfter = payload.body.agenda.sections.find((s) => s.key === "referrals");
+-  assert.ok(!refAfter || !refAfter.items.some((it) => it.entityId === refId),
+-    "an answered referral leaves the agenda");
+ });
+ 
+-test("a referral addressed to 'programme' reaches only the programme it belongs to", async () => {
+-  const pm = await as("siteGRU");
+-  const mine = (await pm.get("/api/meetings/series")).body.series
+-    .find((s) => s.scopeKind === "site" && s.canWrite);
+-  const referred = await pm.post("/api/meetings/occurrences/" + mine.next.id + "/decisions", {
+-    headline: "Terminating the integration vendor is beyond this room",
+-    rationale: "A programme commercial decision",
+-    refer: true, referTo: "programme", projectId: SITE_PROJECT_GRU,   // a DCH project
++describe("MER-07 · l'objection, le coût de retour, la supersession", () => {
++  test("une objection sans raison est refusée : c'est un vote, pas une objection", async () => {
++    const c = await admin();
++    const dry = await c.post("/api/admin/import?dryRun=1", { db: book({
++      objections: [{ id: "OBJ-1", decision: "DEC-001", reason: "   " }],
++    }) });
++    assert.equal(dry.body.rejects.length, 1);
++    assert.match(dry.body.rejects[0].reason, /not an objection/);
+   });
+-  assert.equal(referred.status, 201, JSON.stringify(referred.body));
+-  const refId = referred.body.id;
+-
+-  const admin = await as("admin");
+-  const series = (await admin.get("/api/meetings/series")).body.series;
+-  const dch = series.find((s) => s.id === "MS-DCH-W");
+-  const cbp = series.find((s) => s.id === "MS-CBP-W");
+-  assert.ok(dch?.next && cbp?.next, "both programme rooms have a scheduled occurrence");
+ 
+-  const onOwner = (await admin.get("/api/meetings/occurrences/" + dch.next.id))
+-    .body.agenda.sections.find((s) => s.key === "referrals");
+-  assert.ok(onOwner?.items.some((it) => it.entityId === refId),
+-    "the programme the project belongs to is the room that is asked");
+-
+-  const onOther = (await admin.get("/api/meetings/occurrences/" + cbp.next.id))
+-    .body.agenda.sections.find((s) => s.key === "referrals");
+-  assert.ok(!onOther || !onOther.items.some((it) => it.entityId === refId),
+-    "another programme's room never sees it");
+-
+-  await admin.post("/api/meetings/occurrences/" + cbp.next.id + "/open", {});
+-  const poach = await admin.post("/api/meetings/occurrences/" + cbp.next.id + "/decisions", {
+-    headline: "We will terminate", answers: refId,
++  test("une objection non résolue a une horloge et monte sur l'ordre du jour", () => {
++    const db = { statusDate: "2026-09-19", projects: [], milestones: [], docs: [],
++                 settings: { gateLock: false, capacityAlerts: false },
++                 raid: [], crs: [], exceptions: [], findings: [], objections: [
++      { id: "OBJ-1", decision: "DEC-001", domain: "safety", state: "open",
++        reason: "Non", escalatesOn: "2026-09-10" },
++      { id: "OBJ-2", decision: "DEC-002", domain: "safety", state: "withdrawn", reason: "Non" },
++    ] };
++    const feed = Engine.decisions(db, db.projects).filter(a => a.kind === "Objection");
++    assert.deepEqual(feed.map(a => a.entityId), ["OBJ-1"]);
++    assert.equal(feed[0].urgent, true, "l'échéance d'escalade est passée");
+   });
+-  assert.equal(poach.status, 400, "…and cannot retire it on that programme's behalf");
+ });
+ 
+-test("an action raised at group level lands on the owning site's weekly (rhythm-2)", async () => {
+-  const admin = await as("admin");
+-  const gSeries = (await admin.get("/api/meetings/series")).body.series
+-    .find((s) => s.scopeKind === "group");
+-  const gOcc = gSeries.next;
+-  const raised = await admin.post("/api/meetings/occurrences/" + gOcc.id + "/actions", {
+-    title: "Confirm GRU network freeze dates", projectId: GROUP_PROJECT,   // now sited GRU
++describe("MER-02 · un jalon peut porter sur plus qu'un projet", () => {
++  /* Une autorisation de mise en service franchit pour un programme
++     entier. La découper par projet la rend fausse : chaque projet se
++     déclare franchi pendant que la revue qui les concerne tous ne s'est
++     pas tenue. */
++  const scoped = () => ({
++    statusDate: "2026-09-19",
++    settings: { gateLock: true, gates: [{ n: 1, name: "Mise en service", scope: "programme" }] },
++    projects: [{ id: "X", name: "Un", programme: "P1", loop: 1 },
++               { id: "Y", name: "Deux", programme: "P1", loop: 1 }],
++    docs: [
++      { id: "D-1", project: "X", gate: 1, status: "Approved", loop: 1,
++        uri: "https://docs.example/d1" },
++      { id: "D-2", project: "Y", gate: 1, status: "Draft", loop: 1,
++        uri: "https://docs.example/d2" },
++    ],
++    milestones: [{ id: "M-1", project: "X", gate: 1, date: "2026-01-01", loop: 1 },
++                 { id: "M-2", project: "Y", gate: 1, date: "2026-01-01", loop: 1 }],
+   });
+-  assert.equal(raised.status, 201);
+-
+-  const pm = await as("siteGRU");
+-  const mine = (await pm.get("/api/meetings/series")).body.series
+-    .find((s) => s.scopeKind === "site" && s.canWrite);
+-  const payload = await pm.get("/api/meetings/occurrences/" + mine.next.id);
+-  const inherited = payload.body.openActions.find((a) => a.id === raised.body.id);
+-  assert.ok(inherited, "the group action appears in the site meeting's open actions");
+-  assert.ok(inherited.origin, "tagged with its origin series");
+-});
+-
+-test("the meeting pack exports before the close (value I-3)", async () => {
+-  const pm = await as("siteGRU");
+-  const mine = (await pm.get("/api/meetings/series")).body.series
+-    .find((s) => s.scopeKind === "site" && s.canWrite);
+-  const r = await pm.get("/api/meetings/occurrences/" + mine.next.id + "/pack");
+-  assert.equal(r.status, 200);
+-  assert.match(r.body.markdown, /## Agenda/);
+-  assert.match(r.body.markdown, /## The slate/);
+-});
+-
+-/* ── digest & register surfaces ───────────────────────────────────── */
+-
+-test("the digest answers 'what changed', scoped and named (value I-2)", async () => {
+-  const admin = await as("admin");
+-  const r = await admin.get("/api/digest");
+-  assert.equal(r.status, 200);
+-  assert.ok(r.body.entries.some((e) => e.action === "Project moved"), "the week's move is in the digest");
+-
+-  // A viewer outside audit.read still gets THEIR digest — scoped, not refused.
+-  const viewer = await as("viewerGRU");
+-  const rv = await viewer.get("/api/digest");
+-  assert.equal(rv.status, 200);
+-});
+-
+-test("the decision register joins control decisions and minuted ones (group G3)", async () => {
+-  const admin = await as("admin");
+-  const r = await admin.get("/api/decisions/log");
+-  assert.equal(r.status, 200);
+-  assert.ok(r.body.minuted.some((d) => d.referred === "group"), "the referral shows as referred");
+-  const pm = await as("siteGRU");
+-  const refused = await pm.get("/api/decisions/log");
+-  assert.equal(refused.status, 403, "site level does not read the register (audit.read)");
+-});
+ 
+-/* ── adoption: forced first-sign-in password change (I4) ──────────── */
+-
+-test("an admin-provisioned account must set its own password before day two", async () => {
+-  const admin = await as("admin");
+-  const created = await admin.post("/api/admin/users", {
+-    email: "new.joiner@example.com", displayName: "New Joiner", role: "viewer",
+-    password: "temporary-pass-1",
++  test("le projet prêt ne franchit pas seul un jalon de programme", () => {
++    const db = scoped();
++    // Vu comme un jalon de projet, X est franchi.
++    assert.equal(Engine.gateStatus(db, "X", 1, 1).state, "Cleared");
++    // Vu à sa vraie portée, il ne l'est pas : Y n'a pas la sienne.
++    assert.equal(Engine.scopedGateStatus(db, "X", 1, 1, "programme").state, "Overdue");
++    assert.equal(Engine.canAdvance(db, "X").ok, false);
+   });
+-  assert.equal(created.status, 201, JSON.stringify(created.body));
+-
+-  const { client } = await import("./harness.js");
+-  const c = client();
+-  const user = await c.login("new.joiner@example.com", "temporary-pass-1");
+-  assert.equal(user.mustChangePassword, true, "the flag rides the login payload");
+ 
+-  /* The dialog is a courtesy; the refusal is the control. Until the
+-     password is the holder's own, the session reads but does not act. */
+-  assert.equal((await c.get("/api/bootstrap")).status, 200, "reading is still allowed");
+-  const early = await c.post("/api/raid", { title: "anything", type: "Risk" });
+-  assert.equal(early.status, 403);
+-  assert.match(early.body.error, /Choose your own password/);
++  test("le refus nomme la pièce manquante ET le projet qui la doit", () => {
++    const out = Engine.canAdvance(scoped(), "X");
++    assert.ok(out.items.length, "un refus sans pièce nommée est inutilisable");
++    assert.equal(out.items[0].projectName, "Deux");
++  });
+ 
+-  const bad = await c.post("/api/auth/password", { current: "wrong", next: "my-own-pass-9" });
+-  assert.equal(bad.status, 403);
+-  /* A second device on the old password — changing it must end that
+-     session, and keep the one doing the changing. */
+-  const other = client();
+-  await other.login("new.joiner@example.com", "temporary-pass-1");
+-  assert.equal((await other.get("/api/auth/me")).status, 200);
++  test("le jalon franchit quand chaque projet de la portée porte sa preuve", () => {
++    const db = scoped();
++    db.docs[1].status = "Approved";
++    assert.equal(Engine.scopedGateStatus(db, "X", 1, 1, "programme").state, "Cleared");
++  });
+ 
+-  const ok = await c.post("/api/auth/password", { current: "temporary-pass-1", next: "my-own-pass-9" });
+-  assert.equal(ok.status, 200);
+-  const me = await c.get("/api/auth/me");
+-  assert.equal(me.body.user.mustChangePassword, false);
+-  assert.equal((await other.get("/api/auth/me")).status, 401, "the other session is over");
++  test("sans portée déclarée, rien ne change : un jalon reste un jalon de projet", () => {
++    const db = scoped();
++    db.settings.gates = [{ n: 1, name: "Mise en service" }];
++    assert.equal(Engine.gateModel(db)[0].scope, "project");
++    assert.equal(Engine.currentGate(db, "X").state, "Cleared");
++  });
+ });
+diff --git a/server/test/persistence.test.js b/server/test/persistence.test.js
+index f653c6b..10f6f49 100644
+--- a/server/test/persistence.test.js
++++ b/server/test/persistence.test.js
+@@ -32,7 +32,7 @@ describe("schema and migrations (R2.2, R2.7)", () => {
+        "016_timesheet.sql", "017_absence_minimisation.sql",
+        "018_notification_centre.sql", "019_notification_subscription.sql",
+        "020_evidence_probe.sql", "021_usage_counters.sql",
+-       "022_site_champion.sql", "023_session_digest.sql", "024_lessons.sql", "025_integrations.sql", "026_tolerance.sql", "027_international.sql", "028_business_case.sql", "029_reporting_views.sql", "030_residual_risk.sql", "031_outbound_events.sql", "032_closure_quality.sql", "033_change_raiser_account.sql", "034_gate_model_and_requirements.sql"]);
++       "022_site_champion.sql", "023_session_digest.sql", "024_lessons.sql", "025_integrations.sql", "026_tolerance.sql", "027_international.sql", "028_business_case.sql", "029_reporting_views.sql", "030_residual_risk.sql", "031_outbound_events.sql", "032_closure_quality.sql", "033_change_raiser_account.sql", "034_gate_model_and_requirements.sql", "035_findings_seats_and_decisions.sql"]);
+     const again = await migrate({ silent: true });
+     assert.deepEqual(again, [], "a second run applies nothing");
+   });
+diff --git a/server/test/requirements.test.js b/server/test/requirements.test.js
+index 0da04aa..63bf417 100644
+--- a/server/test/requirements.test.js
++++ b/server/test/requirements.test.js
+@@ -26,6 +26,8 @@ async function admin() {
+ function book(over = {}) {
+   return {
+     orgName: "TEST", statusDate: "2026-08-28",
++    // MER-09 — un livre dit son unité monétaire ou l'import le refuse.
++    currencyUnit: "millions",
+     sites: [{ id: "S1", city: "Ici", tz: 0 }],
+     people: [{ id: "PE-1", name: "A. Personne", role: "PM", site: "S1", rate: 0 }],
+     programmes: [{ id: "P1", name: "Programme", managerId: "PE-1" }],
+diff --git a/shared/engine.js b/shared/engine.js
+index fac0eef..ae5632a 100644
+--- a/shared/engine.js
++++ b/shared/engine.js
+@@ -272,6 +272,15 @@ export const Engine = {
+            cahier des charges est un cycle d'amélioration, pas un échec,
+            et sans ceci le portefeuille ne sait pas le dire. */
+         loopsTo: Number.isFinite(Number(x.loopsTo)) ? Number(x.loopsTo) : null,
++        /* MER-02 — un jalon PEUT porter sur plus qu'un projet. Une
++           autorisation de mise en service, une revue de sécurité, une
++           revue de portefeuille franchissent pour un programme entier
++           ou pour tout le livre, et les découper par projet les rend
++           faux : chaque projet se déclare franchi pendant que la revue
++           qui les concerne tous ne s'est pas tenue.
++
++           Défaut « project » : rien d'existant ne change. */
++        scope: ["project", "programme", "portfolio"].includes(x.scope) ? x.scope : "project",
+       }))
+       .sort((a, b) => a.n - b.n);
+   },
+@@ -307,21 +316,114 @@ export const Engine = {
+     };
+   },
+ 
++  /* MER-02 — l'état d'un jalon À SA PORTÉE.
++     Un jalon de programme n'est franchi que lorsque CHAQUE projet du
++     programme en porte la preuve : c'est ce que « franchir pour le
++     programme » veut dire, et l'agréger autrement laisse un projet en
++     retard derrière une porte que le programme croit ouverte. La preuve
++     manquante reste nommée par projet, sinon le refus est inutilisable. */
++  scopedGateStatus(db, projectId, gateN, loop = 1, scope = "project") {
++    if (scope === "project") return Engine.gateStatus(db, projectId, gateN, loop);
++    const project = db.projects?.find(p => p.id === projectId);
++    const peers = (db.projects ?? []).filter(p =>
++      scope === "portfolio" ? true : p.programme === project?.programme);
++    const parts = peers.map(p => ({ project: p, st: Engine.gateStatus(db, p.id, gateN, loop) }));
++    const outstanding = parts.flatMap(({ project: p, st }) =>
++      st.outstanding.map(d => ({ ...d, projectName: p.name })));
++    const withEvidence = parts.filter(({ st }) => st.total > 0);
++    const total = parts.reduce((n, { st }) => n + st.total, 0);
++    const approved = parts.reduce((n, { st }) => n + st.approved, 0);
++    /* La date du jalon de portée est la PLUS TARDIVE : le programme n'a
++       pas franchi tant que son dernier projet n'a pas franchi. */
++    const dates = parts.map(({ st }) => st.date).filter(Boolean).sort();
++    const date = dates.length ? dates[dates.length - 1] : null;
++    const cleared = withEvidence.length > 0 &&
++      parts.every(({ st }) => st.total === 0 || st.state === "Cleared");
++    return {
++      gate: gateN, loop, scope, date, docs: parts.flatMap(({ st }) => st.docs),
++      approved, total,
++      ready: total > 0 && approved === total,
++      outstanding,
++      state: cleared ? "Cleared"
++           : parts.some(({ st }) => st.state === "Overdue") ? "Overdue"
++           : parts.some(({ st }) => st.state === "At risk") ? "At risk"
++           : total > 0 && approved === total ? "Ready"
++           : "Planned",
++    };
++  },
++
++  /* MER-06 — les vetos ouverts qui portent sur ce jalon.
++     Un siège à veto qui a consigné une objection non résolue dans son
++     domaine BLOQUE. C'est la fonctionnalité ; le reste est de la
++     plomberie. Un livre sans sièges n'en a aucun et rien ne change. */
++  openVetoes(db, gate) {
++    const seats = new Map((db.seats ?? []).filter(s => s.vetoDomain).map(s => [s.id, s]));
++    if (!seats.size) return [];
++
++    /* Un veto porte sur un DOMAINE, et un domaine peut être un jalon
++       précis ou la totalité du parcours. Le responsable de la sécurité
++       des enfants de KODO tient le sien À CHAQUE jalon ; l'autorité de
++       conception ne le tient qu'à la revue de conception.
++
++       La portée est donc restreinte PAR EXCEPTION : une objection d'un
++       siège à veto bloque, sauf si son domaine nomme un AUTRE jalon que
++       celui-ci. C'est le sens sûr — se tromper en bloquant fait tenir
++       une réunion, se tromper en laissant passer fait franchir une
++       porte que quelqu'un avait refusée. */
++    const names = new Set(
++      [gate?.n === undefined || gate?.n === null ? null : "G" + gate.n,
++       gate?.n === undefined || gate?.n === null ? null : "Gate " + gate.n,
++       gate?.name]
++        .filter(Boolean).map(x => String(x).toLowerCase()));
++    const namesAnotherGate = (domain) => {
++      const d = String(domain ?? "").trim().toLowerCase();
++      if (!d) return false;
++      if (names.has(d)) return false;
++      // « G3 », « Gate 3 » : une désignation de jalon, et pas celui-ci.
++      return /^(g|gate )\s*\d+$/.test(d);
++    };
++
++    return (db.objections ?? [])
++      .filter(o => o.state === "open" || o.state === "escalated")
++      .map(o => ({ objection: o, seat: seats.get(o.seat) }))
++      .filter(({ objection, seat }) => {
++        if (!seat) return false;
++        const on = objection.domain || seat.vetoDomain;
++        return !namesAnotherGate(on) && !namesAnotherGate(seat.vetoDomain);
++      });
++  },
++
+   currentGate(db, projectId) {
+     const model = Engine.gateModel(db);
+     const project = db.projects?.find(p => p.id === projectId);
+     const loop = Math.max(1, Number(project?.loop ?? 1));
+     for (const g of model) {
+-      const st = Engine.gateStatus(db, projectId, g.n, loop);
++      const st = Engine.scopedGateStatus(db, projectId, g.n, loop, g.scope);
+       if (st.state !== "Cleared") return { ...g, ...st };
+     }
+     const last = model[model.length - 1];
+-    return { ...last, ...Engine.gateStatus(db, projectId, last.n, loop) };
++    return { ...last, ...Engine.scopedGateStatus(db, projectId, last.n, loop, last.scope) };
+   },
+ 
+   canAdvance(db, projectId) {
+     if (!db.settings.gateLock) return { ok: true, reason: "Gate locking is off" };
+     const g = Engine.currentGate(db, projectId);
++    /* MER-06 — un veto ouvert passe AVANT la preuve. Un jalon dont
++       toutes les pièces sont réunies mais sur lequel le siège
++       responsable de la sécurité des enfants a consigné une objection
++       non résolue n'est pas franchissable, et un outil qui répond
++       « preuve complète » à cette question-là se trompe de réponse. */
++    const vetoes = Engine.openVetoes(db, g);
++    if (vetoes.length) {
++      const v = vetoes[0];
++      return {
++        ok: false,
++        reason: v.seat.name + " holds a veto on " + (v.objection.domain || v.seat.vetoDomain) +
++                " and has an unresolved objection: " + v.objection.reason,
++        items: [],
++        vetoes: vetoes.map(x => ({ seat: x.seat.id, objection: x.objection.id })),
++      };
++    }
+     if (g.state === "Cleared" || g.ready) return { ok: true, reason: "Evidence complete for " + g.name };
+     /* MER-15 — un refus DIT ce qui manque.
+ 
+@@ -714,6 +816,33 @@ export const Engine = {
+           meta: g.outstanding.length + " evidence items outstanding", urgent: g.state === "Overdue",
+           route: "#/project/" + p.id, entity: "project", entityId: p.id });
+     });
++    /* MER-05 — un constat ouvert, sévère et daté pour re-test est
++       exactement ce qu'une liste d'attention existe pour montrer. Il
++       n'était nulle part parce qu'il n'existait nulle part. */
++    (db.findings ?? []).forEach((f) => {
++      if (f.status === "Closed" || f.status === "Waived") return;
++      if (!["S1", "S2"].includes(f.severity)) return;
++      const late = f.retestOn && D(f.retestOn) < D(db.statusDate);
++      out.push({ kind: "Review finding", title: f.id + " · " + f.observedFact,
++        meta: f.severity + (late ? " · re-test overdue" : f.retestOn ? " · re-test " + f.retestOn : ""),
++        urgent: f.severity === "S1" || Boolean(late),
++        route: "#/project/" + (f.project ?? ""), entity: "finding", entityId: f.id });
++    });
++
++    /* MER-07 — une objection non résolue a une horloge. Le moteur
++       pousse déjà une action sur chaque ordre du jour suivant jusqu'à
++       clôture ; une objection est le même mécanisme avec un autre nom,
++       et une gouvernance par consentement ne tient pas sans elle. */
++    (db.objections ?? []).forEach((o) => {
++      if (o.state !== "open" && o.state !== "escalated") return;
++      const due = o.escalatesOn && D(o.escalatesOn) <= D(db.statusDate);
++      out.push({ kind: "Objection", title: o.reason,
++        meta: (o.domain ? o.domain + " · " : "") +
++              (o.state === "escalated" ? "escalated" : due ? "escalation due" : "open"),
++        urgent: o.state === "escalated" || Boolean(due),
++        route: "#/meetings", entity: "decision_objection", entityId: o.id });
++    });
++
+     if (db.settings.capacityAlerts) {
+       const over = Engine.overAllocated(db, 8);
+       if (over.length) out.push({ kind: "Resourcing",
+-- 
+2.43.0
+

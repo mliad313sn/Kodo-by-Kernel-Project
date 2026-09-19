@@ -24,6 +24,23 @@
 > * Fixes for all three are written, applied, and shipped as a patch at
 >   `delivery/meridian/patches/0001-importer-and-earned-value-fixes.patch`. **All 449 of
 >   Meridian's own tests still pass with the patch applied.**
+>
+> **Second update — every remaining finding is now fixed.**
+> `MER-02`, `MER-05`, `MER-06`, `MER-07`, `MER-08`, `MER-09`, `MER-10` and `MER-11` are
+> implemented in `delivery/meridian/patches/0003-*.patch`: a gate can be scoped to a
+> programme or to the whole portfolio, a review finding is a first-class entity that
+> **cannot close without evidence**, evidence itself no longer has to be a document, seats
+> carry vetoes and incompatibilities that the database enforces, a decision records its
+> objections, its reversal cost and what it supersedes, the import has a dry run and a
+> merge mode, money declares its unit or is refused, and a meeting series can be bound to
+> a gate. 17 new tests; the suite is **467 green** and the build and audit are clean.
+> **All fifteen findings in this report are now closed.**
+>
+> One limitation, stated rather than implied: the new registers land as **data** — schema,
+> import, export, engine and portfolio — with no write routes yet, which is the same
+> landing `MER-03`'s requirement register had. You can carry findings, seats and objections
+> in the book and the tool will reason with them; raising one from the interface is the
+> next piece of work, and it is named in the table at the end of this report.
 
 ---
 
@@ -257,6 +274,8 @@ gate. **This is the change I would make first.**
 
 ### MER-02 · Gates are attached to projects; real gates review a portfolio — S2
 
+**FIXED** — portfolio-scoped gates, in `0003-*.patch`. The section below is kept as written, because what was wrong is the reason the fix is shaped the way it is.
+
 **Evidence.** `Engine.currentGate(db, projectId)`, `Engine.canAdvance(db, projectId)`,
 `gateStatus(db, projectId, n)` — every gate function takes a project id.
 
@@ -397,6 +416,8 @@ now says what it knows.
 
 ### MER-05 · A review finding is neither a risk nor a lesson, and there is nowhere to put it — S2
 
+**FIXED** — findings, evidence, and work-item provenance, in `0003-*.patch`. The section below is kept as written, because what was wrong is the reason the fix is shaped the way it is.
+
 **Evidence.** `raid_item` (probability × impact, response, review date) and `lesson`
 (retrospective, category, what happened / what to do). Nothing else.
 
@@ -428,6 +449,8 @@ number.
 
 ### MER-06 · Authority is data — but only two kinds of it — S2
 
+**FIXED** — seats, vetoes, and segregation of duties, in `0003-*.patch`. The section below is kept as written, because what was wrong is the reason the fix is shaped the way it is.
+
 **Evidence.** `shared/rbac.js:21` — `ROLES = ["admin", "group", "site", "viewer"]`, plus
 `project.governance_level` in `('group','site')`.
 
@@ -458,6 +481,8 @@ convention"*. It is one migration away from being able to prove it.
 ---
 
 ### MER-07 · Decisions record a rationale, but not an objection, a reversal cost, or a supersession — S2
+
+**FIXED** — objections, reversal cost, supersession, in `0003-*.patch`. The section below is kept as written, because what was wrong is the reason the fix is shaped the way it is.
 
 **Evidence.** `meeting_decision (id, occurrence_id, headline, rationale, project_id, cr_id,
 decided_by, recorded_by, recorded_at)` — `003_meetings.sql`.
@@ -495,6 +520,8 @@ the largest, because it completes a model that is already 80 % built.
 
 ### MER-08 · The import is destructive, administrator-only, and has no dry run — S2
 
+**FIXED** — dry run and merge import, in `0003-*.patch`. The section below is kept as written, because what was wrong is the reason the fix is shaped the way it is.
+
 **Evidence.** `server/src/import.js` — `for (const table of PORTFOLIO_TABLES) await
 t.query('DELETE FROM ' + table)`. `server/src/routes/admin.js:729` — the only entry point.
 
@@ -520,6 +547,8 @@ successful pilot and a reinstall.
 
 ### MER-09 · Money has an implicit unit, and the unit is millions — S1 waiting to happen
 
+**FIXED** — an explicit currency unit, in `0003-*.patch`. The section below is kept as written, because what was wrong is the reason the fix is shaped the way it is.
+
 **Evidence.** `server/src/portfolio.js:21–26` — `M = 1_000_000`, `fromM(v) = v * M`. The
 importer applies `fromM` to `p.budget`, `p.contingency`, `l.amount` and `c.cost`.
 
@@ -538,6 +567,8 @@ rather than merely unlikely.
 
 ### MER-10 · Meetings are weekly or monthly; governance is not — S3
 
+**FIXED** — gate-bound meeting cadence, in `0003-*.patch`. The section below is kept as written, because what was wrong is the reason the fix is shaped the way it is.
+
 **Evidence.** `meeting_series.cadence text CHECK (cadence IN ('weekly','monthly'))`.
 
 **What happened.** KODO's committee cadence is *per gate* — G4 at weeks 26, 40 and 52 — plus
@@ -552,6 +583,8 @@ most useful meeting any PMO runs and the one that is currently assembled by hand
 ---
 
 ### MER-11 · The document is the unit of evidence, and evidence is increasingly not a document — S3
+
+**FIXED** — evidence that is not a document, in `0003-*.patch`. The section below is kept as written, because what was wrong is the reason the fix is shaped the way it is.
 
 **Evidence.** `document (id, project_id, name, doc_type, gate, owner_id, revision, status,
 updated_on)`, with `DOC_TYPES` fixed at nine.
