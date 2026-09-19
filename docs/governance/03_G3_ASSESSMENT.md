@@ -138,3 +138,34 @@ Close G3 when, and only when, this has been done on an Android 11 phone with 2 G
 Anything that fails is a G3 finding and is fixed before G4, not logged for later. Anything
 that passes gets its number written into `spec/status_overrides.json`, which is the only
 place a requirement's status may change.
+
+---
+
+## Addendum — 2026-09-19, after M19 and M20
+
+Two clauses of this assessment moved, and both moved because the product was **run and
+looked at** rather than reasoned about.
+
+**`FR-M19-03` on the browser: was a recorded gap, is now met.** The first web binding
+returned an in-memory session store and said so honestly in a doc comment: a web child
+lost their place when the tab closed. "A force-kill loses nothing" cannot be true on one
+target and false on another, so the binding now writes `localStorage`, guarded on every
+access (a private window, a blocked site, a full quota all throw rather than returning
+null). Verified by reloading the built web app: the browser comes back on the screen the
+child left, with their preferences. What is still impossible in a browser is **sideloading**
+— `FR-M12-03` needs a teacher's SD card — and that remains recorded rather than claimed.
+
+**§9.1's five destinations: were missing, are now there.** The shell shipped in M19 had
+`worlds / concept / item / studio / settings`. Close to the specification and not it, and
+the difference is not cosmetic: *"Entraînement — today's mix, one button"* is the whole of
+how a child who does not know what to do next finds something to do, and it did not exist.
+The five roots are now the bar, `goRoot` replaces the stack rather than growing it, and
+the navigation test walks the roots as well as the graph.
+
+**`FR-M20-01` … `06` are new and Done.** See `D-013` and
+`docs/governance/05_ART_DIRECTION_REVIEW.md`. They do not change any clause of this
+assessment; they close the gap the assessment could not see, because nothing in G3 asked
+whether a child would want to open the thing.
+
+The thirty open requirements listed above are unchanged. None of them was closed by this
+work, and none of them was opened by it.

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+  <title>world4-plan</title>
+  <desc>Un quadrillage avec un point marqué.</desc>
+  <rect x="0" y="0" width="100" height="100" fill="#ffffff"/>
+  <polyline points="25,6 25,94" fill="none" stroke="#45555a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="50,6 50,94" fill="none" stroke="#45555a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="75,6 75,94" fill="none" stroke="#45555a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="6,25 94,25" fill="none" stroke="#45555a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="6,50 94,50" fill="none" stroke="#45555a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="6,75 94,75" fill="none" stroke="#45555a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="50,6 50,94" fill="none" stroke="#142024" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="6,50 94,50" fill="none" stroke="#142024" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="50,50 75,50 75,25" fill="none" stroke="#074e57" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="75" cy="25" r="8" fill="#a84b03"/>
+  <circle cx="75" cy="25" r="3" fill="#ffffff"/>
+</svg>

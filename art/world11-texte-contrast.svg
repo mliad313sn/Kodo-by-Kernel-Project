@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+  <title>world11-texte</title>
+  <desc>Les mêmes instructions, en blocs et en mots.</desc>
+  <rect x="0" y="0" width="100" height="100" fill="#ffffff"/>
+  <rect x="8" y="20" width="34" height="12" rx="3" fill="#074e57"/>
+  <rect x="8" y="38" width="34" height="12" rx="3" fill="#a84b03"/>
+  <rect x="8" y="56" width="34" height="12" rx="3" fill="#1b521e"/>
+  <polygon points="46,44 52,38 52,50" fill="#142024"/>
+  <polygon points="78,44 72,38 72,50" fill="#142024"/>
+  <polyline points="50,44 74,44" fill="none" stroke="#142024" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="56" y="14" width="40" height="60" rx="4" fill="#ffffff"/>
+  <polyline points="60,24 88,24" fill="none" stroke="#074e57" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="60,42 84,42" fill="none" stroke="#a84b03" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="60,60 92,60" fill="none" stroke="#1b521e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="60" y="80" width="12" height="8" rx="2" fill="#131b2e"/>
+</svg>

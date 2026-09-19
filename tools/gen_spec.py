@@ -162,6 +162,41 @@ def main():
          "source": "[PO D-012]", "priority": "M",
          "verification": "Dependency test: the shell imports module APIs and defines no grader, no mastery rule and no item",
          "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M19"},
+        # --- PO amendment, D-013: the visual universe (M20) -----------------------------
+        # §9 asks for a product a child wants to open. Eighteen prompts specified
+        # capability and none specified appearance, which is the same gap D-012 found one
+        # level up: a body with no face. Art is geometry-as-data here, for the same reason
+        # the language is one AST — two projections, never two drawings.
+        {"id": "FR-M20-01", "module": "M20 Visual universe",
+         "requirement": "Every world is a place with its own illustration; a world drawn as a numbered row is not shipped",
+         "source": "[PO D-013], [CDC §9.1]", "priority": "M",
+         "verification": "All thirteen worlds have a distinct drawing and a distinct spoken description; asserted in kodo_art",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M20"},
+        {"id": "FR-M20-02", "module": "M20 Visual universe",
+         "requirement": "Art is geometry as data with two projections — the app's painter and the SVG emitter — and never a second drawing",
+         "source": "[PO D-013]", "priority": "M",
+         "verification": "Both projections are generated from the same Drawing; the published SVG carries the same description the app speaks",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M20"},
+        {"id": "FR-M20-03", "module": "M20 Visual universe",
+         "requirement": "Every illustration on screen carries the sentence a screen reader speaks, in both interface languages",
+         "source": "[PO D-013], [FR-M16-04]", "priority": "M",
+         "verification": "Widget test walks every Art on every screen and finds its description in the semantics tree",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M20"},
+        {"id": "FR-M20-04", "module": "M20 Visual universe",
+         "requirement": "Colour is a role, not a hex: high contrast re-resolves the roles and never swaps the palette",
+         "source": "[PO D-013], [FR-M16-01], [FR-M16-03]", "priority": "M",
+         "verification": "Every Tint resolves in both themes; no foreground ratio falls when high contrast is on",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M20"},
+        {"id": "FR-M20-05", "module": "M20 Visual universe",
+         "requirement": "Every animation declares a reason (causality, continuity or feedback) and a reduced form; none exceeds the motion ceiling",
+         "source": "[PO D-013], [CDC §9.2], [FR-M16-03]", "priority": "M",
+         "verification": "Motion table asserted in kodo_art: a reason, a reduced form that is not nothing, and 320 ms",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M20"},
+        {"id": "FR-M20-06", "module": "M20 Visual universe",
+         "requirement": "Tika appears where a child is spoken to and never where a child is judged: no pose reacts to a verdict",
+         "source": "[PO D-013], [CDC §10]", "priority": "M",
+         "verification": "The stage pose has no face; the portrait and thinking poses do; no screen binds a pose to a grading outcome",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M20"},
     ]
     known = {r["id"] for r in reqs}
     for a in amendments:

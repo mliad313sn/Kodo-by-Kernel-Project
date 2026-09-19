@@ -14,10 +14,42 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kodo/src/app.dart';
 import 'package:kodo/src/session.dart';
 import 'package:kodo/src/shell.dart';
+import 'package:kodo/src/drawing_painter.dart';
 import 'package:kodo_access/kodo_access.dart';
+import 'package:kodo_art/kodo_art.dart';
+import 'package:kodo_content/kodo_content.dart';
 
 KodoContent emptyContent() =>
     const KodoContent(packs: [], profileNames: {'local': 'Moi'});
+
+/// Three installed worlds, so the map has something to draw. Shapes only — the real packs
+/// are loaded from `assets/content/` and checked for drift by their own test.
+KodoContent mapContent() => const KodoContent(
+      packs: [
+        ContentPack(
+            world: 0,
+            version: 1,
+            nameKeys: {'fr': 'Bonjour Tika', 'en': 'Hello Tika'},
+            concepts: {'C0.1': []},
+            tutorials: [],
+            items: []),
+        ContentPack(
+            world: 1,
+            version: 1,
+            nameKeys: {'fr': 'La tortue bouge', 'en': 'The turtle moves'},
+            concepts: {'C1.1': []},
+            tutorials: [],
+            items: []),
+        ContentPack(
+            world: 2,
+            version: 1,
+            nameKeys: {'fr': 'Encore et encore', 'en': 'Again and again'},
+            concepts: {'C2.1': []},
+            tutorials: [],
+            items: []),
+      ],
+      profileNames: {'local': 'Moi'},
+    );
 
 Future<void> pump(WidgetTester tester, KodoShell shell,
     {KodoContent? content}) async {
@@ -39,21 +71,42 @@ void main() {
       expect(find.byKey(const Key('profile-local')), findsOneWidget);
     });
 
-    testWidgets('choosing a profile reaches the worlds', (t) async {
+    testWidgets('choosing a profile reaches the map', (t) async {
       final shell = KodoShell(store: MemorySessionStore());
       await pump(t, shell);
       await t.tap(find.byKey(const Key('profile-local')));
       await t.pumpAndSettle();
       expect(find.byKey(const Key('worlds')), findsOneWidget);
+      // And the five destinations of §9.1 are there, all of them, from the first screen.
+      expect(find.byKey(const Key('root-bar')), findsOneWidget);
+      for (final root in KodoScreen.roots) {
+        expect(find.byKey(Key('root-${root.route}')), findsOneWidget,
+            reason: '${root.route} is missing from the bar');
+      }
     });
   });
 
   group('FR-M19-02 · every screen is reachable, and every screen is exitable',
       () {
+    test('§9.1 is five destinations, no more and no fewer', () {
+      /* Carte · Entraînement · Studio · Galerie · Moi. A sixth tab is the way a product
+         like this dies: the specification is explicit that the parent space is NOT one,
+         so the count is asserted rather than trusted. */
+      expect(KodoScreen.roots.map((r) => r.route), [
+        'carte',
+        'entrainement',
+        'studio',
+        'galerie',
+        'moi',
+      ]);
+    });
+
     test('the navigation graph has no dead end and no unreachable screen', () {
-      // Reachable from the root.
-      final seen = <KodoScreen>{KodoScreen.profiles};
-      final queue = <KodoScreen>[KodoScreen.profiles];
+      /* Reachable from the root. The five destinations are reachable from each other
+         through the bar rather than through the graph — `goRoot`, because a tab is not a
+         journey — so the walk seeds with all of them. */
+      final seen = <KodoScreen>{KodoScreen.profiles, ...KodoScreen.roots};
+      final queue = <KodoScreen>[KodoScreen.profiles, ...KodoScreen.roots];
       while (queue.isNotEmpty) {
         for (final KodoScreen next
             in navigationGraph[queue.removeLast()] ?? const <KodoScreen>[]) {
@@ -77,14 +130,40 @@ void main() {
           session: const Session(profileId: 'local'));
       await pump(t, shell);
 
-      for (final destination in [KodoScreen.settings, KodoScreen.studio]) {
-        shell.go(destination);
+      /* Every non-root screen, walked from the root it hangs off. A root has no back
+         button by design — it is where back goes. */
+      for (final from in KodoScreen.roots) {
+        for (final KodoScreen destination
+            in navigationGraph[from] ?? const <KodoScreen>[]) {
+          shell.goRoot(from);
+          await t.pumpAndSettle();
+          expect(find.byKey(const Key('back')), findsNothing,
+              reason: '${from.route} is a root and must not offer a way back');
+          shell.go(destination);
+          await t.pumpAndSettle();
+          expect(find.byKey(const Key('back')), findsOneWidget,
+              reason: '${destination.route} has no way out');
+          await t.tap(find.byKey(const Key('back')));
+          await t.pumpAndSettle();
+          expect(shell.current, from);
+        }
+      }
+    });
+
+    testWidgets('a tab replaces the journey rather than growing it', (t) async {
+      /* Four taps on four tabs must not leave four back presses waiting. A child who
+         wanders the bar and then presses back should be where they started, not walking
+         a history they did not know they were making. */
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      await pump(t, shell);
+      for (final root in KodoScreen.roots) {
+        await t.tap(find.byKey(Key('root-${root.route}')));
         await t.pumpAndSettle();
-        expect(find.byKey(const Key('back')), findsOneWidget,
-            reason: '${destination.route} has no way out');
-        await t.tap(find.byKey(const Key('back')));
-        await t.pumpAndSettle();
-        expect(shell.current, KodoScreen.worlds);
+        expect(shell.current, root);
+        expect(shell.stack, hasLength(1), reason: 'a tab grew the stack');
+        expect(shell.canGoBack, isFalse);
       }
     });
 
@@ -99,7 +178,7 @@ void main() {
         shell.back();
       }
       await t.pumpAndSettle();
-      expect(shell.current, KodoScreen.worlds);
+      expect(shell.current, KodoScreen.carte);
       expect(find.byKey(const Key('worlds')), findsOneWidget);
     });
 
@@ -109,6 +188,8 @@ void main() {
           session: const Session(profileId: 'local'));
       expect(() => shell.go(KodoScreen.item), throwsStateError,
           reason: 'an item is reached through a concept, never from the map');
+      expect(() => shell.goRoot(KodoScreen.item), throwsStateError,
+          reason: 'an item is not one of the five destinations');
     });
   });
 
@@ -125,17 +206,19 @@ void main() {
         for (var i = 0; i < moves; i++) {
           // Back to the map first: a child reaches a concept from the map, and the
           // graph refuses anything else — which is the point of having a graph.
-          while (shell.current != KodoScreen.worlds && shell.canGoBack) {
-            shell.back();
-          }
-          switch (random.nextInt(3)) {
+          switch (random.nextInt(4)) {
             case 0:
+              shell.goRoot(KodoScreen.carte);
               shell.go(KodoScreen.concept, worldId: random.nextInt(3));
               shell.go(KodoScreen.item, conceptId: 'C${random.nextInt(3)}.1');
             case 1:
-              shell.go(KodoScreen.studio);
+              shell.goRoot(KodoScreen.studio);
             case 2:
+              shell.goRoot(KodoScreen.moi);
               shell.go(KodoScreen.settings);
+            case 3:
+              shell.goRoot(KodoScreen.entrainement);
+              shell.go(KodoScreen.item, conceptId: 'C${random.nextInt(3)}.1');
           }
           if (random.nextBool() && shell.canGoBack) shell.back();
         }
@@ -173,6 +256,7 @@ void main() {
          which a force-kill loses the child's place, which is exactly what FR-M19-03
          forbids, so the debounce was removed. This test pins its absence: the move is on
          disk before anybody backgrounds anything. */
+      shell.goRoot(KodoScreen.moi);
       shell.go(KodoScreen.settings);
       expect(await store.read(), contains('settings'),
           reason: 'a navigation must be durable the moment it happens');
@@ -193,6 +277,7 @@ void main() {
           store: MemorySessionStore(),
           session: const Session(profileId: 'local'));
       await pump(t, shell);
+      shell.goRoot(KodoScreen.moi);
       shell.go(KodoScreen.settings);
       await t.pumpAndSettle();
 
@@ -210,6 +295,7 @@ void main() {
           store: MemorySessionStore(),
           session: const Session(profileId: 'local'));
       await pump(t, shell);
+      shell.goRoot(KodoScreen.moi);
       shell.go(KodoScreen.settings);
       await t.pumpAndSettle();
       expect(
@@ -358,6 +444,83 @@ void main() {
             scanForHardCodedStrings(file.path, file.readAsStringSync()));
       }
       expect(found, isEmpty, reason: found.join('\n'));
+    });
+  });
+
+  /* The art committee's clause (Part 2b of the committee charter): the universe is only
+     real if a child meets it. Art that exists in a package and never reaches a screen is
+     a folder of SVGs, not a product. */
+  group('FR-M20-03 · §9 · the universe reaches the child', () {
+    testWidgets('the map draws places, not rows', (t) async {
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      await pump(t, shell, content: mapContent());
+      expect(find.byKey(const Key('world-0')), findsOneWidget);
+      expect(find.byType(Art), findsWidgets,
+          reason: 'a world without its place drawn is a filing-cabinet row');
+    });
+
+    testWidgets('every drawing on screen says what it is, out loud', (t) async {
+      /* FR-M16-04. An illustration a screen reader skips is worse than no illustration:
+         the child who needs the description most gets the emptiest screen. */
+      final handle = t.ensureSemantics();
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      await pump(t, shell, content: mapContent());
+      for (final element in find.byType(Art).evaluate()) {
+        final art = element.widget as Art;
+        final said = art.drawing.describeIn('fr');
+        expect(said.trim(), isNotEmpty);
+        /* A pattern, not the whole label: a card merges its picture's sentence with the
+           world's name into one node, which is exactly what a screen reader should read
+           — "Une plage au soleil. Tika arrive. Bonjour Tika" — so the assertion is that
+           the sentence is IN what is spoken, not that it is all of it. */
+        expect(find.bySemanticsLabel(RegExp(RegExp.escape(said))), findsWidgets,
+            reason: '${art.drawing.id} is invisible to a screen reader');
+      }
+      handle.dispose();
+    });
+
+    testWidgets('the illustration follows the high-contrast setting',
+        (t) async {
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      await pump(t, shell, content: mapContent());
+      expect(
+          (find.byType(Art).evaluate().first.widget as Art).highContrast,
+          isFalse);
+
+      shell.setAccessibility(
+          const AccessibilityPreferences(highContrast: true));
+      await t.pumpAndSettle();
+      expect(
+          (find.byType(Art).evaluate().first.widget as Art).highContrast,
+          isTrue,
+          reason: 'a child who turns on high contrast still sees the picture, '
+              'and it is the high-contrast picture');
+    });
+
+    testWidgets('the bottom bar still fits its words at 200 % text',
+        (t) async {
+      /* FR-M16-03 against §9.1. "Entraînement" is twelve characters; five of those
+         across 360 dp at double size is exactly where a tab bar clips. The bar grows
+         instead, and this test is what says so. */
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      await pump(t, shell, content: mapContent());
+      shell.setAccessibility(const AccessibilityPreferences(textScale: 2.0));
+      await t.pumpAndSettle();
+      /* A RenderFlex overflow is reported as an exception rather than a failure, so it
+         has to be taken and asserted on, or the test passes over a clipped bar. */
+      expect(t.takeException(), isNull,
+          reason: 'the root bar overflowed at 200 % text');
+      for (final root in KodoScreen.roots) {
+        expect(find.byKey(Key('root-${root.route}')), findsOneWidget);
+      }
     });
   });
 }

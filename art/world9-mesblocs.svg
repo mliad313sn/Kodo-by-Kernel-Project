@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+  <title>world9-mesblocs</title>
+  <desc>Des petits blocs qui deviennent un seul bloc nommé.</desc>
+  <rect x="0" y="0" width="100" height="100" fill="#f2e4ce"/>
+  <rect x="10" y="16" width="24" height="14" rx="3" fill="#0e7c86"/>
+  <rect x="10" y="36" width="24" height="14" rx="3" fill="#e26d0a"/>
+  <rect x="10" y="56" width="24" height="14" rx="3" fill="#2f7d32"/>
+  <polyline points="38,43 54,43" fill="none" stroke="#142024" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="54,37 64,43 54,49" fill="#142024"/>
+  <rect x="66" y="26" width="28" height="36" rx="5" fill="#c22e54"/>
+  <rect x="74" y="20" width="12" height="8" rx="3" fill="#c22e54"/>
+  <rect x="74" y="60" width="12" height="8" rx="3" fill="#c22e54"/>
+  <polyline points="72,44 88,44" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

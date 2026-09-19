@@ -132,6 +132,9 @@ bool _isLabel(String key) =>
     key.startsWith('button.') ||
     key.startsWith('menu.') ||
     key.startsWith('tab.') ||
+    /* A navigation destination is a label, not a sentence: "Carte" under an icon is the
+       whole string, and a full stop on a tab is a typographic error in both languages. */
+    key.startsWith('root.') ||
     key.startsWith('label.');
 
 /// The M15 lint. An empty list means the catalogue may ship.

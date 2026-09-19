@@ -155,6 +155,19 @@ void main() {
       'button.': const LayoutSlot(name: 'button', characters: 18, lines: 1),
       'menu.': const LayoutSlot(name: 'menu item', characters: 20, lines: 1),
       'tab.': const LayoutSlot(name: 'family tab', characters: 14, lines: 1),
+      /* §9.1's five root destinations, in the bottom bar. Five tabs across 360 dp is
+         72 dp each, and the label font there is 12 sp, so about ten characters a line.
+         TWO lines, not one: "Entraînement" is twelve characters before a translator has
+         touched it, and a one-line slot would have meant renaming a destination the
+         specification names. The bar is sized from its label instead — see
+         `KodoRootBar`, which measures rather than assumes. */
+      'root.': const LayoutSlot(name: 'root tab', characters: 10, lines: 2),
+      'carte.': const LayoutSlot(name: 'map notice', characters: 29, lines: 2),
+      'galerie.':
+          const LayoutSlot(name: 'empty state', characters: 29, lines: 3),
+      'moi.': const LayoutSlot(name: 'profile line', characters: 29, lines: 2),
+      'profiles.':
+          const LayoutSlot(name: 'picker heading', characters: 24, lines: 2),
       // A field label sits above its field and may wrap; a button may not, which is why
       // the button slot stays at one line and the button strings were shortened instead.
       'label.': const LayoutSlot(name: 'field label', characters: 24, lines: 2),

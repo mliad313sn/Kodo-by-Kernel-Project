@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+  <title>world8-tantque</title>
+  <desc>Une boucle qui continue tant que le capteur voit quelque chose.</desc>
+  <rect x="0" y="0" width="100" height="100" fill="#131b2e"/>
+  <polyline points="50,18 76,30 82,56 62,78 38,78 18,56 24,30 50,18" fill="none" stroke="#0e7c86" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="50,10 62,20 50,26" fill="#0e7c86"/>
+  <circle cx="50" cy="52" r="13" fill="#e26d0a"/>
+  <circle cx="50" cy="52" r="6" fill="#ffffff"/>
+  <circle cx="52" cy="50" r="3" fill="#131b2e"/>
+</svg>

@@ -96,6 +96,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  kodo_art:
+    dependency: "direct main"
+    description:
+      path: "../packages/kodo_art"
+      relative: true
+    source: path
+    version: "1.0.0"
   kodo_content:
     dependency: "direct main"
     description:

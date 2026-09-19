@@ -1,0 +1,21 @@
+name: kodo_art
+description: >-
+  KODO's visual universe, as code.
+
+  The palette, the type scale, the motion and the drawings themselves live here as pure
+  Dart data — never as a file exported from a design tool. Tests run over them: contrast,
+  colour-blind separation, touch targets, and the reduced-motion pair of every animation.
+  A design system that cannot fail a build is a mood board.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  kodo_stage:
+    path: ../kodo_stage
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^5.0.0

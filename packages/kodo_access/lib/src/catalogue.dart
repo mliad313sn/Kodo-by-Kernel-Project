@@ -59,6 +59,67 @@ final StringCatalogue uiStrings = StringCatalogue([
       context:
           'The Studio panel of copy-a-pattern examples. Keep the cooking metaphor: a '
           'recipe is something you follow and then change.'),
+  /* §9.1's five root destinations. They are the only five words a child sees on every
+     screen, so they are the five that matter most: each one is what the child would call
+     the place, not what the architecture calls it. "Entraînement" is deliberately not
+     "Exercices" — §10 forbids the vocabulary of testing. */
+  _s('root.carte', 'Carte', 'Map',
+      context:
+          'Bottom tab 1 of 5. The world map, the single entry point to learning. '
+          'One word; it sits under a small icon on a phone.'),
+  /* Measured, not guessed. Five tabs across a 360 dp phone give each label about ten
+     characters a line, and the pseudo-locale run grows every string by 40 % to stand in
+     for a worse translation. "Entraînement" is twelve characters before that, so it broke
+     as "Entraîneme / nt" — not a word in any language — and a soft hyphen only moved the
+     problem. §9.1 names the DESTINATION Entraînement, and it still does: `KodoScreen
+     .entrainement` is its route. This is the child-facing LABEL, which is a different
+     thing and is allowed to be a different word in each language. See PO decision D-013.
+     "Défis" is play framing; §10 forbids the vocabulary of assessment, so no "test",
+     "quiz", "exam" or "évaluation" may ever appear here. */
+  _s('root.entrainement', 'Défis', 'Practice',
+      context:
+          'Bottom tab 2 of 5: today\'s mix of exercises, behind one button. MUST fit '
+          'about ten characters — it is a tab on a phone. Never "test", "quiz" or '
+          '"exam": children are never told they are being assessed.'),
+  _s('root.studio', 'Studio', 'Studio',
+      context:
+          'Bottom tab 3 of 5. Where a child\'s own projects live. The word is kept '
+          'in both languages on purpose — children already know it.'),
+  _s('root.galerie', 'Galerie', 'Gallery',
+      context:
+          'Bottom tab 4 of 5. Projects shared by the class, when a teacher has '
+          'enabled sharing. It is a place to look, not a feed to scroll.'),
+  _s('root.moi', 'Moi', 'Me',
+      context:
+          'Bottom tab 5 of 5. Avatar, badges, stars and settings. First person, '
+          'because it is the child\'s own corner of the app.'),
+  _s('button.practice_start', 'Commencer', 'Start',
+      context:
+          'The single large button on the Practice screen. It starts today\'s mix; '
+          'a child never has to choose what to practise.'),
+  _s('galerie.empty', 'Rien n\'est partagé pour le moment.',
+      'Nothing is shared just yet.',
+      context:
+          'Shown on the Gallery screen when sharing is off or the class has posted '
+          'nothing. It must not sound like a failure or an error.'),
+  _s('moi.stars', 'Tu as {count} étoiles.', 'You have {count} stars.',
+      context:
+          'On the Me screen, under the avatar. Stars are earned, never lost — do not '
+          'translate as a score or a total that can go down.',
+      placeholders: ['count']),
+  _s('carte.locked', 'Ce monde s\'ouvrira bientôt.', 'This world opens soon.',
+      context:
+          'Shown when a child taps a world they have not reached. It says when, not '
+          'no: nothing in KODO is refused to a child, only not yet arrived.'),
+  _s('profiles.who', 'Qui joue ?', 'Who is playing?',
+      context:
+          'The question above the list of children on the first screen. It replaces '
+          'a login: nobody signs in, somebody says it is them.'),
+  _s('label.parent_space', 'Espace des parents', 'Parent space',
+      context:
+          'A row in the child\'s Me screen that opens the adult area behind a gate. '
+          'It is named for the adult, not for the child: a child reading it should '
+          'understand it is not for them.'),
   _s('tab.mouvement', 'Bouger', 'Move',
       context:
           'A block family tab. Verbs, not nouns: these are things the turtle does.'),

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+  <title>world6-variables</title>
+  <desc>Une boîte étiquetée qui garde un nombre.</desc>
+  <rect x="0" y="0" width="100" height="100" fill="#f2e4ce"/>
+  <rect x="22" y="44" width="56" height="42" rx="6" fill="#e26d0a"/>
+  <rect x="22" y="44" width="56" height="8" rx="4" fill="#a84b03"/>
+  <polyline points="50,30 50,44" fill="none" stroke="#6b4a2f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="30" y="16" width="40" height="16" rx="4" fill="#ffffff"/>
+  <polyline points="36,24 64,24" fill="none" stroke="#142024" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="38" cy="66" r="8" fill="#0e7c86"/>
+  <circle cx="60" cy="70" r="6" fill="#074e57"/>
+</svg>

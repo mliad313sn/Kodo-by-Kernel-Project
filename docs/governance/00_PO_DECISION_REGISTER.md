@@ -361,6 +361,61 @@ specification gap found in delivery, and open to a reasoned objection until G4.
 
 ---
 
+## D-013 — The visual universe is a module (M20), and a tab label is not a destination name
+
+**Date.** 2026-09-19 · **Status.** Decided · **Scope.** Specification amendment (six
+requirements) + one localisation ruling · **Requirements.** `FR-M20-01` … `FR-M20-06`
+
+**The decision.** KODO's appearance is specified, built and tested like everything else in
+this programme: `packages/kodo_art` holds the universe as geometry-as-data, the app paints
+it, `tool/publish_art.dart` emits the same geometry as SVG, and six requirements say what
+must be true of it. Separately, and as part of the same decision: **§9.1 names the five
+destinations, and the child-facing label on a tab is allowed to be a different word.**
+
+**Why art is a module and not a task.** D-012 found that eighteen prompts had specified
+every organ and no body. Looking at the body once it existed showed the same gap one level
+down: the map was thirteen grey rows, the first screen a child ever meets was one word in
+the corner of a white page, and there was nowhere in the repository where a decision about
+appearance could be written down, tested, or argued with. A children's product whose
+appearance is undefined is not a product with a to-do item; it is a product with a missing
+specification. So the appearance got one.
+
+**Why geometry as data.** The same reason the language is one AST. Two drawings drift: a
+PNG in the app and an SVG in the content pack become different pictures in the third
+month, and nobody notices until a child does. One `Drawing`, two projections — a Flutter
+`CustomPainter` and an SVG emitter — cannot drift, and the sentence a screen reader speaks
+travels with the geometry rather than being attached to a file somebody may forget
+(`FR-M20-02`, `FR-M20-03`). It also happens to cost 33 kB for the whole universe, which
+matters on the 2 GB reference device and matters more to `R4`'s audio budget.
+
+**The tab-label ruling, and the measurement behind it.** Five tabs across a 360 dp phone
+give each label roughly ten characters a line. The M15 pseudo-locale run grows every
+string by 40 % to stand in for a worse translation. *Entraînement* is twelve characters
+before that growth, and the bar broke it as **"Entraîneme / nt"** — not a word in any
+language. A soft hyphen was tried and merely moved the problem past the measurement.
+
+The route, the enum constant, the navigation graph and every document keep the name
+§9.1 gives the destination: **Entraînement**. What changes is the word printed under the
+icon, which is now **"Défis" (fr) / "Practice" (en)**. A destination's architectural name
+and a child's word for it are two different strings, and localisation is precisely the
+discipline of not confusing them. §10's ban stands and is written into the string's
+context note: no "test", "quiz", "exam" or "évaluation" may ever appear on that tab, in
+any language.
+
+**Why the PO is deciding a label at all.** Because the alternative was a squad quietly
+widening a tab, shrinking a font below the accessibility floor, or shipping a broken word
+— three decisions that look small and each of which breaks a committed requirement.
+
+**What this decision is not.** It is not a change to §9.1, which still names five
+destinations and still forbids a sixth. It is not a new capability. It does not change any
+existing requirement, and no module's scope moves.
+
+**Consulted.** Seats A1 (art direction) and A6 (colour and accessibility) of the Art
+Committee; seat 10 holds localisation and the pseudo-locale run that produced the
+measurement.
+
+---
+
 ## Open items the PO has *not* decided
 
 Recorded so that silence is not mistaken for a decision.

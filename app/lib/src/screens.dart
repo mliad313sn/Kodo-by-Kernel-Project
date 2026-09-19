@@ -8,8 +8,10 @@ library;
 import 'package:flutter/material.dart';
 import 'package:kodo_access/kodo_access.dart';
 import 'package:kodo_app/kodo_app.dart';
+import 'package:kodo_art/kodo_art.dart';
 import 'package:kodo_lang/kodo_lang.dart';
 
+import 'drawing_painter.dart';
 import 'shell.dart';
 
 /// Every child-facing string comes from M15's catalogue. There is no literal here, and a
@@ -17,6 +19,52 @@ import 'shell.dart';
 String _s(BuildContext context, String key,
         [Map<String, String> args = const {}]) =>
     uiStrings.render(key, ShellScope.of(context).session.interfaceLocale, args);
+
+/// The bottom bar of §9.1: five destinations, always there, never six.
+///
+/// It is shown on the roots and hidden inside a journey, because a child three screens
+/// deep into an exercise who taps *Carte* loses their place — the tab bar is how you
+/// choose where to be, not an escape hatch from where you are. `KodoScaffold.back` is the
+/// escape hatch.
+class KodoRootBar extends StatelessWidget {
+  const KodoRootBar({super.key});
+
+  /// The icon of each destination. Icon **and** word, never one alone (§9.2) — and each
+  /// icon has a different silhouette, so the bar survives greyscale like everything else.
+  static const _icons = <KodoScreen, IconData>{
+    KodoScreen.carte: Icons.map_outlined,
+    KodoScreen.entrainement: Icons.bolt_outlined,
+    KodoScreen.studio: Icons.brush_outlined,
+    KodoScreen.galerie: Icons.photo_library_outlined,
+    KodoScreen.moi: Icons.face_outlined,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final shell = ShellScope.of(context);
+    final roots = KodoScreen.roots;
+    final index = roots.indexOf(shell.current);
+    /* The bar grows with the text rather than clipping it. At 200 % (`FR-M16-03`) a
+       two-line label needs the room, and Material's default 80 dp does not have it: the
+       M16 audit's finding about the status line was exactly this mistake one screen
+       over. */
+    final scale = MediaQuery.textScalerOf(context).scale(12) / 12;
+    return NavigationBar(
+      key: const Key('root-bar'),
+      height: 80 * scale.clamp(1.0, 2.0),
+      selectedIndex: index < 0 ? 0 : index,
+      onDestinationSelected: (i) => shell.goRoot(roots[i]),
+      destinations: [
+        for (final root in roots)
+          NavigationDestination(
+            key: Key('root-${root.route}'),
+            icon: Icon(_icons[root]),
+            label: _s(context, 'root.${root.route}'),
+          ),
+      ],
+    );
+  }
+}
 
 /// A screen with a title and a way out — `FR-M19-02` asks that every screen be exitable.
 class KodoScaffold extends StatelessWidget {
@@ -43,11 +91,18 @@ class KodoScaffold extends StatelessWidget {
         actions: actions,
       ),
       body: SafeArea(child: child),
+      bottomNavigationBar:
+          shell.current.root ? const KodoRootBar() : null,
     );
   }
 }
 
 /// Choosing who is using the app. This is what replaces a login (`FR-M19-05`).
+///
+/// No password, no e-mail, no account: a child says it is them. The screen is drawn as a
+/// welcome rather than as a form, because the first thing a child meets should look like
+/// somewhere to go — the first version of this screen was one word in the corner of a
+/// white page, which is what a settings dialog looks like.
 class ProfilesScreen extends StatelessWidget {
   const ProfilesScreen({super.key, required this.profileNames});
 
@@ -61,15 +116,29 @@ class ProfilesScreen extends StatelessWidget {
       body: SafeArea(
         child: ListView(
           key: const Key('profiles'),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           children: [
+            const SizedBox(height: 24),
+            Center(
+              child: Art(tikaPortrait,
+                  size: 132,
+                  highContrast: shell.session.accessibility.highContrast,
+                  locale: shell.session.interfaceLocale.code),
+            ),
+            const SizedBox(height: 12),
+            Center(
+              child: Text(_s(context, 'profiles.who'),
+                  style: const TextStyle(fontSize: 24)),
+            ),
+            const SizedBox(height: 16),
             for (final entry in profileNames.entries)
-              Material(
+              Card(
                 child: ListTile(
                   key: Key('profile-${entry.key}'),
                   // A child's own first name is not an interface string.
                   title:
                       Text(entry.value, style: const TextStyle(fontSize: 24)),
-                  minTileHeight: 56,
+                  minTileHeight: 64,
                   onTap: () => shell.chooseProfile(entry.key),
                 ),
               ),
@@ -80,46 +149,274 @@ class ProfilesScreen extends StatelessWidget {
   }
 }
 
-/// The map of worlds. Progress comes from M7; the shell only draws it.
-class WorldsScreen extends StatelessWidget {
-  const WorldsScreen({super.key, required this.worlds});
+/// **Carte** — §9.1's single entry point to learning.
+///
+/// Not a list of thirteen rows. Each world is a card with its own place drawn on it, from
+/// `kodo_art`: the beach, the island, the rosace. A child who cannot yet read the word
+/// *Rosace* can still tell world 2 from world 7, which is the point of drawing them.
+class CarteScreen extends StatelessWidget {
+  const CarteScreen({super.key, required this.worlds, this.reachable});
 
   /// world number → its name in the child's language, from the content packs.
   final Map<int, String> worlds;
+
+  /// Which worlds a child may open. Comes from M7 — the shell never decides this. Null
+  /// means "everything installed", which is what an offline install with no progress is.
+  final Set<int>? reachable;
+
+  @override
+  Widget build(BuildContext context) {
+    final shell = ShellScope.of(context);
+    final locale = shell.session.interfaceLocale.code;
+    final highContrast = shell.session.accessibility.highContrast;
+    return KodoScaffold(
+      titleKey: 'root.carte',
+      child: GridView.count(
+        key: const Key('worlds'),
+        padding: const EdgeInsets.all(12),
+        crossAxisCount: 2,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 0.85,
+        children: [
+          for (final entry in worlds.entries)
+            _WorldCard(
+              number: entry.key,
+              name: entry.value,
+              locale: locale,
+              highContrast: highContrast,
+              open: reachable?.contains(entry.key) ?? true,
+              onTap: () => shell.go(KodoScreen.concept, worldId: entry.key),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WorldCard extends StatelessWidget {
+  const _WorldCard({
+    required this.number,
+    required this.name,
+    required this.locale,
+    required this.highContrast,
+    required this.open,
+    required this.onTap,
+  });
+
+  final int number;
+  final String name;
+  final String locale;
+  final bool highContrast;
+  final bool open;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final place = worldPlaces[number];
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        key: Key('world-$number'),
+        onTap: open
+            ? onTap
+            : () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(_s(context, 'carte.locked')))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: place == null
+                  /* A world with no place drawn yet gets its number on plain paper. A
+                     placeholder that says "not drawn" — never another world's picture,
+                     which would teach a child the wrong thing about where they are. */
+                  ? ColoredBox(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      child: Center(
+                          child: Text('$number',
+                              style: const TextStyle(fontSize: 32))),
+                    )
+                  : LayoutBuilder(
+                      builder: (context, box) => Art(
+                        place,
+                        size: box.biggest.shortestSide,
+                        highContrast: highContrast,
+                        locale: locale,
+                      ),
+                    ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              child: Row(
+                children: [
+                  if (!open)
+                    const Padding(
+                      padding: EdgeInsets.only(right: 4),
+                      child: Icon(Icons.hourglass_empty, size: 16),
+                    ),
+                  Expanded(
+                    // A world's name is content, from the pack, not an interface string.
+                    child: Text(name,
+                        style: const TextStyle(fontSize: 16),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// **Entraînement** — §9.1's *"today's mix, one button"*.
+///
+/// One button, literally. What the mix contains is M7's scheduler and M6's delivery; this
+/// screen knows only that there is something to do and how to start it, which is the whole
+/// of `FR-M19-06` in one screen.
+class EntrainementScreen extends StatelessWidget {
+  const EntrainementScreen({super.key, required this.ready, this.onStart});
+
+  /// Whether the scheduler has anything for today. From M7.
+  final bool ready;
+  final VoidCallback? onStart;
+
+  @override
+  Widget build(BuildContext context) {
+    return KodoScaffold(
+      titleKey: 'root.entrainement',
+      child: Center(
+        child: Column(
+          key: const Key('entrainement'),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Tika asks; the child answers by pressing. §9.2's "icon + word".
+            Art(tikaThinking,
+                size: 140,
+                highContrast:
+                    ShellScope.of(context).session.accessibility.highContrast,
+                locale: ShellScope.of(context).session.interfaceLocale.code),
+            const SizedBox(height: 24),
+            FilledButton(
+              key: const Key('start-practice'),
+              onPressed: ready ? onStart : null,
+              style: FilledButton.styleFrom(
+                  minimumSize: const Size(220, 64),
+                  textStyle: const TextStyle(fontSize: 22)),
+              child: Text(_s(context, 'button.practice_start')),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// **Galerie** — class and community projects, when a teacher has enabled them.
+///
+/// Empty is the normal state of a fresh install, and it is drawn as a place rather than as
+/// an error: §10 forbids anything that reads to a child as a failure.
+class GalerieScreen extends StatelessWidget {
+  const GalerieScreen({super.key, this.projectTitles = const []});
+
+  /// From M10. The shell does not moderate, rank or filter — it lists what it is given.
+  final List<String> projectTitles;
 
   @override
   Widget build(BuildContext context) {
     final shell = ShellScope.of(context);
     return KodoScaffold(
-      titleKey: 'menu.recettes',
-      actions: [
-        IconButton(
-          key: const Key('to-settings'),
-          icon: const Icon(Icons.settings),
-          tooltip: _s(context, 'label.interface_language'),
-          onPressed: () => shell.go(KodoScreen.settings),
-        ),
-      ],
-      child: ListView(
-        key: const Key('worlds'),
-        children: [
-          for (final entry in worlds.entries)
-            Material(
-              child: ListTile(
-                key: Key('world-${entry.key}'),
-                title: Text(entry.value, style: const TextStyle(fontSize: 20)),
-                minTileHeight: 56,
-                onTap: () => shell.go(KodoScreen.concept, worldId: entry.key),
+      titleKey: 'root.galerie',
+      child: projectTitles.isEmpty
+          ? Center(
+              child: Column(
+                key: const Key('galerie-empty'),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Art(tikaPortrait,
+                      size: 120,
+                      highContrast: shell.session.accessibility.highContrast,
+                      locale: shell.session.interfaceLocale.code),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(_s(context, 'galerie.empty'),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 18)),
+                  ),
+                ],
               ),
+            )
+          : ListView(
+              key: const Key('galerie'),
+              children: [
+                for (final title in projectTitles)
+                  Material(
+                      child:
+                          ListTile(title: Text(title), minTileHeight: 56)),
+              ],
             ),
-          Material(
-            child: ListTile(
-              key: const Key('to-studio'),
-              title: Text(_s(context, 'menu.recettes')),
-              minTileHeight: 56,
-              onTap: () => shell.go(KodoScreen.studio),
+    );
+  }
+}
+
+/// **Moi** — avatar, stars, and the door to settings.
+///
+/// The parent space is not a sixth tab (§9.1); it is behind a gate in here. The gate
+/// itself is M11's, so this screen only shows the door.
+class MoiScreen extends StatelessWidget {
+  const MoiScreen({super.key, required this.stars, this.onParentSpace});
+
+  /// From M8. The shell does not award, count or decay a star.
+  final int stars;
+  final VoidCallback? onParentSpace;
+
+  @override
+  Widget build(BuildContext context) {
+    final shell = ShellScope.of(context);
+    return KodoScaffold(
+      titleKey: 'root.moi',
+      child: ListView(
+        key: const Key('moi'),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24),
+            child: Center(
+              child: Art(tikaPortrait,
+                  size: 128,
+                  highContrast: shell.session.accessibility.highContrast,
+                  locale: shell.session.interfaceLocale.code),
             ),
           ),
+          Center(
+            child: Text(
+              _s(context, 'moi.stars', {'count': stars.toString()}),
+              key: const Key('stars'),
+              style: const TextStyle(fontSize: 20),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Material(
+            child: ListTile(
+              key: const Key('to-settings'),
+              leading: const Icon(Icons.settings),
+              title: Text(_s(context, 'label.interface_language')),
+              minTileHeight: 56,
+              onTap: () => shell.go(KodoScreen.settings),
+            ),
+          ),
+          if (onParentSpace != null)
+            Material(
+              child: ListTile(
+                key: const Key('to-parent-space'),
+                leading: const Icon(Icons.lock_outline),
+                title: Text(_s(context, 'label.parent_space')),
+                minTileHeight: 56,
+                onTap: onParentSpace,
+              ),
+            ),
         ],
       ),
     );
@@ -135,7 +432,7 @@ class ConceptScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final shell = ShellScope.of(context);
     return KodoScaffold(
-      titleKey: 'menu.recettes',
+      titleKey: 'root.carte',
       child: ListView(
         key: const Key('concepts'),
         children: [
@@ -184,10 +481,28 @@ class ItemScreen extends StatelessWidget {
       titleKey: 'button.run',
       child: Column(
         children: [
+          /* The prompt is spoken by someone. Tika sits beside it rather than above it,
+             so the sentence and the speaker are one block a child reads in one go — and
+             she is small here, because the editor is what the screen is for. */
           Padding(
             padding: const EdgeInsets.all(16),
-            child: Text(prompt,
-                key: const Key('prompt'), style: const TextStyle(fontSize: 20)),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Art(tikaPortrait,
+                    size: 56,
+                    highContrast:
+                        ShellScope.of(context).session.accessibility.highContrast,
+                    locale:
+                        ShellScope.of(context).session.interfaceLocale.code),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(prompt,
+                      key: const Key('prompt'),
+                      style: const TextStyle(fontSize: 20)),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: BlockEditor(
@@ -219,7 +534,7 @@ class StudioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KodoScaffold(
-      titleKey: 'menu.recettes',
+      titleKey: 'root.studio',
       child: ListView(
         key: const Key('recipes'),
         children: [

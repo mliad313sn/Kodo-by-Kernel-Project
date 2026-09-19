@@ -12,18 +12,37 @@ import 'session.dart';
 /// The routes the shell knows. A closed set, because `FR-M19-02` asks that every screen be
 /// reachable and every screen exitable — a claim you can only test against a finite graph.
 enum KodoScreen {
-  profiles('profiles'),
-  worlds('worlds'),
-  concept('concept'),
-  item('item'),
-  studio('studio'),
-  settings('settings');
+  profiles('profiles', root: false),
 
-  const KodoScreen(this.route);
+  /* §9.1's five root destinations, always reachable, never more:
+     Carte · Entraînement · Studio · Galerie · Moi.
+
+     They were missing from the first shell, which had worlds/concept/item/studio/settings
+     — close, but not the architecture the specification names, and the difference matters:
+     "Entraînement — today's mix, one button" is the whole of how a child who does not know
+     what to do next finds something to do. */
+  carte('carte', root: true),
+  entrainement('entrainement', root: true),
+  studio('studio', root: true),
+  galerie('galerie', root: true),
+  moi('moi', root: true),
+
+  // Reached from a root, never roots themselves.
+  concept('concept', root: false),
+  item('item', root: false),
+  settings('settings', root: false);
+
+  const KodoScreen(this.route, {required this.root});
   final String route;
 
+  /// Whether this is one of the five §9.1 destinations the tab bar shows.
+  final bool root;
+
+  static List<KodoScreen> get roots =>
+      [for (final s in KodoScreen.values) if (s.root) s];
+
   static KodoScreen byRoute(String route) => KodoScreen.values
-      .firstWhere((s) => s.route == route, orElse: () => KodoScreen.worlds);
+      .firstWhere((s) => s.route == route, orElse: () => KodoScreen.carte);
 }
 
 /// Which screens a child can reach from where.
@@ -31,15 +50,16 @@ enum KodoScreen {
 /// Declared rather than implied, so the navigation test can walk it. Every screen except
 /// the first has a way back; `profiles` is the root and needs none.
 const Map<KodoScreen, List<KodoScreen>> navigationGraph = {
-  KodoScreen.profiles: [KodoScreen.worlds],
-  KodoScreen.worlds: [
-    KodoScreen.concept,
-    KodoScreen.studio,
-    KodoScreen.settings
-  ],
+  KodoScreen.profiles: [KodoScreen.carte],
+  /* The five roots reach each other through the tab bar, so they are not children of one
+     another — `goRoot` handles that, and a tab is not a journey you come back from. */
+  KodoScreen.carte: [KodoScreen.concept],
+  KodoScreen.entrainement: [KodoScreen.item],
+  KodoScreen.studio: [],
+  KodoScreen.galerie: [],
+  KodoScreen.moi: [KodoScreen.settings],
   KodoScreen.concept: [KodoScreen.item],
   KodoScreen.item: [],
-  KodoScreen.studio: [],
   KodoScreen.settings: [],
 };
 
@@ -75,9 +95,18 @@ class KodoShell extends ChangeNotifier {
 
   // --- navigation (FR-M19-02) ------------------------------------------------------------
 
+  /// Switches to one of the five roots (§9.1).
+  ///
+  /// A tab is not a journey: it replaces the stack rather than growing it, so a child who
+  /// taps four tabs does not have four back presses waiting for them.
+  void goRoot(KodoScreen root) {
+    if (!root.root) throw StateError('${root.route} is not a root destination');
+    _stack = [root];
+    _remember(root);
+  }
+
   void go(KodoScreen to, {int? worldId, String? conceptId, String? itemId}) {
-    if (!(navigationGraph[current] ?? const []).contains(to) &&
-        !(current == KodoScreen.profiles && to == KodoScreen.worlds)) {
+    if (!(navigationGraph[current] ?? const []).contains(to)) {
       // A move the graph does not have is a bug in a caller, not a screen a child found.
       throw StateError('no route from ${current.route} to ${to.route}');
     }
@@ -97,7 +126,7 @@ class KodoShell extends ChangeNotifier {
   void chooseProfile(String profileId) {
     _session =
         _session.copyWith(profileId: profileId, lastPlace: LastPlace.home);
-    _stack = [KodoScreen.worlds];
+    _stack = [KodoScreen.carte];
     _save();
     notifyListeners();
   }

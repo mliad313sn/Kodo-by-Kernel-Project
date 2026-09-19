@@ -126,7 +126,13 @@
     "FR-M19-04": "Done",
     "FR-M19-06": "Done",
     "FR-M19-03": "In progress",
-    "FR-M19-05": "In progress"
+    "FR-M19-05": "In progress",
+    "FR-M20-01": "Done",
+    "FR-M20-02": "Done",
+    "FR-M20-03": "Done",
+    "FR-M20-04": "Done",
+    "FR-M20-05": "Done",
+    "FR-M20-06": "Done"
   },
   "owner": {
     "FR-M1-01": "M1 squad",
@@ -253,6 +259,12 @@
     "FR-M19-04": "M19 squad (S1)",
     "FR-M19-06": "M19 squad (S1)",
     "FR-M19-03": "M19 squad (S1)",
-    "FR-M19-05": "M19 squad (S1)"
+    "FR-M19-05": "M19 squad (S1)",
+    "FR-M20-01": "A1 Art Director",
+    "FR-M20-02": "A1 Art Director",
+    "FR-M20-03": "A1 Art Director",
+    "FR-M20-04": "A1 Art Director",
+    "FR-M20-05": "A1 Art Director",
+    "FR-M20-06": "A1 Art Director"
   }
 }

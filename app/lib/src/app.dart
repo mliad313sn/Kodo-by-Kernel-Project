@@ -100,13 +100,36 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
       case KodoScreen.profiles:
         return ProfilesScreen(profileNames: widget.content.profileNames);
 
-      case KodoScreen.worlds:
-        return WorldsScreen(worlds: {
+      case KodoScreen.carte:
+        return CarteScreen(worlds: {
           for (final pack in packs)
             pack.world: pack.nameKeys[shell.session.interfaceLocale.code] ??
                 pack.nameKeys['fr'] ??
                 'Monde ${pack.world}',
         });
+
+      /* Practice is ready when there is anything installed to practise. WHICH items it
+         serves is M7's scheduler and M6's delivery — asking that question here is the
+         second progression system `FR-M19-06` exists to prevent, so the screen is handed
+         a boolean and a callback and knows nothing else. */
+      case KodoScreen.entrainement:
+        return EntrainementScreen(
+          ready: packs.any((p) => p.items.isNotEmpty),
+          onStart: packs.isEmpty
+              ? null
+              : () => shell.go(KodoScreen.item,
+                  conceptId: _firstConceptOf(packs)),
+        );
+
+      case KodoScreen.galerie:
+        // Nothing is shared on a fresh install, and M10 is what fills this when sharing
+        // is switched on. The shell does not moderate; it lists.
+        return const GalerieScreen();
+
+      case KodoScreen.moi:
+        // The star count belongs to M8 and arrives with the profile; zero is honest until
+        // it does, and never a number this screen computed.
+        return const MoiScreen(stars: 0);
 
       case KodoScreen.concept:
         final world =
@@ -147,6 +170,16 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
   /// Which item to show. Deliberately the first of the concept and nothing cleverer:
   /// *choosing* the next item is M7's scheduler, and doing it here would be the second
   /// progression system `FR-M19-06` exists to prevent.
+  /// The first concept of the first installed pack — a door, not a curriculum. M7 decides
+  /// what a child should actually do; this is what to open when nothing has decided yet.
+  String? _firstConceptOf(List<ContentPack> packs) {
+    for (final pack in packs) {
+      final ids = pack.concepts.keys.toList()..sort();
+      if (ids.isNotEmpty) return ids.first;
+    }
+    return null;
+  }
+
   Item? _firstItemOf(List<ContentPack> packs, String? conceptId) {
     if (conceptId == null) return null;
     for (final pack in packs) {

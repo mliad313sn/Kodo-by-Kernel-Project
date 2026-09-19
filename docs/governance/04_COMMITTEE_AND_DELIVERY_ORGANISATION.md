@@ -132,6 +132,50 @@ engaged per world).
 
 ---
 
+# Part 2b — The Art Committee
+
+**Convened by the PO** because §9 names a design system and seat 7 owns it, but a design
+system is not an illustrated world. KODO's differentiator is a *place a child wants to be*,
+and nobody in the fourteen seats draws.
+
+> **The rule this committee exists to hold.** The art serves the learning, never decorates
+> it. A picture that makes a screen prettier and a concept harder is a regression, and
+> seats 3 and 5 say so.
+
+| # | Seat | FTE | Holder | Brings | Owns |
+| --- | --- | ---: | --- | --- | --- |
+| A1 | **Art Director** | 0.6 | — | A coherent world, and the authority to refuse one that is not | The visual bible, and the final look |
+| A2 | **Character Designer** | 0.5 | — | Tika, and whoever else lives here | The character sheet: poses, expressions, what Tika may and may not do |
+| A3 | **World Illustrator** | 1.0 | — | Thirteen places a child recognises | One illustrated world per curriculum world |
+| A4 | **Icon & Block Designer** | 0.4 | — | Ten block families, each legible at 24 px | Icons and silhouettes — `FR-M16-01`'s *shape*, not just its colour |
+| A5 | **Motion Designer** | 0.4 | — | Motion that shows causality | Every transition, and the reduced-motion variant of each |
+| A6 | **Colour & Accessibility** | 0.3 | — | WCAG 2.2 AA, and three kinds of colour blindness | The palette, and the proof it survives all four checks |
+
+**Art FTE: 3.2.** Reports to seat 7 (Children's UX/UI + Accessibility), who holds the
+design system; seat 5 (Child Development Psychologist) keeps the age-appropriateness veto,
+and seat 3 keeps the pedagogical one.
+
+### What the art committee may not do
+
+1. **Colour is never the only signal.** Every block family carries a colour *and* an icon
+   *and* a silhouette (`FR-M16-01`). A11y is not a pass at the end; A6 sits in the room.
+2. **No motion a child cannot interrupt** (§9.2), and every animation has a reduced-motion
+   form that is not simply "nothing happens".
+3. **Nothing modal a child can get trapped behind** (§9.2).
+4. **No reward art for a mechanic §10 forbids.** A loot box is still a loot box when it is
+   beautifully drawn, and seat 6's `auditMechanics()` runs against new screens.
+5. **Vector, always.** `R4`: per-world budget, art as vector, audio as Opus. A raster
+   world illustration eats the pack budget a child's narration needs.
+
+### The visual bible, as data
+
+The palette, spacing, type scale, motion durations and the character sheet live in
+`packages/kodo_art` as **code**, not as a file somebody exports from a design tool. Tests
+run over them: contrast, colour-blind separation, touch targets, and the reduced-motion
+pair. A design system that cannot fail a build is a mood board.
+
+---
+
 # Part 3 — RACI over everything that remains
 
 **A** = accountable (one, always). **R** = responsible. **C** = consulted. **I** = informed.
@@ -152,6 +196,8 @@ engaged per world).
 | WP-12 | Rule on `M7-SIM-01` / `D-010` | — | Seat 3 | 3, 4 | 1 | **G3** |
 | WP-13 | Wolof interface v1.2 | `FR-M15-02` | Seat 11 | S6 | 12 | v1.2 |
 | WP-14 | Agree the budget line (`O-01`) | `NFR-COST-01` | **Seat 1** | 1 | 2, 12 | G5 |
+| WP-15 | **The visual universe** — character, worlds, icons, motion | §9 | Seat 7 | A1–A6 | 3, 5, 6 | G4 |
+| WP-16 | The five root destinations of §9.1 | §9.1 | Seat 7 | S1, S2 | A1 | **G3** |
 
 **Read the Blocks column.** Three work packages block a *gate*, two block *public launch*,
 and one — WP-1 — blocks everything. That ordering is the plan.

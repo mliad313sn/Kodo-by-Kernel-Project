@@ -19,6 +19,8 @@ dependencies:
     path: ../packages/kodo_access
   kodo_account:
     path: ../packages/kodo_account
+  kodo_art:
+    path: ../packages/kodo_art
   kodo_app:
     path: ../packages/kodo_app
   kodo_content:

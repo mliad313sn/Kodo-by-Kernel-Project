@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img">
+  <title>world3-crayon</title>
+  <desc>Trois traits de couleur, du plus fin au plus large.</desc>
+  <rect x="0" y="0" width="100" height="100" fill="#f2e4ce"/>
+  <polyline points="16,26 84,26" fill="none" stroke="#0e7c86" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="16,50 84,50" fill="none" stroke="#e26d0a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="16,76 84,76" fill="none" stroke="#c22e54" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="72,62 84,50 90,56 78,68" fill="#6b4a2f"/>
+  <polygon points="72,62 78,68 70,70" fill="#131b2e"/>
+</svg>
