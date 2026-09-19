@@ -68,7 +68,8 @@ StageSetup troupeOf(ContentPack pack) =>
     pack.items.firstWhere((i) => i.stage != null).stage!;
 
 /// The worlds that have been authored and shipped. **The one list.**
-const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+/// **Every world the curriculum has.** Not "the ones authored so far" any more.
+const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 void main() {
   final worlds = {for (final n in shippedWorlds) n: load(n)};
@@ -84,6 +85,7 @@ void main() {
   final world9 = worlds[9]!;
   final world10 = worlds[10]!;
   final world11 = worlds[11]!;
+  final world12 = worlds[12]!;
 
   group('§6.3 · the shipped worlds carry the committed item volume', () {
     final committed = ledgerFor(shippedWorlds.toSet());
@@ -109,7 +111,7 @@ void main() {
       }
     });
 
-    test('the shipped worlds carry 1154 items between them', () {
+    test('the thirteen worlds carry 1240 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
@@ -122,8 +124,11 @@ void main() {
       expect(world9.items, hasLength(92));
       expect(world10.items, hasLength(102));
       expect(world11.items, hasLength(90));
-      // 95 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 1154);
+      expect(world12.items, hasLength(86));
+      /* 1 240, against the 1 214 §6.3 commits. Over, not under, and by concept rather
+         than in total: several concepts needed a fifth item type the ledger did not
+         name, and an item type is at least one item. */
+      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 1240);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -554,6 +559,115 @@ void main() {
                 'own structural claim');
       });
     }
+  });
+
+  group('the curriculum is complete', () {
+    test('all thirteen worlds ship', () {
+      expect(shippedWorlds, hasLength(13));
+      expect(worlds.keys.toList()..sort(), shippedWorlds);
+    });
+
+    test('every concept the ledger names has a world that carries it', () {
+      /* The curriculum is 58 concepts. Not "58 planned": 58 with items, tutorials and a
+         publish gate behind them. */
+      final ledger = ledgerFor(shippedWorlds.toSet());
+      expect(ledger, hasLength(58));
+      final carried = {for (final pack in worlds.values) ...pack.concepts.keys};
+      expect(carried, hasLength(58));
+      expect(carried.difference(ledger.keys.toSet()), isEmpty);
+    });
+
+    test('every concept has a tutorial, and every tutorial a concept', () {
+      for (final pack in worlds.values) {
+        final taught = pack.tutorials.map((t) => t.conceptId).toSet();
+        expect(taught, pack.concepts.keys.toSet(),
+            reason: 'World ${pack.world}: ${pack.concepts.keys.length} concepts, '
+                '${taught.length} tutorials');
+      }
+    });
+
+    test('the last world needs no block the first twelve did not teach', () {
+      /* C12.3 is "écrans et navigation" and KODO has no screen block — deliberately. An
+         app is a box saying which screen shows and a `si` that calls the part for it:
+         World 6's box, World 7's test, World 9's parts. If World 12 had needed new
+         syntax, the curriculum would have been teaching something the child had no way
+         to build. */
+      for (final item in world12.items.where((i) => i.type.wantsProgram)) {
+        final source = item.referenceSolutionSource;
+        if (source == null) continue;
+        final parsed = parseEither(source, locale: item.keywords);
+        expect(parsed.errors, isEmpty, reason: item.id);
+        for (final command in walk(parsed.program).whereType<Command>()) {
+          expect(Opcode.byId(command.opcode.id), isNotNull);
+        }
+      }
+    });
+  });
+
+  group('World 12 builds an app out of what the child already has', () {
+    test('C12.3 screens are a box, a test and named parts', () {
+      final items = world12.items.where((i) =>
+          i.conceptId == 'C12.3' &&
+          i.type.wantsProgram &&
+          i.type != ItemType.t9OpenBuild);
+      expect(items, isNotEmpty);
+      for (final item in items) {
+        expect(item.assertions.whereType<DefinesProcedure>(), isNotEmpty,
+            reason: '${item.id} has no named screens');
+        expect(
+            item.assertions
+                .whereType<ContainsNode>()
+                .any((a) => a.node == 'If'),
+            isTrue,
+            reason: '${item.id} shows every screen at once');
+        expect(item.assertions.whereType<UsesVariable>(), isNotEmpty,
+            reason: '${item.id} has nothing deciding which screen shows');
+      }
+    });
+
+    test('and only one screen is ever drawn', () {
+      /* The misconception is "an app is one screen", and its distractor is the program
+         that draws them all. It has to actually draw more than the answer does. */
+      final items = world12.items.where((i) =>
+          i.conceptId == 'C12.3' && i.referenceSolutionSource != null);
+      for (final item in items) {
+        final one = VectorCanvas();
+        final program = parse(item.referenceSolutionSource!, KeywordTables.fr);
+        expect(program.errors, isEmpty);
+        runProgram(program.program, one, seed: item.seed);
+        final all = VectorCanvas();
+        final unguarded = parse(
+            item.referenceSolutionSource!
+                .replaceAll(RegExp(r'si [^{]*\{'), 'répète 1 {')
+                .replaceAll('sinon {', 'répète 1 {'),
+            KeywordTables.fr);
+        expect(unguarded.errors, isEmpty);
+        runProgram(unguarded.program, all, seed: item.seed);
+        expect(all.segmentCount, greaterThan(one.segmentCount),
+            reason: '${item.id} draws every screen even with the test');
+      }
+    });
+
+    test('C12.2 counts places from one, and says so when you do not', () {
+      // §4.3's choice, and the reason it is worth an item: a language that answered zero
+      // silently would teach the off-by-one by letting a child get it wrong quietly.
+      final canvas = VectorCanvas();
+      final program = parse(r'$l = [3, 1, 2]' '\n' r'écris $l[0]', KeywordTables.fr);
+      expect(program.errors, isEmpty);
+      final run = runProgram(program.program, canvas);
+      expect(run.error, isNotNull);
+      expect(run.error!.code, ErrorCode.badIndex);
+    });
+
+    test('no narration in World 12 says the word it is teaching', () {
+      for (final tutorial in world12.tutorials) {
+        for (final step in tutorial.steps) {
+          for (final line in step.narrationKeys.values) {
+            expect(jargonIn(line), isEmpty, reason: '"$line"');
+          }
+        }
+      }
+    });
   });
 
   group('World 11 proves its own claim on every attempt', () {
