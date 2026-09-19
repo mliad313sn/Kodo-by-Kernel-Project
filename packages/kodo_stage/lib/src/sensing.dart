@@ -103,20 +103,23 @@ mixin TurtleSensing on HeadlessCanvas implements SensingSurface {
 /// World 10 needed a second comparison, and this is the value it runs on: the state a
 /// program can change that leaves no ink.
 ///
-/// Authored items are graded by comparing two of these — the child's and the target's —
-/// so a costume item is not passed by a program that never switched costume, which is the
-/// vacuous grading every world since World 5 has had to be protected from.
+/// **Every sprite, not the selected one.** The first version read the costume and the
+/// effects off whichever sprite happened to be selected when the program finished, which
+/// meant a program that dressed the wrong sprite and then selected the right one looked
+/// identical to a correct one. A cursor is not an outcome, so the cursor is not compared
+/// and everything it could have pointed at is.
 class StageState {
   const StageState({
-    required this.costumeNumber,
+    required this.costumes,
     required this.backdropId,
     required this.score,
     required this.said,
     required this.effects,
   });
 
-  /// One-based, as the child counts.
-  final int costumeNumber;
+  /// sprite id → costume number, one-based as the child counts.
+  final Map<String, int> costumes;
+
   final String backdropId;
 
   /// Sounds, drums and notes in the order they were asked for.
@@ -125,11 +128,11 @@ class StageState {
   /// Speech bubbles, in order.
   final List<String> said;
 
-  /// Effect name → value, for effects that are not at zero.
-  final Map<String, double> effects;
+  /// sprite id → effect name → value, for effects that are not at zero.
+  final Map<String, Map<String, double>> effects;
 
   bool get isPlain =>
-      costumeNumber == 1 &&
+      costumes.values.every((c) => c == 1) &&
       backdropId == 'blank' &&
       score.isEmpty &&
       said.isEmpty &&
@@ -141,12 +144,35 @@ class StageState {
   /// comparison follows: name the thing that is most visible, because a message about an
   /// effect on a sprite wearing the wrong costume is true and useless.
   String? firstDifference(StageState other) {
-    if (costumeNumber != other.costumeNumber) return 'costume';
+    if (!_sameCostumes(costumes, other.costumes)) return 'costume';
     if (backdropId != other.backdropId) return 'backdrop';
     if (!_sameList(said, other.said)) return 'speech';
     if (!_sameList(score, other.score)) return 'sound';
     if (!_sameEffects(effects, other.effects)) return 'effect';
     return null;
+  }
+
+  /// How the difference reads in a message: "chat 2, chien 1".
+  String describe(String difference) => switch (difference) {
+        'costume' =>
+          costumes.entries.map((e) => '${e.key} ${e.value}').join(', '),
+        'backdrop' => backdropId,
+        'sound' => score.isEmpty ? '—' : score.join(', '),
+        'speech' => said.isEmpty ? '—' : said.join(' / '),
+        _ => effects.isEmpty
+            ? '—'
+            : effects.entries
+                .map((s) =>
+                    '${s.key}: ${s.value.entries.map((e) => '${e.key} ${e.value}').join(' ')}')
+                .join(', '),
+      };
+
+  static bool _sameCostumes(Map<String, int> a, Map<String, int> b) {
+    if (a.length != b.length) return false;
+    for (final e in a.entries) {
+      if (b[e.key] != e.value) return false;
+    }
+    return true;
   }
 
   static bool _sameList(List<String> a, List<String> b) {
@@ -157,12 +183,23 @@ class StageState {
     return true;
   }
 
-  static bool _sameEffects(Map<String, double> a, Map<String, double> b) {
+  static bool _sameEffects(Map<String, Map<String, double>> a,
+      Map<String, Map<String, double>> b) {
     if (a.length != b.length) return false;
-    for (final e in a.entries) {
-      // A tenth of a percent. Effects are authored as whole numbers; the tolerance is
-      // there so a value arrived at by arithmetic is not failed for its last digit.
-      if (((b[e.key] ?? double.nan) - e.value).abs() > 0.1) return false;
+    for (final sprite in a.entries) {
+      final theirs = b[sprite.key];
+      if (theirs == null || theirs.length != sprite.value.length) return false;
+      for (final e in sprite.value.entries) {
+        /* The key first, then the number. `(x ?? nan - v).abs() > 0.1` reads like a
+           missing key failing the check, and does the opposite: every comparison with
+           NaN is false, so an effect the other side had never heard of matched. The gate
+           caught it on two items whose wrong answer set a completely different effect. */
+        final mine = theirs[e.key];
+        if (mine == null) return false;
+        // A tenth of a percent. Effects are authored as whole numbers; the tolerance is
+        // there so a value arrived at by arithmetic is not failed for its last digit.
+        if ((mine - e.value).abs() > 0.1) return false;
+      }
     }
     return true;
   }

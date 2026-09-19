@@ -375,18 +375,11 @@ class Grader {
 
   /// The numbers an authored stage message names, so it can say what it saw.
   Map<String, String> _stageArgs(
-      String difference, StageState mine, StageState theirs) {
-    String show(StageState s) => switch (difference) {
-          'costume' => '${s.costumeNumber}',
-          'backdrop' => s.backdropId,
-          'sound' => s.score.isEmpty ? '—' : s.score.join(', '),
-          'speech' => s.said.isEmpty ? '—' : s.said.join(' / '),
-          _ => s.effects.isEmpty
-              ? '—'
-              : s.effects.entries.map((e) => '${e.key} ${e.value}').join(', '),
-        };
-    return {'actual': show(mine), 'expected': show(theirs)};
-  }
+          String difference, StageState mine, StageState theirs) =>
+      {
+        'actual': mine.describe(difference),
+        'expected': theirs.describe(difference),
+      };
 
   /// The item's trigger, as the authoring tools write it.
   ///

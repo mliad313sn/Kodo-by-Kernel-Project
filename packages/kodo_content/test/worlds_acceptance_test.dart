@@ -55,8 +55,20 @@ Map<String, int> ledgerFor(Set<int> onlyWorlds) {
   };
 }
 
+/// The world a concept id belongs to: the digits between the C and the dot.
+///
+/// `substring(1, 2)` did this until World 10, where it read C10.1 as World 1 — so the
+/// ledger check looked for World 1's concepts in a pack that had none, and the
+/// prerequisite check decided C10.1 depended forwards on C5.1.
+int worldOf(String conceptId) =>
+    int.parse(conceptId.substring(1, conceptId.indexOf('.')));
+
+/// The stage a World 10 item runs on, read off the pack rather than retyped.
+StageSetup troupeOf(ContentPack pack) =>
+    pack.items.firstWhere((i) => i.stage != null).stage!;
+
 /// The worlds that have been authored and shipped. **The one list.**
-const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 void main() {
   final worlds = {for (final n in shippedWorlds) n: load(n)};
@@ -70,6 +82,7 @@ void main() {
   final world7 = worlds[7]!;
   final world8 = worlds[8]!;
   final world9 = worlds[9]!;
+  final world10 = worlds[10]!;
 
   group('§6.3 · the shipped worlds carry the committed item volume', () {
     final committed = ledgerFor(shippedWorlds.toSet());
@@ -86,7 +99,7 @@ void main() {
 
     test('every concept meets or beats the ledger', () {
       for (final entry in committed.entries) {
-        final world = int.parse(entry.key.substring(1, 2));
+        final world = worldOf(entry.key);
         final n =
             worlds[world]!.items.where((i) => i.conceptId == entry.key).length;
         expect(n, greaterThanOrEqualTo(entry.value),
@@ -95,7 +108,7 @@ void main() {
       }
     });
 
-    test('the shipped worlds carry 962 items between them', () {
+    test('the shipped worlds carry 1064 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
@@ -106,8 +119,9 @@ void main() {
       expect(world7.items, hasLength(114));
       expect(world8.items, hasLength(86));
       expect(world9.items, hasLength(92));
-      // 79 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 962);
+      expect(world10.items, hasLength(102));
+      // 88 % of the 1 214 the curriculum commits across all thirteen worlds.
+      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 1064);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -161,8 +175,8 @@ void main() {
                     '${entry.key} needs $prerequisite, which no shipped world has');
             // A prerequisite is in the same world or an earlier one. A forward edge would
             // let the scheduler offer a concept before the thing it is built on.
-            final mine = int.parse(entry.key.substring(1, 2));
-            final theirs = int.parse(prerequisite.substring(1, 2));
+            final mine = worldOf(entry.key);
+            final theirs = worldOf(prerequisite);
             expect(theirs, lessThanOrEqualTo(mine),
                 reason: '${entry.key} depends forwards on $prerequisite');
           }
@@ -538,6 +552,96 @@ void main() {
                 'own structural claim');
       });
     }
+  });
+
+  group('World 10 is graded on a stage, because none of it leaves ink', () {
+    /// Runs [source] on the item's own stage and returns what it left behind.
+    StageState stateOf(Item item, String source) {
+      final program = parse(source, KeywordTables.fr);
+      expect(program.errors, isEmpty, reason: item.id);
+      final stage = SpriteStage.from(item.stage!)..applyScene(item.sensing);
+      runProgram(program.program, stage, seed: item.seed);
+      return stage.state;
+    }
+
+    test('every program item asks for a stage', () {
+      /* A World 10 item on a canvas is refused by the interpreter before it draws
+         anything: `costumesuivant` has nowhere to go. */
+      final items =
+          world10.items.where((i) => i.type.wantsProgram);
+      expect(items, isNotEmpty);
+      for (final item in items) {
+        expect(item.stage, isNotNull, reason: '${item.id} has no stage');
+      }
+    });
+
+    test('and every one of them actually moves the stage', () {
+      /* The whole risk of the world in one test. A costume, a backdrop, a sound, a
+         speech bubble and an effect are invisible to the rasteriser, so an item that
+         changes none of them is graded on a drawing nobody was asked to make — and
+         every answer passes. C10.5's clearing items are the one exception, and they
+         earn it: they end clean on purpose, and carry a structural claim instead. */
+      final items = world10.items.where((i) =>
+          i.type.wantsProgram &&
+          i.type != ItemType.t9OpenBuild &&
+          i.referenceSolutionSource != null);
+      expect(items, isNotEmpty);
+      for (final item in items) {
+        final endsClean = stateOf(item, item.referenceSolutionSource!).isPlain;
+        final claimsStructure = item.assertions.isNotEmpty;
+        expect(!endsClean || claimsStructure, isTrue,
+            reason: '${item.id} leaves the stage exactly as it found it and '
+                'claims nothing, so any answer passes it');
+      }
+    });
+
+    test('a distractor really does leave a different stage, or trip a claim', () {
+      for (final item in world10.items.where((i) =>
+          i.type.wantsProgram &&
+          i.type != ItemType.t9OpenBuild &&
+          i.referenceSolutionSource != null)) {
+        final target = stateOf(item, item.referenceSolutionSource!);
+        for (final source in item.wrongSolutionSources) {
+          final parsed = parse(source, KeywordTables.fr);
+          if (parsed.errors.isNotEmpty) continue;
+          final differs = stateOf(item, source).firstDifference(target) != null;
+          final tripped = item.assertions
+              .any((a) => !a.check(parsed.program).passed);
+          expect(differs || tripped, isTrue,
+              reason: '${item.id}: a wrong answer leaves the same stage and '
+                  'breaks no claim');
+        }
+      }
+    });
+
+    test('C10.3 hears WHEN a sound played, not only what', () {
+      /* The concept is "a sound plays where it is written". Beating a drum between each
+         line and beating four times at the end give the same drawing and the same list
+         of sounds; only the moment differs, and the score records it. */
+      final between = SpriteStage.from(troupeOf(world10));
+      final atEnd = SpriteStage.from(troupeOf(world10));
+      runProgram(
+          parse('répète 3 {\n  tambour 1, 1\n  avance 20\n}', KeywordTables.fr)
+              .program,
+          between);
+      runProgram(
+          parse('répète 3 {\n  avance 20\n}\ntambour 1, 1\ntambour 1, 1\n'
+                  'tambour 1, 1', KeywordTables.fr)
+              .program,
+          atEnd);
+      expect(between.state.score.length, atEnd.state.score.length);
+      expect(between.state.firstDifference(atEnd.state), 'sound');
+    });
+
+    test('no narration in World 10 says the word it is teaching', () {
+      for (final tutorial in world10.tutorials) {
+        for (final step in tutorial.steps) {
+          for (final line in step.narrationKeys.values) {
+            expect(jargonIn(line), isEmpty, reason: '"$line"');
+          }
+        }
+      }
+    });
   });
 
   group('World 9 teaches the name, which the canvas cannot show', () {

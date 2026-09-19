@@ -603,8 +603,22 @@ void stageCapabilityTests() {
     test('the score is recorded in order, and never played', () {
       final stage =
           stageWith('tambour 2, 1\nnote 60, 0.5\njouson "miaou"\ntambour 5, 2');
-      expect(stage.score.map((e) => e.toString()).toList(),
+      expect(stage.score.map((e) => '${e.kind}:${e.value}×${e.beats}').toList(),
           ['drum:2×1', 'note:60×0.5', 'sound:miaou×0', 'drum:5×2']);
+    });
+
+    test('and the score remembers WHEN, not only what', () {
+      /* World 10's third concept is "the sound plays where it is written". Without the
+         moment, a program that beats a drum between each line and one that draws
+         everything and then beats produce identical scores — and the grader would have
+         called the misconception correct. */
+      final stage = stageWith('avance 10\ntambour 1, 1\navance 10\ntambour 1, 1');
+      expect(stage.score.map((e) => e.after).toList(), [1, 2]);
+
+      final atTheEnd = stageWith('avance 10\navance 10\ntambour 1, 1\ntambour 1, 1');
+      expect(atTheEnd.score.map((e) => e.after).toList(), [2, 2]);
+      expect(atTheEnd.score.map((e) => e.toString()).toList(),
+          isNot(stage.score.map((e) => e.toString()).toList()));
     });
 
     test('dis is the sprite talking, message is the system talking', () {

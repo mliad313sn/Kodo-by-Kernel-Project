@@ -161,7 +161,7 @@ class SoundAsset {
 /// world that teaches *"sounds & drums"* has to be markable on a device with the volume
 /// off, in a classroom, with thirty children in it.
 class SoundEvent {
-  const SoundEvent(this.kind, this.value, this.beats);
+  const SoundEvent(this.kind, this.value, this.beats, {this.after = 0});
 
   /// `sound`, `drum` or `note`.
   final String kind;
@@ -170,8 +170,16 @@ class SoundEvent {
   final Object value;
   final num beats;
 
+  /// How many lines were already drawn when this sounded.
+  ///
+  /// C10.3's misconception is *"the sound plays after the program ends"*, and the
+  /// grader could not see the difference: a program that beats a drum between each of
+  /// four lines and one that draws all four and then beats four times produce the same
+  /// drawing AND the same list of sounds. Only *when* differs, so the score records it.
+  final int after;
+
   @override
-  String toString() => '$kind:$value×$beats';
+  String toString() => '$kind:$value×$beats@$after';
 
   @override
   bool operator ==(Object other) =>
@@ -234,13 +242,22 @@ class SpriteStage extends HeadlessCanvas
   /// A costume leaves no ink, so the grader's raster comparison cannot see it. This is
   /// the second signal, read off the selected sprite and the stage itself.
   StageState get state => StageState(
-        costumeNumber: costumeNumber,
+        costumes: {
+          for (final sprite in sprites) sprite.id: sprite.costumeIndex + 1,
+        },
         backdropId: backdrop.id,
         score: [for (final event in score) event.toString()],
-        said: [for (final line in saidLines) line.text],
+        /* With the speaker, not just the words. "Le chat dit miaou puis le chien dit
+           ouaf" and "le chat dit les deux" produce the same list of texts, and C10.1 is
+           precisely the difference between them. */
+        said: [for (final line in saidLines) line.toString()],
         effects: {
-          for (final e in _selected.effects.toJson().entries)
-            if (e.value != 0) e.key: e.value,
+          for (final sprite in sprites)
+            if (!sprite.effects.isClear)
+              sprite.id: {
+                for (final e in sprite.effects.toJson().entries)
+                  if (e.value != 0) e.key: e.value,
+              },
         },
       );
 
@@ -321,7 +338,7 @@ class SpriteStage extends HeadlessCanvas
   @override
   void playSound(String id) {
     playedSounds.add(id);
-    score.add(SoundEvent('sound', id, 0));
+    score.add(SoundEvent('sound', id, 0, after: segmentCount));
   }
 
   // --- the rest of StageSurface (D-014 / FR-M21-04) -------------------------------------
@@ -388,11 +405,11 @@ class SpriteStage extends HeadlessCanvas
 
   @override
   void playDrum(int drum, num beats) =>
-      score.add(SoundEvent('drum', drum, beats));
+      score.add(SoundEvent('drum', drum, beats, after: segmentCount));
 
   @override
   void playNote(num pitch, num beats) =>
-      score.add(SoundEvent('note', pitch, beats));
+      score.add(SoundEvent('note', pitch, beats, after: segmentCount));
 
   /* SensingSurface (`FR-M21-03`) comes from `TurtleSensing`, and used to live here.
      World 8 needed `touchebord` under the grader's canvas, which is not a stage — and the
