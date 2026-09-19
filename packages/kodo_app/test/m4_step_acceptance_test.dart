@@ -210,4 +210,116 @@ void main() {
       expect(cursor.isDone, isTrue);
     });
   });
+
+  /* `FR-M4-08` — "ghosted future-path overlay in step mode". One sentence, and the most
+     useful one in M4: a child stepping through a square sees, BEFORE they press the
+     button, where the next `avance` is going to go. That turns stepping from "watch it
+     happen" — barely better than running it — into "predict, then check", which is the
+     whole of debugging. */
+  group('FR-M4-08 · the ghosted future path', () {
+    test('the ghost is the line the next step will draw', () {
+      final program = parsed('avance 50\ntournedroite 90\navance 30');
+      final canvas = VectorCanvas();
+      final cursor = RunCursor(
+          program: program,
+          surface: canvas,
+          keywords: KeywordTables.fr,
+          speed: RunSpeed.step);
+
+      final preview = cursor.ghost();
+      expect(preview.length, 1, reason: 'the first `avance` has not happened yet');
+      cursor.step();
+      // And what it drew is exactly what was promised — the same interpreter, so the
+      // ghost cannot disagree with what actually happens.
+      final drawn = canvas.segments.single;
+      expect(drawn.x2, closeTo(preview.single.x2, 0.001));
+      expect(drawn.y2, closeTo(preview.single.y2, 0.001));
+      cursor.dispose();
+    });
+
+    test('a step that draws nothing promises nothing', () {
+      final program = parsed('avance 50\ntournedroite 90\navance 30');
+      final cursor = RunCursor(
+          program: program,
+          surface: VectorCanvas(),
+          keywords: KeywordTables.fr,
+          speed: RunSpeed.step);
+      cursor.step(); // avance 50
+      // The turn is next, and a turn leaves no ink. Ghosting something there would
+      // teach a child that `tournedroite` draws.
+      expect(cursor.ghost(), isEmpty);
+      cursor.step();
+      expect(cursor.ghost().length, 1);
+      cursor.dispose();
+    });
+
+    test('it can look further than one step ahead', () {
+      final program = parsed('répète 3 {\n  avance 50\n  tournedroite 120\n}');
+      final cursor = RunCursor(
+          program: program,
+          surface: VectorCanvas(),
+          keywords: KeywordTables.fr,
+          speed: RunSpeed.step);
+      expect(cursor.ghost(lookahead: 12).length, 3,
+          reason: 'the whole triangle, before a single step');
+      cursor.dispose();
+    });
+
+    test('nothing is promised once the program is over', () {
+      final program = parsed('avance 50');
+      final cursor = RunCursor(
+          program: program,
+          surface: VectorCanvas(),
+          keywords: KeywordTables.fr,
+          speed: RunSpeed.step);
+      while (cursor.step()) {}
+      expect(cursor.ghost(), isEmpty);
+      cursor.dispose();
+    });
+
+    test('a small device is shown nothing rather than something cheaper (FR-M4-09)',
+        () {
+      final program = parsed('avance 50');
+      final cursor = RunCursor(
+          program: program,
+          surface: VectorCanvas(budget: const RenderBudget.leger()),
+          keywords: KeywordTables.fr,
+          speed: RunSpeed.step);
+      expect(cursor.ghost(), isEmpty);
+      cursor.dispose();
+    });
+
+    testWidgets('the canvas paints what it was given, never a guess',
+        (tester) async {
+      final program = parsed('avance 50\ntournedroite 90\navance 50');
+      final canvas = VectorCanvas();
+      final cursor = RunCursor(
+          program: program,
+          surface: canvas,
+          keywords: KeywordTables.fr,
+          speed: RunSpeed.step);
+      addTearDown(cursor.dispose);
+
+      await tester.pumpWidget(_wrap(ListenableBuilder(
+        listenable: cursor,
+        builder: (context, _) => SizedBox(
+          width: 400,
+          height: 400,
+          child: TurtleCanvasView(canvas: canvas, ghost: cursor.ghost()),
+        ),
+      )));
+      await tester.pumpAndSettle();
+
+      TurtleCanvasPainter painter() => tester
+          .widget<CustomPaint>(find.byKey(const Key('turtle-canvas')))
+          .painter! as TurtleCanvasPainter;
+      expect(painter().ghost.length, 1);
+
+      cursor.step();
+      await tester.pumpAndSettle();
+      // The turn comes next and draws nothing, so the overlay empties rather than
+      // leaving a stale promise on the paper.
+      expect(painter().ghost, isEmpty);
+    });
+  });
 }

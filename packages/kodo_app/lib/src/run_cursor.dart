@@ -16,6 +16,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:kodo_lang/kodo_lang.dart';
+import 'package:kodo_stage/kodo_stage.dart';
 
 import 'block_stack.dart';
 
@@ -61,14 +62,20 @@ class RunCursor extends ChangeNotifier {
     this.speed = RunSpeed.slow,
   })  : _program = program,
         _lines = statementLines(program, keywords),
+        _seed = seed,
         _interpreter = Interpreter(program, surface, seed: seed);
 
   final Program _program;
   final Map<String, int> _lines;
+  int _seed;
   Interpreter _interpreter;
   Timer? _timer;
   String? _nodeId;
   int _seen = 0;
+  int _steps = 0;
+
+  /// How many statements have run. The ghost preview counts from here.
+  int get steps => _steps;
 
   /// How fast an unattended run advances. `RunSpeed.step` waits for the child.
   RunSpeed speed;
@@ -98,6 +105,7 @@ class RunCursor extends ChangeNotifier {
       return false;
     }
     final moved = _interpreter.step();
+    if (moved) _steps++;
     _land(_latestStart());
     if (!moved) stop();
     return moved;
@@ -116,6 +124,38 @@ class RunCursor extends ChangeNotifier {
     return started ?? _nodeId;
   }
 
+  /// What the next [lookahead] statements will draw, if anything (`FR-M4-08`).
+  ///
+  /// *"Ghosted future-path overlay in step mode"* is one sentence and the most useful
+  /// sentence in M4: a child stepping through a square sees, before they press the button,
+  /// where the next `avance` is going to go. That turns stepping from "watch it happen" —
+  /// which is only slightly better than running it — into "predict, then check", which is
+  /// the whole of debugging.
+  ///
+  /// It is computed by running the program again from the beginning on a scratch canvas,
+  /// not by reaching into the interpreter's state. That costs a re-run per step, which on
+  /// a child's program at a step a second is nothing, and it buys the guarantee that
+  /// matters: the ghost is what will *actually* happen, produced by the same interpreter,
+  /// not a prediction by a second implementation that could disagree with the real thing
+  /// at exactly the moment a child is using it to learn.
+  ///
+  /// Empty when the render budget has turned the preview off (`FR-M4-09`), which is the
+  /// one case where nothing is shown rather than something cheaper.
+  List<Segment> ghost({int lookahead = 1}) {
+    if (_interpreter.isDone || _steps < 0) return const [];
+    final live = _interpreter.surface;
+    // `FR-M4-09`: the device's own budget decides, not this file's opinion of the cost.
+    if (live is VectorCanvas && !live.budget.ghostPreview) return const [];
+    final drawnNow = live.segmentCount;
+    final scratch = VectorCanvas();
+    final ahead = Interpreter(_program, scratch, seed: _seed);
+    for (var i = 0; i < _steps + lookahead; i++) {
+      if (!ahead.step()) break;
+    }
+    if (scratch.segments.length <= drawnNow) return const [];
+    return scratch.segments.sublist(drawnNow);
+  }
+
   void _land(String? nodeId) {
     _nodeId = nodeId;
     notifyListeners();
@@ -131,6 +171,7 @@ class RunCursor extends ChangeNotifier {
     if (speed == RunSpeed.full) {
       _interpreter.run();
       _seen = _interpreter.events.length;
+      _steps = -1;
       _land(null);
       return;
     }
@@ -157,6 +198,8 @@ class RunCursor extends ChangeNotifier {
     stop();
     _interpreter = Interpreter(_program, surface, seed: seed);
     _seen = 0;
+    _steps = 0;
+    _seed = seed;
     _land(null);
   }
 

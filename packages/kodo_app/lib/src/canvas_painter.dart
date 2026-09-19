@@ -6,6 +6,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:kodo_lang/kodo_lang.dart' show Segment;
 import 'package:kodo_stage/kodo_stage.dart';
 
 class TurtleCanvasPainter extends CustomPainter {
@@ -13,6 +14,7 @@ class TurtleCanvasPainter extends CustomPainter {
     required this.canvas,
     required this.showTurtle,
     this.highlightLastSegment = false,
+    this.ghost = const [],
     this.zoom = 1.0,
     this.pan = Offset.zero,
   });
@@ -34,6 +36,14 @@ class TurtleCanvasPainter extends CustomPainter {
   /// During slow and step execution the segment about to be drawn is ghosted
   /// (`FR-M4-08`). The render budget turns it off on a small device (`FR-M4-09`).
   final bool highlightLastSegment;
+
+  /// What the next step will draw (`FR-M4-08`).
+  ///
+  /// Given rather than guessed: these segments came out of the same interpreter that will
+  /// draw them for real, so the ghost cannot disagree with what happens next. A preview
+  /// computed by a second implementation would be wrong exactly when a child was using it
+  /// to work something out.
+  final List<Segment> ghost;
 
   @override
   void paint(Canvas target, Size size) {
@@ -93,10 +103,46 @@ class TurtleCanvasPainter extends CustomPainter {
       painter.paint(target, Offset(text.x, text.y - text.size));
     }
 
+    /* Under the drawing's own ink but over the paper, and dashed rather than merely pale:
+       `FR-M16-01`'s rule is that no signal is carried by colour alone, and "this line has
+       not happened yet" is a signal. A child who cannot tell a faint line from a drawn one
+       is being shown a program that did something it did not do. */
+    if (ghost.isNotEmpty) {
+      final ghostPaint = Paint()
+        ..strokeCap = StrokeCap.round
+        ..style = PaintingStyle.stroke;
+      for (final segment in ghost) {
+        ghostPaint
+          ..color = Color(0xFF000000 | segment.color).withValues(alpha: 0.35)
+          ..strokeWidth = segment.width;
+        _dashedLine(
+          target,
+          Offset(segment.x1, segment.y1),
+          Offset(segment.x2, segment.y2),
+          ghostPaint,
+        );
+      }
+    }
+
     if (showTurtle && canvas.visible) {
       _paintTurtle(target);
     }
     target.restore();
+  }
+
+  /// A dashed line, because a ghost may not be a colour on its own (`FR-M16-01`).
+  void _dashedLine(Canvas target, Offset from, Offset to, Paint paint) {
+    const dash = 6.0;
+    const gap = 5.0;
+    final total = (to - from).distance;
+    if (total == 0) return;
+    final unit = (to - from) / total;
+    var travelled = 0.0;
+    while (travelled < total) {
+      final end = (travelled + dash).clamp(0.0, total);
+      target.drawLine(from + unit * travelled, from + unit * end, paint);
+      travelled = end + gap;
+    }
   }
 
   void _paintTurtle(Canvas target) {
@@ -129,6 +175,8 @@ class TurtleCanvasPainter extends CustomPainter {
       old.canvas.positionY != canvas.positionY ||
       old.canvas.direction != canvas.direction ||
       old.showTurtle != showTurtle ||
+      old.ghost.length != ghost.length ||
+      (ghost.isNotEmpty && old.ghost.isNotEmpty && old.ghost.last != ghost.last) ||
       old.zoom != zoom ||
       old.pan != pan;
 }
@@ -154,6 +202,7 @@ class TurtleCanvasView extends StatefulWidget {
     this.locale = 'fr',
     this.showTurtle = true,
     this.zoomable = true,
+    this.ghost = const [],
   });
 
   final VectorCanvas canvas;
@@ -163,6 +212,9 @@ class TurtleCanvasView extends StatefulWidget {
   /// False where the drawing is an illustration rather than the child's own work — a
   /// worked example in the reference, say, which nobody needs to inspect.
   final bool zoomable;
+
+  /// `FR-M4-08`: what the next step will draw, from `RunCursor.ghost()`.
+  final List<Segment> ghost;
 
   @override
   State<TurtleCanvasView> createState() => TurtleCanvasViewState();
@@ -212,6 +264,7 @@ class TurtleCanvasViewState extends State<TurtleCanvasView> {
         painter: TurtleCanvasPainter(
           canvas: widget.canvas,
           showTurtle: widget.showTurtle,
+          ghost: widget.ghost,
           zoom: zoom,
           pan: _pan,
         ),
