@@ -56,7 +56,7 @@ Map<String, int> ledgerFor(Set<int> onlyWorlds) {
 }
 
 /// The worlds that have been authored and shipped. **The one list.**
-const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7];
+const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 void main() {
   final worlds = {for (final n in shippedWorlds) n: load(n)};
@@ -68,6 +68,7 @@ void main() {
   final world5 = worlds[5]!;
   final world6 = worlds[6]!;
   final world7 = worlds[7]!;
+  final world8 = worlds[8]!;
 
   group('§6.3 · the shipped worlds carry the committed item volume', () {
     final committed = ledgerFor(shippedWorlds.toSet());
@@ -93,7 +94,7 @@ void main() {
       }
     });
 
-    test('the shipped worlds carry 784 items between them', () {
+    test('the shipped worlds carry 870 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
@@ -102,8 +103,9 @@ void main() {
       expect(world5.items, hasLength(90));
       expect(world6.items, hasLength(108));
       expect(world7.items, hasLength(114));
-      // 65 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 784);
+      expect(world8.items, hasLength(86));
+      // 72 % of the 1 214 the curriculum commits across all thirteen worlds.
+      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 870);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -488,7 +490,7 @@ void main() {
      Remembering it a fourth time is not a plan, so it is a rule now, checked for every
      world that ships — and for every world that ever will. */
   group('a world whose subject the canvas cannot show says so structurally', () {
-    for (final n in [5, 6, 7]) {
+    for (final n in [5, 6, 7, 8]) {
       test('World $n\'s drawing items carry a structural claim', () {
         final items = worlds[n]!.items.where((i) =>
             i.type.wantsProgram &&
@@ -534,6 +536,84 @@ void main() {
                 'own structural claim');
       });
     }
+  });
+
+  group('World 8 teaches the loop that watches', () {
+    test('C8.2 ships programs that do not finish, and grades them as such', () {
+      /* The one concept in KODO whose best item is a program that runs away. If the
+         broken programs all ended politely with a wrong picture, the child would never
+         see that not stopping is a way to be wrong. */
+      final runaways = world8.items.where((item) {
+        if (item.conceptId != 'C8.2' || item.startingProgramSource == null) {
+          return false;
+        }
+        final broken = parse(item.startingProgramSource!, KeywordTables.fr);
+        if (broken.errors.isNotEmpty) return false;
+        final canvas = VectorCanvas();
+        final run = runProgram(broken.program, canvas, seed: item.seed);
+        return run.error != null;
+      });
+      expect(runaways, hasLength(6),
+          reason: 'C8.2 has ${runaways.length} broken programs that run away');
+      // And the message a child sees when one does is authored, not generated.
+      for (final item in runaways) {
+        expect(item.diagnosticFor(DiagnosticSituation.programFailed), isNotNull,
+            reason: '${item.id} would show a blank panel');
+      }
+    });
+
+    test('C8.3 senses rather than counts', () {
+      /* On a canvas whose size is known, "walk until the edge" and "walk ten steps" draw
+         the identical path. Only the assertion tells them apart, so every C8.3 program
+         item has to make it — and the counted distractor has to be there to be caught. */
+      final sensing = world8.items.where((i) =>
+          i.conceptId == 'C8.3' &&
+          i.type.wantsProgram &&
+          i.type != ItemType.t9OpenBuild);
+      expect(sensing, isNotEmpty);
+      for (final item in sensing) {
+        expect(
+            item.assertions.whereType<UsesOpcode>().any(
+                (a) => a.opcodeId == 'TOUCHING_EDGE' || a.opcodeId == 'KEY_DOWN'),
+            isTrue,
+            reason: '${item.id} can be passed by counting the steps');
+      }
+    });
+
+    test('C8.4 draws something after the loop, or the word does not matter', () {
+      /* `coupure` and `sortie` produce the identical picture unless the program has
+         something left to do. Every C8.4 program item therefore has to draw after the
+         loop closes, and the proof is that swapping the word changes the drawing. */
+      final items = world8.items.where((i) =>
+          i.conceptId == 'C8.4' &&
+          i.type.wantsProgram &&
+          (i.referenceSolutionSource ?? '').contains('coupure'));
+      expect(items, isNotEmpty);
+      for (final item in items) {
+        final withBreak = VectorCanvas();
+        final withQuit = VectorCanvas();
+        final a = parse(item.referenceSolutionSource!, KeywordTables.fr);
+        final b = parse(
+            item.referenceSolutionSource!.replaceFirst('coupure', 'sortie'),
+            KeywordTables.fr);
+        expect(a.errors, isEmpty);
+        expect(b.errors, isEmpty);
+        runProgram(a.program, withBreak, seed: item.seed);
+        runProgram(b.program, withQuit, seed: item.seed);
+        expect(withQuit.segmentCount, isNot(withBreak.segmentCount),
+            reason: '${item.id} draws the same with sortie as with coupure');
+      }
+    });
+
+    test('no narration in World 8 says the word it is teaching', () {
+      for (final tutorial in world8.tutorials) {
+        for (final step in tutorial.steps) {
+          for (final line in step.narrationKeys.values) {
+            expect(jargonIn(line), isEmpty, reason: '"$line"');
+          }
+        }
+      }
+    });
   });
 
   group('World 7 teaches the test, which a true answer hides', () {
