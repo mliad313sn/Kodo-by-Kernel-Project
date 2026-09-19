@@ -336,7 +336,7 @@
       "priority": "S",
       "verification": "UI test",
       "gate": "G3",
-      "status": "Not started",
+      "status": "Done",
       "owner": "M3 squad"
     },
     {

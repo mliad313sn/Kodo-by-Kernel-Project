@@ -11,6 +11,7 @@ export 'src/block_family.dart';
 export 'src/block_help.dart';
 export 'src/block_view.dart';
 export 'src/canvas_painter.dart';
+export 'src/keyword_suggestions.dart';
 export 'src/editor_controller.dart';
 export 'src/palette_scope.dart';
 export 'src/syntax_theme.dart';

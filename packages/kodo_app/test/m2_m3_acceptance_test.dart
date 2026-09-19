@@ -989,4 +989,133 @@ void main() {
       }
     });
   });
+
+  /* `FR-M3-06`. The requirement is one sentence — "keyword autocomplete, with the English
+     equivalent shown from World 9" — and every clause of it is a separate way to get it
+     wrong: offering too early, offering words the world has not taught, offering the
+     longest match first, appending instead of replacing, and showing English to a child
+     in World 2. One test each. */
+  group('FR-M3-06 · keyword autocomplete', () {
+    test('a partial word is what the cursor is sitting at the end of', () {
+      expect(partialWordAt('avance 10\ntou', 13), 'tou');
+      // A digit, a space, a brace and a `$` all end a word: none can start a keyword.
+      expect(partialWordAt('avance 10', 9), '');
+      expect(partialWordAt('répète 4 {', 10), '');
+      expect(partialWordAt(r'écris $nom', 10), 'nom');
+      // Accented letters are letters. `répè` is a partial `répète`.
+      expect(partialWordAt('répè', 4), 'répè');
+    });
+
+    test('the offers are shortest first, so `av` means `avance`', () {
+      final offers = suggestKeywords('a',
+          keywords: KeywordTables.fr, other: KeywordTables.en);
+      expect(offers, isNotEmpty);
+      final lengths = offers.map((o) => o.word.length).toList();
+      final sorted = [...lengths]..sort();
+      expect(lengths, sorted, reason: 'the list is not shortest-first');
+
+      final av = suggestKeywords('av',
+          keywords: KeywordTables.fr, other: KeywordTables.en);
+      expect(av.first.word, 'avance');
+      expect(av.first.equivalent, 'forward');
+    });
+
+    test('grammar is offered as well as blocks — `répète` is not an opcode', () {
+      final offers = suggestKeywords('rép',
+          keywords: KeywordTables.fr, other: KeywordTables.en);
+      final repeat = offers.firstWhere((o) => o.word == 'répète');
+      expect(repeat.syntax, isNotNull,
+          reason: 'répète is a grammar word, not a block');
+      expect(repeat.equivalent, 'repeat');
+    });
+
+    test('the world\'s palette restricts what is offered (FR-M2-08)', () {
+      // `note` is a World 10 block. A child in World 1 has never seen it and the
+      // editor may not put it in front of them.
+      final world1 = suggestKeywords('no',
+          keywords: KeywordTables.fr,
+          other: KeywordTables.en,
+          scope: scopeForWorld(1).opcodes);
+      expect(world1.where((o) => o.opcode == Opcode.playNote), isEmpty);
+
+      final world10 = suggestKeywords('no',
+          keywords: KeywordTables.fr,
+          other: KeywordTables.en,
+          scope: scopeForWorld(10).opcodes);
+      expect(world10.where((o) => o.opcode == Opcode.playNote), isNotEmpty);
+
+      // Grammar is never scoped: `non` is how a child says "not" and it is a word of the
+      // language, not a block the palette hands out.
+      expect(world1.where((o) => o.syntax != null), isNotEmpty);
+    });
+
+    test('accepting replaces the partial word — never `avavance`', () {
+      final offer = suggestKeywords('av',
+              keywords: KeywordTables.fr, other: KeywordTables.en)
+          .first;
+      final (text, cursor) = acceptSuggestion('répète 4 {\n  av', 15, offer);
+      expect(text, 'répète 4 {\n  avance');
+      expect(cursor, text.length);
+      // And in the middle of a program, the rest of it survives.
+      final (mid, at) = acceptSuggestion('av 10\ncentre', 2, offer);
+      expect(mid, 'avance 10\ncentre');
+      expect(at, 6);
+    });
+
+    test('the English equivalent appears from World 9, not before (§4.3)', () {
+      for (var world = 0; world <= 8; world++) {
+        expect(showsEquivalentIn(world), isFalse, reason: 'world $world');
+      }
+      for (var world = 9; world <= 12; world++) {
+        expect(showsEquivalentIn(world), isTrue, reason: 'world $world');
+      }
+    });
+
+    testWidgets('the strip appears while typing a word and inserts on tap',
+        (tester) async {
+      final controller = EditorController(initialSource: '', world: 1);
+      await tester.pumpWidget(_wrap(TextEditor(
+        controller: controller,
+        theme: SyntaxTheme.light,
+        worldOpcodes: scopeForWorld(1).opcodes,
+      )));
+      await tester.pumpAndSettle();
+      final state = tester.state<TextEditorState>(find.byType(TextEditor));
+
+      // One letter is not a word yet. A strip that opens on every keystroke is noise.
+      state.insertAtCursor('a');
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('suggestions')), findsNothing);
+
+      state.insertAtCursor('v');
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('suggestions')), findsOneWidget);
+      expect(find.byKey(const Key('suggest-avance')), findsOneWidget);
+      // World 1: the English word is not shown yet.
+      expect(find.byKey(const Key('equivalent-avance')), findsNothing);
+
+      await tester.tap(find.byKey(const Key('suggest-avance')));
+      await tester.pumpAndSettle();
+      expect(controller.text, 'avance');
+      // The offer is taken, so the strip closes rather than offering `avance` again.
+      expect(find.byKey(const Key('suggestions')), findsNothing);
+    });
+
+    testWidgets('in World 9 the same strip carries the English word',
+        (tester) async {
+      final controller = EditorController(initialSource: '', world: 9);
+      await tester.pumpWidget(_wrap(TextEditor(
+        controller: controller,
+        theme: SyntaxTheme.light,
+        worldOpcodes: scopeForWorld(9).opcodes,
+      )));
+      await tester.pumpAndSettle();
+      final state = tester.state<TextEditorState>(find.byType(TextEditor));
+
+      state.insertAtCursor('av');
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('equivalent-avance')), findsOneWidget);
+      expect(find.text('forward'), findsOneWidget);
+    });
+  });
 }

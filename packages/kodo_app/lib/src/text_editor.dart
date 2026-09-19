@@ -14,6 +14,7 @@ import 'package:kodo_lang/kodo_lang.dart';
 
 import 'block_view.dart';
 import 'editor_controller.dart';
+import 'keyword_suggestions.dart';
 import 'syntax_theme.dart';
 
 /// Splits a line into coloured spans (FR-M3-01).
@@ -224,6 +225,11 @@ class TextEditorState extends State<TextEditor> {
       TextEditingController(text: widget.controller.text);
   int? _focusedLine;
 
+  /* The state the editor was left in by accepting an offer. A completed word is still a
+     partial word of itself, so without this the strip re-opens the instant it is used and
+     offers `avance` to a child who has just accepted `avance`. Cleared by the next edit. */
+  TextEditingValue? _justCompleted;
+
   int? get focusedLine => _focusedLine;
   TextEditingController get textController => _text;
 
@@ -245,6 +251,7 @@ class TextEditorState extends State<TextEditor> {
     // Keeping the cursor is `FR-M3-06`'s neighbour and the reason a keyword-language
     // switch mid-edit does not feel like losing your place.
     final offset = _text.selection.baseOffset;
+    _justCompleted = null;
     _text.value = TextEditingValue(
       text: widget.controller.text,
       selection: TextSelection.collapsed(
@@ -256,6 +263,38 @@ class TextEditorState extends State<TextEditor> {
   /// `FR-M3-03`: tapping the message scrolls to and highlights the line.
   void focusLine(int line) => setState(() => _focusedLine = line);
 
+  /// What autocomplete is offering right now (`FR-M3-06`).
+  ///
+  /// Empty when the cursor is not at the end of a partial word, which is most of the
+  /// time — a strip that is always there is a strip nobody reads.
+  List<KeywordSuggestion> get suggestions {
+    final selection = _text.selection;
+    if (!selection.isValid || !selection.isCollapsed) return const [];
+    if (_justCompleted == _text.value) return const [];
+    final partial = partialWordAt(_text.text, selection.baseOffset);
+    if (partial.length < 2) return const [];
+    final keywords = widget.controller.keywords;
+    return suggestKeywords(
+      partial,
+      keywords: keywords,
+      other: keywords.locale == 'en' ? KeywordTables.fr : KeywordTables.en,
+      scope: widget.worldOpcodes,
+    );
+  }
+
+  /// Takes an offer: replaces the partial word rather than appending to it.
+  void accept(KeywordSuggestion suggestion) {
+    final selection = _text.selection;
+    final cursor = selection.isValid ? selection.baseOffset : _text.text.length;
+    final (updated, at) = acceptSuggestion(_text.text, cursor, suggestion);
+    _text.value = TextEditingValue(
+      text: updated,
+      selection: TextSelection.collapsed(offset: at),
+    );
+    _justCompleted = _text.value;
+    widget.controller.setText(updated);
+  }
+
   /// Inserts text at the cursor, for the keyboard row.
   void insertAtCursor(String text) {
     final selection = _text.selection;
@@ -266,6 +305,7 @@ class TextEditorState extends State<TextEditor> {
       text: updated,
       selection: TextSelection.collapsed(offset: base + text.length),
     );
+    _justCompleted = null;
     widget.controller.setText(updated);
   }
 
@@ -353,6 +393,16 @@ class TextEditorState extends State<TextEditor> {
                 ),
               ),
             ),
+            /* `FR-M3-06`. Above the keyboard row rather than floating over the program:
+               a popup on a 5.5" screen covers the line being typed, which is the line a
+               child is looking at. */
+            if (suggestions.isNotEmpty)
+              KeywordSuggestionStrip(
+                key: const Key('suggestions'),
+                suggestions: suggestions,
+                showEquivalent: showsEquivalentIn(widget.controller.world),
+                onAccept: accept,
+              ),
             if (widget.compact)
               ProgrammingKeyboardRow(
                 keywords: widget.controller.keywords,
@@ -404,6 +454,80 @@ class TextEditorState extends State<TextEditor> {
           ],
         );
       },
+    );
+  }
+}
+
+/// The row of offers autocomplete puts above the keyboard (`FR-M3-06`).
+///
+/// One tap each, 48 dp, and the other language's word underneath from World 9. The
+/// equivalent is set in smaller, quieter type on purpose: it is there to be noticed over
+/// weeks rather than read every time, which is how a child arrives at World 11 already
+/// knowing that `répète` and `repeat` are one word.
+class KeywordSuggestionStrip extends StatelessWidget {
+  const KeywordSuggestionStrip({
+    super.key,
+    required this.suggestions,
+    required this.onAccept,
+    this.showEquivalent = false,
+  });
+
+  final List<KeywordSuggestion> suggestions;
+  final void Function(KeywordSuggestion) onAccept;
+  final bool showEquivalent;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return SizedBox(
+      height: showEquivalent ? 60 : 48,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        children: [
+          for (final suggestion in suggestions)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+              child: InkWell(
+                key: Key('suggest-${suggestion.word}'),
+                borderRadius: BorderRadius.circular(8),
+                onTap: () => onAccept(suggestion),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                      minWidth: minimumTouchTarget,
+                      minHeight: minimumTouchTarget),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: scheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(suggestion.word,
+                              style: const TextStyle(
+                                  fontFamily: 'monospace',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600)),
+                          if (showEquivalent)
+                            Text(suggestion.equivalent,
+                                key: Key('equivalent-${suggestion.word}'),
+                                style: TextStyle(
+                                    fontFamily: 'monospace',
+                                    fontSize: 12,
+                                    color: scheme.onSurfaceVariant)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
