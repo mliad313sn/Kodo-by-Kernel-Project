@@ -41,7 +41,11 @@
           "newIdeas": [
             "while",
             "counter"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C8.1-s2",
@@ -63,6 +67,10 @@
           "retry": {
             "fr": "Écris $i = 0 avant la boucle.",
             "en": "Write $i = 0 before the loop."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -86,6 +94,10 @@
           "retry": {
             "fr": "La boîte doit bouger dans la boucle.",
             "en": "The box has to move inside the loop."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -148,7 +160,11 @@
           "newIdeas": [
             "termination",
             "runaway"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C8.2-s2",
@@ -170,6 +186,10 @@
           "retry": {
             "fr": "Écris $i = $i + 1 dans la boucle.",
             "en": "Write $i = $i + 1 inside the loop."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -193,6 +213,10 @@
           "retry": {
             "fr": "Demande-toi ce qui rendra le test faux.",
             "en": "Ask yourself what will turn the test false."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -255,7 +279,11 @@
           "newIdeas": [
             "sensor",
             "edge"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C8.3-s2",
@@ -277,6 +305,10 @@
           "retry": {
             "fr": "Le capteur s'appelle touchebord.",
             "en": "The sensor is called touchingedge."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -299,6 +331,10 @@
           "retry": {
             "fr": "Mets non devant pour avancer tant que c'est non.",
             "en": "Put not in front to keep going while it is no."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -361,7 +397,11 @@
           "newIdeas": [
             "break",
             "after-the-loop"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C8.4-s2",
@@ -383,6 +423,10 @@
           "retry": {
             "fr": "Écris $i = $i + 1 dans la boucle.",
             "en": "Write $i = $i + 1 inside the loop."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -406,6 +450,10 @@
           "retry": {
             "fr": "coupure quitte la boucle. sortie quitte tout.",
             "en": "break leaves the loop. quit leaves everything."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -14744,5 +14792,5 @@
     "art/tika.svg",
     "art/world8-tantque.svg"
   ],
-  "sizeBytes": 482303
+  "sizeBytes": 483375
 }

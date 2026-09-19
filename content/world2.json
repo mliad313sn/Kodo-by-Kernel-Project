@@ -40,7 +40,11 @@
           "demo": "répète 4 {\n  avance 60\n  tournedroite 90\n}",
           "newIdeas": [
             "répète"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C2.1-s2",
@@ -62,6 +66,10 @@
           "retry": {
             "fr": "Le bloc répète est dans la famille Contrôle.",
             "en": "The repeat block is in the Control family."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -84,6 +92,10 @@
           "retry": {
             "fr": "Trois côtés : 360 divisé par 3, cela fait 120.",
             "en": "Three sides: 360 divided by 3 is 120."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -121,7 +133,11 @@
           "demo": "répète 4 {\n  avance 50\n  tournedroite 90\n  avance 25\n  recule 25\n}",
           "newIdeas": [
             "corps de la boucle"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C2.2-s2",
@@ -143,6 +159,10 @@
           "retry": {
             "fr": "Le nouveau bloc doit être entre les accolades.",
             "en": "The new block has to be between the braces."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -165,6 +185,10 @@
           "retry": {
             "fr": "Fais glisser le bloc tourner sous l'accolade fermante.",
             "en": "Drag the turn block below the closing brace."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -202,7 +226,11 @@
           "demo": "répète 6 {\n  répète 4 {\n    avance 40\n    tournedroite 90\n  }\n  tournedroite 60\n}",
           "newIdeas": [
             "boucle dans une boucle"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C2.3-s2",
@@ -224,6 +252,10 @@
           "retry": {
             "fr": "Le carré entier va à l'intérieur du nouveau bloc.",
             "en": "The whole square goes inside the new block."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -246,6 +278,10 @@
           "retry": {
             "fr": "Huit branches : tourne de 45 degrés entre chacune.",
             "en": "Eight arms: turn 45 degrees between each one."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -283,7 +319,11 @@
           "demo": "répète 6 {\n  avance 50\n  tournedroite 60\n}",
           "newIdeas": [
             "plus court, même dessin"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C2.4-s2",
@@ -305,6 +345,10 @@
           "retry": {
             "fr": "Appuie sur le nombre dans le bloc avance.",
             "en": "Tap the number in the forward block."
+          },
+          "cta": {
+            "fr": "Écris le nombre",
+            "en": "Write the number"
           }
         },
         {
@@ -327,6 +371,10 @@
           "retry": {
             "fr": "Trois blocs suffisent : répète, avance, tourner.",
             "en": "Three blocks is enough: repeat, forward, turn."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -13883,5 +13931,5 @@
     "art/tika.svg",
     "art/world2-rosace.svg"
   ],
-  "sizeBytes": 519960
+  "sizeBytes": 521079
 }

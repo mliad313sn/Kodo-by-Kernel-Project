@@ -64,6 +64,28 @@ enum SpotlightTarget {
   paletteFamilyPen,
 }
 
+/// How a demonstration lands (`FR-M5-02`).
+///
+/// A demo that simply appears is a magic trick: blocks were somewhere else, now they are
+/// here, and a child has learned that the computer did it. Ghosted first and real after is
+/// a demonstration — *this is what is about to happen*, then it happens — and it is the
+/// same idea as `FR-M4-08`'s ghosted path, one layer up.
+enum DemoPhase { ghosted, real }
+
+/// What a step asks the child to do, in their own words (`FR-M5-02`).
+///
+/// One per [ExpectedAction], because the requirement is a *single* call to action and the
+/// surest way to have one is to have nowhere to put a second. An author may override the
+/// words; they may not add a second button.
+const Map<ExpectedAction, Map<String, String>> defaultCallsToAction = {
+  ExpectedAction.watch: {'fr': 'Continuer', 'en': 'Next'},
+  ExpectedAction.placeBlock: {'fr': 'Pose le bloc', 'en': 'Put the block'},
+  ExpectedAction.editNumber: {'fr': 'Écris le nombre', 'en': 'Write the number'},
+  ExpectedAction.runProgram: {'fr': 'Appuie sur le vert', 'en': 'Press green'},
+  ExpectedAction.buildProgram: {'fr': 'À toi', 'en': 'Your turn'},
+  ExpectedAction.toggleView: {'fr': 'Change de vue', 'en': 'Switch the view'},
+};
+
 /// One 90-to-180-second step.
 class TutorialStep {
   const TutorialStep({
@@ -77,6 +99,7 @@ class TutorialStep {
     this.successCondition,
     this.retryHintKeys = const {},
     this.newIdeas = const [],
+    this.callToActionKeys = const {},
   });
 
   final String id;
@@ -106,8 +129,23 @@ class TutorialStep {
   /// The concepts this step introduces. §4.2 caps a *Je regarde* beat at two new ideas.
   final List<String> newIdeas;
 
+  /// The words on the one thing the child can press (`FR-M5-02`). Empty takes the default
+  /// for [expectedAction].
+  final Map<String, String> callToActionKeys;
+
   String narrationIn(String locale) =>
       narrationKeys[locale] ?? narrationKeys['fr'] ?? '';
+
+  /// The single call to action, in [locale].
+  ///
+  /// A string and never a list, which is how "single" is guaranteed rather than reviewed:
+  /// there is no shape in this class that can hold a second button.
+  String callToActionIn(String locale) {
+    final authored = callToActionKeys[locale] ?? callToActionKeys['fr'];
+    if (authored != null && authored.trim().isNotEmpty) return authored;
+    final fallback = defaultCallsToAction[expectedAction]!;
+    return fallback[locale] ?? fallback['fr']!;
+  }
 
   Map<String, Object?> toJson() => {
         'id': id,
@@ -120,6 +158,7 @@ class TutorialStep {
         if (successCondition != null) 'success': successCondition!.toJson(),
         if (retryHintKeys.isNotEmpty) 'retry': retryHintKeys,
         if (newIdeas.isNotEmpty) 'newIdeas': newIdeas,
+        'cta': {for (final l in const ['fr', 'en']) l: callToActionIn(l)},
       };
 
   static TutorialStep fromJson(Map<String, Object?> j) => TutorialStep(
@@ -140,6 +179,8 @@ class TutorialStep {
             .cast<String, String>(),
         newIdeas:
             ((j['newIdeas'] as List<Object?>?) ?? const []).cast<String>(),
+        callToActionKeys: ((j['cta'] as Map<String, Object?>?) ?? const {})
+            .cast<String, String>(),
       );
 }
 
@@ -272,8 +313,11 @@ class Tutorial {
 abstract class TutorialHost {
   void spotlight(SpotlightTarget? target);
 
-  /// Animates ghost blocks into the scratch document.
-  void demonstrate(Program program);
+  /// Animates ghost blocks into the scratch document, then lands them (`FR-M5-02`).
+  ///
+  /// Called twice per demo, once per [DemoPhase]. A host that ignores the ghosted phase
+  /// still works; a host that never gets told about it cannot draw one.
+  void demonstrate(Program program, DemoPhase phase);
 
   /// The program currently in the scratch document.
   Program get scratchProgram;
@@ -341,7 +385,8 @@ class TutorialPlayer {
     if (step.demoProgramSource != null) {
       final parsed = parse(step.demoProgramSource!,
           KeywordTables.of(locale == 'en' ? 'en' : 'fr'));
-      host.demonstrate(parsed.program);
+      host.demonstrate(parsed.program, DemoPhase.ghosted);
+      host.demonstrate(parsed.program, DemoPhase.real);
     }
     _state = step.expectedAction == ExpectedAction.watch
         ? PlayerState.stepComplete
@@ -379,6 +424,13 @@ class TutorialPlayer {
     _present();
     return true;
   }
+
+  /// The one thing the child is asked to do right now (`FR-M5-02`).
+  ///
+  /// Null when the tutorial is over. Never a list: a step that offered two things would
+  /// be a menu, and the whole point of the beat structure is that there is never a choice
+  /// to make about what to do next.
+  String? callToAction() => current?.callToActionIn(locale);
 
   /// The closing line: the concept, named in the child's own words (`FR-M5-06`).
   String closingLine() => tutorial.conceptNameIn(locale);
@@ -457,6 +509,22 @@ List<TutorialFailure> checkTutorial(Tutorial tutorial,
         step.retryHintKeys.isEmpty) {
       fail(step.id, 'no-retry-hint',
           'asks the child to act with nothing to say if they stall');
+    }
+    /* `FR-M5-02`, made mechanical. Three rules, and each one is a way a tutorial stops
+       being a tutorial: a step with nothing to press, a step whose button is a paragraph,
+       and a step that says "now you try" without pointing anywhere. */
+    for (final locale in locales) {
+      final cta = step.callToActionIn(locale).trim();
+      if (cta.isEmpty) {
+        fail(step.id, 'single-call-to-action', 'no call to action in "$locale"');
+      } else if (cta.split(RegExp(r'\s+')).length > 4) {
+        fail(step.id, 'call-to-action-length',
+            '"$locale" call to action is ${cta.split(RegExp(r'\s+')).length} words; a button is four');
+      }
+    }
+    if (step.expectedAction != ExpectedAction.watch && step.spotlight == null) {
+      fail(step.id, 'spotlight-required',
+          'asks the child to act without pointing at where');
     }
     if (step.beat == Beat.jeRegarde && step.newIdeas.length > 2) {
       fail(step.id, 'too-many-ideas',

@@ -43,7 +43,11 @@
           "demo": "va 300, 120\navance 30",
           "newIdeas": [
             "un point a deux nombres"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C4.1-s2",
@@ -65,6 +69,10 @@
           "retry": {
             "fr": "Appuie sur le premier nombre du bloc va.",
             "en": "Press the first number in the go-to block."
+          },
+          "cta": {
+            "fr": "Écris le nombre",
+            "en": "Write the number"
           }
         },
         {
@@ -87,6 +95,10 @@
           "retry": {
             "fr": "Va au point, puis avance. Le saut ne dessine pas.",
             "en": "Go to the point, then move. The jump does not draw."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -134,7 +146,11 @@
           "demo": "va 100, 200\nvax 300\navance 30",
           "newIdeas": [
             "un seul nombre change"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C4.2-s2",
@@ -156,6 +172,10 @@
           "retry": {
             "fr": "Cherche vay dans la famille Mouvement.",
             "en": "Look for go-y in the Motion family."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -178,6 +198,10 @@
           "retry": {
             "fr": "Utilise vax pour la deuxième : la hauteur reste.",
             "en": "Use go-x for the second one: the height stays."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -225,7 +249,11 @@
           "demo": "va 260, 140\nécris positionx\nécris positiony",
           "newIdeas": [
             "la position est un nombre"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C4.3-s2",
@@ -247,6 +275,10 @@
           "retry": {
             "fr": "positiony se glisse dans le bloc va.",
             "en": "Position-y slots into the go-to block."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -269,6 +301,10 @@
           "retry": {
             "fr": "Garde la hauteur avec positiony.",
             "en": "Keep the height with position-y."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -316,7 +352,11 @@
           "demo": "direction 0\navance 60\ncentre\ndirection 90\navance 60",
           "newIdeas": [
             "le cap est absolu"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C4.4-s2",
@@ -338,6 +378,10 @@
           "retry": {
             "fr": "Appuie sur le nombre du bloc direction.",
             "en": "Press the number in the heading block."
+          },
+          "cta": {
+            "fr": "Écris le nombre",
+            "en": "Write the number"
           }
         },
         {
@@ -360,6 +404,10 @@
           "retry": {
             "fr": "Quatre caps : 0, 90, 180, 270.",
             "en": "Four bearings: 0, 90, 180, 270."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -407,7 +455,11 @@
           "demo": "va 300, 300\nrépète 4 {\n  avance 60\n  tournedroite 90\n}\ncentre\navance 40",
           "newIdeas": [
             "revenir n'efface pas"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C4.5-s2",
@@ -429,6 +481,10 @@
           "retry": {
             "fr": "Il s'appelle centre.",
             "en": "It is called centre."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -451,6 +507,10 @@
           "retry": {
             "fr": "Reviens au centre entre chaque branche.",
             "en": "Come back to the centre between the arms."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -16883,5 +16943,5 @@
     "art/tika.svg",
     "art/world4-plan.svg"
   ],
-  "sizeBytes": 577572
+  "sizeBytes": 578976
 }

@@ -43,7 +43,11 @@
           "demo": "avance 100",
           "newIdeas": [
             "avance"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C1.1-s2",
@@ -65,6 +69,10 @@
           "retry": {
             "fr": "Le bloc avance est en haut de la palette.",
             "en": "The forward block is at the top of the palette."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -87,6 +95,10 @@
           "retry": {
             "fr": "Cherche le bloc recule, juste sous avance.",
             "en": "Look for the back block, just under forward."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -124,7 +136,11 @@
           "demo": "avance 80\ntournedroite 90\navance 80",
           "newIdeas": [
             "tournedroite"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C1.2-s2",
@@ -146,6 +162,10 @@
           "retry": {
             "fr": "Le bloc tourne a une flèche qui fait le tour.",
             "en": "The turn block has an arrow that goes around."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -168,6 +188,10 @@
           "retry": {
             "fr": "Après chaque trait, tourne d'un quart de tour.",
             "en": "After each line, turn a quarter turn."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -205,7 +229,11 @@
           "demo": "tournedroite 90\ntournedroite 90\ntournedroite 90\ntournedroite 90",
           "newIdeas": [
             "degrés"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C1.3-s2",
@@ -227,6 +255,10 @@
           "retry": {
             "fr": "La moitié de 360, c'est 180.",
             "en": "Half of 360 is 180."
+          },
+          "cta": {
+            "fr": "Écris le nombre",
+            "en": "Write the number"
           }
         },
         {
@@ -249,6 +281,10 @@
           "retry": {
             "fr": "Trois fois 120 font 360 : le tour est complet.",
             "en": "Three times 120 is 360: the turn is complete."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -287,7 +323,11 @@
           "newIdeas": [
             "lèvecrayon",
             "baissecrayon"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C1.4-s2",
@@ -309,6 +349,10 @@
           "retry": {
             "fr": "Les blocs du crayon sont dans la famille Stylo.",
             "en": "The pen blocks are in the Pen family."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -331,6 +375,10 @@
           "retry": {
             "fr": "Après le trou, rebaisse le crayon.",
             "en": "After the gap, put the pen back down."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -368,7 +416,11 @@
           "demo": "avance -50",
           "newIdeas": [
             "nombre négatif"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C1.5-s2",
@@ -390,6 +442,10 @@
           "retry": {
             "fr": "Le moins s'écrit juste devant le chiffre.",
             "en": "The minus goes right in front of the number."
+          },
+          "cta": {
+            "fr": "Écris le nombre",
+            "en": "Write the number"
           }
         },
         {
@@ -412,6 +468,10 @@
           "retry": {
             "fr": "Un nombre négatif dans avance fait reculer.",
             "en": "A negative number in forward goes backwards."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -16988,5 +17048,5 @@
     "art/tika.svg",
     "art/world1-island.svg"
   ],
-  "sizeBytes": 626231
+  "sizeBytes": 627635
 }

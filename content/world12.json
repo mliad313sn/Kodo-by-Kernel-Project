@@ -41,7 +41,11 @@
           "newIdeas": [
             "plan",
             "parts"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C12.1-s2",
@@ -63,6 +67,10 @@
           "retry": {
             "fr": "Commence par apprends et un nom.",
             "en": "Start with learn and a name."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -85,6 +93,10 @@
           "retry": {
             "fr": "Dis ce que ça doit faire avant d'écrire.",
             "en": "Say what it should do before you write."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -143,7 +155,11 @@
           "newIdeas": [
             "list",
             "index"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C12.2-s2",
@@ -165,6 +181,10 @@
           "retry": {
             "fr": "Écris-les entre crochets, séparés par des virgules.",
             "en": "Write them in square brackets, separated by commas."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -188,6 +208,10 @@
           "retry": {
             "fr": "La première place porte le numéro 1.",
             "en": "The first place is numbered 1."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -246,7 +270,11 @@
           "newIdeas": [
             "screens",
             "navigation"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C12.3-s2",
@@ -268,6 +296,10 @@
           "retry": {
             "fr": "Écris $écran = 1 sur la première ligne.",
             "en": "Write $screen = 1 on the first line."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -291,6 +323,10 @@
           "retry": {
             "fr": "Un bloc par écran, et un si qui choisit.",
             "en": "One block per screen, and an if that picks."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -349,7 +385,11 @@
           "newIdeas": [
             "iteration",
             "feedback"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C12.4-s2",
@@ -371,6 +411,10 @@
           "retry": {
             "fr": "Une ligne qui commence par un dièse.",
             "en": "A line starting with a hash."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -393,6 +437,10 @@
           "retry": {
             "fr": "Garde ce qui marche, change une seule chose.",
             "en": "Keep what works, change one thing."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -13559,5 +13607,5 @@
     "art/tika.svg",
     "art/world12-application.svg"
   ],
-  "sizeBytes": 441145
+  "sizeBytes": 442217
 }

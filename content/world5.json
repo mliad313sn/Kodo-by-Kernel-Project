@@ -40,7 +40,11 @@
           "demo": "quand drapeau {\n  répète 4 {\n    avance 60\n    tournedroite 90\n  }\n}",
           "newIdeas": [
             "un déclencheur"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C5.1-s2",
@@ -62,6 +66,10 @@
           "retry": {
             "fr": "Cherche-le dans la famille Événements.",
             "en": "Look for it in the Events family."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -84,6 +92,10 @@
           "retry": {
             "fr": "Mets ton dessin à l'intérieur du bloc.",
             "en": "Put your drawing inside the block."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -130,7 +142,11 @@
           "demo": "quand touche \"a\" {\n  tournegauche 90\n}\nquand touche \"d\" {\n  tournedroite 90\n}",
           "newIdeas": [
             "une touche déclenche"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C5.2-s2",
@@ -152,6 +168,10 @@
           "retry": {
             "fr": "Appuie sur le mot dans le bloc.",
             "en": "Press the word inside the block."
+          },
+          "cta": {
+            "fr": "Écris le nombre",
+            "en": "Write the number"
           }
         },
         {
@@ -174,6 +194,10 @@
           "retry": {
             "fr": "quand touche \"espace\", puis avance.",
             "en": "When key \"espace\", then forward."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -220,7 +244,11 @@
           "demo": "quand clic {\n  tournedroite 45\n  avance 40\n}",
           "newIdeas": [
             "un clic sur le lutin"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C5.3-s2",
@@ -242,6 +270,10 @@
           "retry": {
             "fr": "Il est dans la famille Événements.",
             "en": "It is in the Events family."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -264,6 +296,10 @@
           "retry": {
             "fr": "Mets ce qui doit arriver dans le bloc.",
             "en": "Put what should happen inside the block."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -310,7 +346,11 @@
           "demo": "quand drapeau {\n  écris \"A\"\n  écris \"A\"\n}\nquand drapeau {\n  écris \"B\"\n  écris \"B\"\n}",
           "newIdeas": [
             "deux scripts ensemble"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C5.4-s2",
@@ -332,6 +372,10 @@
           "retry": {
             "fr": "Mets-le sous le premier, pas dedans.",
             "en": "Put it below the first one, not inside it."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -354,6 +398,10 @@
           "retry": {
             "fr": "Deux blocs « quand drapeau », l'un sous l'autre.",
             "en": "Two \"when flag\" blocks, one below the other."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -14310,5 +14358,5 @@
     "art/tika.svg",
     "art/world5-quand.svg"
   ],
-  "sizeBytes": 476847
+  "sizeBytes": 477966
 }

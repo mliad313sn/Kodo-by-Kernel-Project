@@ -44,7 +44,11 @@
           "newIdeas": [
             "boolean",
             "guard"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C7.1-s2",
@@ -66,6 +70,10 @@
           "retry": {
             "fr": "Écris $ok = vrai sur la première ligne.",
             "en": "Write $ok = true on the first line."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -89,6 +97,10 @@
           "retry": {
             "fr": "Remplis la boîte. Mets le dessin dans un si.",
             "en": "Fill the box. Put the drawing inside an if."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -143,7 +155,11 @@
           "newIdeas": [
             "comparison",
             "boundary"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C7.2-s2",
@@ -165,6 +181,10 @@
           "retry": {
             "fr": "Écris $x = 5 puis un test avec >=.",
             "en": "Write $x = 5 then a test with >=."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -188,6 +208,10 @@
           "retry": {
             "fr": "Un seul = range. Pour comparer il en faut deux.",
             "en": "One = puts in. Comparing needs two."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -242,7 +266,11 @@
           "newIdeas": [
             "guard",
             "skip"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C7.3-s2",
@@ -264,6 +292,10 @@
           "retry": {
             "fr": "Écris $x = 3 sur la première ligne.",
             "en": "Write $x = 3 on the first line."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -287,6 +319,10 @@
           "retry": {
             "fr": "La seconde figure va dans les accolades du si.",
             "en": "The second shape goes inside the if brackets."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -341,7 +377,11 @@
           "newIdeas": [
             "else",
             "one-path"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C7.4-s2",
@@ -363,6 +403,10 @@
           "retry": {
             "fr": "Écris $x = 2. Le test sera faux.",
             "en": "Write $x = 2. The test will be false."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -386,6 +430,10 @@
           "retry": {
             "fr": "Mets la seconde après le mot sinon.",
             "en": "Put the second one after the word else."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -440,7 +488,11 @@
           "newIdeas": [
             "or",
             "and"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C7.5-s2",
@@ -462,6 +514,10 @@
           "retry": {
             "fr": "Écris $a = 7 puis $b = 2.",
             "en": "Write $a = 7 then $b = 2."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -485,6 +541,10 @@
           "retry": {
             "fr": "et exige les deux. ou se contente d'une.",
             "en": "and demands both. or takes one."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -16910,5 +16970,5 @@
     "art/tika.svg",
     "art/world7-si.svg"
   ],
-  "sizeBytes": 556582
+  "sizeBytes": 557922
 }

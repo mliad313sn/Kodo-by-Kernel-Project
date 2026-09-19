@@ -46,6 +46,7 @@ class RecordingHost implements TutorialHost {
   final List<String?> audioPlayed = [];
   final List<SpotlightTarget?> spotlights = [];
   final List<String> demonstrated = [];
+  final List<DemoPhase> demoPhases = [];
   List<String>? palette;
   final VectorCanvas canvas = VectorCanvas();
 
@@ -62,8 +63,14 @@ class RecordingHost implements TutorialHost {
   String get scratchPathSignature => canvas.pathSignature();
 
   @override
-  void demonstrate(Program program) =>
+  void demonstrate(Program program, DemoPhase phase) {
+    demoPhases.add(phase);
+    // The picture the child ends up looking at is the real one; the ghost is the promise
+    // that preceded it, and the test below checks both arrived in that order.
+    if (phase == DemoPhase.real) {
       demonstrated.add(render(program, KeywordTables.fr));
+    }
+  }
 
   @override
   void narrate(String text, {String? audioKey}) {
@@ -307,6 +314,114 @@ void main() {
       final host = RecordingHost();
       TutorialPlayer(tutorial: first(), host: host, locale: 'fr').start();
       expect(host.demonstrated.single, contains('avance'));
+    });
+  });
+
+  /* `FR-M5-02` — "spotlight, ghost-block demo, single call to action". Three things, and
+     each one is a way a tutorial stops being a tutorial: pointing nowhere, performing a
+     magic trick, and handing a seven-year-old a menu. */
+  group('FR-M5-02 · one place to look, one thing to press', () {
+    Tutorial first() => world1.tutorials.first;
+
+    test('the demo is ghosted first and real after', () {
+      final host = RecordingHost();
+      TutorialPlayer(tutorial: first(), host: host, locale: 'fr').start();
+      // A demo that simply appears is a magic trick: the blocks were somewhere else, now
+      // they are here, and a child has learned that the computer did it. Ghosted then
+      // real is a demonstration — this is about to happen, then it happens.
+      expect(host.demoPhases, [DemoPhase.ghosted, DemoPhase.real]);
+    });
+
+    test('a step that asks for something points at where', () {
+      for (final tutorial in world1.tutorials) {
+        for (final step in tutorial.steps) {
+          if (step.expectedAction == ExpectedAction.watch) continue;
+          expect(step.spotlight, isNotNull,
+              reason: '${step.id} says "now you try" and points nowhere');
+        }
+      }
+    });
+
+    test('every step has exactly one thing to press, in both languages', () {
+      for (final tutorial in world1.tutorials) {
+        for (final step in tutorial.steps) {
+          for (final locale in ['fr', 'en']) {
+            final cta = step.callToActionIn(locale);
+            expect(cta.trim(), isNotEmpty, reason: '${step.id} in "$locale"');
+            expect(cta.split(RegExp(r'\s+')).length, lessThanOrEqualTo(4),
+                reason: '${step.id}: "$cta" is a paragraph, not a button');
+          }
+        }
+      }
+    });
+
+    test('the player offers a call to action, never a list', () {
+      final host = RecordingHost();
+      final player =
+          TutorialPlayer(tutorial: first(), host: host, locale: 'fr');
+      player.start();
+      // A String and not a List<String>, which is how "single" is guaranteed rather than
+      // reviewed: there is no shape in the model that can hold a second button.
+      expect(player.callToAction(), isA<String>());
+      expect(player.callToAction(), isNotEmpty);
+    });
+
+    test('the gate refuses a step with nothing to press', () {
+      final broken = Tutorial(
+        id: 'tut-broken',
+        conceptId: 'C0.0',
+        closingConceptNameKeys: {'fr': 'Le trait', 'en': 'The line'},
+        steps: [
+          TutorialStep(
+            id: 'broken-s1',
+            beat: Beat.jeRegarde,
+            narrationKeys: {'fr': 'Regarde Tika.', 'en': 'Watch Tika.'},
+            audioKeys: {
+              'fr': 'audio/fr/x.opus',
+              'en': 'audio/en/x.opus',
+            },
+            expectedAction: ExpectedAction.watch,
+            callToActionKeys: {
+              'fr': 'Appuie sur le bouton vert et regarde bien',
+              'en': 'Press the green button and watch',
+            },
+          ),
+        ],
+      );
+      final failures = checkTutorial(broken);
+      expect(failures.map((f) => f.rule), contains('call-to-action-length'));
+    });
+
+    test('the gate refuses "now you try" with nothing pointed at', () {
+      final broken = Tutorial(
+        id: 'tut-blind',
+        conceptId: 'C0.0',
+        closingConceptNameKeys: {'fr': 'Le trait', 'en': 'The line'},
+        steps: [
+          TutorialStep(
+            id: 'blind-s1',
+            beat: Beat.onFaitEnsemble,
+            narrationKeys: {'fr': 'À toi de jouer.', 'en': 'Your turn now.'},
+            audioKeys: {'fr': 'audio/fr/y.opus', 'en': 'audio/en/y.opus'},
+            expectedAction: ExpectedAction.placeBlock,
+            successCondition: const SuccessCondition(opcodeId: 'MOVE_FORWARD'),
+            retryHintKeys: {'fr': 'Essaie encore.', 'en': 'Try again.'},
+          ),
+        ],
+      );
+      expect(checkTutorial(broken).map((f) => f.rule),
+          contains('spotlight-required'));
+    });
+
+    test('every shipped tutorial passes the three rules', () {
+      for (final tutorial in world1.tutorials) {
+        final rules = checkTutorial(tutorial).map((f) => f.rule).toSet();
+        expect(rules.intersection({
+          'single-call-to-action',
+          'call-to-action-length',
+          'spotlight-required',
+        }), isEmpty, reason: tutorial.id);
+      }
     });
   });
 

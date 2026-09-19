@@ -44,7 +44,11 @@
           "newIdeas": [
             "box",
             "box-name"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C6.1-s2",
@@ -66,6 +70,10 @@
           "retry": {
             "fr": "Écris $côté = 60 sur la première ligne.",
             "en": "Write $side = 60 on the first line."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -89,6 +97,10 @@
           "retry": {
             "fr": "Remplis une boîte. Écris ensuite avance avec son nom.",
             "en": "Fill a box. Then write forward with its name."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -138,7 +150,11 @@
           "newIdeas": [
             "reassignment",
             "accumulator"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C6.2-s2",
@@ -160,6 +176,10 @@
           "retry": {
             "fr": "Écris $c = $c + 10.",
             "en": "Write $c = $c + 10."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -183,6 +203,10 @@
           "retry": {
             "fr": "Remplis la boîte avant le répète.",
             "en": "Fill the box before the repeat."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -232,7 +256,11 @@
           "newIdeas": [
             "arithmetic",
             "precedence"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C6.3-s2",
@@ -254,6 +282,10 @@
           "retry": {
             "fr": "Écris $c = 20 * 3.",
             "en": "Write $c = 20 * 3."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -277,6 +309,10 @@
           "retry": {
             "fr": "Un tour complet fait 360 degrés. Partage-le.",
             "en": "A full turn is 360 degrees. Share it out."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -326,7 +362,11 @@
           "newIdeas": [
             "inspector",
             "print"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C6.4-s2",
@@ -348,6 +388,10 @@
           "retry": {
             "fr": "Écris le mot écris puis $c.",
             "en": "Write the word print then $c."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -371,6 +415,10 @@
           "retry": {
             "fr": "Range un nombre. Écris ensuite le nom de la boîte.",
             "en": "Put a number in. Then print the box name."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -420,7 +468,11 @@
           "newIdeas": [
             "random",
             "seeded"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C6.5-s2",
@@ -442,6 +494,10 @@
           "retry": {
             "fr": "Écris $t = hasard 30, 60.",
             "en": "Write $t = random 30, 60."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -465,6 +521,10 @@
           "retry": {
             "fr": "Range le tirage. Sers-t'en dans un répète.",
             "en": "Put the draw away. Use it inside a repeat."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -14922,5 +14982,5 @@
     "art/tika.svg",
     "art/world6-variables.svg"
   ],
-  "sizeBytes": 474845
+  "sizeBytes": 476185
 }

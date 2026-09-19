@@ -41,7 +41,11 @@
           "newIdeas": [
             "text",
             "braces"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C11.1-s2",
@@ -63,6 +67,10 @@
           "retry": {
             "fr": "Le mot, une espace, puis le nombre.",
             "en": "The word, a space, then the number."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -85,6 +93,10 @@
           "retry": {
             "fr": "L'accolade ouvre et referme la répétition.",
             "en": "The bracket opens and closes the repeat."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -143,7 +155,11 @@
           "newIdeas": [
             "comment",
             "skipping"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C11.2-s2",
@@ -165,6 +181,10 @@
           "retry": {
             "fr": "Le dièse s'écrit tout au début.",
             "en": "The hash goes right at the start."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -187,6 +207,10 @@
           "retry": {
             "fr": "Tika saute tout ce qui suit le dièse.",
             "en": "Tika skips everything after the hash."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -245,7 +269,11 @@
           "newIdeas": [
             "error",
             "reading"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C11.3-s2",
@@ -267,6 +295,10 @@
           "retry": {
             "fr": "Écris $côté = 60 sur la première ligne.",
             "en": "Write $côté = 60 on the first line."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -289,6 +321,10 @@
           "retry": {
             "fr": "La phrase dit quoi et souvent où.",
             "en": "The sentence says what, and often where."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -347,7 +383,11 @@
           "newIdeas": [
             "english",
             "same-program"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C11.4-s2",
@@ -369,6 +409,10 @@
           "retry": {
             "fr": "avance et forward sont le même bloc.",
             "en": "avance and forward are the same block."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -391,6 +435,10 @@
           "retry": {
             "fr": "répète devient repeat, avance devient forward.",
             "en": "répète becomes repeat, avance becomes forward."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -13719,5 +13767,5 @@
     "art/tika.svg",
     "art/world11-texte.svg"
   ],
-  "sizeBytes": 438164
+  "sizeBytes": 439236
 }

@@ -44,7 +44,11 @@
           "newIdeas": [
             "le crayon se lève",
             "un déplacement sans trace"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C3.1-s2",
@@ -66,6 +70,10 @@
           "retry": {
             "fr": "Cherche le bloc « lève le crayon » dans la famille Stylo.",
             "en": "Look for the \"pen up\" block in the Pen family."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -88,6 +96,10 @@
           "retry": {
             "fr": "Lève le crayon pour te déplacer, baisse-le pour dessiner.",
             "en": "Lift the pen to travel, lower it to draw."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -132,7 +144,11 @@
           "demo": "largeurcrayon 10\nrépète 4 {\n  avance 60\n  tournedroite 90\n}",
           "newIdeas": [
             "un réglage qui reste"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C3.2-s2",
@@ -154,6 +170,10 @@
           "retry": {
             "fr": "Appuie sur le nombre dans le bloc d'épaisseur.",
             "en": "Tap the number in the thickness block."
+          },
+          "cta": {
+            "fr": "Écris le nombre",
+            "en": "Write the number"
           }
         },
         {
@@ -176,6 +196,10 @@
           "retry": {
             "fr": "Règle l'épaisseur AVANT de commencer le triangle.",
             "en": "Set the thickness BEFORE you start the triangle."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -221,7 +245,11 @@
           "newIdeas": [
             "rouge vert bleu",
             "0 à 255"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C3.3-s2",
@@ -243,6 +271,10 @@
           "retry": {
             "fr": "Le premier des trois nombres, c'est le rouge.",
             "en": "The first of the three numbers is red."
+          },
+          "cta": {
+            "fr": "Écris le nombre",
+            "en": "Write the number"
           }
         },
         {
@@ -265,6 +297,10 @@
           "retry": {
             "fr": "Choisis la couleur avant de dessiner le carré.",
             "en": "Choose the colour before you draw the square."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -310,7 +346,11 @@
           "newIdeas": [
             "la feuille a une couleur",
             "la feuille a une taille"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C3.4-s2",
@@ -332,6 +372,10 @@
           "retry": {
             "fr": "Le bloc qui commence par « canevas » agit sur la feuille.",
             "en": "The block that starts with \"canvas\" acts on the paper."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -354,6 +398,10 @@
           "retry": {
             "fr": "Un couleurcanevas sombre, puis un couleurcrayon clair.",
             "en": "A dark canvas colour, then a light pen colour."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -398,7 +446,11 @@
           "demo": "avance 60\ntournedroite 90\nnettoietout\navance 60",
           "newIdeas": [
             "effacer ne déplace pas"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C3.5-s2",
@@ -420,6 +472,10 @@
           "retry": {
             "fr": "Une des deux commandes ramène Tika au centre. Prends l'autre.",
             "en": "One of the two sends Tika back to the centre. Take the other one."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -442,6 +498,10 @@
           "retry": {
             "fr": "nettoietout efface la feuille et rien d'autre.",
             "en": "Clear wipes the paper and nothing else."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -15394,5 +15454,5 @@
     "art/tika.svg",
     "art/world3-crayon.svg"
   ],
-  "sizeBytes": 546241
+  "sizeBytes": 547645
 }

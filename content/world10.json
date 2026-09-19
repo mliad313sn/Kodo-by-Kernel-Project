@@ -44,7 +44,11 @@
           "newIdeas": [
             "sprite",
             "selection"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C10.1-s2",
@@ -66,6 +70,10 @@
           "retry": {
             "fr": "Écris lutin puis son nom entre guillemets.",
             "en": "Write sprite then its name in quotes."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -88,6 +96,10 @@
           "retry": {
             "fr": "Choisis le lutin, puis fais-le parler.",
             "en": "Choose the sprite, then make it speak."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -153,7 +165,11 @@
           "newIdeas": [
             "costume",
             "animation"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C10.2-s2",
@@ -175,6 +191,10 @@
           "retry": {
             "fr": "Il s'appelle costumesuivant.",
             "en": "It is called nextcostume."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -197,6 +217,10 @@
           "retry": {
             "fr": "Mets le bloc dans un répète.",
             "en": "Put the block inside a repeat."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -262,7 +286,11 @@
           "newIdeas": [
             "sound",
             "order"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C10.3-s2",
@@ -284,6 +312,10 @@
           "retry": {
             "fr": "Écris tambour, son numéro et sa durée.",
             "en": "Write drum, its number and how long."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -306,6 +338,10 @@
           "retry": {
             "fr": "Un son se joue là où tu l'écris.",
             "en": "A sound plays where you write it."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -371,7 +407,11 @@
           "newIdeas": [
             "backdrop",
             "stage"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C10.4-s2",
@@ -393,6 +433,10 @@
           "retry": {
             "fr": "Écris arrièreplan puis son nom.",
             "en": "Write backdrop then its name."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -415,6 +459,10 @@
           "retry": {
             "fr": "Le décor ne demande aucun lutin.",
             "en": "The scene asks for no sprite at all."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -480,7 +528,11 @@
           "newIdeas": [
             "effect",
             "clearing"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C10.5-s2",
@@ -502,6 +554,10 @@
           "retry": {
             "fr": "Écris effet, son nom, puis le nombre.",
             "en": "Write effect, its name, then the number."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -524,6 +580,10 @@
           "retry": {
             "fr": "Un bloc les enlève tous d'un coup.",
             "en": "One block takes them all off at once."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -17560,5 +17620,5 @@
     "art/tika.svg",
     "art/world10-lutins.svg"
   ],
-  "sizeBytes": 539499
+  "sizeBytes": 540839
 }

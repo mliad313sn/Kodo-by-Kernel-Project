@@ -41,7 +41,11 @@
           "newIdeas": [
             "define",
             "call"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C9.1-s2",
@@ -63,6 +67,10 @@
           "retry": {
             "fr": "Le nom du bloc suffit sur sa ligne.",
             "en": "The block name on its own line is enough."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -85,6 +93,10 @@
           "retry": {
             "fr": "Apprendre ne dessine rien. Il faut écrire le nom.",
             "en": "Teaching draws nothing. You have to write the name."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -142,7 +154,11 @@
           "newIdeas": [
             "parameter",
             "reuse"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C9.2-s2",
@@ -164,6 +180,10 @@
           "retry": {
             "fr": "Écris carré puis le nombre.",
             "en": "Write square then the number."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -186,6 +206,10 @@
           "retry": {
             "fr": "La boîte du bloc s'écrit après son nom.",
             "en": "The block's box is written after its name."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -243,7 +267,11 @@
           "newIdeas": [
             "return",
             "value"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C9.3-s2",
@@ -265,6 +293,10 @@
           "retry": {
             "fr": "retourne va devant le calcul.",
             "en": "return goes in front of the sum."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -287,6 +319,10 @@
           "retry": {
             "fr": "écris montre. retourne donne.",
             "en": "print shows. return gives."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -344,7 +380,11 @@
           "newIdeas": [
             "decomposition",
             "nesting"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C9.4-s2",
@@ -366,6 +406,10 @@
           "retry": {
             "fr": "Un bloc s'apprend avant qu'on s'en serve.",
             "en": "A block is taught before it is used."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         },
         {
@@ -388,6 +432,10 @@
           "retry": {
             "fr": "Cherche la part qui revient plusieurs fois.",
             "en": "Look for the part that comes back several times."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -16848,5 +16896,5 @@
     "art/tika.svg",
     "art/world9-mesblocs.svg"
   ],
-  "sizeBytes": 566334
+  "sizeBytes": 567406
 }

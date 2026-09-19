@@ -38,7 +38,11 @@
           "demo": "avance 60",
           "newIdeas": [
             "avance"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C0.1-s2",
@@ -60,6 +64,10 @@
           "retry": {
             "fr": "Le bloc avance est le premier de la liste.",
             "en": "The forward block is the first one in the list."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -82,6 +90,10 @@
           "retry": {
             "fr": "Le bouton vert est en bas de l'écran.",
             "en": "The green button is at the bottom of the screen."
+          },
+          "cta": {
+            "fr": "Appuie sur le vert",
+            "en": "Press green"
           }
         }
       ],
@@ -117,7 +129,11 @@
           "demo": "avance 60\ntournedroite 90\navance 40",
           "newIdeas": [
             "ordre"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C0.2-s2",
@@ -139,6 +155,10 @@
           "retry": {
             "fr": "Pose-le entre les deux blocs avance.",
             "en": "Put it between the two forward blocks."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -161,6 +181,10 @@
           "retry": {
             "fr": "Fais glisser le bloc du haut vers le bas.",
             "en": "Drag the top block down."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -196,7 +220,11 @@
           "demo": "avance 40\ntournedroite 90\navance 40\ntournegauche 90",
           "newIdeas": [
             "un après l'autre"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C0.3-s2",
@@ -218,6 +246,10 @@
           "retry": {
             "fr": "Le bouton pas à pas est à côté du vert.",
             "en": "The step button is next to the green one."
+          },
+          "cta": {
+            "fr": "Appuie sur le vert",
+            "en": "Press green"
           }
         },
         {
@@ -240,6 +272,10 @@
           "retry": {
             "fr": "Une marche : monte, tourne, avance, retourne-toi.",
             "en": "One step: up, turn, along, turn back."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -275,7 +311,11 @@
           "demo": "avance 60\ntournedroite 90\navance 60",
           "newIdeas": [
             "annuler"
-          ]
+          ],
+          "cta": {
+            "fr": "Continuer",
+            "en": "Next"
+          }
         },
         {
           "id": "C0.4-s2",
@@ -297,6 +337,10 @@
           "retry": {
             "fr": "La flèche qui recule est en haut.",
             "en": "The back arrow is at the top."
+          },
+          "cta": {
+            "fr": "Pose le bloc",
+            "en": "Put the block"
           }
         },
         {
@@ -319,6 +363,10 @@
           "retry": {
             "fr": "Tu peux appuyer sur la flèche plusieurs fois.",
             "en": "You can press the arrow several times."
+          },
+          "cta": {
+            "fr": "À toi",
+            "en": "Your turn"
           }
         }
       ],
@@ -12234,5 +12282,5 @@
     "art/tika.svg",
     "art/world0-plage.svg"
   ],
-  "sizeBytes": 442015
+  "sizeBytes": 443145
 }
