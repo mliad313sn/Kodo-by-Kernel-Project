@@ -147,6 +147,23 @@ List<PublishFailure> checkItem(Item item, {Grader grader = const Grader()}) {
             'a wrong choice does not say which misconception it evidences');
       }
     }
+    /* Two choices reading the same thing make an item that cannot be answered: a child
+       who picks the second "7" is marked wrong for choosing the right answer. It happens
+       when distractors are computed rather than typed — World 7 generated a "the block
+       ran anyway" distractor that equalled the correct count on every set whose test was
+       true — so it is checked per language, where the collision actually reaches a child. */
+    for (final locale in requiredLocales) {
+      final labels = [
+        for (final c in item.choices) (c.labelKeys[locale] ?? '').trim()
+      ]..removeWhere((l) => l.isEmpty);
+      final seen = <String>{};
+      for (final label in labels) {
+        if (!seen.add(label)) {
+          fail('choices-distinct',
+              'two choices both read "$label" in "$locale"');
+        }
+      }
+    }
   }
   if (item.type == ItemType.t9OpenBuild) {
     if (item.rubric.length < 3 || item.rubric.length > 5) {

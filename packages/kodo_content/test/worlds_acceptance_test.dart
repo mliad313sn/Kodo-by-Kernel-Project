@@ -56,7 +56,7 @@ Map<String, int> ledgerFor(Set<int> onlyWorlds) {
 }
 
 /// The worlds that have been authored and shipped. **The one list.**
-const shippedWorlds = [0, 1, 2, 3, 4, 5, 6];
+const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7];
 
 void main() {
   final worlds = {for (final n in shippedWorlds) n: load(n)};
@@ -67,6 +67,7 @@ void main() {
   final world4 = worlds[4]!;
   final world5 = worlds[5]!;
   final world6 = worlds[6]!;
+  final world7 = worlds[7]!;
 
   group('§6.3 · the shipped worlds carry the committed item volume', () {
     final committed = ledgerFor(shippedWorlds.toSet());
@@ -92,7 +93,7 @@ void main() {
       }
     });
 
-    test('the shipped worlds carry 670 items between them', () {
+    test('the shipped worlds carry 784 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
@@ -100,8 +101,9 @@ void main() {
       expect(world4.items, hasLength(106));
       expect(world5.items, hasLength(90));
       expect(world6.items, hasLength(108));
-      // 55 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 670);
+      expect(world7.items, hasLength(114));
+      // 65 % of the 1 214 the curriculum commits across all thirteen worlds.
+      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 784);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -280,7 +282,7 @@ void main() {
     });
   });
 
-  maintenanceTests(world0, world2);
+  maintenanceTests(worlds);
 
   group('World 2 teaches the loop', () {
     test('every concept has items that actually contain a loop', () {
@@ -469,6 +471,187 @@ void main() {
     });
   });
 
+  /* Three worlds in a row found the same hole in three costumes. World 5: a program with
+     no `quand` still runs under the flag, so "you forgot the trigger" drew the right
+     picture. World 6: a box is invisible, so "you typed the number" drew the right
+     picture. World 7: a test that passes changes nothing, so "you deleted the test" drew
+     the right picture.
+
+     Remembering it a fourth time is not a plan, so it is a rule now, checked for every
+     world that ships — and for every world that ever will. */
+  /* Three worlds in a row found the same hole in three costumes. World 5: a program with
+     no `quand` still runs under the flag, so "you forgot the trigger" drew the right
+     picture. World 6: a box is invisible, so "you typed the number" drew the right
+     picture. World 7: a test that passes changes nothing, so "you deleted the test" drew
+     the right picture.
+
+     Remembering it a fourth time is not a plan, so it is a rule now, checked for every
+     world that ships — and for every world that ever will. */
+  group('a world whose subject the canvas cannot show says so structurally', () {
+    for (final n in [5, 6, 7]) {
+      test('World $n\'s drawing items carry a structural claim', () {
+        final items = worlds[n]!.items.where((i) =>
+            i.type.wantsProgram &&
+            i.type != ItemType.t9OpenBuild &&
+            i.targetProgramSource != null);
+        expect(items, isNotEmpty);
+        final bare = items.where((i) => i.assertions.isEmpty).toList();
+        // Not every item: a world has plenty whose whole content IS the picture. But the
+        // majority, because the majority of these three worlds is not the picture.
+        expect(bare.length, lessThan(items.length / 2),
+            reason: '${bare.length} of ${items.length} items in World $n are '
+                'graded on the drawing alone');
+      });
+
+      test('World $n\'s structural claims are each disproved by a distractor', () {
+        /* An assertion nobody can fail is decoration: if no wrong answer trips it,
+           deleting it would change nothing and nothing would notice.
+
+           T4 is excluded, and the reason is not a concession. In a fill-the-gap the
+           child is given the program and writes only the hole, so every distractor is
+           the same program with a different number in it — the assertion there is a
+           guard against a submission that is not the template at all, not a claim any
+           authored distractor could disprove. Everywhere the child writes the whole
+           program, the claim has to be earned. */
+        var proved = 0;
+        var claimed = 0;
+        for (final item in worlds[n]!.items) {
+          if (item.assertions.isEmpty) continue;
+          if (item.type == ItemType.t4FillTheGap) continue;
+          claimed++;
+          for (final source in item.wrongSolutionSources) {
+            final parsed = parse(source, KeywordTables.fr);
+            if (parsed.errors.isNotEmpty) continue;
+            if (item.assertions.any((a) => !a.check(parsed.program).passed)) {
+              proved++;
+              break;
+            }
+          }
+        }
+        expect(claimed, greaterThan(10));
+        expect(proved, claimed,
+            reason: 'only $proved of $claimed items in World $n prove their '
+                'own structural claim');
+      });
+    }
+  });
+
+  group('World 7 teaches the test, which a true answer hides', () {
+    /// What [item] would draw if every branch ran, or null if that cannot be asked.
+    int? unguardedSegments(Item item) {
+      final source = item.referenceSolutionSource;
+      if (source == null || !source.contains('si ')) return null;
+      final stripped = parse(
+          source
+              .replaceAll(RegExp(r'si [^{]*\{'), 'répète 1 {')
+              .replaceAll('sinon {', 'répète 1 {'),
+          KeywordTables.fr);
+      if (stripped.errors.isNotEmpty) return null;
+      final canvas = VectorCanvas();
+      runProgram(stripped.program, canvas, seed: item.seed);
+      return canvas.segmentCount;
+    }
+
+    int guardedSegments(Item item) {
+      final program = parse(item.referenceSolutionSource!, KeywordTables.fr);
+      expect(program.errors, isEmpty);
+      final canvas = VectorCanvas();
+      runProgram(program.program, canvas, seed: item.seed);
+      return canvas.segmentCount;
+    }
+
+    test('no item can be passed with the test deleted', () {
+      /* Two ways an item may survive having its `si` thrown away, and it has to have
+         one: either the drawing changes, or an assertion notices. An item with neither
+         is a World 1 item in World 7 clothing. */
+      final drawing = world7.items.where((i) =>
+          i.type.wantsProgram &&
+          i.type != ItemType.t9OpenBuild &&
+          i.targetProgramSource != null);
+      expect(drawing, isNotEmpty);
+      for (final item in drawing) {
+        final without = unguardedSegments(item);
+        final differs = without != null && without != guardedSegments(item);
+        final claims = item.assertions.whereType<ContainsNode>().any((a) =>
+            a.node == 'If');
+        expect(differs || claims, isTrue,
+            reason: '${item.id} grades the same with the si removed');
+      }
+    });
+
+    test('the branch is really skipped somewhere in C7.3, C7.4 and C7.5', () {
+      /* These three concepts ARE the branch, so for each of them at least one shipped
+         item has to withhold something — otherwise the whole concept is taught on
+         programs whose test always passes, which teaches the test away. C7.1 and C7.2
+         are not in this list on purpose: their subject is the value and the comparison,
+         and their programs are meant to draw. */
+      for (final concept in ['C7.3', 'C7.4', 'C7.5']) {
+        final withheld = world7.items.where((i) {
+          if (!i.type.wantsProgram ||
+              i.type == ItemType.t9OpenBuild ||
+              i.conceptId != concept) {
+            return false;
+          }
+          final without = unguardedSegments(i);
+          return without != null && without > guardedSegments(i);
+        });
+        expect(withheld, isNotEmpty,
+            reason: '$concept never withholds anything: every one of its items '
+                'would draw the same with the si deleted');
+      }
+    });
+
+    test('C7.5 items sit on the row that tells et from ou', () {
+      /* When both halves are true, `et` and `ou` agree, and so do they when both are
+         false. The only row that discriminates is the one with exactly one half true, so
+         every C7.5 program item has to be on it. */
+      final joined = world7.items.where((i) =>
+          i.conceptId == 'C7.5' &&
+          i.type.wantsProgram &&
+          (i.referenceSolutionSource ?? '').contains(' ou '));
+      expect(joined, isNotEmpty);
+      for (final item in joined) {
+        final source = item.referenceSolutionSource!;
+        final swapped = source.replaceAll(' ou ', ' et ');
+        final asOr = VectorCanvas();
+        final asAnd = VectorCanvas();
+        final orProgram = parse(source, KeywordTables.fr);
+        final andProgram = parse(swapped, KeywordTables.fr);
+        expect(orProgram.errors, isEmpty);
+        expect(andProgram.errors, isEmpty);
+        runProgram(orProgram.program, asOr, seed: item.seed);
+        runProgram(andProgram.program, asAnd, seed: item.seed);
+        expect(asAnd.segmentCount, isNot(asOr.segmentCount),
+            reason: '${item.id} draws the same with et as with ou, so it '
+                'cannot tell a child which one they needed');
+      }
+    });
+
+    test('a choice item never offers the same answer twice', () {
+      // The publish gate enforces this now; this is the claim stated where a reader of
+      // the worlds will see it. It found real items in Worlds 3, 4, 5 and 7.
+      for (final pack in worlds.values) {
+        for (final item in pack.items) {
+          for (final locale in requiredLocales) {
+            final labels = [for (final c in item.choices) c.labelKeys[locale]];
+            expect(labels.toSet(), hasLength(labels.length),
+                reason: '${item.id} repeats a choice in "$locale"');
+          }
+        }
+      }
+    });
+
+    test('no narration in World 7 says the word it is teaching', () {
+      for (final tutorial in world7.tutorials) {
+        for (final step in tutorial.steps) {
+          for (final line in step.narrationKeys.values) {
+            expect(jargonIn(line), isEmpty, reason: '"$line"');
+          }
+        }
+      }
+    });
+  });
+
   group('World 6 teaches the box, which the picture cannot show', () {
     /* The whole risk of World 6 in one test. `$côté = 60` then `avance $côté` draws
        exactly what `avance 60` draws, so an item that only compares pictures grades
@@ -650,7 +833,9 @@ void main() {
 /// after every package was built. World 0 and World 2 are content: no `lib/` file in any
 /// package changed to make them work, and this test proves the runtime consequence — a
 /// pack the code has never seen installs, and its items run, on the shipped engine.
-void maintenanceTests(ContentPack world0, ContentPack world2) {
+void maintenanceTests(Map<int, ContentPack> worlds) {
+  final world0 = worlds[0]!;
+  final world2 = worlds[2]!;
   group('NFR-MAINT-01 · a new world needs no app release', () {
     test('a pack the engine has never seen installs and its items run', () {
       final library = ContentLibrary();
@@ -684,14 +869,22 @@ void maintenanceTests(ContentPack world0, ContentPack world2) {
       }
     });
 
-    test('every opcode the packs use is one the shipped engine already has',
-        () {
-      for (final pack in [world0, world2]) {
+    test('every palette entry names something the shipped engine has', () {
+      /* A palette mixes opcodes with grammar — `répète` is as much a thing a child
+         reaches for as `avance` — so both are accepted and neither is taken on trust.
+         Until World 6 this ran over two worlds only, and a syntax word in a palette
+         would have failed it, which is presumably why. */
+      for (final pack in worlds.values) {
         for (final item in pack.items) {
-          for (final opcodeId in item.paletteScope) {
-            expect(Opcode.byId(opcodeId), isNotNull,
-                reason:
-                    '${item.id} offers "$opcodeId", which the engine does not have');
+          for (final id in item.paletteScope) {
+            expect(Opcode.byId(id) != null || syntaxPaletteIds.contains(id), isTrue,
+                reason: '${item.id} offers "$id", which the engine does not have');
+          }
+        }
+        for (final tutorial in pack.tutorials) {
+          for (final id in tutorial.paletteScope) {
+            expect(Opcode.byId(id) != null || syntaxPaletteIds.contains(id), isTrue,
+                reason: '${tutorial.id} offers "$id", which the engine does not have');
           }
         }
       }

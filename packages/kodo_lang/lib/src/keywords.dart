@@ -44,6 +44,24 @@ enum SyntaxWord {
   when_,
 }
 
+/// What a syntax word is called in an item's palette scope (`FR-M2-08`).
+///
+/// A palette is a list of what a child may reach for, and `répète` is as much a thing
+/// they reach for as `avance` is — but it is grammar, so it has no opcode id. The two
+/// have been sharing one list of strings since World 0, with nothing checking that a
+/// palette entry names anything at all: `'REPAET'` would have shipped.
+///
+/// The name is derived rather than typed, so the two can never disagree: the enum's name
+/// without its trailing underscore, upper-cased. `if_` is `IF`, `when_` is `WHEN`.
+extension SyntaxWordPalette on SyntaxWord {
+  String get paletteId => name.replaceAll('_', '').toUpperCase();
+}
+
+/// Every palette id that names a syntax word rather than an opcode.
+final Set<String> syntaxPaletteIds = {
+  for (final word in SyntaxWord.values) word.paletteId,
+};
+
 /// One opcode's written forms in one language.
 class KeywordEntry {
   const KeywordEntry(this.primary,

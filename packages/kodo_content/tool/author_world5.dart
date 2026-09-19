@@ -1021,29 +1021,38 @@ List<Item> conceptC54() {
 
   /* T3 — count what is on the paper. Two scripts drawing at once is the only way to get
      these figures, and the count is a thing a child can check by looking. */
+  /* Each set carries the count the *first script alone* would leave, because that is what
+     "one at a time" means here and it is not always one. The last set is the one that
+     proves the point: only one of its two scripts starts on the flag, so the right answer
+     IS one — and a fixed "1" distractor made that item unanswerable. */
   for (final entry in [
     (
       'quand drapeau {\n  avance 40\n}\n'
           'quand drapeau {\n  direction 90\n  avance 40\n}',
       2,
+      1,
     ),
     (
       'quand drapeau {\n  répète 3 {\n    avance 20\n  }\n}\n'
           'quand drapeau {\n  direction 180\n  avance 30\n}',
       4,
+      3,
     ),
     (
       'quand drapeau {\n  avance 30\n}\n'
           'quand drapeau {\n  avance 30\n}',
       2,
+      1,
     ),
     (
       'quand drapeau {\n  avance 25\n}\n'
           'quand touche "a" {\n  avance 25\n}',
       1,
+      // Both scripts counted, which is the mistake this set is for.
+      2,
     ),
   ]) {
-    final source = entry.$1, marks = entry.$2;
+    final source = entry.$1, marks = entry.$2, firstOnly = entry.$3;
     items.add(predict(
       id: id(),
       conceptId: 'C5.4',
@@ -1056,13 +1065,15 @@ List<Item> conceptC54() {
       choices: [
         Choice(labelKeys: b('$marks', '$marks'), correct: true),
         Choice(
-            labelKeys: b('${marks + 1}', '${marks + 1}'),
+            labelKeys: b('${marks + firstOnly + 1}', '${marks + firstOnly + 1}'),
             correct: false,
             misconception: 'C5.4-counts-every-script'),
         Choice(
-            labelKeys: b('1', '1'),
-            correct: marks == 1 ? false : false,
-            misconception: 'C5.4-one-at-a-time'),
+            labelKeys: b('$firstOnly', '$firstOnly'),
+            correct: false,
+            misconception: marks == 1
+                ? 'C5.4-counts-every-script'
+                : 'C5.4-one-at-a-time'),
         Choice(
             labelKeys: b('0', '0'),
             correct: false,

@@ -206,12 +206,17 @@ List<Item> conceptC41() {
     ));
   }
 
-  // T3 — predict where Tika ends up.
+  /* T3 — predict where Tika ends up.
+     
+     Every set has x different from y, and that is a rule rather than a coincidence: the
+     first distractor is the point with its axes swapped, and on a point like (350 ; 350)
+     the swap is the right answer wearing the wrong label. Two of these sets shipped that
+     way until the publish gate learned to compare an item's choices with each other. */
   for (final entry in [
     ('va 300, 100', 300, 100),
     ('avance 50\nva 120, 260', 120, 260),
-    ('va 50, 50\nva 350, 350', 350, 350),
-    ('va 200, 200\ntournedroite 90\nva 300, 300', 300, 300),
+    ('va 50, 50\nva 350, 120', 350, 120),
+    ('va 200, 200\ntournedroite 90\nva 300, 80', 300, 80),
   ]) {
     final source = entry.$1, x = entry.$2, y = entry.$3;
     items.add(predict(
@@ -452,12 +457,14 @@ List<Item> conceptC42() {
     ));
   }
 
-  // T3 — predict.
+  /* T3 — predict. Same rule as C4.1's: x and y always differ, because both distractors
+     are built by repeating or swapping a coordinate and a point on the diagonal makes all
+     three choices read the same. */
   for (final entry in [
     ('va 100, 100\nvax 300', 300, 100),
     ('va 100, 100\nvay 300', 100, 300),
     ('va 250, 250\nvax 50\nvay 350', 50, 350),
-    ('va 200, 200\nvay 60\nvax 60', 60, 60),
+    ('va 200, 200\nvay 60\nvax 140', 140, 60),
   ]) {
     final source = entry.$1, x = entry.$2, y = entry.$3;
     items.add(predict(
@@ -1187,6 +1194,11 @@ List<Item> conceptC44() {
             'Which bearing is Tika facing at the end?\n\n{p}'),
         {'p': source},
       ),
+      /* The three other quarter-turns, rather than two of them and a literal 0. A fixed
+         0 collides with the answer whenever the program ends facing up, and with the
+         opposite bearing whenever it ends facing down — which was true of three of these
+         four sets. Every bearing here is a multiple of 90, so the three rotations are
+         always distinct from each other and from the answer. */
       choices: [
         Choice(labelKeys: b('$heading', '$heading'), correct: true),
         Choice(
@@ -1196,11 +1208,11 @@ List<Item> conceptC44() {
         Choice(
             labelKeys: b('${(heading + 180) % 360}', '${(heading + 180) % 360}'),
             correct: false,
-            misconception: 'C4.4-heading-is-a-turn'),
+            misconception: 'C4.4-heading-is-opposite'),
         Choice(
-            labelKeys: b('0', '0'),
+            labelKeys: b('${(heading + 270) % 360}', '${(heading + 270) % 360}'),
             correct: false,
-            misconception: 'C4.4-heading-resets'),
+            misconception: 'C4.4-heading-turns-the-other-way'),
       ],
       itemHints: hints(
         'Un cap posé efface tout ce qui précède.',

@@ -195,10 +195,18 @@ List<Item> conceptC31() {
   }
 
   // T3 — predict. The misconception, asked directly.
+  /* The fourth choice is authored per set rather than fixed at zero. "Zéro trait" is the
+     right answer to the third program, and a fixed zero made it appear twice — once as
+     the answer and once as a mistake. Where it is not the answer it stays, because
+     "the pen never came down" is a real thing a child thinks. */
   for (final entry in [
-    ('lèvecrayon\navance 60\nbaissecrayon\navance 60', 1, 60),
-    ('avance 40\nlèvecrayon\navance 40\nbaissecrayon\navance 40', 2, 40),
-    ('lèvecrayon\nrépète 3 {\n  avance 30\n}\navance 30', 0, 30),
+    ('lèvecrayon\navance 60\nbaissecrayon\navance 60', 1, 60, 0,
+        'C3.1-pen-never-down'),
+    ('avance 40\nlèvecrayon\navance 40\nbaissecrayon\navance 40', 2, 40, 0,
+        'C3.1-pen-never-down'),
+    // Four: every `avance` in the program, counted as if the pen never lifted.
+    ('lèvecrayon\nrépète 3 {\n  avance 30\n}\navance 30', 0, 30, 4,
+        'C3.1-pen-ignored'),
   ]) {
     final source = entry.$1, marks = entry.$2;
     items.add(predict(
@@ -221,9 +229,9 @@ List<Item> conceptC31() {
             correct: false,
             misconception: 'C3.1-pen-ignored'),
         Choice(
-            labelKeys: b('0', '0'),
+            labelKeys: b('${entry.$4}', '${entry.$4}'),
             correct: false,
-            misconception: 'C3.1-pen-never-down'),
+            misconception: entry.$5),
       ],
       itemHints: hints(
         'Un trait n\'apparaît que si le crayon est baissé.',

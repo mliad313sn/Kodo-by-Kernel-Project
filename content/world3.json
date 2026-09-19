@@ -542,6 +542,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde les vides entre les traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the gaps between the dashes."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde les vides entre les traits.",
@@ -675,6 +682,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde les vides entre les traits.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look at the gaps between the dashes."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde les vides entre les traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the gaps between the dashes."
           }
         },
         {
@@ -814,6 +828,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde les vides entre les traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the gaps between the dashes."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde les vides entre les traits.",
@@ -947,6 +968,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde les vides entre les traits.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look at the gaps between the dashes."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde les vides entre les traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the gaps between the dashes."
           }
         },
         {
@@ -1086,6 +1114,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde s'il y a un trait entre les deux carrés.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look for a line between the two squares."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde s'il y a un trait entre les deux carrés.",
@@ -1222,6 +1257,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde s'il y a un trait entre les deux carrés.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look for a line between the two squares."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde s'il y a un trait entre les deux carrés.",
@@ -1355,6 +1397,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde s'il y a un trait entre les deux carrés.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look for a line between the two squares."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde s'il y a un trait entre les deux carrés.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look for a line between the two squares."
           }
         },
         {
@@ -1495,6 +1544,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -1629,6 +1685,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -1769,6 +1832,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -1903,6 +1973,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -2176,11 +2253,11 @@
         },
         {
           "label": {
-            "fr": "0",
-            "en": "0"
+            "fr": "4",
+            "en": "4"
           },
           "correct": false,
-          "misconception": "C3.1-pen-never-down"
+          "misconception": "C3.1-pen-ignored"
         }
       ],
       "rubric": [],
@@ -2259,6 +2336,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -2399,6 +2483,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -2536,6 +2627,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -2668,6 +2766,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -2807,6 +2912,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -2940,6 +3052,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -3080,6 +3199,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde l'épaisseur de chaque côté.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at how thick each side is."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde l'épaisseur de chaque côté.",
@@ -3213,6 +3339,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde l'épaisseur de chaque côté.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look at how thick each side is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde l'épaisseur de chaque côté.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at how thick each side is."
           }
         },
         {
@@ -3352,6 +3485,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde l'épaisseur de chaque côté.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at how thick each side is."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde l'épaisseur de chaque côté.",
@@ -3485,6 +3625,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde l'épaisseur de chaque côté.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look at how thick each side is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde l'épaisseur de chaque côté.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at how thick each side is."
           }
         },
         {
@@ -3624,6 +3771,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -3760,6 +3914,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -3893,6 +4054,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -4034,6 +4202,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -4172,6 +4347,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -4307,6 +4489,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -4666,6 +4855,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -4803,6 +4999,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -4937,6 +5140,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -5295,6 +5505,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde la couleur du trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the colour of the line."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde la couleur du trait.",
@@ -5428,6 +5645,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde la couleur du trait.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look at the colour of the line."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde la couleur du trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the colour of the line."
           }
         },
         {
@@ -5567,6 +5791,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde la couleur du trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the colour of the line."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde la couleur du trait.",
@@ -5700,6 +5931,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde la couleur du trait.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look at the colour of the line."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde la couleur du trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the colour of the line."
           }
         },
         {
@@ -5839,6 +6077,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde la couleur du trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the colour of the line."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde la couleur du trait.",
@@ -5975,6 +6220,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -6108,6 +6360,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -6249,6 +6508,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -6384,6 +6650,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -6525,6 +6798,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -6660,6 +6940,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -7092,6 +7379,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -7229,6 +7523,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -7363,6 +7664,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -7867,6 +8175,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde la couleur du fond.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the background colour."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde la couleur du fond.",
@@ -8000,6 +8315,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde la couleur du fond.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look at the background colour."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde la couleur du fond.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the background colour."
           }
         },
         {
@@ -8139,6 +8461,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde la couleur du fond.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the background colour."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde la couleur du fond.",
@@ -8272,6 +8601,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -8411,6 +8747,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -8544,6 +8887,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -8685,6 +9035,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -8820,6 +9177,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -8961,6 +9325,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -9096,6 +9467,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -9528,6 +9906,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -9665,6 +10050,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -9799,6 +10191,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -10157,6 +10556,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde d'où part le trait qui reste.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the remaining line starts."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde d'où part le trait qui reste.",
@@ -10291,6 +10697,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde d'où part le trait qui reste.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look at where the remaining line starts."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde d'où part le trait qui reste.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the remaining line starts."
           }
         },
         {
@@ -10431,6 +10844,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde d'où part le trait qui reste.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the remaining line starts."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde d'où part le trait qui reste.",
@@ -10565,6 +10985,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde d'où part le trait qui reste.",
             "en": "The shape is in the right place, but the pen is not the right thickness. Look at where the remaining line starts."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde d'où part le trait qui reste.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the remaining line starts."
           }
         },
         {
@@ -10707,6 +11134,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -10843,6 +11277,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -10985,6 +11426,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -11124,6 +11572,13 @@
           }
         },
         {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
           "when": "wrongBackground",
           "text": {
             "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
@@ -11260,6 +11715,13 @@
           "text": {
             "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
             "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
           }
         },
         {
@@ -12622,5 +13084,5 @@
     "art/tika.svg",
     "art/world3-crayon.svg"
   ],
-  "sizeBytes": 440379
+  "sizeBytes": 462421
 }

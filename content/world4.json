@@ -2552,8 +2552,8 @@
       "type": "T3",
       "difficulty": "D2",
       "prompt": {
-        "fr": "Où Tika se trouve-t-elle à la fin ?\n\nva 50, 50\nva 350, 350",
-        "en": "Where does Tika end up?\n\nva 50, 50\nva 350, 350"
+        "fr": "Où Tika se trouve-t-elle à la fin ?\n\nva 50, 50\nva 350, 120",
+        "en": "Where does Tika end up?\n\nva 50, 50\nva 350, 120"
       },
       "wrong": [],
       "alternatives": [],
@@ -2584,23 +2584,23 @@
       "choices": [
         {
           "label": {
-            "fr": "(350 ; 350)",
-            "en": "(350, 350)"
+            "fr": "(350 ; 120)",
+            "en": "(350, 120)"
           },
           "correct": true
         },
         {
           "label": {
-            "fr": "(350 ; 350)",
-            "en": "(350, 350)"
+            "fr": "(120 ; 350)",
+            "en": "(120, 350)"
           },
           "correct": false,
           "misconception": "C4.1-axes-swapped"
         },
         {
           "label": {
-            "fr": "(550 ; 550)",
-            "en": "(550, 550)"
+            "fr": "(550 ; 320)",
+            "en": "(550, 320)"
           },
           "correct": false,
           "misconception": "C4.1-relative-to-turtle"
@@ -2625,8 +2625,8 @@
       "type": "T3",
       "difficulty": "D2",
       "prompt": {
-        "fr": "Où Tika se trouve-t-elle à la fin ?\n\nva 200, 200\ntournedroite 90\nva 300, 300",
-        "en": "Where does Tika end up?\n\nva 200, 200\ntournedroite 90\nva 300, 300"
+        "fr": "Où Tika se trouve-t-elle à la fin ?\n\nva 200, 200\ntournedroite 90\nva 300, 80",
+        "en": "Where does Tika end up?\n\nva 200, 200\ntournedroite 90\nva 300, 80"
       },
       "wrong": [],
       "alternatives": [],
@@ -2657,23 +2657,23 @@
       "choices": [
         {
           "label": {
-            "fr": "(300 ; 300)",
-            "en": "(300, 300)"
+            "fr": "(300 ; 80)",
+            "en": "(300, 80)"
           },
           "correct": true
         },
         {
           "label": {
-            "fr": "(300 ; 300)",
-            "en": "(300, 300)"
+            "fr": "(80 ; 300)",
+            "en": "(80, 300)"
           },
           "correct": false,
           "misconception": "C4.1-axes-swapped"
         },
         {
           "label": {
-            "fr": "(500 ; 500)",
-            "en": "(500, 500)"
+            "fr": "(500 ; 280)",
+            "en": "(500, 280)"
           },
           "correct": false,
           "misconception": "C4.1-relative-to-turtle"
@@ -5570,8 +5570,8 @@
       "type": "T3",
       "difficulty": "D2",
       "prompt": {
-        "fr": "Où Tika se trouve-t-elle à la fin ?\n\nva 200, 200\nvay 60\nvax 60",
-        "en": "Where does Tika end up?\n\nva 200, 200\nvay 60\nvax 60"
+        "fr": "Où Tika se trouve-t-elle à la fin ?\n\nva 200, 200\nvay 60\nvax 140",
+        "en": "Where does Tika end up?\n\nva 200, 200\nvay 60\nvax 140"
       },
       "wrong": [],
       "alternatives": [],
@@ -5602,23 +5602,23 @@
       "choices": [
         {
           "label": {
-            "fr": "(60 ; 60)",
-            "en": "(60, 60)"
+            "fr": "(140 ; 60)",
+            "en": "(140, 60)"
           },
           "correct": true
         },
         {
           "label": {
-            "fr": "(60 ; 60)",
-            "en": "(60, 60)"
+            "fr": "(140 ; 140)",
+            "en": "(140, 140)"
           },
           "correct": false,
           "misconception": "C4.2-one-axis-moves-both"
         },
         {
           "label": {
-            "fr": "(60 ; 60)",
-            "en": "(60, 60)"
+            "fr": "(60 ; 140)",
+            "en": "(60, 140)"
           },
           "correct": false,
           "misconception": "C4.2-axes-swapped"
@@ -10993,15 +10993,15 @@
             "en": "0"
           },
           "correct": false,
-          "misconception": "C4.4-heading-is-a-turn"
+          "misconception": "C4.4-heading-is-opposite"
         },
         {
           "label": {
-            "fr": "0",
-            "en": "0"
+            "fr": "90",
+            "en": "90"
           },
           "correct": false,
-          "misconception": "C4.4-heading-resets"
+          "misconception": "C4.4-heading-turns-the-other-way"
         }
       ],
       "rubric": [],
@@ -11066,7 +11066,7 @@
             "en": "270"
           },
           "correct": false,
-          "misconception": "C4.4-heading-is-a-turn"
+          "misconception": "C4.4-heading-is-opposite"
         },
         {
           "label": {
@@ -11074,7 +11074,7 @@
             "en": "0"
           },
           "correct": false,
-          "misconception": "C4.4-heading-resets"
+          "misconception": "C4.4-heading-turns-the-other-way"
         }
       ],
       "rubric": [],
@@ -11139,15 +11139,15 @@
             "en": "0"
           },
           "correct": false,
-          "misconception": "C4.4-heading-is-a-turn"
+          "misconception": "C4.4-heading-is-opposite"
         },
         {
           "label": {
-            "fr": "0",
-            "en": "0"
+            "fr": "90",
+            "en": "90"
           },
           "correct": false,
-          "misconception": "C4.4-heading-resets"
+          "misconception": "C4.4-heading-turns-the-other-way"
         }
       ],
       "rubric": [],
@@ -11212,15 +11212,15 @@
             "en": "180"
           },
           "correct": false,
-          "misconception": "C4.4-heading-is-a-turn"
+          "misconception": "C4.4-heading-is-opposite"
         },
         {
           "label": {
-            "fr": "0",
-            "en": "0"
+            "fr": "270",
+            "en": "270"
           },
           "correct": false,
-          "misconception": "C4.4-heading-resets"
+          "misconception": "C4.4-heading-turns-the-other-way"
         }
       ],
       "rubric": [],
@@ -14328,5 +14328,5 @@
     "art/tika.svg",
     "art/world4-plan.svg"
   ],
-  "sizeBytes": 484790
+  "sizeBytes": 484862
 }

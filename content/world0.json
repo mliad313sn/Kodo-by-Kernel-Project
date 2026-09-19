@@ -396,6 +396,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde le nombre dans le bloc.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right. It is the background colour that is not. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at the number in the block."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -492,6 +527,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Regarde le nombre dans le bloc.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde le nombre dans le bloc.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right. It is the background colour that is not. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at the number in the block."
           }
         },
         {
@@ -594,6 +664,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde le nombre dans le bloc.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right. It is the background colour that is not. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at the number in the block."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -690,6 +795,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Regarde le nombre dans le bloc.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde le nombre dans le bloc.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right. It is the background colour that is not. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at the number in the block."
           }
         },
         {
@@ -792,6 +932,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde le nombre dans le bloc.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right. It is the background colour that is not. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at the number in the block."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -888,6 +1063,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Regarde le nombre dans le bloc.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde le nombre dans le bloc.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde le nombre dans le bloc.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right. It is the background colour that is not. Look at the number in the block."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde le nombre dans le bloc.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at the number in the block."
           }
         },
         {
@@ -1185,6 +1395,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -1285,6 +1530,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -1382,6 +1662,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
           }
         },
         {
@@ -1681,6 +1996,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -1778,6 +2128,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
           }
         },
         {
@@ -1881,6 +2266,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -1978,6 +2398,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Compare la longueur du trait.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare la longueur du trait.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare la longueur du trait.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare la longueur du trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare la longueur du trait.",
+            "en": "The drawing is right. It is the background colour that is not. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare la longueur du trait.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare how long the line is."
           }
         },
         {
@@ -2081,6 +2536,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare la longueur du trait.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare la longueur du trait.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare la longueur du trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare la longueur du trait.",
+            "en": "The drawing is right. It is the background colour that is not. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare la longueur du trait.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare how long the line is."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -2181,6 +2671,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare la longueur du trait.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare la longueur du trait.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare la longueur du trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare la longueur du trait.",
+            "en": "The drawing is right. It is the background colour that is not. Compare how long the line is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare la longueur du trait.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare how long the line is."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -2277,6 +2802,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Regarde où se trouve le coin.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde où se trouve le coin.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde où se trouve le coin.",
+            "en": "The drawing is right. It is the background colour that is not. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde où se trouve le coin.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at where the corner is."
           }
         },
         {
@@ -2380,6 +2940,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde où se trouve le coin.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde où se trouve le coin.",
+            "en": "The drawing is right. It is the background colour that is not. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde où se trouve le coin.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at where the corner is."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -2477,6 +3072,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Regarde où se trouve le coin.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde où se trouve le coin.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde où se trouve le coin.",
+            "en": "The drawing is right. It is the background colour that is not. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde où se trouve le coin.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at where the corner is."
           }
         },
         {
@@ -2580,6 +3210,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde où se trouve le coin.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde où se trouve le coin.",
+            "en": "The drawing is right. It is the background colour that is not. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde où se trouve le coin.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at where the corner is."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -2677,6 +3342,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Regarde où se trouve le coin.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde où se trouve le coin.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde où se trouve le coin.",
+            "en": "The drawing is right. It is the background colour that is not. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde où se trouve le coin.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at where the corner is."
           }
         },
         {
@@ -2780,6 +3480,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde où se trouve le coin.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde où se trouve le coin.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde où se trouve le coin.",
+            "en": "The drawing is right. It is the background colour that is not. Look at where the corner is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde où se trouve le coin.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at where the corner is."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -2876,6 +3611,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
           }
         },
         {
@@ -2978,6 +3748,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -3077,6 +3882,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -3173,6 +4013,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
           }
         },
         {
@@ -3277,6 +4152,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -3377,6 +4287,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -3474,6 +4419,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
           }
         },
         {
@@ -3966,6 +4946,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare les deux traits.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare les deux traits.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare les deux traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare les deux traits.",
+            "en": "The drawing is right. It is the background colour that is not. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare les deux traits.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare the two lines."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -4063,6 +5078,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Compare les deux traits.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare les deux traits.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare les deux traits.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare les deux traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare les deux traits.",
+            "en": "The drawing is right. It is the background colour that is not. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare les deux traits.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare the two lines."
           }
         },
         {
@@ -4166,6 +5216,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare les deux traits.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare les deux traits.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare les deux traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare les deux traits.",
+            "en": "The drawing is right. It is the background colour that is not. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare les deux traits.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare the two lines."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -4263,6 +5348,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Compare les deux traits.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare les deux traits.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare les deux traits.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare les deux traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare les deux traits.",
+            "en": "The drawing is right. It is the background colour that is not. Compare the two lines."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare les deux traits.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare the two lines."
           }
         },
         {
@@ -4365,6 +5485,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -4461,6 +5616,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
           }
         },
         {
@@ -4563,6 +5753,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -4662,6 +5887,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -4758,6 +6018,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
           }
         },
         {
@@ -4862,6 +6157,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde dans quelle direction part l'escalier.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde dans quelle direction part l'escalier.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde dans quelle direction part l'escalier.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde dans quelle direction part l'escalier.",
+            "en": "The drawing is right. It is the background colour that is not. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde dans quelle direction part l'escalier.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at which way the staircase goes."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -4960,6 +6290,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Regarde dans quelle direction part l'escalier.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde dans quelle direction part l'escalier.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde dans quelle direction part l'escalier.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde dans quelle direction part l'escalier.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde dans quelle direction part l'escalier.",
+            "en": "The drawing is right. It is the background colour that is not. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde dans quelle direction part l'escalier.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at which way the staircase goes."
           }
         },
         {
@@ -5064,6 +6429,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde dans quelle direction part l'escalier.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde dans quelle direction part l'escalier.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde dans quelle direction part l'escalier.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde dans quelle direction part l'escalier.",
+            "en": "The drawing is right. It is the background colour that is not. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde dans quelle direction part l'escalier.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at which way the staircase goes."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -5162,6 +6562,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Regarde dans quelle direction part l'escalier.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Regarde dans quelle direction part l'escalier.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Regarde dans quelle direction part l'escalier.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Regarde dans quelle direction part l'escalier.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Regarde dans quelle direction part l'escalier.",
+            "en": "The drawing is right. It is the background colour that is not. Look at which way the staircase goes."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Regarde dans quelle direction part l'escalier.",
+            "en": "The drawing is right, but the sheet is not the right size. Look at which way the staircase goes."
           }
         },
         {
@@ -5655,6 +7090,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compte les marches.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Count the steps."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compte les marches.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Count the steps."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compte les marches.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Count the steps."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compte les marches.",
+            "en": "The drawing is right. It is the background colour that is not. Count the steps."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compte les marches.",
+            "en": "The drawing is right, but the sheet is not the right size. Count the steps."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -5755,6 +7225,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compte les marches.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Count the steps."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compte les marches.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Count the steps."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compte les marches.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Count the steps."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compte les marches.",
+            "en": "The drawing is right. It is the background colour that is not. Count the steps."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compte les marches.",
+            "en": "The drawing is right, but the sheet is not the right size. Count the steps."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -5852,6 +7357,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Compte les marches.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Count the steps."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compte les marches.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Count the steps."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compte les marches.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Count the steps."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compte les marches.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Count the steps."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compte les marches.",
+            "en": "The drawing is right. It is the background colour that is not. Count the steps."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compte les marches.",
+            "en": "The drawing is right, but the sheet is not the right size. Count the steps."
           }
         },
         {
@@ -5956,6 +7496,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare la longueur du deuxième trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right. It is the background colour that is not. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare how long the second line is."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -6054,6 +7629,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Compare la longueur du deuxième trait.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare la longueur du deuxième trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right. It is the background colour that is not. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare how long the second line is."
           }
         },
         {
@@ -6158,6 +7768,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare la longueur du deuxième trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right. It is the background colour that is not. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare how long the second line is."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -6256,6 +7901,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Compare la longueur du deuxième trait.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare la longueur du deuxième trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right. It is the background colour that is not. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare how long the second line is."
           }
         },
         {
@@ -6360,6 +8040,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compare la longueur du deuxième trait.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compare la longueur du deuxième trait.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right. It is the background colour that is not. Compare how long the second line is."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compare la longueur du deuxième trait.",
+            "en": "The drawing is right, but the sheet is not the right size. Compare how long the second line is."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -6456,6 +8171,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Compte les traits.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Count the lines."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compte les traits.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Count the lines."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compte les traits.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Count the lines."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compte les traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Count the lines."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compte les traits.",
+            "en": "The drawing is right. It is the background colour that is not. Count the lines."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compte les traits.",
+            "en": "The drawing is right, but the sheet is not the right size. Count the lines."
           }
         },
         {
@@ -6558,6 +8308,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compte les traits.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Count the lines."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compte les traits.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Count the lines."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compte les traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Count the lines."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compte les traits.",
+            "en": "The drawing is right. It is the background colour that is not. Count the lines."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compte les traits.",
+            "en": "The drawing is right, but the sheet is not the right size. Count the lines."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -6657,6 +8442,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compte les traits.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Count the lines."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compte les traits.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Count the lines."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compte les traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Count the lines."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compte les traits.",
+            "en": "The drawing is right. It is the background colour that is not. Count the lines."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compte les traits.",
+            "en": "The drawing is right, but the sheet is not the right size. Count the lines."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -6753,6 +8573,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit. Compte les traits.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place. Count the lines."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}. Compte les traits.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}. Count the lines."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur. Compte les traits.",
+            "en": "The shape is in the right place, but the pen is not the right thickness. Count the lines."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}. Compte les traits.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}. Count the lines."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne. Compte les traits.",
+            "en": "The drawing is right. It is the background colour that is not. Count the lines."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille. Compte les traits.",
+            "en": "The drawing is right, but the sheet is not the right size. Count the lines."
           }
         },
         {
@@ -6857,6 +8712,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -6957,6 +8847,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -7054,6 +8979,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
           }
         },
         {
@@ -7351,6 +9311,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -7451,6 +9446,41 @@
           }
         },
         {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
+          }
+        },
+        {
           "when": "structureMissing",
           "text": {
             "fr": "Le dessin ressemble à la cible, mais il faut y arriver comme on vient de l'apprendre.",
@@ -7548,6 +9578,41 @@
           "text": {
             "fr": "Ta figure a {actual} traits, la cible en a {expected}. Elle ne va pas au même endroit.",
             "en": "Your shape has {actual} lines, the target has {expected}. It does not go to the same place."
+          }
+        },
+        {
+          "when": "wrongColour",
+          "text": {
+            "fr": "La figure est au bon endroit, mais pas de la bonne couleur : tu en as utilisé {actualColours}, la cible en a {expectedColours}.",
+            "en": "The shape is in the right place, but not in the right colour: you used {actualColours}, the target has {expectedColours}."
+          }
+        },
+        {
+          "when": "wrongWidth",
+          "text": {
+            "fr": "La figure est au bon endroit, mais le crayon n'a pas la bonne épaisseur.",
+            "en": "The shape is in the right place, but the pen is not the right thickness."
+          }
+        },
+        {
+          "when": "wrongOutput",
+          "text": {
+            "fr": "Ton programme a écrit {actualCount} nombre(s) : {actual}. Il fallait écrire : {expected}.",
+            "en": "Your program wrote {actualCount} number(s): {actual}. It should have written: {expected}."
+          }
+        },
+        {
+          "when": "wrongBackground",
+          "text": {
+            "fr": "Le dessin est bon. C'est la couleur du fond qui n'est pas la bonne.",
+            "en": "The drawing is right. It is the background colour that is not."
+          }
+        },
+        {
+          "when": "wrongCanvasSize",
+          "text": {
+            "fr": "Le dessin est bon, mais la feuille n'a pas la bonne taille.",
+            "en": "The drawing is right, but the sheet is not the right size."
           }
         },
         {
@@ -8104,5 +10169,5 @@
     "art/tika.svg",
     "art/world0-plage.svg"
   ],
-  "sizeBytes": 269727
+  "sizeBytes": 367085
 }

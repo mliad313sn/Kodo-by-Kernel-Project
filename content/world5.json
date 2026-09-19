@@ -10656,8 +10656,8 @@
         },
         {
           "label": {
-            "fr": "3",
-            "en": "3"
+            "fr": "4",
+            "en": "4"
           },
           "correct": false,
           "misconception": "C5.4-counts-every-script"
@@ -10729,16 +10729,16 @@
         },
         {
           "label": {
-            "fr": "5",
-            "en": "5"
+            "fr": "8",
+            "en": "8"
           },
           "correct": false,
           "misconception": "C5.4-counts-every-script"
         },
         {
           "label": {
-            "fr": "1",
-            "en": "1"
+            "fr": "3",
+            "en": "3"
           },
           "correct": false,
           "misconception": "C5.4-one-at-a-time"
@@ -10802,8 +10802,8 @@
         },
         {
           "label": {
-            "fr": "3",
-            "en": "3"
+            "fr": "4",
+            "en": "4"
           },
           "correct": false,
           "misconception": "C5.4-counts-every-script"
@@ -10875,19 +10875,19 @@
         },
         {
           "label": {
-            "fr": "2",
-            "en": "2"
+            "fr": "4",
+            "en": "4"
           },
           "correct": false,
           "misconception": "C5.4-counts-every-script"
         },
         {
           "label": {
-            "fr": "1",
-            "en": "1"
+            "fr": "2",
+            "en": "2"
           },
           "correct": false,
-          "misconception": "C5.4-one-at-a-time"
+          "misconception": "C5.4-counts-every-script"
         },
         {
           "label": {
@@ -12280,5 +12280,5 @@
     "art/tika.svg",
     "art/world5-quand.svg"
   ],
-  "sizeBytes": 403181
+  "sizeBytes": 403187
 }
