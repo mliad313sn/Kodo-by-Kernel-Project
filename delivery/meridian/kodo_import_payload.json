@@ -37,99 +37,148 @@
     "people": [
       {
         "id": "PE-01",
-        "name": "Seat — Product Owner",
+        "name": "Seat 01 — Product Owner",
         "role": "Scope, budget, release; final sign-off",
         "site": "REM",
         "rate": 0
       },
       {
         "id": "PE-02",
-        "name": "Seat — Committee Chair / Programme Director",
+        "name": "Seat 02 — Committee Chair / Programme Director",
         "role": "Agenda, minutes, dissent log",
         "site": "PAR",
         "rate": 0
       },
       {
         "id": "PE-03",
-        "name": "Seat — Pedagogical Lead (CS education)",
+        "name": "Seat 03 — Pedagogical Lead (CS education)",
         "role": "The learning model — blocking veto",
         "site": "PAR",
         "rate": 0
       },
       {
         "id": "PE-04",
-        "name": "Seat — Curriculum & Assessment Designer",
+        "name": "Seat 04 — Curriculum & Assessment Designer",
         "role": "Concept ledger and exercise bank",
         "site": "PAR",
         "rate": 0
       },
       {
         "id": "PE-05",
-        "name": "Seat — Child Development Psychologist",
+        "name": "Seat 05 — Child Development Psychologist",
         "role": "Age-appropriateness veto",
         "site": "PAR",
         "rate": 0
       },
       {
         "id": "PE-06",
-        "name": "Seat — Game Designer (ethical engagement)",
+        "name": "Seat 06 — Game Designer (ethical engagement)",
         "role": "Motivation system",
         "site": "REM",
         "rate": 0
       },
       {
         "id": "PE-07",
-        "name": "Seat — Children's UX/UI + Accessibility",
+        "name": "Seat 07 — Children's UX/UI + Accessibility",
         "role": "Design system, WCAG",
         "site": "REM",
         "rate": 0
       },
       {
         "id": "PE-08",
-        "name": "Seat — Language & Runtime Architect",
+        "name": "Seat 08 — Language & Runtime Architect",
         "role": "Modules M1-M4",
         "site": "REM",
         "rate": 0
       },
       {
         "id": "PE-09",
-        "name": "Seat — Cross-platform Engineering Lead",
+        "name": "Seat 09 — Cross-platform Engineering Lead",
         "role": "Architecture, device matrix",
         "site": "REM",
         "rate": 0
       },
       {
         "id": "PE-10",
-        "name": "Seat — Backend, Data & Learning Analytics",
+        "name": "Seat 10 — Backend, Data & Learning Analytics",
         "role": "M13, M17, item health telemetry",
         "site": "REM",
         "rate": 0
       },
       {
         "id": "PE-11",
-        "name": "Seat — Localisation & Culture Lead",
+        "name": "Seat 11 — Localisation & Culture Lead",
         "role": "FR/EN parity, Wolof roadmap",
         "site": "DKR",
         "rate": 0
       },
       {
         "id": "PE-12",
-        "name": "Seat — Teacher & Parent Representative",
+        "name": "Seat 12 — Teacher & Parent Representative",
         "role": "M11, M12, classroom reality",
         "site": "DKR",
         "rate": 0
       },
       {
         "id": "PE-13",
-        "name": "Seat — Child Safety, Privacy & Compliance",
+        "name": "Seat 13 — Child Safety, Privacy & Compliance",
         "role": "§13 — blocking veto on every gate",
         "site": "PAR",
         "rate": 0
       },
       {
         "id": "PE-14",
-        "name": "Seat — QA & Release Manager",
+        "name": "Seat 14 — QA & Release Manager",
         "role": "Test strategy, defect taxonomy",
+        "site": "DKR",
+        "rate": 0
+      },
+      {
+        "id": "S1",
+        "name": "S1 — Client Shell squad (2 FTE)",
+        "role": "main.dart, the platform projects, navigation, state — M19. The critical path",
+        "site": "REM",
+        "rate": 0
+      },
+      {
+        "id": "S2",
+        "name": "S2 — Learning Client squad (3 FTE)",
+        "role": "The ten missing screens: profile, world map, tutorial player, item player, Studio, gallery, parent, classroom",
+        "site": "REM",
+        "rate": 0
+      },
+      {
+        "id": "S3",
+        "name": "S3 — Runtime & Platform squad (2 FTE)",
+        "role": "M1-M4 maintenance, and the platform APIs behind the consent gate",
+        "site": "REM",
+        "rate": 0
+      },
+      {
+        "id": "S4",
+        "name": "S4 — Data & Trust squad (1 FTE)",
+        "role": "Sync, telemetry, the weekly curriculum health report, moderation operations",
+        "site": "REM",
+        "rate": 0
+      },
+      {
+        "id": "S5",
+        "name": "S5 — Content Factory (5 FTE)",
+        "role": "Worlds 3-12 — 948 items, the schedule's critical path per §12",
+        "site": "DKR",
+        "rate": 0
+      },
+      {
+        "id": "S6",
+        "name": "S6 — Voice & Art (1 FTE)",
+        "role": "~380 recordings owed for Worlds 0-2, then Worlds 3-12; illustration",
+        "site": "DKR",
+        "rate": 0
+      },
+      {
+        "id": "S7",
+        "name": "S7 — Device & Release (1 FTE)",
+        "role": "The G3 device run and every number only glass can give",
         "site": "DKR",
         "rate": 0
       }
@@ -523,6 +572,25 @@
         "desc": "Module M17 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M17 in spec/requirements.json. No open non-functional requirements.",
         "phase": "Closure",
         "gate": 3,
+        "closed": false
+      },
+      {
+        "id": "M19",
+        "name": "M19 — Application shell and navigation",
+        "programme": "PLT",
+        "site": "REM",
+        "governanceLevel": "group",
+        "pm": "PE-09",
+        "method": "Hybrid",
+        "start": "2026-11-30",
+        "finish": "2027-02-26",
+        "baselineFinish": "2027-02-26",
+        "budget": 0,
+        "contingency": 0,
+        "contingencyUsed": 0,
+        "desc": "Module M19 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M19 in spec/requirements.json. No open non-functional requirements.",
+        "phase": "Execution",
+        "gate": 2,
         "closed": false
       }
     ],
@@ -1750,6 +1818,74 @@
         "deps": [
           "M17-A4"
         ]
+      },
+      {
+        "id": "M19-A1",
+        "project": "M19",
+        "name": "Interface contract and specification review",
+        "stage": 0,
+        "start": "2026-11-30",
+        "end": "2026-12-18",
+        "weight": 0.15,
+        "pct": 0,
+        "owner": "PE-09",
+        "deps": []
+      },
+      {
+        "id": "M19-A2",
+        "project": "M19",
+        "name": "Build",
+        "stage": 1,
+        "start": "2026-12-14",
+        "end": "2027-01-22",
+        "weight": 0.4,
+        "pct": 0,
+        "owner": "PE-09",
+        "deps": [
+          "M19-A1"
+        ]
+      },
+      {
+        "id": "M19-A3",
+        "project": "M19",
+        "name": "Acceptance tests and evidence",
+        "stage": 2,
+        "start": "2027-01-18",
+        "end": "2027-02-05",
+        "weight": 0.2,
+        "pct": 0,
+        "owner": "PE-09",
+        "deps": [
+          "M19-A2"
+        ]
+      },
+      {
+        "id": "M19-A4",
+        "project": "M19",
+        "name": "Localisation and accessibility pass",
+        "stage": 3,
+        "start": "2027-02-01",
+        "end": "2027-02-12",
+        "weight": 0.1,
+        "pct": 0,
+        "owner": "PE-09",
+        "deps": [
+          "M19-A3"
+        ]
+      },
+      {
+        "id": "M19-A5",
+        "project": "M19",
+        "name": "Child panel and pedagogical review",
+        "stage": 4,
+        "start": "2027-02-08",
+        "end": "2027-02-26",
+        "weight": 0.15,
+        "pct": 0,
+        "owner": "PE-09",
+        "deps": [
+          "M19-A4"
+        ]
       }
     ],
     "crossDeps": [
@@ -1794,6 +1930,27 @@
         "to": "M6",
         "toStage": 1,
         "label": "The publish gate is what makes an item gradable"
+      },
+      {
+        "from": "M19",
+        "fromStage": 1,
+        "to": "M2",
+        "toStage": 4,
+        "label": "No child panel on any screen until there is an app to open it in"
+      },
+      {
+        "from": "M19",
+        "fromStage": 1,
+        "to": "M6",
+        "toStage": 4,
+        "label": "The item player needs a shell before a child can reach an item"
+      },
+      {
+        "from": "M19",
+        "fromStage": 1,
+        "to": "M7",
+        "toStage": 4,
+        "label": "Progression is invisible without a world map to show it on"
       },
       {
         "from": "M14",
@@ -1951,6 +2108,48 @@
     ],
     "ledger": [],
     "raid": [
+      {
+        "id": "SF-01",
+        "project": "M19",
+        "type": "Issue",
+        "title": "§17.2's team shape did not anticipate the application as a workstream",
+        "detail": "The cahier allocates three Flutter engineers. What remains is an app shell from zero (M19), ten screens and a web CMS front end. Four are allocated in the charter — squads S1 and S2 — because one squad holding both makes the shell wait for design and the design wait for the shell.",
+        "p": 5,
+        "i": 4,
+        "status": "Open",
+        "response": "Mitigate",
+        "owner": "PE-01",
+        "opened": "2026-09-18",
+        "review": "2026-12-04"
+      },
+      {
+        "id": "SF-02",
+        "project": null,
+        "type": "Issue",
+        "title": "Both external audits are launch preconditions and neither is commissioned",
+        "detail": "NFR-A11Y-01 and NFR-SEC-01 block public launch. Auditors book months ahead and nobody has started. Seats 7 and 13 are directed to commission both now, against the current build, and to schedule the re-test — a finding closes on re-test evidence, never on a merged fix.",
+        "p": 5,
+        "i": 4,
+        "status": "Open",
+        "response": "Mitigate",
+        "owner": "PE-13",
+        "opened": "2026-09-18",
+        "review": "2026-12-04"
+      },
+      {
+        "id": "SF-03",
+        "project": null,
+        "type": "Issue",
+        "title": "The partner-teacher authoring pool does not exist yet",
+        "detail": "R1's response is templates plus a teacher pool plus a weekly burn-up. The templates are proven — 266 items went through them. The pool has not been hired. At 120 artefacts a week the remaining 948 items are about 8 weeks of authoring once the pool works; hiring and training four partner teachers is not inside those 8 weeks.",
+        "p": 4,
+        "i": 5,
+        "status": "Open",
+        "response": "Mitigate",
+        "owner": "PE-04",
+        "opened": "2026-09-18",
+        "review": "2026-12-04"
+      },
       {
         "id": "R1",
         "project": null,
@@ -2228,6 +2427,38 @@
         ]
       },
       {
+        "id": "CR-007",
+        "project": "M19",
+        "title": "Add M19 — application shell and navigation (FR-M19-01 … 06)",
+        "desc": "PO decision D-012, raised at G3. Eighteen modules were built, all eighteen pass their acceptance tests, and there is no application: no entry point, no platform project, nothing that assembles the eleven packages into something a child can open. Searching the eighteen module prompts for shell, navigation or home screen returns nothing. A decomposition that names every organ and no body produces exactly this. Adds a module; changes none.",
+        "raisedBy": "PE-01",
+        "raised": "2026-12-04",
+        "cost": 0,
+        "weeks": 0,
+        "funding": "Contingency",
+        "riskDelta": "0",
+        "status": "Approved",
+        "applied": true,
+        "steps": [
+          {
+            "role": "Raised",
+            "state": "done",
+            "when": "2026-12-04"
+          },
+          {
+            "role": "Committee consent",
+            "state": "done",
+            "when": "2026-12-04"
+          },
+          {
+            "role": "Product Owner",
+            "state": "done",
+            "when": "2026-12-04",
+            "comment": "Registered as an amendment, not a silent edit (§16)."
+          }
+        ]
+      },
+      {
         "id": "CR-003",
         "project": "M10",
         "title": "Remove the public gallery from v1 scope",
@@ -2356,7 +2587,141 @@
         ]
       }
     ],
-    "allocations": [],
+    "allocations": [
+      {
+        "person": "S1",
+        "project": "M19",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 100
+      },
+      {
+        "person": "S2",
+        "project": "M2",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 14
+      },
+      {
+        "person": "S2",
+        "project": "M3",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 14
+      },
+      {
+        "person": "S2",
+        "project": "M5",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 14
+      },
+      {
+        "person": "S2",
+        "project": "M6",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 14
+      },
+      {
+        "person": "S2",
+        "project": "M9",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 14
+      },
+      {
+        "person": "S2",
+        "project": "M11",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 14
+      },
+      {
+        "person": "S2",
+        "project": "M12",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 14
+      },
+      {
+        "person": "S3",
+        "project": "M1",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 33
+      },
+      {
+        "person": "S3",
+        "project": "M4",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 33
+      },
+      {
+        "person": "S3",
+        "project": "M14",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 33
+      },
+      {
+        "person": "S4",
+        "project": "M13",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 33
+      },
+      {
+        "person": "S4",
+        "project": "M17",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 33
+      },
+      {
+        "person": "S4",
+        "project": "M10",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 33
+      },
+      {
+        "person": "S5",
+        "project": "M18",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 100
+      },
+      {
+        "person": "S6",
+        "project": "M15",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 50
+      },
+      {
+        "person": "S6",
+        "project": "M16",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 50
+      },
+      {
+        "person": "S7",
+        "project": "M7",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 50
+      },
+      {
+        "person": "S7",
+        "project": "M8",
+        "from": "2026-11-30",
+        "to": "2027-09-10",
+        "pct": 50
+      }
+    ],
     "docs": [
       {
         "id": "DOC-001",
@@ -2442,6 +2807,39 @@
         "type": "Governance",
         "gate": 1,
         "owner": "PE-02",
+        "rev": "1.0",
+        "status": "Approved",
+        "updated": "2026-10-09"
+      },
+      {
+        "id": "DOC-009",
+        "project": null,
+        "name": "G3 assessment: the criterion clause by clause, and the 30 open requirements",
+        "type": "Assurance",
+        "gate": 3,
+        "owner": "PE-14",
+        "rev": "1.0",
+        "status": "Approved",
+        "updated": "2026-10-09"
+      },
+      {
+        "id": "DOC-010",
+        "project": null,
+        "name": "Committee and delivery organisation: 14 seats, 7 squads, the RACI",
+        "type": "Governance",
+        "gate": 3,
+        "owner": "PE-01",
+        "rev": "1.0",
+        "status": "Approved",
+        "updated": "2026-10-09"
+      },
+      {
+        "id": "DOC-011",
+        "project": "M19",
+        "name": "M19 deployment prompt — application shell and navigation",
+        "type": "Design",
+        "gate": 3,
+        "owner": "PE-09",
         "rev": "1.0",
         "status": "Approved",
         "updated": "2026-10-09"
@@ -2707,13 +3105,16 @@
       "highlights": [
         "G1 and G2 closed on evidence. All six Annex E questions answered in the PO decision register (D-001 … D-011), each with rationale and reversal cost. R9, the only risk the workbook records as outside the Committee's authority, is closed with D-001.",
         "All eighteen modules are built. Eleven packages, ~28 000 lines of Dart, 441 tests passing, every module prompt's automatable acceptance tests green.",
-        "100 of 130 requirements are Done, and every one of them is named by a test — enforced in CI, which fails the build if a requirement claims Done without one.",
+        "100 of 136 requirements are Done, and every one of them is named by a test — enforced in CI, which fails the build if a requirement claims Done without one.",
         "Three worlds authored and published: 266 items over 13 concepts, every concept at or above its §6.3 commitment and using at least five item types. Each pack is re-authored through the publish gate in CI and then diffed, so a bank that ships and a bank that was checked are the same bank.",
         "The gates did their job. Thirty-four authoring faults were refused before anything was written, and nine build defects were found — four of which would have reached a child, including an editor that silently deleted a line of a child's saved work (M3-001, S1).",
         "The G3 vertical slice runs end to end and offline: pack verified, tutorial played, items scheduled, answers graded, mastery reached, next concept unlocked. Every component is the real one.",
-        "NFR-MAINT-01 is closed by demonstration rather than by architecture: Worlds 0 and 2 were added after every package was built, with no change to any lib/ file."
+        "NFR-MAINT-01 is closed by demonstration rather than by architecture: Worlds 0 and 2 were added after every package was built, with no change to any lib/ file.",
+        "The Committee is seated and the delivery organisation is standing: 14 seats with their vetoes and first actions, 7 squads with explicit ownership, and a RACI over all 14 remaining work packages. See docs/governance/04_COMMITTEE_AND_DELIVERY_ORGANISATION.md."
       ],
       "concerns": [
+        "M19 DID NOT EXIST UNTIL NOW. Eighteen modules were built, all eighteen pass their acceptance tests, and there is no application — no entry point, no platform project, nothing that assembles the eleven packages into something a child can open. No module prompt ever asked for one. Raised as PO decision D-012 and CR-007; it is the critical path and every module's child-panel stage now waits on it.",
+        "Thirteen of the fourteen Committee seats are UNFILLED. Seat 1 is seated. The Chair is the first appointment, because an unfilled Chair means the dissent log has no keeper.",
         "G3 IS NOT CLOSED, and closes on one thing: its own criterion ends 'running on the reference low-end device', and nobody has run it on an Android 11 phone with 2 GB of RAM. Twelve of the thirty open requirements are waiting on that phone and nothing else. See docs/governance/03_G3_ASSESSMENT.md for the protocol seat 14 should run.",
         "Every performance, size, battery and soak figure in this portfolio is CI-measured. A number measured on a build server is not a number measured on the reference device, and reporting it as one is how a product ships slow.",
         "Nobody has READ the 266 items. The banks are machine-gated, which proves every item is gradable and proves nothing about whether it teaches. Seats 3 and 4 owe a review before a child sees them.",

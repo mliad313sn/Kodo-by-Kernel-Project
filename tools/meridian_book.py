@@ -58,6 +58,26 @@ SEATS = [
     ("PE-14", "QA & Release Manager", "DKR", "Test strategy, defect taxonomy"),
 ]
 
+# The delivery squads (first line). The Committee specifies and reviews; these build.
+# Charter: docs/governance/04_COMMITTEE_AND_DELIVERY_ORGANISATION.md
+#   squad id, name, lead seat, site, fte, what it owns
+SQUADS = [
+    ("S1", "Client Shell squad", "PE-09", "REM", 2.0,
+     "main.dart, the platform projects, navigation, state — M19. The critical path"),
+    ("S2", "Learning Client squad", "PE-07", "REM", 3.0,
+     "The ten missing screens: profile, world map, tutorial player, item player, Studio, gallery, parent, classroom"),
+    ("S3", "Runtime & Platform squad", "PE-08", "REM", 2.0,
+     "M1-M4 maintenance, and the platform APIs behind the consent gate"),
+    ("S4", "Data & Trust squad", "PE-10", "REM", 1.0,
+     "Sync, telemetry, the weekly curriculum health report, moderation operations"),
+    ("S5", "Content Factory", "PE-04", "DKR", 5.0,
+     "Worlds 3-12 — 948 items, the schedule's critical path per §12"),
+    ("S6", "Voice & Art", "PE-11", "DKR", 1.0,
+     "~380 recordings owed for Worlds 0-2, then Worlds 3-12; illustration"),
+    ("S7", "Device & Release", "PE-14", "DKR", 1.0,
+     "The G3 device run and every number only glass can give"),
+]
+
 PROGRAMMES = [
     ("RUN", "Runtime & Editors", "Language & Runtime Architect", "PE-08"),
     ("PED", "Pedagogy & Practice", "Pedagogical Lead", "PE-03"),
@@ -91,10 +111,32 @@ MODULES = [
     ("M15", "Localisation", "PLT", "DKR", "PE-11", "site", 20, 48),
     ("M16", "Accessibility", "PLT", "REM", "PE-07", "group", 9, 48),
     ("M17", "Analytics and learning telemetry", "PLT", "REM", "PE-10", "group", 24, 44),
+    # Raised at G3 by PO decision D-012: eighteen modules were built and none of them was
+    # the application. This is the critical path — every other module is invisible until it
+    # lands. See docs/governance/04_COMMITTEE_AND_DELIVERY_ORGANISATION.md, squad S1.
+    ("M19", "Application shell and navigation", "PLT", "REM", "PE-09", "group", 12, 24),
 ]
 
 # The workbook's risk register, updated to reflect what is now true.
 RISKS = [
+    # Staffing findings raised by the PO when the Committee was seated. Issues, not risks:
+    # a risk might happen, and these already have.
+    ("SF-01", "Issue", "§17.2's team shape did not anticipate the application as a workstream",
+     "The cahier allocates three Flutter engineers. What remains is an app shell from zero (M19), "
+     "ten screens and a web CMS front end. Four are allocated in the charter — squads S1 and S2 — "
+     "because one squad holding both makes the shell wait for design and the design wait for the shell.",
+     5, 4, "Open", "Mitigate", "PE-01", "M19"),
+    ("SF-02", "Issue", "Both external audits are launch preconditions and neither is commissioned",
+     "NFR-A11Y-01 and NFR-SEC-01 block public launch. Auditors book months ahead and nobody has "
+     "started. Seats 7 and 13 are directed to commission both now, against the current build, and "
+     "to schedule the re-test — a finding closes on re-test evidence, never on a merged fix.",
+     5, 4, "Open", "Mitigate", "PE-13", None),
+    ("SF-03", "Issue", "The partner-teacher authoring pool does not exist yet",
+     "R1's response is templates plus a teacher pool plus a weekly burn-up. The templates are proven "
+     "— 266 items went through them. The pool has not been hired. At 120 artefacts a week the "
+     "remaining 948 items are about 8 weeks of authoring once the pool works; hiring and training "
+     "four partner teachers is not inside those 8 weeks.",
+     4, 5, "Open", "Mitigate", "PE-04", None),
     ("R1", "Risk", "Item authoring under-delivers; the bank is thin and mastery becomes a claim",
      "Templates, partner-teacher pool, weekly burn-up at Committee. Scope is cut in worlds, never in items per concept.",
      4, 5, "Open", "Mitigate", "PE-04", None),
@@ -172,6 +214,13 @@ CHANGE_REQUESTS = [
      "PO decision D-005. A third one-way projection of the same AST. No Python is parsed or "
      "executed. Proven in M1 already: the emitter is 150 lines over the existing renderer.",
      "PE-01", 4, 0, 1, "Approved"),
+    ("CR-007", "M19", "Add M19 — application shell and navigation (FR-M19-01 … 06)",
+     "PO decision D-012, raised at G3. Eighteen modules were built, all eighteen pass their "
+     "acceptance tests, and there is no application: no entry point, no platform project, nothing "
+     "that assembles the eleven packages into something a child can open. Searching the eighteen "
+     "module prompts for shell, navigation or home screen returns nothing. A decomposition that "
+     "names every organ and no body produces exactly this. Adds a module; changes none.",
+     "PE-01", 12, 0, 0, "Approved"),
     ("CR-003", "M10", "Remove the public gallery from v1 scope",
      "PO decision D-003. §13 requires every child-authored public text reviewed before "
      "publication and a 24-hour triage SLA. That is a staffing commitment we cannot hold at "
@@ -205,6 +254,9 @@ DOCS = [
     ("DOC-006", "M1", "M1 Definition of Done, defects and outstanding items", "Quality", 3, "PE-14", "1.0", "Approved"),
     ("DOC-007", None, "Requirement traceability report (generated in CI)", "Assurance", 2, "PE-14", "auto", "Approved"),
     ("DOC-008", None, "Ways of working: committee, decision rights, severity scale", "Governance", 1, "PE-02", "1.0", "Approved"),
+    ("DOC-009", None, "G3 assessment: the criterion clause by clause, and the 30 open requirements", "Assurance", 3, "PE-14", "1.0", "Approved"),
+    ("DOC-010", None, "Committee and delivery organisation: 14 seats, 7 squads, the RACI", "Governance", 3, "PE-01", "1.0", "Approved"),
+    ("DOC-011", "M19", "M19 deployment prompt — application shell and navigation", "Design", 3, "PE-09", "1.0", "Approved"),
 ]
 
 # A module's shape of work. `w` is the share of the module the stage carries.
@@ -268,6 +320,7 @@ def completion_of(module_id):
 
 def build():
     projects, activities, milestones, raid, crs, items, docs = [], [], [], [], [], [], []
+    allocations = []
 
     for mid, name, prog, site, pm, gov, start_w, finish_w in MODULES:
         pct = completion_of(mid)
@@ -396,6 +449,32 @@ def build():
                     f"{requirement.get('verification', 'not stated')}.",
         })
 
+    # squad -> the module projects it owns. Charter part 2.
+    SQUAD_PROJECTS = {
+        "S1": ["M19"],
+        "S2": ["M2", "M3", "M5", "M6", "M9", "M11", "M12"],
+        "S3": ["M1", "M4", "M14"],
+        "S4": ["M13", "M17", "M10"],
+        "S5": ["M18"],
+        "S6": ["M15", "M16"],
+        "S7": ["M7", "M8"],
+    }
+    for sid, name, lead, site, fte, owns in SQUADS:
+        targets = SQUAD_PROJECTS.get(sid, [])
+        if not targets:
+            continue
+        # Meridian's allocation is a PERCENTAGE of the entity's time (`allocation.pct`),
+        # not an FTE count — an `fte` key is silently dropped and the row lands at 0 %,
+        # which reads as a squad assigned to a project and doing nothing on it. The squad's
+        # head count lives on its person record instead.
+        share = round(100 / len(targets))
+        for project in targets:
+            allocations.append({
+                "person": sid, "project": project,
+                "from": week(12, 0), "to": week(52),
+                "pct": share,
+            })
+
     for iid, title, module, priority, points in BACKLOG:
         items.append({"id": iid, "project": module, "column": "backlog", "title": title,
                       "assignee": None, "points": points, "priority": priority,
@@ -414,8 +493,15 @@ def build():
         "orgName": "KODO",
         "statusDate": dt.date(2026, 9, 18).isoformat(),
         "sites": SITES,
-        "people": [{"id": pid, "name": f"Seat — {seat}", "role": owns, "site": site, "rate": 0}
-                   for pid, seat, site, owns in SEATS],
+        "people": [
+            {"id": pid, "name": f"Seat {pid[-2:]} — {seat}", "role": owns, "site": site,
+             "rate": 0}
+            for pid, seat, site, owns in SEATS
+        ] + [
+            {"id": sid, "name": f"{sid} — {name} ({fte:g} FTE)", "role": owns,
+             "site": site, "rate": 0}
+            for sid, name, lead, site, fte, owns in SQUADS
+        ],
         "programmes": [{"id": pid, "name": name, "sponsor": sponsor, "managerId": mgr}
                        for pid, name, sponsor, mgr in PROGRAMMES],
         "columns": [{"id": "backlog", "name": "Improvement backlog", "wip": 0},
@@ -437,6 +523,15 @@ def build():
              "label": "M7 consumes Attempt from M6"},
             {"from": "M18", "fromStage": 2, "to": "M6", "toStage": 1,
              "label": "The publish gate is what makes an item gradable"},
+            # The one that explains the whole plan: no child can be put in front of any
+            # module until there is an application to open. Every module's child-panel
+            # stage waits on M19's build.
+            {"from": "M19", "fromStage": 1, "to": "M2", "toStage": 4,
+             "label": "No child panel on any screen until there is an app to open it in"},
+            {"from": "M19", "fromStage": 1, "to": "M6", "toStage": 4,
+             "label": "The item player needs a shell before a child can reach an item"},
+            {"from": "M19", "fromStage": 1, "to": "M7", "toStage": 4,
+             "label": "Progression is invisible without a world map to show it on"},
             {"from": "M14", "fromStage": 1, "to": "M5", "toStage": 1,
              "label": "Tutorials are content-pack data, not code"},
         ],
@@ -444,7 +539,10 @@ def build():
         "ledger": [],
         "raid": raid,
         "crs": crs,
-        "allocations": [],
+        # Who is actually on what. Squads are allocated to the projects they own in the
+        # charter; Committee seats are not allocated, because the Committee does not build
+        # (§1.1) and showing it as delivery capacity would overstate the team by nine FTE.
+        "allocations": allocations,
         "docs": docs,
         "items": items,
         "narrative": {
@@ -474,8 +572,21 @@ def build():
                 "NFR-MAINT-01 is closed by demonstration rather than by architecture: "
                 "Worlds 0 and 2 were added after every package was built, with no change "
                 "to any lib/ file.",
+                "The Committee is seated and the delivery organisation is standing: 14 "
+                "seats with their vetoes and first actions, 7 squads with explicit "
+                "ownership, and a RACI over all 14 remaining work packages. See "
+                "docs/governance/04_COMMITTEE_AND_DELIVERY_ORGANISATION.md.",
             ],
             "concerns": [
+                "M19 DID NOT EXIST UNTIL NOW. Eighteen modules were built, all eighteen "
+                "pass their acceptance tests, and there is no application — no entry point, "
+                "no platform project, nothing that assembles the eleven packages into "
+                "something a child can open. No module prompt ever asked for one. Raised as "
+                "PO decision D-012 and CR-007; it is the critical path and every module's "
+                "child-panel stage now waits on it.",
+                "Thirteen of the fourteen Committee seats are UNFILLED. Seat 1 is seated. "
+                "The Chair is the first appointment, because an unfilled Chair means the "
+                "dissent log has no keeper.",
                 "G3 IS NOT CLOSED, and closes on one thing: its own criterion ends "
                 "'running on the reference low-end device', and nobody has run it on an "
                 "Android 11 phone with 2 GB of RAM. Twelve of the thirty open requirements "

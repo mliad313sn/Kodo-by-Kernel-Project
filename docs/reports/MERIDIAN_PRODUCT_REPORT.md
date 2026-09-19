@@ -13,6 +13,8 @@
 >
 > * **`MER-04` is confirmed, with the product's exact words.** See below.
 > * **Two new findings outrank everything in the original list** — `MER-12` and `MER-13`.
+> * **`MER-14`** was found later, while seating the delivery organisation: allocations are the
+>   one table whose identity does not survive a round trip, and an `fte` key lands silently at 0 %.
 >   Both were invisible from source and both are S1.
 > * Fixes for all three are written, applied, and shipped as a patch at
 >   `delivery/meridian/patches/0001-importer-and-earned-value-fixes.patch`. **All 449 of
@@ -560,6 +562,38 @@ SHA, and it either reproduces or it does not.
 shows the product thinking about evidence that lives elsewhere; this is the same thought,
 one step further. It also pairs with `MER-03`: a verification record wants to point at a CI
 run, not at a Word file.
+
+---
+
+### MER-14 · Allocations are the one table whose identity is not preserved across a round trip — S3
+
+**Observed as fact.** Exported the portfolio, re-imported it unchanged, exported again, and
+compared the two field by field. Every table matched **except `allocations`**, where every
+row came back with a different `id` — `172` became `191`, and so on down the list. The
+content was identical; only identity moved.
+
+**Why it happens.** `allocations` is the only entity the book format gives no natural key.
+Projects arrive as `M1`, people as `PE-08`, change requests as `CR-007`; the importer
+honours those. An allocation arrives as `{person, project, from, to, pct}`, so the importer
+mints a surrogate and the exporter emits it — and the next import mints another.
+
+**Why it matters more than it looks.** Meridian's own reversibility commitment
+(`docs/25-reversibilite-et-la-porte-manquante.md`) is what makes export-then-diff the
+natural way to review what changed between two states of a portfolio. That review is exactly
+where this bites: **every allocation reads as changed on every diff**, so the reviewer either
+learns to skip the allocations section or stops diffing. A control people learn to ignore is
+not a control.
+
+**Fix.** Honour `allocation.id` on import when the book supplies one, exactly as every other
+table already does, and emit it as the stable key. Two lines, and it makes the round trip
+idempotent everywhere rather than nearly everywhere.
+
+**Second-order note for the schema.** While fixing this, consider that `allocation.pct` is a
+percentage with no unit in the book format, and a book that supplies `fte` — which is how
+most resourcing tools express the same idea — is accepted silently and lands at **0 %**.
+That is the `MER-09` failure mode (money's implicit unit) in a second place: the field is
+taken, the number is wrong, and nothing says so. Rejecting an unknown key would have caught
+it; I caught it by exporting and reading the result.
 
 ---
 

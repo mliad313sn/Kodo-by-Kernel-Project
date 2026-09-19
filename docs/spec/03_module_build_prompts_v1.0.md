@@ -389,6 +389,40 @@
 
 ---
 
+## M19 — Application shell and navigation
+
+> **Raised at G3 by PO decision `D-012`**, not present in the Committee's issued set of
+> eighteen. Eighteen modules were built and none of them was the application.
+
+**Role.** You are building the body that the eighteen organs go inside. A child does not
+install a block editor; they install KODO.
+
+**Inputs.** §7/M19 (`FR-M19-01` … `FR-M19-06`), and the public API of every other package.
+
+**Build.** One Flutter application that assembles the eleven packages: a platform project
+per target in the device matrix; navigation from profile → world map → tutorial player →
+item player → Studio, with a back path from every screen; state that survives process
+death, so a child killed mid-item returns to that item; one settings surface where
+interface language, keyword language and the accessibility preferences of `FR-M16-03` are
+set once and apply everywhere; and a cold start that goes straight to where the child was,
+with no login wall and no network call.
+
+**Interfaces.** Consumes every module's public API and **adds none of its own logic**. The
+shell holds no grader, no mastery rule, no scheduler and no item — those live in M6, M7 and
+M14 and are imported, never reimplemented.
+
+**Acceptance tests.** The app builds and launches on every target in the device matrix.
+Every screen is reachable and every screen is exitable — a navigation test walks the graph
+and fails on a dead end. A force-kill during an item loses nothing, measured 50 times, as
+`FR-M9-03` already requires of the Studio. Setting the keyword language once changes every
+screen. Cold start is measured on the reference device with aircraft mode on.
+
+**Do not.** Do not let the shell acquire learning logic. The moment routing knows what a
+concept is, there are two progression systems and one of them is wrong. A dependency test
+enforces this, because a convention would not survive the second sprint.
+
+---
+
 ## §19 — The review prompt (Gate G4)
 
 > You are a reviewer at KODO's deep review. You did not build this. Your job is to find what is wrong at the smallest level of detail, not to assess whether it is broadly good.

@@ -128,6 +128,40 @@ def main():
          "source": "[PO D-005]", "priority": "S",
          "verification": "Renderer test over the shared AST; no second parser in the dependency graph",
          "gate": "G4", "status": "Not started", "owner": "", "moduleId": "M3"},
+        # M19 — the module the cahier does not have. Raised at G3 (PO decision D-012) after
+        # eighteen modules were built and none of them turned out to be the application:
+        # there is no entry point, no navigation and no platform project, because no module
+        # prompt ever asked for one.
+        {"id": "FR-M19-01", "module": "M19 Application shell",
+         "requirement": "One application entry point assembling every module, with a platform project per target",
+         "source": "[PO D-012]", "priority": "M",
+         "verification": "The app builds and launches on each target in the device matrix",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M19"},
+        {"id": "FR-M19-02", "module": "M19 Application shell",
+         "requirement": "Navigation from profile to world map to tutorial and item player and Studio, with a back path from every screen",
+         "source": "[PO D-012]", "priority": "M",
+         "verification": "Navigation test: every screen reachable, every screen exitable, no dead end",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M19"},
+        {"id": "FR-M19-03", "module": "M19 Application shell",
+         "requirement": "Application state survives process death; the child returns to the item they were on",
+         "source": "[PO D-012]", "priority": "M",
+         "verification": "Force-kill test on the reference device, 50 times, as FR-M9-03 does for the Studio",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M19"},
+        {"id": "FR-M19-04", "module": "M19 Application shell",
+         "requirement": "One settings surface for interface language, keyword language and accessibility preferences, applied app-wide",
+         "source": "[PO D-012]", "priority": "M",
+         "verification": "Setting each preference once changes every screen; asserted across the widget tree",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M19"},
+        {"id": "FR-M19-05", "module": "M19 Application shell",
+         "requirement": "Cold start goes to where the child was, with no login wall and no network call",
+         "source": "[PO D-012]", "priority": "M",
+         "verification": "Cold start measured on the reference device with aircraft mode on",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M19"},
+        {"id": "FR-M19-06", "module": "M19 Application shell",
+         "requirement": "The shell composes modules and owns no learning logic: no grading, no mastery, no content",
+         "source": "[PO D-012]", "priority": "M",
+         "verification": "Dependency test: the shell imports module APIs and defines no grader, no mastery rule and no item",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M19"},
     ]
     known = {r["id"] for r in reqs}
     for a in amendments:

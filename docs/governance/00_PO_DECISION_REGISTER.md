@@ -321,6 +321,46 @@ the PO's decision on a defect found in delivery and is open to objection until G
 
 ---
 
+## D-012 — M19, the module the cahier des charges does not have
+
+**Date.** Taken at G3. **Status.** Decided. **Reversal cost.** None — it adds a module that
+was always implied.
+
+**The decision.** A nineteenth module is added: **M19 — Application shell and navigation**,
+with six requirements `FR-M19-01 … 06`. It is raised as an amendment, not an edit, per §16.
+
+**What was observed as fact.** Eighteen modules were built. All eighteen pass their
+acceptance tests. **There is no application**: no `main.dart`, no Android, iOS, desktop or
+web project, and nothing that assembles the eleven packages into something a child can
+open. Searching the eighteen module prompts for *shell*, *navigation*, *home screen* or
+*main* returns nothing.
+
+**Why this happened, and why it is the specification's fault rather than the build's.** The
+cahier decomposes KODO into capabilities — a language, an editor, a canvas, a grader, a
+tutorial engine — and each prompt was honoured exactly. None of them is *the application*,
+so nobody built one, and no gate caught it because every gate measured modules. A
+decomposition that names every organ and no body produces precisely this.
+
+**Why M19 owns no learning logic (`FR-M19-06`).** The temptation, once a shell exists, is to
+let it accumulate: a bit of routing logic becomes a bit of progression logic becomes a
+second place mastery is decided. The one-AST rule has an organisational twin — there is one
+grader, one mastery rule, one item bank, and the shell composes them. The requirement is
+verified by a dependency test rather than by a promise.
+
+**Consequence for G3.** G3's criterion ends *"running on the reference low-end device"*.
+`FR-M19-01`, `02`, `03` and `05` are the requirements that make that sentence testable at
+all. They are marked G3 and they are the critical path; `docs/governance/04_COMMITTEE_AND_DELIVERY_ORGANISATION.md`
+assigns them to squad S1 under seat 9.
+
+**What this decision is not.** It is not a new capability, a scope increase, or a change to
+any existing requirement. Nothing in the eighteen modules changes. It names work that was
+always necessary and was never written down.
+
+**Consulted.** Seats 8 and 9 hold the architecture. Recorded as the PO's answer to a
+specification gap found in delivery, and open to a reasoned objection until G4.
+
+---
+
 ## Open items the PO has *not* decided
 
 Recorded so that silence is not mistaken for a decision.

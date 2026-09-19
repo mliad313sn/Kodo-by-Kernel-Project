@@ -12,8 +12,13 @@ programme in it.
 
 The current pair was produced from a live instance and **round-tripped through it**: exported,
 re-imported, exported again, and the two exports compared field by field. **Zero differences.**
-It carries 18 projects, 90 activities, 15 milestones, 15 RAID items, 6 change requests,
-8 documents and 24 board cards.
+It carries **19 projects** (the eighteen modules plus **M19, the application shell**),
+95 activities, 15 milestones, 18 RAID entries, 7 change requests, 11 documents, 24 board
+cards, **21 people** (14 Committee seats + 7 delivery squads) and 19 allocations.
+
+One caveat on the round trip: allocations come back with new surrogate ids, because that is
+the only table the book format gives no natural key. The content is identical. It is
+recorded as finding `MER-14`.
 
 Neither file contains a password hash, a session token or an account. Meridian's importer
 refuses identity data by design (*"a file should never be able to hand someone an
@@ -88,9 +93,24 @@ Execution, because the external accessibility audit has not happened.
 behind eighteen green module bars. Each carries what it is actually waiting for — a phone,
 an external reviewer, or a decision. Ten of them are waiting on a phone.
 
-**Read the narrative first.** `narrative.concerns` is eight paragraphs and the first one is
-the only one that matters: *G3 is not closed.* Everything else in this portfolio is
-downstream of that.
+**M19 is the project to look at first.** Eighteen modules were built, all eighteen pass
+their acceptance tests, and none of them was the application — no entry point, no platform
+project, nothing that assembles the eleven packages into something a child can open. No
+module prompt ever asked for one. It is raised as PO decision `D-012` and change request
+`CR-007`, and three cross-dependencies now run from it: no child panel on any screen until
+there is an app to open it in.
+
+**The organisation is in the portfolio, not only in a document.** Twenty-one people: the 14
+Committee seats with what each owns, and the 7 delivery squads with their head count and
+their allocations. Three issues — `SF-01`, `SF-02`, `SF-03` — are the staffing findings the
+PO raised when seating it: the team shape never anticipated the application as a workstream,
+neither launch-blocking external audit has been commissioned, and the partner-teacher
+authoring pool that `R1` depends on has not been hired. The full charter is
+[`docs/governance/04_COMMITTEE_AND_DELIVERY_ORGANISATION.md`](../../../docs/governance/04_COMMITTEE_AND_DELIVERY_ORGANISATION.md).
+
+**Read the narrative first.** `narrative.concerns` now leads with M19 and with the fact
+that thirteen of fourteen Committee seats are unfilled. Everything else is downstream of
+those two.
 
 **Gates are flattened, and this is the biggest thing the portfolio cannot tell you.**
 KODO has six gates (G0–G5) and they *loop* — G4 → G5 → back to G1, at least three times
