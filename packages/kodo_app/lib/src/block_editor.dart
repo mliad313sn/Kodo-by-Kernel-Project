@@ -22,6 +22,21 @@ import 'palette_scope.dart';
 /// Where a tapped block will land.
 enum InsertMode { append, insertAfterSelection }
 
+/// One number position on a block: a literal that is there, or a hole where one is not.
+class ArgumentSlot {
+  const ArgumentSlot(
+      {required this.commandId, required this.index, required this.literal});
+
+  final String commandId;
+  final int index;
+
+  /// Null for a hole — the `___` an author wrote, which the parser recovered as a missing
+  /// argument and which nothing used to draw.
+  final Literal? literal;
+
+  String get key => literal?.id ?? '$commandId-gap-$index';
+}
+
 /// The palette, the script area, and the tap-to-place interaction between them.
 class BlockEditor extends StatefulWidget {
   const BlockEditor({
@@ -105,6 +120,72 @@ class BlockEditorState extends State<BlockEditor> {
       nodeId: opcode.id,
     );
     setState(() => _selectedNodeId = null);
+  }
+
+  /// `FR-M2-04`: a number inside a block is editable, negative values included.
+  ///
+  /// This was the last thing standing between the application and a child finishing an
+  /// exercise: the very first item the practice mix serves is *"write the number to move
+  /// 50 steps"*, and until now there was no way to write a number. Tapping the number
+  /// opens a pad; the block is rebuilt with the new literal and nothing else changes.
+  ///
+  /// Negatives matter and are not an edge case — `recule -50` is `avance 50`, and that
+  /// equivalence is one of the two the grader accepts for every World 1 item.
+  /// The number slots a child may fill on this row, in the order they are written.
+  ///
+  /// A slot is either a literal that is there or a **hole** where one is missing, and the
+  /// hole is the point. A T4 item ships `avance ___`; the parser recovers it as
+  /// `MOVE_FORWARD` with no arguments and says `missingArg`, so the gap the author wrote
+  /// is already in the tree — it just had nothing to render it. Without this, the first
+  /// exercise KODO serves ("write the number to move 70 steps") shows a block with no
+  /// number and no way to add one, and the item is unanswerable.
+  ///
+  /// Only the top level of a command's arguments: a literal nested inside an expression is
+  /// World 6's business and editing it in place needs a structure editor, not a pad.
+  List<ArgumentSlot> numberSlots(Node node) {
+    if (node is! Command) return const [];
+    final slots = <ArgumentSlot>[];
+    final count =
+        node.args.length > node.opcode.minArgs ? node.args.length : node.opcode.minArgs;
+    for (var i = 0; i < count; i++) {
+      final arg = i < node.args.length ? node.args[i] : null;
+      if (arg == null) {
+        slots.add(ArgumentSlot(commandId: node.id, index: i, literal: null));
+      } else if (arg is Literal && arg.value is NumberValue) {
+        slots.add(ArgumentSlot(commandId: node.id, index: i, literal: arg));
+      }
+      // Anything else is an expression, and not a pad's business.
+    }
+    return slots;
+  }
+
+  /// Fills a slot: replaces the literal that is there, or writes one where a hole was.
+  void setSlot(ArgumentSlot slot, num value) {
+    final program = widget.controller.program;
+
+    AsStmt fill(AsStmt stmt) {
+      if (stmt is! Command || stmt.id != slot.commandId) return stmt;
+      final args = [...stmt.args];
+      /* A hole beyond the end needs the earlier ones to exist. They are written as zero
+         rather than left out: a child filling the second of two holes has not decided the
+         first, and zero is the value the language already gives an omitted number. */
+      while (args.length <= slot.index) {
+        args.add(Literal('gap-${stmt.id}-${args.length}', stmt.span,
+            const NumberValue(0)));
+      }
+      /* The node keeps its identity across the edit. Undo, the block/text bridge and the
+         telemetry all key on node ids, and a fresh id for every keystroke would make one
+         change look like a delete and an insert. */
+      args[slot.index] = Literal(
+          (args[slot.index] as Node).id, stmt.span, NumberValue(value));
+      return Command(stmt.id, stmt.span, stmt.opcode, args, form: stmt.form);
+    }
+
+    widget.controller.setProgram(
+      Program(program.id, program.span, [for (final s in program.body) fill(s)]),
+      kind: 'literal_edited',
+      nodeId: slot.commandId,
+    );
   }
 
   /// `FR-M2-02`: run one block or one stack straight away.
@@ -205,6 +286,16 @@ class BlockEditorState extends State<BlockEditor> {
     );
   }
 
+  /// The written form with its numbers taken out, because they are drawn as fields.
+  ///
+  /// The keywords are what stays: `avance 50` becomes `avance`, `va 10, 20` becomes `va`.
+  /// Everything that is not a bare number is left alone — an expression is not a field.
+  static String _wordsOnly(String label) => label
+      .replaceAll(RegExp(r'(?<![\w$])-?\d+(?:\.\d+)?'), '')
+      .replaceAll(RegExp(r'\s*,\s*'), ' ')
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .trim();
+
   Widget _buildScript(List<BlockRow> rows) {
     return ListView.builder(
       key: const Key('script-area'),
@@ -231,22 +322,38 @@ class BlockEditorState extends State<BlockEditor> {
             ),
           );
         }
+        final slots = numberSlots(row.node);
         return Padding(
           padding: EdgeInsets.only(left: 16.0 * row.depth, bottom: 6),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: BlockChip(
-              key: Key('block-${row.node.id}'),
-              label: row.label,
-              family: row.family,
-              semanticsLabel: '${row.label}, ${_familyName(row.family)}'
-                  '${row.depth > 0 ? ', niveau ${row.depth + 1}' : ''}',
-              selected: row.node.id == _selectedNodeId,
-              onTap: () {
-                selectRow(row.node.id);
-                runFrom(row.node.id);
-              },
-            ),
+          child: BlockChip(
+            key: Key('block-${row.node.id}'),
+            /* The words WITHOUT their numbers: the numbers are widgets now, and printing
+               them in the label as well would show every value twice. */
+            label: slots.isEmpty ? row.label : _wordsOnly(row.label),
+            family: row.family,
+            semanticsLabel: '${row.label}, ${_familyName(row.family)}'
+                '${row.depth > 0 ? ', niveau ${row.depth + 1}' : ''}',
+            selected: row.node.id == _selectedNodeId,
+            onTap: () {
+              selectRow(row.node.id);
+              runFrom(row.node.id);
+            },
+            /* `FR-M2-04`, inside the block. Each one is a full 48 dp target, because
+               workbook finding G4-003 is two eight-year-olds who could not hit a small
+               target on a five-inch screen — and a number a child cannot press is a
+               number a child cannot change. */
+            fields: [
+              for (final slot in slots)
+                NumberField(
+                  key: Key('literal-${slot.key}'),
+                  value: slot.literal == null
+                      ? null
+                      : (slot.literal!.value as NumberValue).value,
+                  family: row.family,
+                  locale: widget.locale,
+                  onChanged: (v) => setSlot(slot, v),
+                ),
+            ],
           ),
         );
       },

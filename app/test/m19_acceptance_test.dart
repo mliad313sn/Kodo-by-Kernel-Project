@@ -16,7 +16,6 @@ import 'package:kodo/src/session.dart';
 import 'package:kodo/src/shell.dart';
 import 'package:kodo/src/drawing_painter.dart';
 import 'package:kodo_access/kodo_access.dart';
-import 'package:kodo_art/kodo_art.dart';
 import 'package:kodo_content/kodo_content.dart';
 
 KodoContent emptyContent() =>
@@ -419,21 +418,35 @@ void main() {
     });
 
     test('the shell decides no verdict and computes no mastery', () {
-      // Calling a module's API is the point. Re-implementing its judgement is not.
-      const forbiddenCalls = [
-        '.passed =',
-        'ConceptState.maitrise =',
-        'firstAttemptRate',
-        'criterionVolume',
-        'nextItem(',
-      ];
+      /* Calling a module's API is the point. Re-implementing its judgement is not.
+         These are patterns, not substrings: the first version was `'.passed ='` and it
+         flagged `LoopPhase.passed =>`, a switch arm in the verdict strip. A guard that
+         cries wolf gets weakened or deleted, so it is worth making it say exactly what it
+         means — an ASSIGNMENT to a verdict, never a match on one. */
+      final forbiddenCalls = <String, RegExp>{
+        'assigning a verdict': RegExp(r'\.passed\s*=(?!=|>)'),
+        'assigning a mastery state': RegExp(r'ConceptState\.\w+\s*=(?!=|>)'),
+        'computing the accuracy criterion': RegExp(r'firstAttemptRate'),
+        'computing the volume criterion': RegExp(r'criterionVolume'),
+        'choosing the next item': RegExp(r'nextItem\('),
+      };
       for (final file in shellSources) {
         final source = file.readAsStringSync();
-        for (final pattern in forbiddenCalls) {
-          expect(source.contains(pattern), isFalse,
-              reason: '${file.path} contains "$pattern"');
+        for (final entry in forbiddenCalls.entries) {
+          expect(entry.value.hasMatch(source), isFalse,
+              reason: '${file.path} is ${entry.key} — that belongs to a module');
         }
       }
+    });
+
+    test('the guard is not vacuous — it catches the thing it forbids', () {
+      // The same check, over source that really does do the forbidden thing.
+      expect(RegExp(r'\.passed\s*=(?!=|>)').hasMatch('verdict.passed = true;'),
+          isTrue);
+      expect(RegExp(r'\.passed\s*=(?!=|>)').hasMatch('LoopPhase.passed => x'),
+          isFalse);
+      expect(RegExp(r'\.passed\s*=(?!=|>)').hasMatch('if (v.passed == true)'),
+          isFalse);
     });
 
     test('every child-facing string comes from the catalogue, not from source',

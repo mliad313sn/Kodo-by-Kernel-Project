@@ -93,6 +93,52 @@ final StringCatalogue uiStrings = StringCatalogue([
       context:
           'Bottom tab 5 of 5. Avatar, badges, stars and settings. First person, '
           'because it is the child\'s own corner of the app.'),
+  /* The loop's four words. §10 rules the wording as much as the mechanics: the button
+     after a right answer says "continue", never "next level"; the one after a wrong
+     answer says "again", never "retry" or "failed"; and asking for a hint is offered
+     rather than charged for. */
+  _s('button.keep_going', 'Continuer', 'Keep going',
+      context:
+          'The button after a correct answer. It moves to the next exercise. '
+          'Never celebratory, never a level-up: the child decides when to go on.'),
+  _s('button.again', 'Encore', 'Again',
+      context:
+          'The button after a wrong answer. It clears the message and lets the '
+          'child keep working on the SAME exercise. Never "retry", "failed" or '
+          'anything that names the attempt as a loss.'),
+  _s('feedback.correct', 'C\'est ça.', 'That is it.',
+      context:
+          'Shown when an answer is right. One short sentence. Not "Well done!", '
+          'not "Perfect!" — the programme praises the work, never the child, and '
+          'never with exclamation marks.'),
+  _s('feedback.session_done', 'Tu as fini pour aujourd\'hui.',
+      'You are done for today.',
+      context:
+          'Shown when the practice mix has no more exercises. It is an ending, '
+          'not a reward screen, and nothing about it should push for more.'),
+  _s('feedback.count_passed', 'Tu as réussi {count} exercices.',
+      'You got {count} exercises right.',
+      context:
+          'A count of what went right in this session. It never shows what went '
+          'wrong: §10 forbids showing a child a failure tally.',
+      placeholders: ['count']),
+  _s('button.ok', 'D\'accord', 'OK',
+      context:
+          'Confirms the number a child has just typed on the pad. A short word; '
+          'it sits on a small button beside "Annuler".'),
+  _s('a11y.number_field', 'Le nombre {value}. Appuie pour le changer.',
+      'The number {value}. Press to change it.',
+      context:
+          'What a screen reader says for an editable number inside a block. The '
+          'second sentence matters: a number that reads as decoration is a number '
+          'nobody edits.',
+      placeholders: ['value']),
+  _s('a11y.number_gap', 'Un nombre à écrire. Appuie pour le remplir.',
+      'A number to write. Press to write it.',
+      context:
+          'What a screen reader says for an EMPTY number slot in a block — the '
+          'gap a fill-in exercise leaves. Different from a number that is already '
+          'there: a child needs to know there is something missing.'),
   _s('button.practice_start', 'Commencer', 'Start',
       context:
           'The single large button on the Practice screen. It starts today\'s mix; '

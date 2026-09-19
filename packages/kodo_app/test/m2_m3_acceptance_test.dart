@@ -177,6 +177,261 @@ void main() {
     });
   });
 
+  group('FR-M2-04 · a number inside a block can be changed, negatives included',
+      () {
+    testWidgets('the number takes the tap, the rest of the block runs',
+        (tester) async {
+      /* Two things live on one block now, and which one a tap means has to be decided
+         rather than discovered. The number is a control inside the block: pressing it
+         edits, pressing anywhere else runs. */
+      final controller = EditorController(initialSource: 'avance 50');
+      Program? ran;
+      await tester.pumpWidget(_wrap(BlockEditor(
+        controller: controller,
+        scope: scopeForWorld(1),
+        onRunStack: (stack) => ran = stack,
+      )));
+      final command = controller.program.body.first as Command;
+      final literal = command.args.first as Node;
+
+      await tester.tap(find.byKey(Key('literal-${literal.id}')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('number-pad')), findsOneWidget);
+      expect(ran, isNull, reason: 'editing a number is not running a program');
+      await tester.tap(find.byKey(const Key('pad-cancel')));
+      await tester.pumpAndSettle();
+
+      final chip = tester.getRect(find.byKey(Key('block-${command.id}')));
+      await tester.tapAt(Offset(chip.left + 20, chip.center.dy));
+      await tester.pumpAndSettle();
+      expect(ran, isNotNull, reason: 'the words still run the block');
+    });
+
+    /* Found by running the product rather than by reading the spec. The very first item
+       the practice mix serves is *"write the number to move 50 steps"*, and until this
+       existed there was no way in the application to write a number: the exercise could
+       be opened, read, and not answered. */
+
+    testWidgets('every number in a block has a target beside it', (tester) async {
+      final controller = EditorController(initialSource: 'avance 50');
+      await tester.pumpWidget(
+          _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
+
+      final literal = (controller.program.body.first as Command).args.first as Node;
+      expect(find.byKey(Key('literal-${literal.id}')), findsOneWidget);
+    });
+
+    testWidgets('tapping it opens a pad, and the pad changes the program',
+        (tester) async {
+      final controller = EditorController(initialSource: 'avance 50');
+      await tester.pumpWidget(
+          _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
+
+      final literal = (controller.program.body.first as Command).args.first as Node;
+      await tester.tap(find.byKey(Key('literal-${literal.id}')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('number-pad')), findsOneWidget);
+
+      // Clear the 50 and type 120.
+      await tester.tap(find.byKey(const Key('pad-back')));
+      await tester.tap(find.byKey(const Key('pad-back')));
+      await tester.tap(find.byKey(const Key('pad-1')));
+      await tester.tap(find.byKey(const Key('pad-2')));
+      await tester.tap(find.byKey(const Key('pad-0')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('pad-ok')));
+      await tester.pumpAndSettle();
+
+      expect(render(controller.program, KeywordTables.fr), 'avance 120');
+    });
+
+    testWidgets('a negative number is reachable, which is the requirement',
+        (tester) async {
+      /* `recule -50` is `avance 50`, and that equivalence is one of the two the grader
+         accepts for every World 1 item. A pad that cannot produce a minus sign makes half
+         of the accepted answers unreachable from the block editor. */
+      final controller = EditorController(initialSource: 'avance 50');
+      await tester.pumpWidget(
+          _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
+
+      final literal = (controller.program.body.first as Command).args.first as Node;
+      await tester.tap(find.byKey(Key('literal-${literal.id}')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('pad-−')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('pad-ok')));
+      await tester.pumpAndSettle();
+
+      expect(render(controller.program, KeywordTables.fr), 'avance -50');
+    });
+
+    testWidgets('the sign toggles rather than accumulating', (tester) async {
+      // `--3` is not a number, and a child pressing a button twice is not an error.
+      final controller = EditorController(initialSource: 'avance 50');
+      await tester.pumpWidget(
+          _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
+      final literal = (controller.program.body.first as Command).args.first as Node;
+      await tester.tap(find.byKey(Key('literal-${literal.id}')));
+      await tester.pumpAndSettle();
+
+      for (var i = 0; i < 3; i++) {
+        await tester.tap(find.byKey(const Key('pad-−')));
+        await tester.pumpAndSettle();
+      }
+      await tester.tap(find.byKey(const Key('pad-ok')));
+      await tester.pumpAndSettle();
+
+      expect(render(controller.program, KeywordTables.fr), 'avance -50');
+    });
+
+    testWidgets('cancelling changes nothing', (tester) async {
+      final controller = EditorController(initialSource: 'avance 50');
+      await tester.pumpWidget(
+          _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
+      final literal = (controller.program.body.first as Command).args.first as Node;
+      await tester.tap(find.byKey(Key('literal-${literal.id}')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('pad-9')));
+      await tester.tap(find.byKey(const Key('pad-cancel')));
+      await tester.pumpAndSettle();
+
+      expect(render(controller.program, KeywordTables.fr), 'avance 50');
+    });
+
+    testWidgets('the number target is big enough, and no bigger than it needs',
+        (tester) async {
+      /* Both halves matter and the second was found by looking at a phone. A `Container`
+         with an `alignment` grows to fill its constraints, so the field spanned the whole
+         script area and pushed the block it belongs to onto a line of its own — a number
+         that no longer reads as being *inside* anything. */
+      final controller = EditorController(initialSource: 'avance 50');
+      /* The phone layout, which is the one a child uses: `compact` puts the script above
+         a bottom-sheet palette instead of beside a 260 dp column, so the script gets the
+         width rather than a 99 dp strip. */
+      await tester.pumpWidget(_wrap(SizedBox(
+          width: 360,
+          child: BlockEditor(
+              controller: controller,
+              scope: scopeForWorld(1),
+              compact: true))));
+      final literal = (controller.program.body.first as Command).args.first as Node;
+      final size = tester.getSize(find.byKey(Key('literal-${literal.id}')));
+
+      expect(size.width, greaterThanOrEqualTo(minimumTouchTarget));
+      expect(size.height, greaterThanOrEqualTo(minimumTouchTarget));
+      expect(size.width, lessThan(120),
+          reason: 'a two-digit number does not need a hundred and twenty pixels');
+    });
+
+    testWidgets('the number is inside the block, not beside it', (tester) async {
+      /* A block spans the width of the script, so a number placed NEXT to it lands on a
+         line of its own and stops reading as part of anything. Written out, `avance 50`
+         is one thing; on screen it has to stay one thing. */
+      final controller = EditorController(initialSource: 'avance 50');
+      /* The phone layout, which is the one a child uses: `compact` puts the script above
+         a bottom-sheet palette instead of beside a 260 dp column, so the script gets the
+         width rather than a 99 dp strip. */
+      await tester.pumpWidget(_wrap(SizedBox(
+          width: 360,
+          child: BlockEditor(
+              controller: controller,
+              scope: scopeForWorld(1),
+              compact: true))));
+      final command = controller.program.body.first as Command;
+      final literal = command.args.first as Node;
+
+      final chip = tester.getRect(find.byKey(Key('block-${command.id}')));
+      final field = tester.getRect(find.byKey(Key('literal-${literal.id}')));
+      expect(chip.contains(field.topLeft), isTrue, reason: 'inside the block');
+      expect(chip.contains(field.bottomRight), isTrue);
+      expect(field.center.dy, closeTo(chip.center.dy, 4));
+    });
+
+    testWidgets('the number is not also printed in the words', (tester) async {
+      // Otherwise `avance 50` reads "avance 50 [50]", which is two numbers to a child.
+      final controller = EditorController(initialSource: 'avance 50');
+      /* The phone layout, which is the one a child uses: `compact` puts the script above
+         a bottom-sheet palette instead of beside a 260 dp column, so the script gets the
+         width rather than a 99 dp strip. */
+      await tester.pumpWidget(_wrap(SizedBox(
+          width: 360,
+          child: BlockEditor(
+              controller: controller,
+              scope: scopeForWorld(1),
+              compact: true))));
+      expect(find.text('avance 50'), findsNothing);
+      expect(find.text('avance'), findsWidgets);
+      expect(find.text('50'), findsOneWidget);
+    });
+
+    testWidgets('a gap is a slot a child can fill, not a block with no number',
+        (tester) async {
+      /* The reason this whole group exists. A T4 item ships `avance ___`; the parser
+         recovers it as MOVE_FORWARD with no arguments and reports `missingArg`, so the
+         hole the author wrote was already in the tree and nothing drew it. The first
+         exercise the practice mix serves is exactly this shape, and it was unanswerable:
+         a block with no number and no way to add one. */
+      final controller = EditorController(initialSource: 'avance ___');
+      await tester.pumpWidget(
+          _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
+
+      final command = controller.program.body.first as Command;
+      expect(command.args, isEmpty, reason: 'the gap really is a missing argument');
+
+      final gap = find.byKey(Key('literal-${command.id}-gap-0'));
+      expect(gap, findsOneWidget, reason: 'the hole must be visible and tappable');
+
+      await tester.tap(gap);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('pad-7')));
+      await tester.tap(find.byKey(const Key('pad-0')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('pad-ok')));
+      await tester.pumpAndSettle();
+
+      expect(render(controller.program, KeywordTables.fr), 'avance 70',
+          reason: 'which is the reference answer for C1.1-19');
+    });
+
+    testWidgets('the pad opens empty on a gap, not on a number nobody chose',
+        (tester) async {
+      final controller = EditorController(initialSource: 'avance ___');
+      await tester.pumpWidget(
+          _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
+      final command = controller.program.body.first as Command;
+      await tester.tap(find.byKey(Key('literal-${command.id}-gap-0')));
+      await tester.pumpAndSettle();
+
+      // Pressing 5 must give 5, not 505 or 5 appended to a default.
+      await tester.tap(find.byKey(const Key('pad-5')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('pad-ok')));
+      await tester.pumpAndSettle();
+      expect(render(controller.program, KeywordTables.fr), 'avance 5');
+    });
+
+    testWidgets('editing a number is one undo step, not several', (tester) async {
+      final controller = EditorController(initialSource: 'avance 50');
+      await tester.pumpWidget(
+          _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
+      final literal = (controller.program.body.first as Command).args.first as Node;
+      await tester.tap(find.byKey(Key('literal-${literal.id}')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('pad-back')));
+      await tester.tap(find.byKey(const Key('pad-back')));
+      await tester.tap(find.byKey(const Key('pad-7')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('pad-ok')));
+      await tester.pumpAndSettle();
+      expect(render(controller.program, KeywordTables.fr), 'avance 7');
+
+      controller.undo();
+      expect(render(controller.program, KeywordTables.fr), 'avance 50',
+          reason: 'a child who typed three digits presses undo once, not three '
+              'times — the pad is one edit');
+    });
+  });
+
   group(
       'FR-M2-02, FR-M2-03, FR-M2-07, FR-M16-01 · tap-to-place and click-to-run',
       () {
@@ -223,7 +478,12 @@ void main() {
       )));
 
       final second = controller.program.body[1] as Node;
-      await tester.tap(find.byKey(Key('block-${second.id}')));
+      /* On the WORDS, not at the geometric centre. Since `FR-M2-04` the block carries its
+         number as a control inside itself, and on a short block like `tournedroite 90`
+         that control is near the middle — so tapping dead centre edits the number, which
+         is right, and is not what this test is about. A child taps the words to run. */
+      final chip = tester.getRect(find.byKey(Key('block-${second.id}')));
+      await tester.tapAt(Offset(chip.left + 20, chip.center.dy));
       await tester.pumpAndSettle();
 
       expect(ran, isNotNull);

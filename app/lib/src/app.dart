@@ -2,12 +2,11 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:kodo_app/kodo_app.dart';
 import 'package:kodo_content/kodo_content.dart';
-import 'package:kodo_grader/kodo_grader.dart';
-import 'package:kodo_lang/kodo_lang.dart';
+import 'package:kodo_progress/kodo_progress.dart';
 import 'package:kodo_studio/kodo_studio.dart';
 
+import 'learning.dart';
 import 'screens.dart';
 import 'shell.dart';
 
@@ -17,13 +16,18 @@ import 'shell.dart';
 /// installed library and the profiles. That keeps `FR-M19-06` true by construction — there
 /// is no seam here for content or learning logic to arrive through.
 class KodoContent {
-  const KodoContent({required this.packs, required this.profileNames});
+  const KodoContent(
+      {required this.packs, required this.profileNames, this.clock});
 
   /// The installed content, from M14. Empty is a legitimate first run.
   final List<ContentPack> packs;
 
   /// profile id → first name, from M13.
   final Map<String, String> profileNames;
+
+  /// M7's clock. Injectable because mastery has a 72-hour retention rule and a test that
+  /// has to wait three days to check it is a test nobody runs.
+  final Clock? clock;
 }
 
 class KodoApp extends StatefulWidget {
@@ -45,6 +49,9 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    for (final loop in _loops.values) {
+      loop.dispose();
+    }
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -121,6 +128,18 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
                   conceptId: _firstConceptOf(packs)),
         );
 
+      case KodoScreen.item:
+        final conceptId = shell.session.lastPlace.conceptId;
+        if (conceptId == null) {
+          return const KodoScaffold(
+              titleKey: 'root.entrainement', child: SizedBox.shrink());
+        }
+        /* One loop per concept, kept for as long as the child stays in it. Rebuilding it
+           on every frame would re-ask the scheduler for an item mid-answer and throw the
+           child's work away — and would lose the attempt history the mastery rule is
+           computed from. */
+        return ItemScreen(loop: _loopFor(conceptId));
+
       case KodoScreen.galerie:
         // Nothing is shared on a fresh install, and M10 is what fills this when sharing
         // is switched on. The shell does not moderate; it lists.
@@ -138,22 +157,6 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
           conceptIds: world.isEmpty
               ? const []
               : (world.first.concepts.keys.toList()..sort()),
-        );
-
-      case KodoScreen.item:
-        final conceptId = shell.session.lastPlace.conceptId;
-        final item = _firstItemOf(packs, conceptId);
-        if (item == null) {
-          return const KodoScaffold(
-              titleKey: 'button.run', child: SizedBox.shrink());
-        }
-        return ItemScreen(
-          prompt: item.promptIn(shell.session.interfaceLocale.code),
-          controller: EditorController(
-            initialSource: item.startingProgramSource ?? '',
-            keywords: KeywordTables.of(shell.session.keywordLocale),
-          ),
-          scope: PaletteScope.ofIds(item.paletteScope),
         );
 
       case KodoScreen.studio:
@@ -180,13 +183,25 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
     return null;
   }
 
-  Item? _firstItemOf(List<ContentPack> packs, String? conceptId) {
-    if (conceptId == null) return null;
-    for (final pack in packs) {
-      for (final item in pack.items) {
-        if (item.conceptId == conceptId) return item;
-      }
-    }
-    return null;
+  final Map<String, LearningLoop> _loops = {};
+
+  /// The loop for a concept, created once and kept for as long as the child stays in it.
+  ///
+  /// Rebuilding it per frame would re-ask the scheduler for an item in the middle of an
+  /// answer, throw the child's work away, and lose the attempt history the mastery rule
+  /// is computed from.
+  LearningLoop _loopFor(String conceptId) {
+    final existing = _loops[conceptId];
+    if (existing != null) return existing;
+    final loop = LearningLoop(
+      packs: widget.content.packs,
+      conceptId: conceptId,
+      clock: widget.content.clock ?? Clock.system,
+    );
+    _loops[conceptId] = loop;
+    // Serving the first item is asynchronous because mastery is read from the attempt
+    // store; the screen shows its empty state for one frame and then the item arrives.
+    loop.start();
+    return loop;
   }
 }

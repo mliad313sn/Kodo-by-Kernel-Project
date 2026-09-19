@@ -9,9 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:kodo_access/kodo_access.dart';
 import 'package:kodo_app/kodo_app.dart';
 import 'package:kodo_art/kodo_art.dart';
+import 'package:kodo_grader/kodo_grader.dart';
 import 'package:kodo_lang/kodo_lang.dart';
 
+import 'package:kodo_stage/kodo_stage.dart';
+
 import 'drawing_painter.dart';
+import 'learning.dart';
 import 'shell.dart';
 
 /// Every child-facing string comes from M15's catalogue. There is no literal here, and a
@@ -451,74 +455,336 @@ class ConceptScreen extends StatelessWidget {
   }
 }
 
-/// One item: its prompt, the editor, and a run button.
+/// One item: its prompt, the editor, the canvas, and a verdict.
 ///
-/// The prompt text comes from the item; the editor is M2/M3; grading is M6 and is *not*
-/// called here — the shell hands the program to the caller's `onRun`, which is where a
-/// grader belongs.
-class ItemScreen extends StatelessWidget {
-  const ItemScreen({
-    super.key,
-    required this.prompt,
-    required this.controller,
-    required this.scope,
-    this.onRun,
-  });
+/// The screen that makes the rest of the programme reachable. It composes and decides
+/// nothing: the prompt is the item's, the verdict is M6's, the sentence under a wrong
+/// answer is the *item's own* authored diagnostic, and which item comes next is M7's.
+/// `LearningLoop` holds the bookkeeping between them.
+class ItemScreen extends StatefulWidget {
+  const ItemScreen({super.key, required this.loop});
 
-  final String prompt;
-  final EditorController controller;
+  final LearningLoop loop;
 
-  /// Which blocks this item offers. It comes from the ITEM (`Item.paletteScope`), not from
-  /// the shell: an exercise is a question and a question narrows, and deciding that here
-  /// would put curriculum logic in the shell.
-  final PaletteScope scope;
+  @override
+  State<ItemScreen> createState() => _ItemScreenState();
+}
 
-  final void Function(Program program)? onRun;
+class _ItemScreenState extends State<ItemScreen> {
+  EditorController? _controller;
+  String? _forItemId;
+
+  /// A fresh editor per item, seeded with whatever the item starts the child on.
+  ///
+  /// Rebuilt when the item changes and never otherwise: a controller that survives the
+  /// item would carry the last child's program into the next question.
+  EditorController _controllerFor(ItemInFlight flight, String keywordLocale) {
+    if (_forItemId == flight.item.id && _controller != null) return _controller!;
+    _forItemId = flight.item.id;
+    return _controller = EditorController(
+      initialSource: flight.item.startingProgramSource ?? '',
+      keywords: KeywordTables.of(keywordLocale),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return KodoScaffold(
-      titleKey: 'button.run',
-      child: Column(
-        children: [
-          /* The prompt is spoken by someone. Tika sits beside it rather than above it,
-             so the sentence and the speaker are one block a child reads in one go — and
-             she is small here, because the editor is what the screen is for. */
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Art(tikaPortrait,
-                    size: 56,
-                    highContrast:
-                        ShellScope.of(context).session.accessibility.highContrast,
-                    locale:
-                        ShellScope.of(context).session.interfaceLocale.code),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(prompt,
-                      key: const Key('prompt'),
+    final shell = ShellScope.of(context);
+    final locale = shell.session.interfaceLocale.code;
+    final prefs = shell.session.accessibility;
+
+    return AnimatedBuilder(
+      animation: widget.loop,
+      builder: (context, _) {
+        final loop = widget.loop;
+        final flight = loop.current;
+
+        if (flight == null) {
+          return KodoScaffold(
+            titleKey: 'root.entrainement',
+            child: Center(
+              child: Column(
+                key: const Key('session-done'),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Art(tikaPortrait,
+                      size: 120,
+                      highContrast: prefs.highContrast,
+                      locale: locale),
+                  const SizedBox(height: 16),
+                  Text(_s(context, 'feedback.session_done'),
                       style: const TextStyle(fontSize: 20)),
+                  const SizedBox(height: 8),
+                  Text(
+                    _s(context, 'feedback.count_passed',
+                        {'count': '${loop.passedThisSession}'}),
+                    key: const Key('session-count'),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        final item = flight.item;
+        final choices = item.choices;
+
+        return KodoScaffold(
+          titleKey: 'root.entrainement',
+          actions: [
+            if (item.hints.isNotEmpty)
+              IconButton(
+                key: const Key('hint'),
+                icon: const Icon(Icons.lightbulb_outline),
+                tooltip: _s(context, 'button.help'),
+                // Asking costs nothing (§10). The count is a signal, never a penalty.
+                onPressed: loop.showHint,
+              ),
+          ],
+          child: Column(
+            children: [
+              _Prompt(text: item.promptIn(locale), locale: locale, prefs: prefs),
+              if (flight.hintsShown > 0 && loop.availableHint != null)
+                _Panel(
+                  key: const Key('hint-text'),
+                  // The hint is the ITEM's, authored and reviewed as content.
+                  text: loop.availableHint!.textKeys[locale] ??
+                      loop.availableHint!.textKeys['fr'] ??
+                      '',
+                  tone: _Tone.neutral,
                 ),
-              ],
-            ),
+              Expanded(
+                child: choices.isNotEmpty
+                    ? _Choices(
+                        choices: choices,
+                        locale: locale,
+                        enabled: loop.phase == LoopPhase.working,
+                        onChoose: loop.choose,
+                      )
+                    : _Work(
+                        controller: _controllerFor(
+                            flight, shell.session.keywordLocale),
+                        scope: PaletteScope.ofIds(item.paletteScope),
+                        keywordLocale: shell.session.keywordLocale,
+                        drawn: loop.drawn,
+                        locale: locale,
+                      ),
+              ),
+              _Verdict(loop: loop, locale: locale, controller: _controller),
+            ],
           ),
-          Expanded(
-            child: BlockEditor(
-              controller: controller,
-              scope: scope,
-              locale: ShellScope.of(context).session.keywordLocale,
+        );
+      },
+    );
+  }
+}
+
+class _Prompt extends StatelessWidget {
+  const _Prompt({required this.text, required this.locale, required this.prefs});
+  final String text;
+  final String locale;
+  final AccessibilityPreferences prefs;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Art(tikaPortrait,
+                size: 56, highContrast: prefs.highContrast, locale: locale),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(text,
+                  key: const Key('prompt'),
+                  style: const TextStyle(fontSize: 20)),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: FilledButton(
-              key: const Key('run'),
-              onPressed:
-                  onRun == null ? null : () => onRun!(controller.program),
-              child: Text(_s(context, 'button.run')),
+          ],
+        ),
+      );
+}
+
+/// The editor and the drawing, side by side or stacked, depending on the room.
+class _Work extends StatelessWidget {
+  const _Work({
+    required this.controller,
+    required this.scope,
+    required this.keywordLocale,
+    required this.drawn,
+    required this.locale,
+  });
+
+  final EditorController controller;
+  final PaletteScope scope;
+  final String keywordLocale;
+  final VectorCanvas? drawn;
+  final String locale;
+
+  @override
+  Widget build(BuildContext context) {
+    final canvas = drawn == null
+        ? const SizedBox.shrink()
+        : TurtleCanvasView(canvas: drawn!, locale: locale);
+
+    return LayoutBuilder(
+      builder: (context, box) {
+        /* A 5.5-inch phone in portrait has no room for two columns. M2 already builds the
+           phone layout `FR-M2-07` asks for — script above, palette as a bottom sheet —
+           and the shell simply never asked for it: the first run in a browser at 360 dp
+           put the palette in two thirds of the width and left the script a sliver, so a
+           placed block rendered as "ava / nce". The editor had the answer; nobody passed
+           the flag. */
+        final compact = box.maxWidth < 600;
+        final editor = BlockEditor(
+          controller: controller,
+          scope: scope,
+          locale: keywordLocale,
+          compact: compact,
+        );
+        if (compact) {
+          return Column(
+            children: [
+              Expanded(flex: 3, child: editor),
+              if (drawn != null) Expanded(flex: 2, child: canvas),
+            ],
+          );
+        }
+        return Row(
+          children: [
+            Expanded(child: editor),
+            if (drawn != null) Expanded(child: canvas),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _Choices extends StatelessWidget {
+  const _Choices({
+    required this.choices,
+    required this.locale,
+    required this.enabled,
+    required this.onChoose,
+  });
+
+  final List<Choice> choices;
+  final String locale;
+  final bool enabled;
+  final void Function(int) onChoose;
+
+  @override
+  Widget build(BuildContext context) => ListView(
+        key: const Key('choices'),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        children: [
+          for (var i = 0; i < choices.length; i++)
+            Card(
+              child: ListTile(
+                key: Key('choice-$i'),
+                // A choice's label is the item's content, not an interface string.
+                title: Text(
+                    choices[i].labelKeys[locale] ??
+                        choices[i].labelKeys['fr'] ??
+                        '',
+                    style: const TextStyle(fontSize: 18)),
+                minTileHeight: 56,
+                onTap: enabled ? () => onChoose(i) : null,
+              ),
             ),
+        ],
+      );
+}
+
+enum _Tone { neutral, good, again }
+
+class _Panel extends StatelessWidget {
+  const _Panel({super.key, required this.text, required this.tone});
+  final String text;
+  final _Tone tone;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final background = switch (tone) {
+      _Tone.good => scheme.secondaryContainer,
+      _Tone.again => scheme.tertiaryContainer,
+      _Tone.neutral => scheme.surfaceContainerHighest,
+    };
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+          color: background, borderRadius: BorderRadius.circular(8)),
+      child: Text(text, style: const TextStyle(fontSize: 18)),
+    );
+  }
+}
+
+/// The bottom strip: run, or the verdict and the way onward.
+class _Verdict extends StatelessWidget {
+  const _Verdict(
+      {required this.loop, required this.locale, required this.controller});
+
+  final LearningLoop loop;
+  final String locale;
+  final EditorController? controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final verdict = loop.verdict;
+    final item = loop.current?.item;
+
+    /* The sentence under a wrong answer is the ITEM's, rendered by M6 from the numbers it
+       measured. When an author has not covered a situation the publish gate refuses the
+       item, so at run time a null message means an item that skipped the gate — and the
+       shell shows nothing rather than inventing "Incorrect". */
+    final message = verdict == null || item == null
+        ? null
+        : verdict.messageFor(item, locale);
+
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (loop.phase == LoopPhase.passed)
+            _Panel(
+                key: const Key('verdict-good'),
+                text: _s(context, 'feedback.correct'),
+                tone: _Tone.good),
+          if (loop.phase == LoopPhase.tryAgain && message != null)
+            _Panel(
+                key: const Key('verdict-again'),
+                text: message,
+                tone: _Tone.again),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: double.infinity,
+            child: switch (loop.phase) {
+              LoopPhase.passed => FilledButton(
+                  key: const Key('keep-going'),
+                  onPressed: loop.next,
+                  style: FilledButton.styleFrom(minimumSize: const Size(0, 56)),
+                  child: Text(_s(context, 'button.keep_going')),
+                ),
+              LoopPhase.tryAgain => FilledButton(
+                  key: const Key('again'),
+                  onPressed: loop.tryAgain,
+                  style: FilledButton.styleFrom(minimumSize: const Size(0, 56)),
+                  child: Text(_s(context, 'button.again')),
+                ),
+              LoopPhase.working || LoopPhase.finished => FilledButton(
+                  key: const Key('run'),
+                  onPressed: controller == null
+                      ? null
+                      : () => loop.submit(controller!.program),
+                  style: FilledButton.styleFrom(minimumSize: const Size(0, 56)),
+                  child: Text(_s(context, 'button.run')),
+                ),
+            },
           ),
         ],
       ),

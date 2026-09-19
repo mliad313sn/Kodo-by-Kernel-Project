@@ -192,8 +192,8 @@
       "priority": "M",
       "verification": "UI test",
       "gate": "G3",
-      "status": "In progress",
-      "owner": "M2 squad"
+      "status": "Done",
+      "owner": "S3"
     },
     {
       "id": "FR-M2-05",
