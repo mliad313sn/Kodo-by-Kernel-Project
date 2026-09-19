@@ -4,4 +4,5 @@ library;
 export 'src/pack.dart';
 export 'src/readability.dart';
 export 'src/templates.dart';
+export 'src/transfer.dart';
 export 'src/tutorial.dart';
