@@ -16,6 +16,7 @@ import 'package:kodo_lang/kodo_lang.dart';
 import 'block_choices.dart';
 import 'block_family.dart';
 import 'block_help.dart';
+import 'block_stack.dart';
 import 'block_view.dart';
 import 'editor_controller.dart';
 import 'palette_scope.dart';
@@ -75,9 +76,18 @@ class BlockEditor extends StatefulWidget {
 class BlockEditorState extends State<BlockEditor> {
   String? _selectedNodeId;
   BlockFamily _openFamily = BlockFamily.mouvement;
+  String? _grabbedNodeId;
 
   String? get selectedNodeId => _selectedNodeId;
   BlockFamily get openFamily => _openFamily;
+
+  /// The top block of the stack the child is holding, or null (`FR-M2-06`).
+  String? get grabbedNodeId => _grabbedNodeId;
+
+  /// The blocks that would move if the held stack were put down now.
+  List<AsStmt> get grabbedStack => _grabbedNodeId == null
+      ? const []
+      : stackAt(widget.controller.program, _grabbedNodeId!);
 
   /// Opcodes the palette currently shows: the scope, narrowed to the open family.
   List<Opcode> get visibleOpcodes => [
@@ -232,8 +242,17 @@ class BlockEditorState extends State<BlockEditor> {
       return Command(stmt.id, stmt.span, stmt.opcode, args, form: stmt.form);
     }
 
+    /* Into the mouths as well as along the top. This walked `program.body` and stopped,
+       so `avance 50` inside a `répète` showed an editable number that could not be
+       edited — the tap registered, the program did not change, and a child would have
+       tapped it a dozen times before deciding the app was broken. World 1's second item
+       is a number inside a loop. */
+    AsStmt fillDeep(AsStmt stmt) => rebuildBodies(
+        fill(stmt), (body, _) => [for (final s in body) fillDeep(s)]);
+
     widget.controller.setProgram(
-      Program(program.id, program.span, [for (final s in program.body) fill(s)]),
+      Program(
+          program.id, program.span, [for (final s in program.body) fillDeep(s)]),
       kind: 'literal_edited',
       nodeId: slot.commandId,
     );
@@ -247,6 +266,33 @@ class BlockEditorState extends State<BlockEditor> {
     widget.onRunStack
         ?.call(Program(program.id, program.span, program.body.sublist(index)));
   }
+
+  /// `FR-M2-06`: picks up the block and everything under it.
+  ///
+  /// Grabbing is a state, not a gesture in flight, and that is the whole reason a child on
+  /// a five-inch screen can do this at all. Workbook finding `G4-003` is two eight-year
+  /// olds who could not drag a block accurately; a held stack that waits while they choose
+  /// where it goes asks them for two taps and no accuracy. Dragging the handle does the
+  /// same thing for anyone who would rather drag.
+  void grabStack(String nodeId) => setState(() {
+        _grabbedNodeId = _grabbedNodeId == nodeId ? null : nodeId;
+        _selectedNodeId = null;
+      });
+
+  /// Puts a held stack down. A refused drop releases it where it was rather than
+  /// swallowing the gesture: the child asked for something impossible and should see the
+  /// program they still have.
+  void dropStackAt(DropSite site) {
+    final held = _grabbedNodeId;
+    if (held == null) return;
+    final moved = moveStack(widget.controller.program, held, site);
+    if (!identical(moved, widget.controller.program)) {
+      widget.controller.setProgram(moved, kind: 'stack_moved', nodeId: held);
+    }
+    setState(() => _grabbedNodeId = null);
+  }
+
+  void releaseStack() => setState(() => _grabbedNodeId = null);
 
   String _familyName(BlockFamily family) =>
       familyNames[widget.locale]?[family.nameKey] ??
@@ -348,13 +394,47 @@ class BlockEditorState extends State<BlockEditor> {
       .trim();
 
   Widget _buildScript(List<BlockRow> rows) {
+    final held = _grabbedNodeId;
+    if (held == null) {
+      return ListView.builder(
+        key: const Key('script-area'),
+        padding: const EdgeInsets.all(12),
+        itemCount: rows.length,
+        itemBuilder: (context, index) => _buildRow(rows[index], index),
+      );
+    }
+
+    /* `FR-M2-06`, the holding half. Every place the stack could go is drawn as a gap the
+       child taps, so the gesture is "pick up, then point" rather than a drag they have to
+       land — and the places it could NOT go are simply not drawn, which is how a child
+       finds out that a loop cannot go inside itself without being told off for trying. */
+    final program = widget.controller.program;
+    final endOfProgram = DropSite(index: program.body.length);
     return ListView.builder(
       key: const Key('script-area'),
       padding: const EdgeInsets.all(12),
-      itemCount: rows.length,
+      itemCount: rows.length * 2 + 1,
       itemBuilder: (context, index) {
-        final row = rows[index];
-        if (row.isWrapperClose && row.label.isEmpty) {
+        if (index.isOdd) return _buildRow(rows[(index - 1) ~/ 2], index ~/ 2);
+        final at = index ~/ 2;
+        final site = at < rows.length ? rows[at].site : endOfProgram;
+        final depth = at < rows.length ? rows[at].depth : 0;
+        if (!canDrop(program, held, site)) return const SizedBox.shrink();
+        return DropGap(
+          key: Key('gap-$site'),
+          depth: depth,
+          family: at < rows.length ? rows[at].family : BlockFamily.mouvement,
+          semanticsLabel: widget.locale == 'en'
+              ? 'Put the blocks here'
+              : 'Poser les blocs ici',
+          onDrop: () => dropStackAt(site),
+        );
+      },
+    );
+  }
+
+  Widget _buildRow(BlockRow row, int index) {
+    if (row.isWrapperClose && row.label.isEmpty) {
           // The closing lip of a C-block: it shows the mouth enclosing the body
           // (`FR-M2-03`) and is not itself a target.
           return Padding(
@@ -375,9 +455,7 @@ class BlockEditorState extends State<BlockEditor> {
         }
         final slots = numberSlots(row.node);
         final names = choiceSlots(row.node);
-        return Padding(
-          padding: EdgeInsets.only(left: 16.0 * row.depth, bottom: 6),
-          child: BlockChip(
+        final chip = BlockChip(
             key: Key('block-${row.node.id}'),
             /* The words WITHOUT their numbers: the numbers are widgets now, and printing
                them in the label as well would show every value twice. */
@@ -389,6 +467,13 @@ class BlockEditorState extends State<BlockEditor> {
                 '${row.depth > 0 ? ', niveau ${row.depth + 1}' : ''}',
             selected: row.node.id == _selectedNodeId,
             onTap: () {
+              /* Holding a stack changes what a tap means. Running a program while the
+                 child is halfway through moving part of it would run a program that does
+                 not exist yet. */
+              if (_grabbedNodeId != null) {
+                dropStackAt(row.site);
+                return;
+              }
               selectRow(row.node.id);
               runFrom(row.node.id);
             },
@@ -427,9 +512,24 @@ class BlockEditorState extends State<BlockEditor> {
                   onChanged: (v) => setSlot(slot, v),
                 ),
             ],
-          ),
         );
-      },
-    );
+        /* `FR-M2-06`. The handle is a separate 48 dp target beside the block rather than
+           the block itself, because the block already has two jobs — tap runs it
+           (`FR-M2-02`) and long-press explains it (`FR-M2-10`) — and a third meaning for
+           the same pixels is how a child ends up running a program they meant to move. */
+        final handle = GrabHandle(
+          key: Key('grab-${row.node.id}'),
+          family: row.family,
+          held: row.node.id == _grabbedNodeId,
+          semanticsLabel: widget.locale == 'en'
+              ? 'Pick up this block and the ones below'
+              : 'Prendre ce bloc et ceux du dessous',
+          onGrab: () => grabStack(row.node.id),
+        );
+        return Padding(
+          padding: EdgeInsets.only(left: 16.0 * row.depth, bottom: 6),
+          child: Row(
+              children: [handle, const SizedBox(width: 4), Flexible(child: chip)]),
+        );
   }
 }

@@ -9,6 +9,7 @@ export 'src/block_choices.dart';
 export 'src/block_editor.dart';
 export 'src/block_family.dart';
 export 'src/block_help.dart';
+export 'src/block_stack.dart';
 export 'src/block_view.dart';
 export 'src/canvas_painter.dart';
 export 'src/keyword_suggestions.dart';

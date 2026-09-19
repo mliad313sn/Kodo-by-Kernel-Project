@@ -11,6 +11,7 @@ import 'package:kodo_lang/kodo_lang.dart';
 
 import 'block_family.dart';
 import 'block_help.dart';
+import 'block_stack.dart';
 
 /// §9.3 and `FR-M2-07`. Every interactive thing a child touches is at least this big.
 const double minimumTouchTarget = 48.0;
@@ -24,10 +25,19 @@ class BlockRow {
     required this.family,
     required this.isWrapperOpen,
     required this.isWrapperClose,
+    this.site = const DropSite(index: 0),
   });
 
   final Node node;
   final int depth;
+
+  /// Where this row sits in the tree (`FR-M2-06`).
+  ///
+  /// The flattened rows are what a child points at, and a drop has to be expressed against
+  /// the tree — so the row carries the translation. For a block, it is the block's own
+  /// place; for the closing lip of a C-block, it is the *end of that block's mouth*, which
+  /// is how a child drops something in at the bottom of a loop.
+  final DropSite site;
 
   /// The words on the block, in the child's keyword language.
   final String label;
@@ -48,13 +58,17 @@ class BlockRow {
 List<BlockRow> flattenProgram(Program program, KeywordTable keywords) {
   final rows = <BlockRow>[];
 
-  void walkStatements(List<AsStmt> body, int depth) {
-    for (final stmt in body) {
+  void walkStatements(List<AsStmt> body, int depth,
+      {String? ownerId, BodySlot slot = BodySlot.body}) {
+    for (var index = 0; index < body.length; index++) {
+      final stmt = body[index];
+      final here = DropSite(ownerId: ownerId, slot: slot, index: index);
       switch (stmt) {
         case Command():
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: here,
             label: _renderInline(stmt, keywords),
             family: blockHelp[stmt.opcode]?.family ?? BlockFamily.mouvement,
             isWrapperOpen: false,
@@ -64,6 +78,7 @@ List<BlockRow> flattenProgram(Program program, KeywordTable keywords) {
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: here,
             label: '#$text',
             family: BlockFamily.mesBlocs,
             isWrapperOpen: false,
@@ -73,6 +88,7 @@ List<BlockRow> flattenProgram(Program program, KeywordTable keywords) {
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: here,
             label: _renderInline(stmt, keywords),
             family: BlockFamily.donnees,
             isWrapperOpen: false,
@@ -85,15 +101,17 @@ List<BlockRow> flattenProgram(Program program, KeywordTable keywords) {
           rows.add(BlockRow(
             node: stmt as Node,
             depth: depth,
+            site: here,
             label: _renderHead(stmt, keywords),
             family: BlockFamily.controle,
             isWrapperOpen: true,
             isWrapperClose: false,
           ));
-          walkStatements(body, depth + 1);
+          walkStatements(body, depth + 1, ownerId: (stmt as Node).id);
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: DropSite(ownerId: stmt.id, index: body.length),
             label: '',
             family: BlockFamily.controle,
             isWrapperOpen: false,
@@ -103,26 +121,39 @@ List<BlockRow> flattenProgram(Program program, KeywordTable keywords) {
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: here,
             label: _renderHead(stmt, keywords),
             family: BlockFamily.controle,
             isWrapperOpen: true,
             isWrapperClose: false,
           ));
-          walkStatements(then, depth + 1);
+          walkStatements(then, depth + 1, ownerId: stmt.id);
           if (orElse != null) {
+            /* The `sinon` divider is the end of the `si` mouth, so that is where dropping
+               on it puts a stack. The mouth below it is a different place entirely: a
+               program with a block in `sinon` is not the program with it at the end of
+               `si`, and a drop that confused the two would be silently wrong. */
             rows.add(BlockRow(
               node: stmt,
               depth: depth,
+              site: DropSite(ownerId: stmt.id, index: then.length),
               label: keywords.writeSyntax(SyntaxWord.else_),
               family: BlockFamily.controle,
               isWrapperOpen: true,
               isWrapperClose: true,
             ));
-            walkStatements(orElse, depth + 1);
+            walkStatements(orElse, depth + 1,
+                ownerId: stmt.id, slot: BodySlot.orElse);
           }
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: orElse == null
+                ? DropSite(ownerId: stmt.id, index: then.length)
+                : DropSite(
+                    ownerId: stmt.id,
+                    slot: BodySlot.orElse,
+                    index: orElse.length),
             label: '',
             family: BlockFamily.controle,
             isWrapperOpen: false,
@@ -132,15 +163,17 @@ List<BlockRow> flattenProgram(Program program, KeywordTable keywords) {
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: here,
             label: _renderHead(stmt, keywords),
             family: BlockFamily.mesBlocs,
             isWrapperOpen: true,
             isWrapperClose: false,
           ));
-          walkStatements(body, depth + 1);
+          walkStatements(body, depth + 1, ownerId: stmt.id);
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: DropSite(ownerId: stmt.id, index: body.length),
             label: '',
             family: BlockFamily.mesBlocs,
             isWrapperOpen: false,
@@ -155,15 +188,17 @@ List<BlockRow> flattenProgram(Program program, KeywordTable keywords) {
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: here,
             label: _renderHead(stmt, keywords),
             family: BlockFamily.evenements,
             isWrapperOpen: true,
             isWrapperClose: false,
           ));
-          walkStatements(body, depth + 1);
+          walkStatements(body, depth + 1, ownerId: stmt.id);
           rows.add(BlockRow(
             node: stmt,
             depth: depth,
+            site: DropSite(ownerId: stmt.id, index: body.length),
             label: '',
             family: BlockFamily.evenements,
             isWrapperOpen: false,
@@ -173,6 +208,7 @@ List<BlockRow> flattenProgram(Program program, KeywordTable keywords) {
           rows.add(BlockRow(
             node: stmt as Node,
             depth: depth,
+            site: here,
             label: _renderInline(stmt, keywords),
             family: BlockFamily.controle,
             isWrapperOpen: false,
@@ -596,4 +632,124 @@ class ChoiceList extends StatelessWidget {
           ),
         ],
       );
+}
+
+/// The handle that picks up a stack (`FR-M2-06`).
+///
+/// A separate target beside the block, never the block itself. The block already means two
+/// things — a tap runs it, a long press explains it — and giving the same pixels a third
+/// meaning is how a child runs a program they meant to move.
+///
+/// It is both a button and a drag source. Tapping picks the stack up and leaves it held
+/// while the child chooses where it goes, which is the path that works on a five-inch
+/// screen (`G4-003`: two eight-year-olds who could not drag accurately, and both
+/// abandoned). Dragging does the same thing for anyone who would rather drag.
+class GrabHandle extends StatelessWidget {
+  const GrabHandle({
+    super.key,
+    required this.family,
+    required this.held,
+    required this.semanticsLabel,
+    required this.onGrab,
+  });
+
+  final BlockFamily family;
+
+  /// True while this handle's stack is the one in the child's hands.
+  final bool held;
+
+  final String semanticsLabel;
+  final VoidCallback onGrab;
+
+  @override
+  Widget build(BuildContext context) {
+    final handle = Semantics(
+      label: semanticsLabel,
+      button: true,
+      selected: held,
+      child: SizedBox(
+        width: minimumTouchTarget,
+        height: minimumTouchTarget,
+        child: Material(
+          color: held
+              ? family.colour
+              : family.colour.withValues(alpha: 0.28),
+          borderRadius: BorderRadius.circular(8),
+          child: InkWell(
+            onTap: onGrab,
+            borderRadius: BorderRadius.circular(8),
+            child: ExcludeSemantics(
+              child: Icon(
+                held ? Icons.back_hand : Icons.drag_indicator,
+                size: 20,
+                color: held ? Colors.white : family.colour,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    return LongPressDraggable<String>(
+      data: 'grab',
+      onDragStarted: onGrab,
+      feedback: Material(
+        color: Colors.transparent,
+        child: Icon(Icons.back_hand, size: 28, color: family.colour),
+      ),
+      childWhenDragging: Opacity(opacity: 0.4, child: handle),
+      child: handle,
+    );
+  }
+}
+
+/// A place a held stack can be put down (`FR-M2-06`).
+///
+/// Drawn only while something is held, and only where the drop is legal — so a child finds
+/// out that a loop cannot go inside itself by the gap simply not being there, rather than
+/// by being refused after they have committed to the gesture.
+class DropGap extends StatelessWidget {
+  const DropGap({
+    super.key,
+    required this.depth,
+    required this.family,
+    required this.semanticsLabel,
+    required this.onDrop,
+  });
+
+  final int depth;
+  final BlockFamily family;
+  final String semanticsLabel;
+  final VoidCallback onDrop;
+
+  @override
+  Widget build(BuildContext context) {
+    return DragTarget<String>(
+      onAcceptWithDetails: (_) => onDrop(),
+      builder: (context, candidate, _) => Semantics(
+        label: semanticsLabel,
+        button: true,
+        child: Padding(
+          padding: EdgeInsets.only(left: 16.0 * depth, bottom: 2),
+          child: InkWell(
+            onTap: onDrop,
+            child: Container(
+              // A full touch target even though the line drawn inside it is thin: the
+              // line says where, the target is what a finger actually has to hit.
+              height: minimumTouchTarget,
+              alignment: Alignment.centerLeft,
+              child: Container(
+                height: candidate.isEmpty ? 4 : 8,
+                width: 120,
+                decoration: BoxDecoration(
+                  color: family.colour.withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

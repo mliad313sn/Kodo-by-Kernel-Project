@@ -1118,4 +1118,226 @@ void main() {
       expect(find.text('forward'), findsOneWidget);
     });
   });
+
+  /* `FR-M2-06` — "grab a stack by its top block" [SC p.6]. One line of specification, and
+     the whole of what makes a block editor feel like blocks rather than like a list
+     widget. The model is tested here on the AST, where the three rules live; the widget
+     tests below check that the child can reach them with two taps and no accuracy. */
+  group('FR-M2-06 · grabbing a stack by its top block', () {
+    Program parsed(String source) => parse(source, KeywordTables.fr).program;
+    String shown(Program p) => render(p, KeywordTables.fr).trim();
+    String idOf(Program p, String word) => (p.body.firstWhere((s) =>
+        render(Program('t', SourceSpan.none, [s]), KeywordTables.fr)
+            .trim()
+            .startsWith(word)) as Node).id;
+
+    test('a stack is the block and everything under it', () {
+      final p = parsed('avance 10\ntournedroite 90\navance 20');
+      final stack = stackAt(p, idOf(p, 'tournedroite'));
+      expect(stack.length, 2);
+      expect(shown(Program('t', SourceSpan.none, stack)),
+          'tournedroite 90\navance 20');
+    });
+
+    test('a grab inside a loop stops at the loop', () {
+      final p = parsed('répète 3 {\n  avance 10\n  tournedroite 90\n}\ncentre');
+      final loop = p.body.first as Repeat;
+      final inside = (loop.body[1] as Node).id;
+      final stack = stackAt(p, inside);
+      // The rest of the loop's body, and nothing from outside it. The loop is the
+      // child's bracket and a grab may not reach through it.
+      expect(shown(Program('t', SourceSpan.none, stack)), 'tournedroite 90');
+    });
+
+    test('a C-block takes its mouth with it', () {
+      final p = parsed('centre\nrépète 3 {\n  avance 10\n}');
+      final stack = stackAt(p, idOf(p, 'répète'));
+      expect(stack.length, 1);
+      expect(shown(Program('t', SourceSpan.none, stack)),
+          'répète 3 {\n  avance 10\n}');
+    });
+
+    test('moving a stack into a loop puts every block in it', () {
+      final p = parsed('répète 3 {\n  avance 10\n}\ntournedroite 90\ncentre');
+      final loop = p.body.first as Repeat;
+      final moved = moveStack(p, idOf(p, 'tournedroite'),
+          DropSite(ownerId: loop.id, index: 1));
+      expect(shown(moved),
+          'répète 3 {\n  avance 10\n  tournedroite 90\n  centre\n}');
+    });
+
+    test('a loop may not be dropped inside itself', () {
+      final p = parsed('répète 3 {\n  avance 10\n}');
+      final loop = p.body.first as Repeat;
+      final site = DropSite(ownerId: loop.id, index: 0);
+      expect(canDrop(p, loop.id, site), isFalse);
+      // And the refusal leaves the program exactly as it was — never a tree that cannot
+      // be drawn, and never an exception at a child.
+      expect(shown(moveStack(p, loop.id, site)), shown(p));
+    });
+
+    test('`si … sinon` has two mouths and they stay different', () {
+      final p = parsed(
+          'si 1 == 1 {\n  avance 10\n} sinon {\n  recule 10\n}\ncentre');
+      final branch = p.body.first as If;
+      final toElse = moveStack(p, idOf(p, 'centre'),
+          DropSite(ownerId: branch.id, slot: BodySlot.orElse, index: 1));
+      expect(shown(toElse),
+          'si 1 == 1 {\n  avance 10\n} sinon {\n  recule 10\n  centre\n}');
+
+      final toThen = moveStack(p, idOf(p, 'centre'),
+          DropSite(ownerId: branch.id, index: 1));
+      expect(shown(toThen),
+          'si 1 == 1 {\n  avance 10\n  centre\n} sinon {\n  recule 10\n}');
+    });
+
+    test('a stack taken out of a loop lands in the program body', () {
+      final p = parsed('répète 3 {\n  avance 10\n  tournedroite 90\n}');
+      final loop = p.body.first as Repeat;
+      final moved =
+          moveStack(p, (loop.body[1] as Node).id, const DropSite(index: 1));
+      expect(shown(moved), 'répète 3 {\n  avance 10\n}\ntournedroite 90');
+    });
+
+    test('every row knows where it sits, including the closing lip', () {
+      final p = parsed('répète 3 {\n  avance 10\n}\ncentre');
+      final rows = flattenProgram(p, KeywordTables.fr);
+      final loop = p.body.first as Repeat;
+      expect(rows.first.site, const DropSite(index: 0));
+      expect(rows[1].site, DropSite(ownerId: loop.id, index: 0));
+      // The lip is "the end of this loop's mouth", which is how a child drops something
+      // in at the bottom of a loop that already has blocks in it.
+      expect(rows[2].site, DropSite(ownerId: loop.id, index: 1));
+      expect(rows[3].site, const DropSite(index: 1));
+    });
+
+    testWidgets('two taps move a stack, and no accuracy is needed',
+        (tester) async {
+      final controller = EditorController(
+          initialSource: 'répète 3 {\n  avance 10\n}\ntournedroite 90');
+      await tester.pumpWidget(_wrap(SizedBox(
+        width: 800,
+        height: 600,
+        child: BlockEditor(
+          controller: controller,
+          scope: scopeForWorld(2),
+          locale: 'fr',
+        ),
+      )));
+      await tester.pumpAndSettle();
+      final state = tester.state<BlockEditorState>(find.byType(BlockEditor));
+
+      // Nothing is held, so there are no gaps to fall into by accident.
+      expect(find.byType(DropGap), findsNothing);
+
+      final turn = (controller.program.body[1] as Node).id;
+      await tester.tap(find.byKey(Key('grab-$turn')));
+      await tester.pumpAndSettle();
+      expect(state.grabbedNodeId, turn);
+      expect(find.byType(DropGap), findsWidgets);
+      // Every gap is a full touch target: G4-003 is two eight-year-olds who could not
+      // hit a small one.
+      for (final gap in tester.widgetList<DropGap>(find.byType(DropGap))) {
+        expect(tester.getSize(find.byWidget(gap)).height,
+            greaterThanOrEqualTo(minimumTouchTarget));
+      }
+
+      final loop = controller.program.body.first as Repeat;
+      await tester
+          .tap(find.byKey(Key('gap-${DropSite(ownerId: loop.id, index: 1)}')));
+      await tester.pumpAndSettle();
+      expect(render(controller.program, KeywordTables.fr).trim(),
+          'répète 3 {\n  avance 10\n  tournedroite 90\n}');
+      expect(state.grabbedNodeId, isNull);
+      expect(find.byType(DropGap), findsNothing);
+    });
+
+    testWidgets('the gap that would eat the program is not drawn',
+        (tester) async {
+      final controller =
+          EditorController(initialSource: 'répète 3 {\n  avance 10\n}');
+      await tester.pumpWidget(_wrap(SizedBox(
+        width: 800,
+        height: 600,
+        child: BlockEditor(
+          controller: controller,
+          scope: scopeForWorld(2),
+          locale: 'fr',
+        ),
+      )));
+      await tester.pumpAndSettle();
+
+      final loop = controller.program.body.first as Repeat;
+      await tester.tap(find.byKey(Key('grab-${loop.id}')));
+      await tester.pumpAndSettle();
+
+      // The loop is held. Its own mouth is not on offer, so a child cannot ask for a
+      // loop inside itself and cannot be told off for trying.
+      expect(find.byKey(Key('gap-${DropSite(ownerId: loop.id, index: 0)}')),
+          findsNothing);
+      expect(find.byKey(Key('gap-${const DropSite(index: 0)}')), findsOneWidget);
+    });
+
+    testWidgets('a held stack changes what a tap on a block means',
+        (tester) async {
+      var ran = 0;
+      final controller =
+          EditorController(initialSource: 'avance 10\ntournedroite 90');
+      await tester.pumpWidget(_wrap(SizedBox(
+        width: 800,
+        height: 600,
+        child: BlockEditor(
+          controller: controller,
+          scope: scopeForWorld(2),
+          locale: 'fr',
+          onRunStack: (_) => ran++,
+        ),
+      )));
+      await tester.pumpAndSettle();
+
+      final turn = (controller.program.body[1] as Node).id;
+      await tester.tap(find.byKey(Key('block-$turn')));
+      await tester.pumpAndSettle();
+      expect(ran, 1, reason: 'FR-M2-02 still runs a stack on a tap');
+
+      await tester.tap(find.byKey(Key('grab-$turn')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(Key('block-$turn')));
+      await tester.pumpAndSettle();
+      // Running a program halfway through moving part of it would run a program that
+      // does not exist yet.
+      expect(ran, 1);
+    });
+  });
+
+  /* Not FR-M2-06, found while building it. `FR-M2-04`'s edit walked the top level of the
+     program and stopped, so a number inside a `répète` — World 1's second item — showed
+     an editable field that could not be edited. */
+  group('FR-M2-04 · a number inside a loop is editable too', () {
+    testWidgets('tapping a number in a loop body changes the program',
+        (tester) async {
+      final controller =
+          EditorController(initialSource: 'répète 3 {\n  avance 10\n}');
+      await tester.pumpWidget(_wrap(SizedBox(
+        width: 800,
+        height: 600,
+        child: BlockEditor(
+          controller: controller,
+          scope: scopeForWorld(2),
+          locale: 'fr',
+        ),
+      )));
+      await tester.pumpAndSettle();
+      final state = tester.state<BlockEditorState>(find.byType(BlockEditor));
+
+      final loop = controller.program.body.first as Repeat;
+      final inner = loop.body.first;
+      final slot = state.numberSlots(inner as Node).single;
+      state.setSlot(slot, 70);
+      await tester.pumpAndSettle();
+
+      expect(render(controller.program, KeywordTables.fr).trim(),
+          'répète 3 {\n  avance 70\n}');
+    });
+  });
 }

@@ -55,7 +55,7 @@
     "FR-M2-03": "Done",
     "FR-M2-04": "Done",
     "FR-M2-05": "Done",
-    "FR-M2-06": "Not started",
+    "FR-M2-06": "Done",
     "FR-M2-07": "In progress",
     "FR-M2-08": "Done",
     "FR-M2-09": "Done",
@@ -281,7 +281,6 @@
   },
   "notes": {
     "_comment": "Why a requirement is still open, for the ones that cannot be closed from a repository. Written by the PO at the close of the content build.",
-    "FR-M2-06": "Grab a stack by its top block. Buildable UI work, not built.",
     "FR-M2-07": "Needs a device matrix and a child panel. Neither exists in a repository.",
     "FR-M3-08": "Export as text and as a code image. The text half is the renderer that already exists; the image half needs a rasteriser on a real canvas.",
     "FR-M4-02": "Zoomable vector rendering. SVG and PNG export exist and are tested; the zoom is Flutter work on a real surface.",
