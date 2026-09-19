@@ -68,7 +68,7 @@ StageSetup troupeOf(ContentPack pack) =>
     pack.items.firstWhere((i) => i.stage != null).stage!;
 
 /// The worlds that have been authored and shipped. **The one list.**
-const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 void main() {
   final worlds = {for (final n in shippedWorlds) n: load(n)};
@@ -83,6 +83,7 @@ void main() {
   final world8 = worlds[8]!;
   final world9 = worlds[9]!;
   final world10 = worlds[10]!;
+  final world11 = worlds[11]!;
 
   group('§6.3 · the shipped worlds carry the committed item volume', () {
     final committed = ledgerFor(shippedWorlds.toSet());
@@ -108,7 +109,7 @@ void main() {
       }
     });
 
-    test('the shipped worlds carry 1064 items between them', () {
+    test('the shipped worlds carry 1154 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
@@ -120,8 +121,9 @@ void main() {
       expect(world8.items, hasLength(86));
       expect(world9.items, hasLength(92));
       expect(world10.items, hasLength(102));
-      // 88 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 1064);
+      expect(world11.items, hasLength(90));
+      // 95 % of the 1 214 the curriculum commits across all thirteen worlds.
+      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 1154);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -552,6 +554,112 @@ void main() {
                 'own structural claim');
       });
     }
+  });
+
+  group('World 11 proves its own claim on every attempt', () {
+    test('C11.4 is written in English and passes the French version', () {
+      /* The concept is that English keywords are the same language in different words.
+         Rather than say so, every C11.4 item carries the French translation among its
+         correct alternatives — so a child who translates back is marked right, by a
+         grader that does not know which words the program was typed with. */
+      final items = world11.items.where((i) => i.conceptId == 'C11.4');
+      final written = items.where((i) => i.type.wantsProgram);
+      expect(written, isNotEmpty);
+      const grader = Grader();
+      for (final item in written) {
+        expect(item.keywords, 'en', reason: '${item.id} is not in English');
+        final french = item.alternativeSolutionSources
+            .where((s) => s.contains('répète') || s.contains('avance'));
+        expect(french, isNotEmpty,
+            reason: '${item.id} never offers the French version');
+        for (final source in french) {
+          final parsed = parseEither(source, locale: item.keywords);
+          expect(parsed.errors, isEmpty, reason: source);
+          expect(grader.grade(item, ProgramResponse(parsed.program)).passed,
+              isTrue,
+              reason: '${item.id} refuses its own program in French');
+        }
+      }
+    });
+
+    test('and the two spellings really are one tree', () {
+      /* Not "they both work" — the same tree, which is the claim `FR-M15-03` makes and
+         the reason switching keywords mid-edit cannot alter a program. */
+      const pairs = [
+        ('répète 4 {\n  avance 60\n  tournedroite 90\n}',
+            'repeat 4 {\n  forward 60\n  turnright 90\n}'),
+        ('si 3 > 1 {\n  avance 50\n}', 'if 3 > 1 {\n  forward 50\n}'),
+        ('écris 7', 'print 7'),
+      ];
+      for (final pair in pairs) {
+        final fr = parse(pair.$1, KeywordTables.fr);
+        final en = parse(pair.$2, KeywordTables.en);
+        expect(fr.errors, isEmpty);
+        expect(en.errors, isEmpty);
+        final a = VectorCanvas();
+        final bb = VectorCanvas();
+        runProgram(fr.program, a);
+        runProgram(en.program, bb);
+        expect(bb.pathSignature(), a.pathSignature());
+        expect(bb.output, a.output);
+      }
+    });
+
+    test('C11.3 ships programs that fail, and every one has a sentence', () {
+      /* The concept is reading the message. An item whose broken program does not
+         actually stop would be teaching a skill with nothing to practise on. */
+      // T2 only: a fill-the-gap also carries a starting program, and its holes are
+      // written with `___`, which is not meant to parse.
+      final broken = world11.items.where((i) =>
+          i.conceptId == 'C11.3' && i.type == ItemType.t2FixTheBug);
+      expect(broken, hasLength(5));
+      for (final item in broken) {
+        final parsed = parseEither(item.startingProgramSource!,
+            locale: item.keywords);
+        expect(parsed.errors, isEmpty,
+            reason: '${item.id}: a program that never parses never runs, so '
+                'there is nothing to read the error of');
+        final canvas = VectorCanvas();
+        final run = runProgram(parsed.program, canvas, seed: item.seed);
+        expect(run.error, isNotNull, reason: '${item.id} does not fail');
+        expect(item.diagnosticFor(DiagnosticSituation.programFailed), isNotNull,
+            reason: '${item.id} would show a blank panel');
+      }
+    });
+
+    test('C11.2 comments out rather than deletes, and it makes no difference', () {
+      /* The misconception is that comments run. The proof is that a commented line and
+         a deleted line leave the same canvas — which is exactly why the deleted version
+         is offered as a correct alternative. */
+      final items = world11.items.where((i) =>
+          i.conceptId == 'C11.2' &&
+          (i.referenceSolutionSource ?? '').startsWith('#'));
+      expect(items, isNotEmpty);
+      for (final item in items) {
+        final withComment = parse(item.referenceSolutionSource!, KeywordTables.fr);
+        final deleted = parse(
+            item.referenceSolutionSource!.split('\n').skip(1).join('\n'),
+            KeywordTables.fr);
+        expect(withComment.errors, isEmpty);
+        expect(deleted.errors, isEmpty);
+        final a = VectorCanvas();
+        final bb = VectorCanvas();
+        runProgram(withComment.program, a);
+        runProgram(deleted.program, bb);
+        expect(bb.pathSignature(), a.pathSignature(),
+            reason: '${item.id}: the commented line did something');
+      }
+    });
+
+    test('no narration in World 11 says the word it is teaching', () {
+      for (final tutorial in world11.tutorials) {
+        for (final step in tutorial.steps) {
+          for (final line in step.narrationKeys.values) {
+            expect(jargonIn(line), isEmpty, reason: '"$line"');
+          }
+        }
+      }
+    });
   });
 
   group('World 10 is graded on a stage, because none of it leaves ink', () {

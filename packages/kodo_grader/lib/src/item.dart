@@ -275,6 +275,7 @@ class Item {
     this.inputs = const [],
     this.sensing = SensingScene.empty,
     this.stage,
+    this.keywords = 'fr',
     this.runTrigger = 'flag',
     this.requireFinalPose = false,
   });
@@ -346,6 +347,14 @@ class Item {
   /// nothing happens passes every answer.
   final StageSetup? stage;
 
+  /// Which keyword language this item's programs are written in.
+  ///
+  /// `fr` by default, because that is what a child sees first. World 11's fourth concept
+  /// is that English keywords are the same language in different words, so its items are
+  /// written in `en` — and both tables are tried when parsing, because a program that
+  /// parses under either is a program. See `keyword_agnostic.dart`.
+  final String keywords;
+
   /// Which trigger this item's programs run under (`FR-M21-01`).
   ///
   /// `flag` (the default), `clicked`, `key:<name>`, or `any`. Without it every World 5
@@ -407,6 +416,7 @@ class Item {
         if (inputs.isNotEmpty) 'inputs': inputs,
         if (!sensing.isDefault) 'sensing': sensing.toJson(),
         if (stage != null) 'stage': stage!.toJson(),
+        if (keywords != 'fr') 'keywords': keywords,
         if (requireFinalPose) 'requireFinalPose': true,
       };
 
@@ -457,6 +467,7 @@ class Item {
         stage: j['stage'] == null
             ? null
             : StageSetup.fromJson(j['stage']! as Map<String, Object?>),
+        keywords: (j['keywords'] as String?) ?? 'fr',
         requireFinalPose: (j['requireFinalPose'] as bool?) ?? false,
       );
 }

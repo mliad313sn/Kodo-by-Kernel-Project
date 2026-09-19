@@ -18,6 +18,7 @@ import 'package:kodo_stage/kodo_stage.dart';
 
 import 'assertions.dart';
 import 'item.dart';
+import 'keyword_agnostic.dart';
 
 /// The signals that do not decide anything (§6.2).
 class ProcessSignals {
@@ -226,7 +227,8 @@ class Grader {
 
       final targetCanvas = _surfaceFor(item);
       final targetProgram =
-          parse(item.targetProgramSource!, KeywordTables.fr).program;
+          parseEither(item.targetProgramSource!, locale: item.keywords)
+              .program;
       runProgram(targetProgram, targetCanvas,
           seed: item.seed, inputs: item.inputs, trigger: trigger);
 

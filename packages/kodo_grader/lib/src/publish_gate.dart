@@ -14,6 +14,7 @@ import 'package:kodo_lang/kodo_lang.dart';
 
 import 'grader.dart';
 import 'item.dart';
+import 'keyword_agnostic.dart';
 
 /// One reason an item may not ship.
 class PublishFailure {
@@ -187,7 +188,7 @@ List<PublishFailure> checkItem(Item item, {Grader grader = const Grader()}) {
     }
 
     Program? compile(String source, String rule) {
-      final parsed = parse(source, KeywordTables.fr);
+      final parsed = parseEither(source, locale: item.keywords);
       if (parsed.errors.isNotEmpty) {
         fail(rule, 'does not parse: ${parsed.errors.first.message('fr')}');
         return null;

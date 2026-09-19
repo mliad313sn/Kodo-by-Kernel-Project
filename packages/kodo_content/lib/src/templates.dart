@@ -232,6 +232,11 @@ Item buildToTarget({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+  /// The keyword language this item's programs are written in (`fr` or `en`).
+  ///
+  /// World 11's fourth concept is that English keywords are the same language in
+  /// different words, so its items are written in English and graded the same way.
+  String keywords = 'fr',
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -254,6 +259,7 @@ Item buildToTarget({
       runTrigger: runTrigger,
       sensing: sensing,
       stage: stage,
+      keywords: keywords,
     );
 
 /// Two programs that draw exactly what [solution] draws, written differently.
@@ -386,6 +392,11 @@ Item fixTheBug({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+  /// The keyword language this item's programs are written in (`fr` or `en`).
+  ///
+  /// World 11's fourth concept is that English keywords are the same language in
+  /// different words, so its items are written in English and graded the same way.
+  String keywords = 'fr',
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -409,6 +420,7 @@ Item fixTheBug({
       runTrigger: runTrigger,
       sensing: sensing,
       stage: stage,
+      keywords: keywords,
       assertions: assertions,
     );
 
@@ -453,6 +465,11 @@ Item fillTheGap({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+  /// The keyword language this item's programs are written in (`fr` or `en`).
+  ///
+  /// World 11's fourth concept is that English keywords are the same language in
+  /// different words, so its items are written in English and graded the same way.
+  String keywords = 'fr',
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -476,6 +493,7 @@ Item fillTheGap({
       runTrigger: runTrigger,
       sensing: sensing,
       stage: stage,
+      keywords: keywords,
       assertions: assertions,
     );
 
@@ -520,6 +538,11 @@ Item parsons({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+  /// The keyword language this item's programs are written in (`fr` or `en`).
+  ///
+  /// World 11's fourth concept is that English keywords are the same language in
+  /// different words, so its items are written in English and graded the same way.
+  String keywords = 'fr',
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -542,6 +565,7 @@ Item parsons({
       runTrigger: runTrigger,
       sensing: sensing,
       stage: stage,
+      keywords: keywords,
       assertions: assertions,
     );
 
@@ -576,6 +600,11 @@ Item openBuild({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+  /// The keyword language this item's programs are written in (`fr` or `en`).
+  ///
+  /// World 11's fourth concept is that English keywords are the same language in
+  /// different words, so its items are written in English and graded the same way.
+  String keywords = 'fr',
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -593,6 +622,7 @@ Item openBuild({
       runTrigger: runTrigger,
       sensing: sensing,
       stage: stage,
+      keywords: keywords,
     );
 
 /// One line of a rubric: what it says to the child, and what it checks.
@@ -637,6 +667,11 @@ Item golf({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+  /// The keyword language this item's programs are written in (`fr` or `en`).
+  ///
+  /// World 11's fourth concept is that English keywords are the same language in
+  /// different words, so its items are written in English and graded the same way.
+  String keywords = 'fr',
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -659,5 +694,6 @@ Item golf({
       runTrigger: runTrigger,
       sensing: sensing,
       stage: stage,
+      keywords: keywords,
       assertions: assertions,
     );
