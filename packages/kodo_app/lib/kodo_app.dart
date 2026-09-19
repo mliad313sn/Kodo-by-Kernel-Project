@@ -5,6 +5,7 @@
 /// being policy and start being tests.
 library;
 
+export 'src/block_choices.dart';
 export 'src/block_editor.dart';
 export 'src/block_family.dart';
 export 'src/block_help.dart';

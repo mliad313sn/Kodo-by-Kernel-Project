@@ -146,6 +146,29 @@ List<BlockRow> flattenProgram(Program program, KeywordTable keywords) {
             isWrapperOpen: false,
             isWrapperClose: true,
           ));
+        /* An event script is a hat block with a body, and it was falling through to the
+           default below — which rendered `quand touche "espace" { avance 10 }` as one
+           flat row with its braces showing, and gave its body no indentation and its
+           trigger no editable slot. World 5 shipped that way because nothing looked at a
+           `WhenEvent` here; World 10's dropdowns are what made it visible. */
+        case WhenEvent(:final body):
+          rows.add(BlockRow(
+            node: stmt,
+            depth: depth,
+            label: _renderHead(stmt, keywords),
+            family: BlockFamily.evenements,
+            isWrapperOpen: true,
+            isWrapperClose: false,
+          ));
+          walkStatements(body, depth + 1);
+          rows.add(BlockRow(
+            node: stmt,
+            depth: depth,
+            label: '',
+            family: BlockFamily.evenements,
+            isWrapperOpen: false,
+            isWrapperClose: true,
+          ));
         default:
           rows.add(BlockRow(
             node: stmt as Node,
@@ -450,4 +473,127 @@ class _NumberPadState extends State<NumberPad> {
       ],
     );
   }
+}
+
+/// A named argument, chosen from a list (`FR-M2-05`).
+///
+/// The same shape as [NumberField] on purpose: a child who has learned that the thing
+/// inside a block can be pressed should not have to learn it twice. The difference is
+/// what opens — a list of names rather than a keypad — because a name is chosen and never
+/// typed. There is no keyboard anywhere in this, which is the whole point: a
+/// five-year-old spelling of *sourisappuyée* is a program that does not run.
+class ChoiceField extends StatelessWidget {
+  const ChoiceField({
+    super.key,
+    required this.value,
+    required this.options,
+    required this.family,
+    required this.onChanged,
+    this.locale = 'fr',
+  });
+
+  /// Null means a hole, drawn the way a number hole is.
+  final String? value;
+  final List<String> options;
+  final BlockFamily family;
+  final void Function(String) onChanged;
+  final String locale;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = value ?? '?';
+    return Semantics(
+      label: uiStrings.render(
+          value == null ? 'a11y.choice_gap' : 'a11y.choice_field',
+          UiLocale.byCode(locale),
+          {'value': text}),
+      button: true,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: options.isEmpty
+            // An empty list is not a dialogue: a project with no sounds has nothing to
+            // choose, and opening a blank sheet over the program would say otherwise.
+            ? null
+            : () async {
+                final next = await showDialog<String>(
+                  context: context,
+                  builder: (context) =>
+                      ChoiceList(value: value, options: options, locale: locale),
+                );
+                if (next != null) onChanged(next);
+              },
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+              minWidth: minimumTouchTarget, minHeight: minimumTouchTarget),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border:
+                  Border.all(color: family.colour, width: value == null ? 3 : 2),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(text,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: value == null ? family.colour : null)),
+                  const SizedBox(width: 4),
+                  // The arrow says "there are others", which a bare word does not.
+                  Icon(Icons.arrow_drop_down, color: family.colour),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The list a [ChoiceField] opens: one name per row, each a full touch target.
+class ChoiceList extends StatelessWidget {
+  const ChoiceList(
+      {super.key, required this.value, required this.options, this.locale = 'fr'});
+
+  final String? value;
+  final List<String> options;
+  final String locale;
+
+  @override
+  Widget build(BuildContext context) => AlertDialog(
+        contentPadding: const EdgeInsets.symmetric(vertical: 8),
+        content: SizedBox(
+          width: 280,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              for (final option in options)
+                ListTile(
+                  key: Key('choice-$option'),
+                  // 48 dp, like every other target a child has to hit (`FR-M2-04`).
+                  minTileHeight: minimumTouchTarget,
+                  title: Text(option, style: const TextStyle(fontSize: 18)),
+                  // A tick, not a highlight: the current one has to be findable without
+                  // relying on colour (`FR-M16-01`).
+                  trailing: option == value ? const Icon(Icons.check) : null,
+                  onTap: () => Navigator.of(context).pop(option),
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            key: const Key('choice-cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+            // The same word the number pad uses. Two ways out of two very similar
+            // dialogues should not read differently.
+            child: Text(uiStrings.render('button.undo', UiLocale.byCode(locale))),
+          ),
+        ],
+      );
 }

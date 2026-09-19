@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:kodo_access/kodo_access.dart';
 import 'package:kodo_lang/kodo_lang.dart';
 
+import 'block_choices.dart';
 import 'block_family.dart';
 import 'block_help.dart';
 import 'block_view.dart';
@@ -44,6 +45,7 @@ class BlockEditor extends StatefulWidget {
     required this.controller,
     required this.scope,
     this.locale = 'fr',
+    this.choices = BlockChoices.empty,
     this.onRunStack,
     this.onShowHelp,
     this.compact = false,
@@ -52,6 +54,10 @@ class BlockEditor extends StatefulWidget {
   final EditorController controller;
   final PaletteScope scope;
   final String locale;
+
+  /// What the dropdowns offer (`FR-M2-05`). The language's own lists come with it; the
+  /// project's sprites, backdrops and sounds are handed in, because they are content.
+  final BlockChoices choices;
 
   /// `FR-M2-02`: clicking any block or stack runs it immediately.
   final void Function(Program stack)? onRunStack;
@@ -159,11 +165,56 @@ class BlockEditorState extends State<BlockEditor> {
     return slots;
   }
 
+  /// The named arguments of [node] — the ones chosen from a list rather than typed.
+  ///
+  /// `FR-M2-05`. A block like `lutin "chat"` has a name where `avance 50` has a number,
+  /// and until World 10 there was no such block, which is why this arrived with it.
+  List<ArgumentSlot> choiceSlots(Node node) {
+    /* A trigger is not a `Command` — it is the head of a `WhenEvent`, which is what D-014
+       added — so `quand touche "espace"` needs naming here as well or the one block in
+       the language whose name a child most wants to change has no list behind it. */
+    final opcode = switch (node) {
+      Command(:final opcode) => opcode,
+      WhenEvent(:final trigger) => trigger,
+      _ => null,
+    };
+    if (opcode == null) return const [];
+    if (!namedArguments.containsKey(opcode)) return const [];
+    final args = node is Command ? node.args : (node as WhenEvent).args;
+    // Always the first argument: `effet "fantôme", 50` names a thing and then sizes it,
+    // and the size belongs to the number pad.
+    final arg = args.isEmpty ? null : args.first;
+    if (arg == null) {
+      return [ArgumentSlot(commandId: node.id, index: 0, literal: null)];
+    }
+    if (arg is Literal && arg.value is StringValue) {
+      return [ArgumentSlot(commandId: node.id, index: 0, literal: arg)];
+    }
+    // An expression where a name belongs is somebody being clever; leave it alone.
+    return const [];
+  }
+
+  /// Fills a named slot with a chosen word.
+  void setChoice(ArgumentSlot slot, String value) =>
+      _fillSlot(slot, StringValue(value));
+
   /// Fills a slot: replaces the literal that is there, or writes one where a hole was.
-  void setSlot(ArgumentSlot slot, num value) {
+  void setSlot(ArgumentSlot slot, num value) => _fillSlot(slot, NumberValue(value));
+
+  void _fillSlot(ArgumentSlot slot, KodoValue value) {
     final program = widget.controller.program;
 
     AsStmt fill(AsStmt stmt) {
+      if (stmt is WhenEvent && stmt.id == slot.commandId) {
+        final args = [...stmt.args];
+        while (args.length <= slot.index) {
+          args.add(Literal('gap-${stmt.id}-${args.length}', stmt.span,
+              const NumberValue(0)));
+        }
+        args[slot.index] =
+            Literal((args[slot.index] as Node).id, stmt.span, value);
+        return WhenEvent(stmt.id, stmt.span, stmt.trigger, args, stmt.body);
+      }
       if (stmt is! Command || stmt.id != slot.commandId) return stmt;
       final args = [...stmt.args];
       /* A hole beyond the end needs the earlier ones to exist. They are written as zero
@@ -176,8 +227,8 @@ class BlockEditorState extends State<BlockEditor> {
       /* The node keeps its identity across the edit. Undo, the block/text bridge and the
          telemetry all key on node ids, and a fresh id for every keystroke would make one
          change look like a delete and an insert. */
-      args[slot.index] = Literal(
-          (args[slot.index] as Node).id, stmt.span, NumberValue(value));
+      args[slot.index] =
+          Literal((args[slot.index] as Node).id, stmt.span, value);
       return Command(stmt.id, stmt.span, stmt.opcode, args, form: stmt.form);
     }
 
@@ -323,13 +374,16 @@ class BlockEditorState extends State<BlockEditor> {
           );
         }
         final slots = numberSlots(row.node);
+        final names = choiceSlots(row.node);
         return Padding(
           padding: EdgeInsets.only(left: 16.0 * row.depth, bottom: 6),
           child: BlockChip(
             key: Key('block-${row.node.id}'),
             /* The words WITHOUT their numbers: the numbers are widgets now, and printing
                them in the label as well would show every value twice. */
-            label: slots.isEmpty ? row.label : _wordsOnly(row.label),
+            label: slots.isEmpty && names.isEmpty
+                ? row.label
+                : _wordsOnly(row.label),
             family: row.family,
             semanticsLabel: '${row.label}, ${_familyName(row.family)}'
                 '${row.depth > 0 ? ', niveau ${row.depth + 1}' : ''}',
@@ -343,6 +397,25 @@ class BlockEditorState extends State<BlockEditor> {
                target on a five-inch screen — and a number a child cannot press is a
                number a child cannot change. */
             fields: [
+              /* Names first, numbers after, which is the order the blocks themselves
+                 read in: `effet "fantôme", 50` chooses the thing and then sizes it. */
+              for (final slot in names)
+                ChoiceField(
+                  key: Key('choice-${slot.key}'),
+                  value: slot.literal == null
+                      ? null
+                      : (slot.literal!.value as StringValue).value,
+                  options: widget.choices.optionsFor(
+                      namedArguments[switch (row.node) {
+                        Command(:final opcode) => opcode,
+                        WhenEvent(:final trigger) => trigger,
+                        _ => Opcode.selectSprite,
+                      }]!,
+                      widget.locale),
+                  family: row.family,
+                  locale: widget.locale,
+                  onChanged: (v) => setChoice(slot, v),
+                ),
               for (final slot in slots)
                 NumberField(
                   key: Key('literal-${slot.key}'),

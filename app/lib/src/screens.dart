@@ -576,6 +576,7 @@ class _ItemScreenState extends State<ItemScreen> {
                         keywordLocale: shell.session.keywordLocale,
                         drawn: loop.drawn,
                         locale: locale,
+                        choices: _choicesFor(item),
                       ),
               ),
               _Verdict(loop: loop, locale: locale, controller: _controller),
@@ -618,6 +619,23 @@ class _Prompt extends StatelessWidget {
 /// Each line is one plain sentence the author wrote. The structural check behind it is
 /// deliberately NOT shown: a child is told "ton dessin répète quelque chose", not
 /// `contains(Repeat) >= 1`, and the whole point of the rubric is that it is readable.
+/// The dropdown lists this item's blocks offer (`FR-M2-05`).
+///
+/// Read off the item's own stage rather than made up here. An item that never asked for a
+/// stage has no sprites, and its `lutin` dropdown is honestly empty — which is right,
+/// because such an item has no `lutin` block in its palette either.
+BlockChoices _choicesFor(Item item) {
+  final stage = item.stage;
+  if (stage == null) return BlockChoices.empty;
+  return BlockChoices(
+    sprites: stage.sprites,
+    backdrops: ['blank', ...stage.backdrops],
+    // Sound names are content the pack carries; an item that names none offers none
+    // rather than a list of sounds nobody recorded.
+    sounds: const [],
+  );
+}
+
 class _Rubric extends StatelessWidget {
   const _Rubric({required this.rubric, required this.locale});
 
@@ -671,6 +689,7 @@ class _Work extends StatelessWidget {
     required this.keywordLocale,
     required this.drawn,
     required this.locale,
+    this.choices = BlockChoices.empty,
   });
 
   final EditorController controller;
@@ -678,6 +697,9 @@ class _Work extends StatelessWidget {
   final String keywordLocale;
   final VectorCanvas? drawn;
   final String locale;
+
+  /// What the dropdowns inside blocks offer (`FR-M2-05`).
+  final BlockChoices choices;
 
   @override
   Widget build(BuildContext context) {
@@ -699,6 +721,10 @@ class _Work extends StatelessWidget {
           scope: scope,
           locale: keywordLocale,
           compact: compact,
+          // `FR-M2-05`. The names come from the item's own stage, never from a list this
+          // screen invented: an item with two sprites offers two, and one with none
+          // offers none.
+          choices: choices,
         );
         if (compact) {
           return Column(

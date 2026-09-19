@@ -857,4 +857,136 @@ void main() {
       }
     });
   });
+
+  group('FR-M2-05 · a name inside a block is chosen, never typed', () {
+    /* World 10 is what made this necessary. `lutin "chat"` with no way to choose *chat*
+       is a block only an author can use, and a five-year-old's spelling of
+       "sourisappuyée" is a program that does not run. */
+    const project = BlockChoices(
+      sprites: ['chat', 'chien', 'oiseau'],
+      backdrops: ['nuit', 'plage'],
+      sounds: ['miaou', 'ouaf'],
+    );
+
+    BlockEditor editor(EditorController controller,
+            {void Function(Program)? onRun}) =>
+        BlockEditor(
+          controller: controller,
+          scope: PaletteScope.ofIds(const [
+            'SELECT_SPRITE',
+            'SET_BACKDROP',
+            'PLAY_SOUND',
+            'SET_EFFECT',
+            'MOVE_FORWARD',
+          ]),
+          choices: project,
+          onRunStack: onRun,
+        );
+
+    testWidgets('the list opens and there is no keyboard in it', (tester) async {
+      final controller = EditorController(initialSource: 'lutin "chat"');
+      Program? ran;
+      await tester.pumpWidget(_wrap(editor(controller, onRun: (s) => ran = s)));
+      final command = controller.program.body.first as Command;
+      final literal = command.args.first as Node;
+
+      await tester.tap(find.byKey(Key('choice-${literal.id}')));
+      await tester.pumpAndSettle();
+      for (final sprite in ['chat', 'chien', 'oiseau']) {
+        expect(find.byKey(Key('choice-$sprite')), findsOneWidget);
+      }
+      expect(find.byType(TextField), findsNothing,
+          reason: 'a name is chosen, never spelled');
+      expect(ran, isNull, reason: 'opening the list is not running the program');
+    });
+
+    testWidgets('choosing rewrites the program and nothing else',
+        (tester) async {
+      final controller = EditorController(initialSource: 'lutin "chat"');
+      await tester.pumpWidget(_wrap(editor(controller)));
+      final before = controller.program.body.first as Command;
+
+      await tester.tap(find.byKey(Key('choice-${(before.args.first as Node).id}')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('choice-chien')));
+      await tester.pumpAndSettle();
+
+      expect(controller.text, 'lutin "chien"');
+      final after = controller.program.body.first as Command;
+      // The node keeps its id across the edit, as the number pad's does: undo, the
+      // block/text bridge and the telemetry all key on ids.
+      expect(after.id, before.id);
+      expect((after.args.first as Node).id, (before.args.first as Node).id);
+    });
+
+    testWidgets('each kind of block offers its own kind of list', (tester) async {
+      for (final probe in [
+        ('arrièreplan "nuit"', ['nuit', 'plage']),
+        ('jouson "miaou"', ['miaou', 'ouaf']),
+        ('effet "fantôme", 50', ['fantôme', 'tourbillon']),
+        ('quand touche "espace" {\n  avance 10\n}', ['espace', 'haut']),
+      ]) {
+        final controller = EditorController(initialSource: probe.$1);
+        await tester.pumpWidget(_wrap(editor(controller)));
+        // The tree from the previous turn of this loop has to go before the next one is
+        // looked for; without it the finder sees the old block and the new program.
+        await tester.pumpAndSettle();
+        await tester.tap(find.byWidgetPredicate((w) => w is ChoiceField));
+        await tester.pumpAndSettle();
+        for (final option in probe.$2) {
+          expect(find.byKey(Key('choice-$option')), findsOneWidget,
+              reason: '${probe.$1} should offer $option');
+        }
+        await tester.tap(find.byKey(const Key('choice-cancel')));
+        await tester.pumpAndSettle();
+      }
+    });
+
+    testWidgets('a project with no sounds shows no sounds', (tester) async {
+      /* An empty list is the truth about a project that has none, and it does not open a
+         blank sheet over the program to say so. */
+      final controller = EditorController(initialSource: 'jouson "miaou"');
+      await tester.pumpWidget(_wrap(BlockEditor(
+        controller: controller,
+        scope: PaletteScope.ofIds(const ['PLAY_SOUND']),
+      )));
+      await tester.tap(find.byWidgetPredicate((w) => w is ChoiceField));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('choice-cancel')), findsNothing);
+      expect(controller.text, 'jouson "miaou"');
+    });
+
+    testWidgets('a block with a name and a number offers both', (tester) async {
+      final controller = EditorController(initialSource: 'effet "fantôme", 50');
+      await tester.pumpWidget(_wrap(editor(controller)));
+      // `effet` names the thing and then sizes it: the name is a list, the size is a pad.
+      expect(find.byWidgetPredicate((w) => w is ChoiceField), findsOneWidget);
+      expect(find.byWidgetPredicate((w) => w is NumberField), findsOneWidget);
+    });
+
+    test('every block that takes a name has a list behind it', () {
+      /* The rule the block-help catalogue follows, for the same reason: an opcode that
+         takes a name and is not in `namedArguments` gets no dropdown, and a child meets
+         a block they cannot fill. */
+      const takesAName = [
+        Opcode.keyDown,
+        Opcode.whenKey,
+        Opcode.setEffect,
+        Opcode.selectSprite,
+        Opcode.setBackdrop,
+        Opcode.playSound,
+      ];
+      for (final op in takesAName) {
+        expect(namedArguments[op], isNotNull, reason: op.id);
+      }
+      for (final entry in namedArguments.entries) {
+        expect(
+            const BlockChoices(
+                    sprites: ['s'], backdrops: ['b'], sounds: ['n'])
+                .optionsFor(entry.value, 'fr'),
+            isNotEmpty,
+            reason: '${entry.key.id} has an empty list even with a full project');
+      }
+    });
+  });
 }

@@ -149,6 +149,20 @@ final StringCatalogue uiStrings = StringCatalogue([
           'What a screen reader says for an EMPTY number slot in a block — the '
           'gap a fill-in exercise leaves. Different from a number that is already '
           'there: a child needs to know there is something missing.'),
+  /* `FR-M2-05`. The dropdown twins of the two above: a named argument reads as a name
+     that can be changed, and an empty one as something still to choose. A block whose
+     name reads as decoration is a block nobody opens. */
+  _s('a11y.choice_field', 'Le mot {value}. Appuie pour en choisir un autre.',
+      'The word {value}. Press to choose another.',
+      context:
+          'What a screen reader says for a chosen name inside a block — a key, an '
+          'effect, a sprite, a sound. Never typed, always chosen from a list.',
+      placeholders: ['value']),
+  _s('a11y.choice_gap', 'Un mot à choisir. Appuie pour ouvrir la liste.',
+      'A word to choose. Press to open the list.',
+      context:
+          'What a screen reader says for an EMPTY name slot in a block. A child '
+          'needs to know there is a list behind it, not a keyboard.'),
   _s('button.practice_start', 'Commencer', 'Start',
       context:
           'The single large button on the Practice screen. It starts today\'s mix; '
