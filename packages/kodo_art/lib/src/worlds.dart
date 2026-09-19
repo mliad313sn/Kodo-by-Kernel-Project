@@ -200,10 +200,19 @@ const world8While = Drawing(
   describeEn: 'A loop that keeps going while the sensor sees something.',
   shapes: [
     Box(Tint.night, P(0, 0), P(100, 100)),
-    Stroke(Tint.sea, [
-      P(50, 18), P(76, 30), P(82, 56), P(62, 78), P(38, 78), P(18, 56),
-      P(24, 30), P(50, 18)
-    ], width: 7),
+    Stroke(
+        Tint.sea,
+        [
+          P(50, 18),
+          P(76, 30),
+          P(82, 56),
+          P(62, 78),
+          P(38, 78),
+          P(18, 56),
+          P(24, 30),
+          P(50, 18)
+        ],
+        width: 7),
     // The arrow head, so the circuit has a direction rather than being a ring.
     Poly(Tint.sea, [P(50, 10), P(62, 20), P(50, 26)]),
     // The sensor, watching. While it sees, the loop turns.

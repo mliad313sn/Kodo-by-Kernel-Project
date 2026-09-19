@@ -42,8 +42,8 @@ void main() {
 
   group('a child can actually finish an exercise', () {
     test('the loop serves an item, grades it, and moves on', () async {
-      final loop = LearningLoop(
-          packs: [world1], conceptId: 'C1.1', clock: frozen());
+      final loop =
+          LearningLoop(packs: [world1], conceptId: 'C1.1', clock: frozen());
       await loop.start();
 
       final first = loop.current;
@@ -57,7 +57,8 @@ void main() {
       await loop.submit(program(source));
 
       expect(loop.verdict!.passed, isTrue,
-          reason: 'an item its own reference answer fails is an unshippable item');
+          reason:
+              'an item its own reference answer fails is an unshippable item');
       expect(loop.phase, LoopPhase.passed);
       expect(loop.passedThisSession, 1);
       expect(loop.drawn, isNotNull,
@@ -70,8 +71,8 @@ void main() {
 
     test('a wrong answer is told what is wrong, in the item\'s own words',
         () async {
-      final loop = LearningLoop(
-          packs: [world1], conceptId: 'C1.1', clock: frozen());
+      final loop =
+          LearningLoop(packs: [world1], conceptId: 'C1.1', clock: frozen());
       await loop.start();
 
       // Walk to a drawing item; choice items are answered differently.
@@ -89,7 +90,8 @@ void main() {
          FR-M6-03 exists to forbid. */
       final message = loop.verdict!.messageFor(item, 'fr');
       expect(message, isNotNull,
-          reason: 'an item with no sentence for this situation skipped the gate');
+          reason:
+              'an item with no sentence for this situation skipped the gate');
       expect(message, isNot(contains('Incorrect')));
       expect(message!.length, greaterThan(10));
 
@@ -98,27 +100,28 @@ void main() {
     });
 
     test('trying again keeps the child on the same item', () async {
-      final loop = LearningLoop(
-          packs: [world1], conceptId: 'C1.1', clock: frozen());
+      final loop =
+          LearningLoop(packs: [world1], conceptId: 'C1.1', clock: frozen());
       await loop.start();
       while (loop.current!.item.wrongSolutionSources.isEmpty) {
         await loop.next();
       }
       final id = loop.current!.item.id;
 
-      await loop.submit(
-          program(loop.current!.item.wrongSolutionSources.first));
+      await loop.submit(program(loop.current!.item.wrongSolutionSources.first));
       loop.tryAgain();
 
       expect(loop.current!.item.id, id,
           reason: 'a wrong answer must not cost a child their question');
       expect(loop.phase, LoopPhase.working);
-      expect(loop.verdict, isNull, reason: 'the message clears when they resume');
+      expect(loop.verdict, isNull,
+          reason: 'the message clears when they resume');
     });
 
-    test('asking for a hint costs nothing and shows the item\'s hint', () async {
-      final loop = LearningLoop(
-          packs: [world1], conceptId: 'C1.1', clock: frozen());
+    test('asking for a hint costs nothing and shows the item\'s hint',
+        () async {
+      final loop =
+          LearningLoop(packs: [world1], conceptId: 'C1.1', clock: frozen());
       await loop.start();
       while (loop.current!.item.hints.isEmpty) {
         await loop.next();
@@ -139,8 +142,8 @@ void main() {
       /* The recovery floor is M7's, and this test is only that the shell FEEDS it: the
          loop has to count consecutive failures and hand them to the scheduler, or the
          floor never triggers in the running product however correct the module is. */
-      final loop = LearningLoop(
-          packs: [world1], conceptId: 'C1.1', clock: frozen());
+      final loop =
+          LearningLoop(packs: [world1], conceptId: 'C1.1', clock: frozen());
       await loop.start();
 
       var failures = 0;
@@ -148,8 +151,8 @@ void main() {
         while (loop.current!.item.wrongSolutionSources.isEmpty) {
           await loop.next();
         }
-        await loop.submit(
-            program(loop.current!.item.wrongSolutionSources.first));
+        await loop
+            .submit(program(loop.current!.item.wrongSolutionSources.first));
         if (!loop.verdict!.passed) failures += 1;
         loop.tryAgain();
         await loop.next();
@@ -159,9 +162,10 @@ void main() {
           reason: 'after two failures the floor serves the easiest band');
     });
 
-    test('mastery is computed from the attempts, never from a counter', () async {
-      final loop = LearningLoop(
-          packs: [world1], conceptId: 'C1.1', clock: frozen());
+    test('mastery is computed from the attempts, never from a counter',
+        () async {
+      final loop =
+          LearningLoop(packs: [world1], conceptId: 'C1.1', clock: frozen());
       await loop.start();
 
       final before = await loop.masteryStates();

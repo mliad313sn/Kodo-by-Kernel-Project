@@ -16,6 +16,7 @@ import 'package:kodo/src/app.dart';
 import 'package:kodo/src/session.dart';
 import 'package:kodo/src/shell.dart';
 import 'package:kodo/src/drawing_painter.dart';
+import 'package:kodo/src/pack_loader.dart';
 import 'package:kodo/src/screens.dart';
 import 'package:kodo_app/kodo_app.dart';
 import 'package:kodo_access/kodo_access.dart';
@@ -438,7 +439,8 @@ void main() {
         final source = file.readAsStringSync();
         for (final entry in forbiddenCalls.entries) {
           expect(entry.value.hasMatch(source), isFalse,
-              reason: '${file.path} is ${entry.key} — that belongs to a module');
+              reason:
+                  '${file.path} is ${entry.key} — that belongs to a module');
         }
       }
     });
@@ -506,22 +508,19 @@ void main() {
           store: MemorySessionStore(),
           session: const Session(profileId: 'local'));
       await pump(t, shell, content: mapContent());
-      expect(
-          (find.byType(Art).evaluate().first.widget as Art).highContrast,
+      expect((find.byType(Art).evaluate().first.widget as Art).highContrast,
           isFalse);
 
-      shell.setAccessibility(
-          const AccessibilityPreferences(highContrast: true));
+      shell
+          .setAccessibility(const AccessibilityPreferences(highContrast: true));
       await t.pumpAndSettle();
-      expect(
-          (find.byType(Art).evaluate().first.widget as Art).highContrast,
+      expect((find.byType(Art).evaluate().first.widget as Art).highContrast,
           isTrue,
           reason: 'a child who turns on high contrast still sees the picture, '
               'and it is the high-contrast picture');
     });
 
-    testWidgets('the bottom bar still fits its words at 200 % text',
-        (t) async {
+    testWidgets('the bottom bar still fits its words at 200 % text', (t) async {
       /* FR-M16-03 against §9.1. "Entraînement" is twelve characters; five of those
          across 360 dp at double size is exactly where a tab bar clips. The bar grows
          instead, and this test is what says so. */
@@ -579,7 +578,10 @@ void main() {
                     ),
                   ],
                   hints: const [
-                    Hint(textKeys: {'fr': 'Remplis une boîte.', 'en': 'Fill a box.'}),
+                    Hint(textKeys: {
+                      'fr': 'Remplis une boîte.',
+                      'en': 'Fill a box.'
+                    }),
                     Hint(textKeys: {'fr': 'Fais-la bouger.', 'en': 'Move it.'}),
                   ],
                 ),
@@ -649,7 +651,8 @@ void main() {
           for (final line in item.rubric) {
             for (final locale in requiredLocales) {
               expect((line.textKeys[locale] ?? '').trim(), isNotEmpty,
-                  reason: '${item.id} has a rubric line with no "$locale" text');
+                  reason:
+                      '${item.id} has a rubric line with no "$locale" text');
             }
           }
         }
@@ -717,8 +720,8 @@ void main() {
       await pump(tester, shell, content: withWorld(1));
 
       expect(find.byKey(const Key('tutorial-cta')), findsOneWidget);
-      expect(find.text(tutorial.steps.first.callToActionIn('fr')),
-          findsOneWidget);
+      expect(
+          find.text(tutorial.steps.first.callToActionIn('fr')), findsOneWidget);
       // And it is a full touch target on a 5.5" screen.
       expect(tester.getSize(find.byKey(const Key('tutorial-cta'))).height,
           greaterThanOrEqualTo(minimumTouchTarget));
@@ -757,8 +760,8 @@ void main() {
 
       await tester.tap(find.byKey(const Key('tutorial-cta')));
       await tester.pumpAndSettle();
-      final state = tester.state<TutorielScreenState>(
-          find.byType(TutorielScreen));
+      final state =
+          tester.state<TutorielScreenState>(find.byType(TutorielScreen));
       expect(state.player.stepIndex, 1);
 
       // The child has not done the second step. Pressing on offers the step's own hint
@@ -829,7 +832,100 @@ void main() {
       expect(handedOver, isTrue);
     });
 
-    testWidgets('every shipped world has a tutorial for every concept it teaches',
+    test('the release build asks Android for no permissions at all', () {
+      /* KODO's central promise is that it works with the aircraft mode on and sends a
+         child's work nowhere. Enforced in Dart it is a lint; enforced in the manifest,
+         Android itself will not let the process open a socket — which is a stronger
+         claim than any code review can make, and the one worth protecting. Adding a
+         plugin can add a permission without anyone reading the manifest, so this reads
+         it instead. */
+      final manifest =
+          File('android/app/src/main/AndroidManifest.xml').readAsStringSync();
+      // The element, not the word: the file explains at length why the element is not
+      // there, and a test that cannot tell prose from markup is a test that lies once.
+      final declared = RegExp(r'<uses-permission[^>]*android:name="([^"]+)"')
+          .allMatches(manifest)
+          .map((m) => m.group(1))
+          .toList();
+      expect(declared, isEmpty,
+          reason: 'the release build now asks for $declared');
+
+      // And a child's work is not copied into whoever's account owns the phone.
+      expect(manifest, contains('android:allowBackup="false"'));
+      expect(manifest, contains('android:dataExtractionRules'));
+      expect(
+          File('android/app/src/main/res/xml/data_extraction_rules.xml')
+              .existsSync(),
+          isTrue);
+    });
+
+    test('the app is called KODO, everywhere a person can see it', () {
+      /* It shipped as Flutter's template: `android:label="kodo"`, a web manifest whose
+         description read "A new Flutter project.", the default blue, and the Flutter
+         logo byte-identical in every launcher bucket. The art committee drew a character
+         and a parent installing the app never saw her. */
+      final manifest =
+          File('android/app/src/main/AndroidManifest.xml').readAsStringSync();
+      expect(manifest, contains('android:label="KODO"'));
+
+      final web = jsonDecode(File('web/manifest.json').readAsStringSync())
+          as Map<String, Object?>;
+      expect(web['short_name'], 'KODO');
+      expect('${web['description']}', isNot(contains('Flutter')));
+      expect('${web['name']}', contains('KODO'));
+
+      expect(File('web/icons/kodo.svg').existsSync(), isTrue,
+          reason: 'run tool/make_icons.dart');
+      for (final bucket in const [
+        'mdpi',
+        'hdpi',
+        'xhdpi',
+        'xxhdpi',
+        'xxxhdpi',
+      ]) {
+        final icon =
+            File('android/app/src/main/res/mipmap-$bucket/ic_launcher.png');
+        expect(icon.existsSync(), isTrue, reason: bucket);
+        // The Flutter template's hdpi icon is 544 bytes. Tika is thousands.
+        expect(icon.lengthSync(), greaterThan(4000),
+            reason: '$bucket still holds the template logo');
+      }
+    });
+
+    test('every world in the bundle is a world the app will read', () {
+      /* The defect this catches shipped: `bundledWorlds` read `[0, 1, 2]` for as long as
+         there were three worlds, and went on reading it after the other ten were
+         authored. The files were in `assets/content/`, the pubspec shipped them, every
+         content test passed because those read the JSON off disk — and the built
+         application could not reach 974 of its 1 240 exercises. Nothing noticed, because
+         nothing compared the list against the assets. */
+      final onDisk = <int>{};
+      for (var world = 0; world <= 40; world++) {
+        if (File('assets/content/world$world.json').existsSync()) {
+          onDisk.add(world);
+        }
+      }
+      expect(onDisk, isNotEmpty);
+      expect(bundledWorlds.toSet(), onDisk,
+          reason: 'the app ships worlds it will never load, or names worlds it '
+              'does not ship');
+    });
+
+    test('the loader reaches the whole curriculum', () {
+      var items = 0;
+      for (final world in bundledWorlds) {
+        final file = File('assets/content/world$world.json');
+        items += (ContentPack.fromJson(
+                jsonDecode(file.readAsStringSync()) as Map<String, Object?>))
+            .items
+            .length;
+      }
+      expect(items, greaterThanOrEqualTo(1200),
+          reason: 'only $items exercises are reachable from a built app');
+    });
+
+    testWidgets(
+        'every shipped world has a tutorial for every concept it teaches',
         (tester) async {
       /* The screen can only show what the content carries, so the claim that matters is
          about the packs: no concept reaches a child without a lesson in front of it. */

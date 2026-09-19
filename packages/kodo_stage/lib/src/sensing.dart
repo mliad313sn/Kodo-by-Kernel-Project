@@ -183,8 +183,8 @@ class StageState {
     return true;
   }
 
-  static bool _sameEffects(Map<String, Map<String, double>> a,
-      Map<String, Map<String, double>> b) {
+  static bool _sameEffects(
+      Map<String, Map<String, double>> a, Map<String, Map<String, double>> b) {
     if (a.length != b.length) return false;
     for (final sprite in a.entries) {
       final theirs = b[sprite.key];

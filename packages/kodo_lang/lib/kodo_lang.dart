@@ -15,6 +15,7 @@ library;
 
 export 'src/ast.dart';
 export 'src/errors.dart';
+export 'src/fnv.dart';
 export 'src/headless_canvas.dart';
 export 'src/interpreter.dart';
 export 'src/keywords.dart';

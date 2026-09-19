@@ -17,7 +17,6 @@ import 'dart:io';
 import 'package:kodo_content/kodo_content.dart';
 import 'package:kodo_grader/kodo_grader.dart';
 
-
 Map<String, String> b(String fr, String en) => {'fr': fr, 'en': en};
 
 /// The five concepts of World 3, from the concept ledger.
@@ -165,7 +164,8 @@ List<Item> conceptC31() {
     final side = pair[0], apart = pair[1];
     final broken = 'avance $side\ntournedroite 90\navance $apart\n'
         'tournedroite 90\navance $side';
-    final solution = 'avance $side\nlèvecrayon\ntournedroite 90\navance $apart\n'
+    final solution =
+        'avance $side\nlèvecrayon\ntournedroite 90\navance $apart\n'
         'tournedroite 90\nbaissecrayon\navance $side';
     items.add(fixTheBug(
       id: id(),
@@ -201,13 +201,28 @@ List<Item> conceptC31() {
      the answer and once as a mistake. Where it is not the answer it stays, because
      "the pen never came down" is a real thing a child thinks. */
   for (final entry in [
-    ('lèvecrayon\navance 60\nbaissecrayon\navance 60', 1, 60, 0,
-        'C3.1-pen-never-down'),
-    ('avance 40\nlèvecrayon\navance 40\nbaissecrayon\navance 40', 2, 40, 0,
-        'C3.1-pen-never-down'),
+    (
+      'lèvecrayon\navance 60\nbaissecrayon\navance 60',
+      1,
+      60,
+      0,
+      'C3.1-pen-never-down'
+    ),
+    (
+      'avance 40\nlèvecrayon\navance 40\nbaissecrayon\navance 40',
+      2,
+      40,
+      0,
+      'C3.1-pen-never-down'
+    ),
     // Four: every `avance` in the program, counted as if the pen never lifted.
-    ('lèvecrayon\nrépète 3 {\n  avance 30\n}\navance 30', 0, 30, 4,
-        'C3.1-pen-ignored'),
+    (
+      'lèvecrayon\nrépète 3 {\n  avance 30\n}\navance 30',
+      0,
+      30,
+      4,
+      'C3.1-pen-ignored'
+    ),
   ]) {
     final source = entry.$1, marks = entry.$2;
     items.add(predict(
@@ -255,11 +270,8 @@ List<Item> conceptC31() {
       difficulty: Difficulty.d1,
       withHoles: 'avance $side\n___\navance $side\nbaissecrayon\navance $side',
       solution: solution,
-      promptKeys: fillBoth(
-        b('Complète pour que le trait du milieu disparaisse.',
-            'Fill in the blank so the middle line disappears.'),
-        {'s': side},
-      ),
+      promptKeys: b('Complète pour que le trait du milieu disparaisse.',
+          'Fill in the blank so the middle line disappears.'),
       wrong: [
         'avance $side\nbaissecrayon\navance $side\nbaissecrayon\navance $side',
         'avance $side\nnettoietout\navance $side\nbaissecrayon\navance $side',
@@ -283,11 +295,9 @@ List<Item> conceptC31() {
       conceptId: 'C3.1',
       difficulty: Difficulty.d2,
       solution: 'lèvecrayon\navance $side\nbaissecrayon\navance $side',
-      promptKeys: fillBoth(
-        b('Remets les lignes dans l\'ordre : d\'abord un vide, puis un trait.',
-            'Put the lines back in order: a gap first, then a mark.'),
-        {'s': side},
-      ),
+      promptKeys: b(
+          'Remets les lignes dans l\'ordre : d\'abord un vide, puis un trait.',
+          'Put the lines back in order: a gap first, then a mark.'),
       wrong: [
         'avance $side\nlèvecrayon\navance $side\nbaissecrayon',
         'baissecrayon\navance $side\nlèvecrayon\navance $side',
@@ -373,10 +383,11 @@ List<Item> conceptC32() {
       difficulty: Difficulty.d3,
       solution: solution,
       promptKeys: fillBoth(
-        b('Dessine un trait fin ({f}) puis, après un quart de tour à droite, '
-            'un trait épais ({e}). Les deux font {s} pas.',
+        b(
+            'Dessine un trait fin ({f}) puis, après un quart de tour à droite, '
+                'un trait épais ({e}). Les deux font {s} pas.',
             'Draw a thin line ({f}), then, after a quarter turn right, a thick '
-            'line ({e}). Both are {s} steps.'),
+                'line ({e}). Both are {s} steps.'),
         {'f': thin, 'e': thick, 's': side},
       ),
       wrong: [
@@ -407,7 +418,8 @@ List<Item> conceptC32() {
       id: id(),
       conceptId: 'C3.2',
       difficulty: Difficulty.d2,
-      broken: 'avance $side\nlargeurcrayon $width\ntournedroite 90\navance $side',
+      broken:
+          'avance $side\nlargeurcrayon $width\ntournedroite 90\navance $side',
       solution:
           'largeurcrayon $width\navance $side\ntournedroite 90\navance $side',
       promptKeys: fillBoth(
@@ -436,7 +448,10 @@ List<Item> conceptC32() {
   for (final entry in [
     ('largeurcrayon 10\navance 40\ntournedroite 90\navance 40', 2),
     ('avance 40\nlargeurcrayon 10\ntournedroite 90\navance 40', 1),
-    ('largeurcrayon 10\navance 40\nlargeurcrayon 1\ntournedroite 90\navance 40', 1),
+    (
+      'largeurcrayon 10\navance 40\nlargeurcrayon 1\ntournedroite 90\navance 40',
+      1
+    ),
   ]) {
     final source = entry.$1, thickCount = entry.$2;
     items.add(predict(
@@ -451,7 +466,8 @@ List<Item> conceptC32() {
       choices: [
         Choice(labelKeys: b('$thickCount', '$thickCount'), correct: true),
         Choice(
-            labelKeys: b('${thickCount == 2 ? 1 : 2}', '${thickCount == 2 ? 1 : 2}'),
+            labelKeys:
+                b('${thickCount == 2 ? 1 : 2}', '${thickCount == 2 ? 1 : 2}'),
             correct: false,
             misconception: 'C3.2-width-is-one-shot'),
         Choice(
@@ -469,8 +485,10 @@ List<Item> conceptC32() {
         'Regarde où largeurcrayon est écrit dans le programme.',
         'Look at where the pen-width command sits in the program.',
       ),
-      wrongChoiceFr: 'largeurcrayon vaut pour tous les traits suivants, pas seulement le premier.',
-      wrongChoiceEn: 'Pen width applies to every line after it, not only the next one.',
+      wrongChoiceFr:
+          'largeurcrayon vaut pour tous les traits suivants, pas seulement le premier.',
+      wrongChoiceEn:
+          'Pen width applies to every line after it, not only the next one.',
     ));
   }
 
@@ -542,8 +560,10 @@ List<Item> conceptC32() {
       'Un réglage reste en place jusqu\'à ce qu\'on le change.',
       'A setting stays until you change it.',
     ),
-    wrongChoiceFr: 'largeurcrayon règle l\'épaisseur du trait, et le réglage reste.',
-    wrongChoiceEn: 'Pen width sets how thick the line is, and the setting stays.',
+    wrongChoiceFr:
+        'largeurcrayon règle l\'épaisseur du trait, et le réglage reste.',
+    wrongChoiceEn:
+        'Pen width sets how thick the line is, and the setting stays.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -656,10 +676,11 @@ List<Item> conceptC33() {
          exactly the class of defect the M15 audit caught elsewhere, and it is invisible
          until somebody reads the English. */
       promptKeys: fillBoth(
-        b('Dessine la figure à {k} côtés de {s} pas, en {cfr}. '
-            'Sur la carte des couleurs : {rgb}.',
+        b(
+            'Dessine la figure à {k} côtés de {s} pas, en {cfr}. '
+                'Sur la carte des couleurs : {rgb}.',
             'Draw the {k}-sided shape of {s} steps, in {cen}. '
-            'On the colour card: {rgb}.'),
+                'On the colour card: {rgb}.'),
         {'k': sides, 's': side, 'cfr': fr, 'cen': en, 'rgb': rgb},
       ),
       wrong: [
@@ -704,10 +725,11 @@ List<Item> conceptC33() {
       difficulty: Difficulty.d3,
       solution: solution,
       promptKeys: fillBoth(
-        b('Dessine un carré de {s} pas : les deux premiers côtés en {a}, '
-            'les deux derniers en {b}.',
+        b(
+            'Dessine un carré de {s} pas : les deux premiers côtés en {a}, '
+                'les deux derniers en {b}.',
             'Draw a square of {s} steps: the first two sides in {a}, '
-            'the last two in {b}.'),
+                'the last two in {b}.'),
         {'s': side, 'a': first, 'b': second},
       ),
       wrong: [
@@ -737,7 +759,8 @@ List<Item> conceptC33() {
     (jaune, 'jaune', 'yellow', 40),
   ]) {
     final rgb = entry.$1, nameFr = entry.$2, nameEn = entry.$3, side = entry.$4;
-    final wrongRgb = rgb.split(', ').map((v) => v == '255' ? '100' : v).join(', ');
+    final wrongRgb =
+        rgb.split(', ').map((v) => v == '255' ? '100' : v).join(', ');
     items.add(fixTheBug(
       id: id(),
       conceptId: 'C3.3',
@@ -809,8 +832,10 @@ List<Item> conceptC33() {
         'Regarde la carte des couleurs.',
         'Look at the colour card.',
       ),
-      wrongChoiceFr: 'Le premier nombre est le rouge, le deuxième le vert, le troisième le bleu.',
-      wrongChoiceEn: 'The first number is red, the second green, the third blue.',
+      wrongChoiceFr:
+          'Le premier nombre est le rouge, le deuxième le vert, le troisième le bleu.',
+      wrongChoiceEn:
+          'The first number is red, the second green, the third blue.',
     ));
   }
 
@@ -855,7 +880,8 @@ List<Item> conceptC33() {
     conceptId: 'C3.3',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b('Quel est le nombre le plus grand qu\'on peut écrire dans couleurcrayon ?',
+    promptKeys: b(
+        'Quel est le nombre le plus grand qu\'on peut écrire dans couleurcrayon ?',
         'What is the largest number you can write in pen colour?'),
     choices: [
       Choice(labelKeys: b('255', '255'), correct: true),
@@ -878,7 +904,8 @@ List<Item> conceptC33() {
       'Le rouge vif s\'écrit 255, 0, 0.',
       'Bright red is written 255, 0, 0.',
     ),
-    wrongChoiceFr: 'Ce ne sont pas des pourcentages : chaque nombre va de 0 à 255.',
+    wrongChoiceFr:
+        'Ce ne sont pas des pourcentages : chaque nombre va de 0 à 255.',
     wrongChoiceEn: 'They are not percentages: each number goes from 0 to 255.',
   ));
   items.add(choiceItem(
@@ -910,7 +937,8 @@ List<Item> conceptC33() {
       'Pas de rouge, pas de vert, pas de bleu : c\'est noir.',
       'No red, no green, no blue: that is black.',
     ),
-    wrongChoiceFr: 'Zéro partout, c\'est le noir ; 255 partout, c\'est le blanc.',
+    wrongChoiceFr:
+        'Zéro partout, c\'est le noir ; 255 partout, c\'est le blanc.',
     wrongChoiceEn: 'Zero everywhere is black; 255 everywhere is white.',
   ));
   items.add(choiceItem(
@@ -970,7 +998,8 @@ List<Item> conceptC33() {
           correct: false,
           misconception: 'C3.3-blame-the-width'),
       Choice(
-          labelKeys: b('Le fond est trop clair.', 'The background is too light.'),
+          labelKeys:
+              b('Le fond est trop clair.', 'The background is too light.'),
           correct: false,
           misconception: 'C3.3-blame-the-canvas'),
     ],
@@ -980,7 +1009,8 @@ List<Item> conceptC33() {
       'Compare 100 et 255.',
       'Compare 100 and 255.',
     ),
-    wrongChoiceFr: 'Le trait est bien là : seul le nombre du rouge est trop petit.',
+    wrongChoiceFr:
+        'Le trait est bien là : seul le nombre du rouge est trop petit.',
     wrongChoiceEn: 'The line is there: only the red number is too small.',
   ));
   items.add(choiceItem(
@@ -996,11 +1026,13 @@ List<Item> conceptC33() {
     ),
     choices: [
       Choice(
-          labelKeys: b('Non : le dessin n\'est pas le même, la couleur en fait partie.',
+          labelKeys: b(
+              'Non : le dessin n\'est pas le même, la couleur en fait partie.',
               'No: the drawing is not the same, the colour is part of it.'),
           correct: true),
       Choice(
-          labelKeys: b('Oui : la forme est la même.', 'Yes: the shape is the same.'),
+          labelKeys:
+              b('Oui : la forme est la même.', 'Yes: the shape is the same.'),
           correct: false,
           misconception: 'C3.3-colour-is-decoration'),
       Choice(
@@ -1020,8 +1052,10 @@ List<Item> conceptC33() {
       'Si tu vois une différence, les programmes sont différents.',
       'If you can see a difference, the programs are different.',
     ),
-    wrongChoiceFr: 'Ce qu\'on voit sur la feuille fait partie du dessin, couleur comprise.',
-    wrongChoiceEn: 'What you see on the paper is part of the drawing, colour included.',
+    wrongChoiceFr:
+        'Ce qu\'on voit sur la feuille fait partie du dessin, couleur comprise.',
+    wrongChoiceEn:
+        'What you see on the paper is part of the drawing, colour included.',
   ));
 
   return items;
@@ -1134,9 +1168,10 @@ List<Item> conceptC34() {
       solution: 'couleurcanevas $bg\ncouleurcrayon $pen\n'
           'répète 4 {\n  avance $side\n  tournedroite 90\n}',
       promptKeys: fillBoth(
-        b('Le fond devait être {bg} et le trait {p}. C\'est l\'inverse. Répare.',
+        b(
+            'Le fond devait être {bg} et le trait {p}. C\'est l\'inverse. Répare.',
             'The background should be {bg} and the line {p}. It is the other way '
-            'round. Fix it.'),
+                'round. Fix it.'),
         {'bg': bg, 'p': pen},
       ),
       wrong: [
@@ -1160,14 +1195,26 @@ List<Item> conceptC34() {
 
   // T3 — predict.
   for (final entry in [
-    ('couleurcanevas 20, 30, 60\navance 60', 'le fond devient bleu nuit, le trait reste noir',
-        'the background turns night blue, the line stays black'),
-    ('couleurcrayon 20, 30, 60\navance 60', 'le trait devient bleu nuit, le fond reste blanc',
-        'the line turns night blue, the background stays white'),
-    ('taillecanevas 200, 200\navance 60', 'la feuille devient plus petite, le trait ne change pas',
-        'the sheet becomes smaller, the line does not change'),
-    ('couleurcanevas 255, 255, 255\navance 60', 'rien ne change à l\'œil : le fond était déjà blanc',
-        'nothing looks different: the background was already white'),
+    (
+      'couleurcanevas 20, 30, 60\navance 60',
+      'le fond devient bleu nuit, le trait reste noir',
+      'the background turns night blue, the line stays black'
+    ),
+    (
+      'couleurcrayon 20, 30, 60\navance 60',
+      'le trait devient bleu nuit, le fond reste blanc',
+      'the line turns night blue, the background stays white'
+    ),
+    (
+      'taillecanevas 200, 200\navance 60',
+      'la feuille devient plus petite, le trait ne change pas',
+      'the sheet becomes smaller, the line does not change'
+    ),
+    (
+      'couleurcanevas 255, 255, 255\navance 60',
+      'rien ne change à l\'œil : le fond était déjà blanc',
+      'nothing looks different: the background was already white'
+    ),
   ]) {
     final source = entry.$1, rightFr = entry.$2, rightEn = entry.$3;
     items.add(predict(
@@ -1191,7 +1238,8 @@ List<Item> conceptC34() {
             correct: false,
             misconception: 'C3.4-setting-erases'),
         Choice(
-            labelKeys: b('Tika revient au centre', 'Tika goes back to the centre'),
+            labelKeys:
+                b('Tika revient au centre', 'Tika goes back to the centre'),
             correct: false,
             misconception: 'C3.4-setting-moves-turtle'),
       ],
@@ -1201,8 +1249,10 @@ List<Item> conceptC34() {
         'Lis le nom de la commande : canevas, ou crayon ?',
         'Read the command name: canvas, or pen?',
       ),
-      wrongChoiceFr: 'Le nom de la commande dit ce qu\'elle change : le canevas ou le crayon.',
-      wrongChoiceEn: 'The command name says what it changes: the canvas or the pen.',
+      wrongChoiceFr:
+          'Le nom de la commande dit ce qu\'elle change : le canevas ou le crayon.',
+      wrongChoiceEn:
+          'The command name says what it changes: the canvas or the pen.',
     ));
   }
 
@@ -1251,7 +1301,8 @@ List<Item> conceptC34() {
     conceptId: 'C3.4',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b('Quelle est la différence entre couleurcanevas et couleurcrayon ?',
+    promptKeys: b(
+        'Quelle est la différence entre couleurcanevas et couleurcrayon ?',
         'What is the difference between canvas colour and pen colour?'),
     choices: [
       Choice(
@@ -1269,7 +1320,8 @@ List<Item> conceptC34() {
           correct: false,
           misconception: 'C3.4-setting-erases'),
       Choice(
-          labelKeys: b('couleurcanevas change la couleur de l\'écran du téléphone.',
+          labelKeys: b(
+              'couleurcanevas change la couleur de l\'écran du téléphone.',
               'Canvas colour changes the phone screen colour.'),
           correct: false,
           misconception: 'C3.4-canvas-is-screen'),
@@ -1288,11 +1340,13 @@ List<Item> conceptC34() {
     conceptId: 'C3.4',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d3,
-    promptKeys: b('Tu changes la taille du canevas. Qu\'arrive-t-il à ton dessin ?',
+    promptKeys: b(
+        'Tu changes la taille du canevas. Qu\'arrive-t-il à ton dessin ?',
         'You change the canvas size. What happens to your drawing?'),
     choices: [
       Choice(
-          labelKeys: b('La feuille change de taille ; ce qui est dessiné reste où il est.',
+          labelKeys: b(
+              'La feuille change de taille ; ce qui est dessiné reste où il est.',
               'The sheet changes size; what is drawn stays where it is.'),
           correct: true),
       Choice(
@@ -1316,8 +1370,10 @@ List<Item> conceptC34() {
       'C\'est la feuille sur laquelle Tika dessine.',
       'It is the sheet Tika draws on.',
     ),
-    wrongChoiceFr: 'Le canevas est la feuille, pas l\'écran, et il ne redimensionne pas le dessin.',
-    wrongChoiceEn: 'The canvas is the paper, not the screen, and it does not resize the drawing.',
+    wrongChoiceFr:
+        'Le canevas est la feuille, pas l\'écran, et il ne redimensionne pas le dessin.',
+    wrongChoiceEn:
+        'The canvas is the paper, not the screen, and it does not resize the drawing.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1351,8 +1407,10 @@ List<Item> conceptC34() {
       'Changer sa couleur ne recouvre rien.',
       'Changing its colour covers nothing up.',
     ),
-    wrongChoiceFr: 'La feuille est derrière : la recolorer ne cache pas les traits.',
-    wrongChoiceEn: 'The paper is behind: recolouring it does not hide the lines.',
+    wrongChoiceFr:
+        'La feuille est derrière : la recolorer ne cache pas les traits.',
+    wrongChoiceEn:
+        'The paper is behind: recolouring it does not hide the lines.',
   ));
 
   return items;
@@ -1379,17 +1437,19 @@ List<Item> conceptC35() {
     [45, 35],
   ]) {
     final first = pair[0], second = pair[1];
-    final solution = 'avance $first\nnettoietout\ntournedroite 90\navance $second';
+    final solution =
+        'avance $first\nnettoietout\ntournedroite 90\navance $second';
     items.add(buildToTarget(
       id: id(),
       conceptId: 'C3.5',
       difficulty: Difficulty.d2,
       solution: solution,
       promptKeys: fillBoth(
-        b('Avance de {a}, efface tout, puis tourne à droite et avance de {b}. '
-            'Il ne doit rester qu\'un trait.',
+        b(
+            'Avance de {a}, efface tout, puis tourne à droite et avance de {b}. '
+                'Il ne doit rester qu\'un trait.',
             'Move {a}, erase everything, then turn right and move {b}. '
-            'Only one line should be left.'),
+                'Only one line should be left.'),
         {'a': first, 'b': second},
       ),
       wrong: [
@@ -1427,11 +1487,9 @@ List<Item> conceptC35() {
       difficulty: Difficulty.d2,
       broken: 'avance $first\ninitialise\navance $second',
       solution: 'avance $first\nnettoietout\navance $second',
-      promptKeys: fillBoth(
-        b('Le trait qui reste doit commencer là où Tika s\'était arrêtée. Répare.',
-            'The remaining line should start where Tika had stopped. Fix it.'),
-        {'a': first, 'b': second},
-      ),
+      promptKeys: b(
+          'Le trait qui reste doit commencer là où Tika s\'était arrêtée. Répare.',
+          'The remaining line should start where Tika had stopped. Fix it.'),
       wrong: [
         'avance $first\ninitialise\navance $second',
         'avance $first\navance $second',
@@ -1451,18 +1509,26 @@ List<Item> conceptC35() {
 
   // T3 — predict.
   for (final entry in [
-    ('avance 60\nnettoietout\navance 60',
-        'un trait, qui part de là où Tika s\'était arrêtée',
-        'one line, starting where Tika had stopped'),
-    ('avance 60\ninitialise\navance 60',
-        'un trait, qui part du centre',
-        'one line, starting from the centre'),
-    ('avance 60\ntournedroite 90\nnettoietout\navance 60',
-        'un trait, qui part de là où Tika s\'était arrêtée, vers la droite',
-        'one line, starting where Tika had stopped, heading right'),
-    ('couleurcrayon 255, 0, 0\navance 60\ninitialise\navance 60',
-        'un trait noir, qui part du centre',
-        'one black line, starting from the centre'),
+    (
+      'avance 60\nnettoietout\navance 60',
+      'un trait, qui part de là où Tika s\'était arrêtée',
+      'one line, starting where Tika had stopped'
+    ),
+    (
+      'avance 60\ninitialise\navance 60',
+      'un trait, qui part du centre',
+      'one line, starting from the centre'
+    ),
+    (
+      'avance 60\ntournedroite 90\nnettoietout\navance 60',
+      'un trait, qui part de là où Tika s\'était arrêtée, vers la droite',
+      'one line, starting where Tika had stopped, heading right'
+    ),
+    (
+      'couleurcrayon 255, 0, 0\navance 60\ninitialise\navance 60',
+      'un trait noir, qui part du centre',
+      'one black line, starting from the centre'
+    ),
   ]) {
     final source = entry.$1, rightFr = entry.$2, rightEn = entry.$3;
     items.add(predict(
@@ -1496,8 +1562,10 @@ List<Item> conceptC35() {
         'Le programme continue après avoir effacé.',
         'The program carries on after erasing.',
       ),
-      wrongChoiceFr: 'Effacer enlève ce qui précède et laisse le programme continuer.',
-      wrongChoiceEn: 'Erasing removes what came before and lets the program carry on.',
+      wrongChoiceFr:
+          'Effacer enlève ce qui précède et laisse le programme continuer.',
+      wrongChoiceEn:
+          'Erasing removes what came before and lets the program carry on.',
     ));
   }
 
@@ -1557,8 +1625,8 @@ List<Item> conceptC35() {
           correct: false,
           misconception: 'C3.5-clear-equals-reset'),
       Choice(
-          labelKeys: b('Il garde les réglages du crayon.',
-              'It keeps the pen settings.'),
+          labelKeys: b(
+              'Il garde les réglages du crayon.', 'It keeps the pen settings.'),
           correct: false,
           misconception: 'C3.5-reset-keeps-pen'),
       Choice(
@@ -1572,8 +1640,10 @@ List<Item> conceptC35() {
       'De zéro veut dire les réglages aussi.',
       'From nothing means the settings too.',
     ),
-    wrongChoiceFr: 'initialise remet la feuille, la position ET les réglages du crayon.',
-    wrongChoiceEn: 'Reset restores the paper, the position AND the pen settings.',
+    wrongChoiceFr:
+        'initialise remet la feuille, la position ET les réglages du crayon.',
+    wrongChoiceEn:
+        'Reset restores the paper, the position AND the pen settings.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1655,8 +1725,10 @@ List<Item> conceptC35() {
       'Une des deux commandes le ramènerait au centre.',
       'One of the two would send him back to the centre.',
     ),
-    wrongChoiceFr: 'initialise ramènerait Tika au centre, et il perdrait sa place.',
-    wrongChoiceEn: 'Reset would send Tika back to the centre, and he would lose his place.',
+    wrongChoiceFr:
+        'initialise ramènerait Tika au centre, et il perdrait sa place.',
+    wrongChoiceEn:
+        'Reset would send Tika back to the centre, and he would lose his place.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1686,7 +1758,8 @@ List<Item> conceptC35() {
           correct: false,
           misconception: 'C3.5-two-languages'),
       Choice(
-          labelKeys: b('Parce que l\'une est pour les enfants et l\'autre pour les grands.',
+          labelKeys: b(
+              'Parce que l\'une est pour les enfants et l\'autre pour les grands.',
               'Because one is for children and the other for grown-ups.'),
           correct: false,
           misconception: 'C3.5-two-languages'),
@@ -1733,7 +1806,8 @@ TutorialStep watchStep(
       id: '$conceptId-s1',
       beat: Beat.jeRegarde,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s1.opus', 'audio/en/$conceptId-s1.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s1.opus', 'audio/en/$conceptId-s1.opus'),
       expectedAction: ExpectedAction.watch,
       spotlight: spotlight,
       demoProgramSource: demo,
@@ -1753,7 +1827,8 @@ TutorialStep togetherStep(
       id: '$conceptId-s2',
       beat: Beat.onFaitEnsemble,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s2.opus', 'audio/en/$conceptId-s2.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s2.opus', 'audio/en/$conceptId-s2.opus'),
       expectedAction: action,
       spotlight: SpotlightTarget.scriptArea,
       successCondition: SuccessCondition(opcodeId: opcodeId),
@@ -1772,7 +1847,8 @@ TutorialStep doStep(
       id: '$conceptId-s3',
       beat: Beat.jeFais,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s3.opus', 'audio/en/$conceptId-s3.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s3.opus', 'audio/en/$conceptId-s3.opus'),
       expectedAction: ExpectedAction.buildProgram,
       spotlight: SpotlightTarget.scriptArea,
       successCondition: SuccessCondition(opcodeId: opcodeId),
@@ -1782,7 +1858,8 @@ TutorialStep doStep(
 List<Tutorial> world3Tutorials() => [
       tutorialFor(
         conceptId: 'C3.1',
-        conceptName: b('Lever et baisser le crayon', 'Lifting and lowering the pen'),
+        conceptName:
+            b('Lever et baisser le crayon', 'Lifting and lowering the pen'),
         steps: [
           watchStep(
             'C3.1',
@@ -1841,7 +1918,8 @@ List<Tutorial> world3Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C3.3',
-        conceptName: b('Trois nombres pour une couleur', 'Three numbers for a colour'),
+        conceptName:
+            b('Trois nombres pour une couleur', 'Three numbers for a colour'),
         steps: [
           watchStep(
             'C3.3',
@@ -1902,7 +1980,8 @@ List<Tutorial> world3Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C3.5',
-        conceptName: b('Effacer, ou tout remettre', 'Erasing, or putting it all back'),
+        conceptName:
+            b('Effacer, ou tout remettre', 'Erasing, or putting it all back'),
         steps: [
           watchStep(
             'C3.5',
@@ -1916,8 +1995,10 @@ List<Tutorial> world3Tutorials() => [
             'Efface la feuille sans déplacer Tika.',
             'Wipe the paper without moving Tika.',
             opcodeId: 'CLEAR',
-            hintFr: 'Une des deux commandes ramène Tika au centre. Prends l\'autre.',
-            hintEn: 'One of the two sends Tika back to the centre. Take the other one.',
+            hintFr:
+                'Une des deux commandes ramène Tika au centre. Prends l\'autre.',
+            hintEn:
+                'One of the two sends Tika back to the centre. Take the other one.',
           ),
           doStep(
             'C3.5',

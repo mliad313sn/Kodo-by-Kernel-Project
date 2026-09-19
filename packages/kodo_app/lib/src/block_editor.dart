@@ -169,8 +169,9 @@ class BlockEditorState extends State<BlockEditor> {
   List<ArgumentSlot> numberSlots(Node node) {
     if (node is! Command) return const [];
     final slots = <ArgumentSlot>[];
-    final count =
-        node.args.length > node.opcode.minArgs ? node.args.length : node.opcode.minArgs;
+    final count = node.args.length > node.opcode.minArgs
+        ? node.args.length
+        : node.opcode.minArgs;
     for (var i = 0; i < count; i++) {
       final arg = i < node.args.length ? node.args[i] : null;
       if (arg == null) {
@@ -217,7 +218,8 @@ class BlockEditorState extends State<BlockEditor> {
       _fillSlot(slot, StringValue(value));
 
   /// Fills a slot: replaces the literal that is there, or writes one where a hole was.
-  void setSlot(ArgumentSlot slot, num value) => _fillSlot(slot, NumberValue(value));
+  void setSlot(ArgumentSlot slot, num value) =>
+      _fillSlot(slot, NumberValue(value));
 
   void _fillSlot(ArgumentSlot slot, KodoValue value) {
     final program = widget.controller.program;
@@ -239,8 +241,8 @@ class BlockEditorState extends State<BlockEditor> {
          rather than left out: a child filling the second of two holes has not decided the
          first, and zero is the value the language already gives an omitted number. */
       while (args.length <= slot.index) {
-        args.add(Literal('gap-${stmt.id}-${args.length}', stmt.span,
-            const NumberValue(0)));
+        args.add(Literal(
+            'gap-${stmt.id}-${args.length}', stmt.span, const NumberValue(0)));
       }
       /* The node keeps its identity across the edit. Undo, the block/text bridge and the
          telemetry all key on node ids, and a fresh id for every keystroke would make one
@@ -259,8 +261,8 @@ class BlockEditorState extends State<BlockEditor> {
         fill(stmt), (body, _) => [for (final s in body) fillDeep(s)]);
 
     widget.controller.setProgram(
-      Program(
-          program.id, program.span, [for (final s in program.body) fillDeep(s)]),
+      Program(program.id, program.span,
+          [for (final s in program.body) fillDeep(s)]),
       kind: 'literal_edited',
       nodeId: slot.commandId,
     );
@@ -455,123 +457,121 @@ class BlockEditorState extends State<BlockEditor> {
 
   Widget _buildRow(BlockRow row, int index) {
     if (row.isWrapperClose && row.label.isEmpty) {
-          // The closing lip of a C-block: it shows the mouth enclosing the body
-          // (`FR-M2-03`) and is not itself a target.
-          return Padding(
-            padding: EdgeInsets.only(left: 16.0 * row.depth, bottom: 6),
-            child: Container(
-              key: Key('wrapper-close-$index'),
-              height: 12,
-              width: 72,
-              decoration: BoxDecoration(
-                color: row.family.colour,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-              ),
+      // The closing lip of a C-block: it shows the mouth enclosing the body
+      // (`FR-M2-03`) and is not itself a target.
+      return Padding(
+        padding: EdgeInsets.only(left: 16.0 * row.depth, bottom: 6),
+        child: Container(
+          key: Key('wrapper-close-$index'),
+          height: 12,
+          width: 72,
+          decoration: BoxDecoration(
+            color: row.family.colour,
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(8),
+              bottomRight: Radius.circular(8),
             ),
-          );
-        }
-        final slots = numberSlots(row.node);
-        final names = choiceSlots(row.node);
-        /* `FR-M16-04`. Two sentences: what the block says and which family it is, then —
+          ),
+        ),
+      );
+    }
+    final slots = numberSlots(row.node);
+    final names = choiceSlots(row.node);
+    /* `FR-M16-04`. Two sentences: what the block says and which family it is, then —
            only when it is inside something — how deep. A child who cannot see the
            indentation has no other way to know a block is inside a loop. */
-        final spoken = StringBuffer('${row.label}, ${_familyName(row.family)}.');
-        if (row.depth > 0) {
-          spoken.write(
-              ' ${_say('a11y.block_level', {'level': '${row.depth + 1}'})}');
-        }
-        final chip = BlockChip(
-            key: Key('block-${row.node.id}'),
-            /* The words WITHOUT their numbers: the numbers are widgets now, and printing
+    final spoken = StringBuffer('${row.label}, ${_familyName(row.family)}.');
+    if (row.depth > 0) {
+      spoken
+          .write(' ${_say('a11y.block_level', {'level': '${row.depth + 1}'})}');
+    }
+    final chip = BlockChip(
+      key: Key('block-${row.node.id}'),
+      /* The words WITHOUT their numbers: the numbers are widgets now, and printing
                them in the label as well would show every value twice. */
-            label: slots.isEmpty && names.isEmpty
-                ? row.label
-                : _wordsOnly(row.label),
-            family: row.family,
-            semanticsLabel: spoken.toString(),
-            selected: row.node.id == _selectedNodeId,
-            onTap: () {
-              /* Holding a stack changes what a tap means. Running a program while the
+      label: slots.isEmpty && names.isEmpty ? row.label : _wordsOnly(row.label),
+      family: row.family,
+      semanticsLabel: spoken.toString(),
+      selected: row.node.id == _selectedNodeId,
+      onTap: () {
+        /* Holding a stack changes what a tap means. Running a program while the
                  child is halfway through moving part of it would run a program that does
                  not exist yet. */
-              if (_grabbedNodeId != null) {
-                dropStackAt(row.site);
-                return;
-              }
-              selectRow(row.node.id);
-              runFrom(row.node.id);
-            },
-            /* `FR-M2-04`, inside the block. Each one is a full 48 dp target, because
+        if (_grabbedNodeId != null) {
+          dropStackAt(row.site);
+          return;
+        }
+        selectRow(row.node.id);
+        runFrom(row.node.id);
+      },
+      /* `FR-M2-04`, inside the block. Each one is a full 48 dp target, because
                workbook finding G4-003 is two eight-year-olds who could not hit a small
                target on a five-inch screen — and a number a child cannot press is a
                number a child cannot change. */
-            fields: [
-              /* Names first, numbers after, which is the order the blocks themselves
+      fields: [
+        /* Names first, numbers after, which is the order the blocks themselves
                  read in: `effet "fantôme", 50` chooses the thing and then sizes it. */
-              for (final slot in names)
-                ChoiceField(
-                  key: Key('choice-${slot.key}'),
-                  value: slot.literal == null
-                      ? null
-                      : (slot.literal!.value as StringValue).value,
-                  options: widget.choices.optionsFor(
-                      namedArguments[switch (row.node) {
-                        Command(:final opcode) => opcode,
-                        WhenEvent(:final trigger) => trigger,
-                        _ => Opcode.selectSprite,
-                      }]!,
-                      widget.locale),
-                  family: row.family,
-                  locale: widget.locale,
-                  onChanged: (v) => setChoice(slot, v),
-                ),
-              for (final slot in slots)
-                NumberField(
-                  key: Key('literal-${slot.key}'),
-                  value: slot.literal == null
-                      ? null
-                      : (slot.literal!.value as NumberValue).value,
-                  family: row.family,
-                  locale: widget.locale,
-                  onChanged: (v) => setSlot(slot, v),
-                ),
-            ],
-        );
-        /* `FR-M2-06`. The handle is a separate 48 dp target beside the block rather than
+        for (final slot in names)
+          ChoiceField(
+            key: Key('choice-${slot.key}'),
+            value: slot.literal == null
+                ? null
+                : (slot.literal!.value as StringValue).value,
+            options: widget.choices.optionsFor(
+                namedArguments[switch (row.node) {
+                  Command(:final opcode) => opcode,
+                  WhenEvent(:final trigger) => trigger,
+                  _ => Opcode.selectSprite,
+                }]!,
+                widget.locale),
+            family: row.family,
+            locale: widget.locale,
+            onChanged: (v) => setChoice(slot, v),
+          ),
+        for (final slot in slots)
+          NumberField(
+            key: Key('literal-${slot.key}'),
+            value: slot.literal == null
+                ? null
+                : (slot.literal!.value as NumberValue).value,
+            family: row.family,
+            locale: widget.locale,
+            onChanged: (v) => setSlot(slot, v),
+          ),
+      ],
+    );
+    /* `FR-M2-06`. The handle is a separate 48 dp target beside the block rather than
            the block itself, because the block already has two jobs — tap runs it
            (`FR-M2-02`) and long-press explains it (`FR-M2-10`) — and a third meaning for
            the same pixels is how a child ends up running a program they meant to move. */
-        final handle = GrabHandle(
-          key: Key('grab-${row.node.id}'),
-          family: row.family,
-          held: row.node.id == _grabbedNodeId,
-          semanticsLabel: _say('a11y.grab_stack'),
-          onGrab: () => grabStack(row.node.id),
-        );
-        /* `FR-M4-07`. A ring around the block rather than a change of its colour: the
+    final handle = GrabHandle(
+      key: Key('grab-${row.node.id}'),
+      family: row.family,
+      held: row.node.id == _grabbedNodeId,
+      semanticsLabel: _say('a11y.grab_stack'),
+      onGrab: () => grabStack(row.node.id),
+    );
+    /* `FR-M4-07`. A ring around the block rather than a change of its colour: the
            colour IS the family (`FR-M16-01`), and a child who has learned that blue means
            movement may not have it mean "running" for a second. */
-        final running = row.node.id == widget.highlightedNodeId;
-        return Padding(
-          padding: EdgeInsets.only(left: 16.0 * row.depth, bottom: 6),
-          child: Container(
-            key: running ? const Key('running-block') : null,
-            decoration: running
-                ? BoxDecoration(
-                    border: Border.all(color: Colors.amber.shade700, width: 3),
-                    borderRadius: BorderRadius.circular(12),
-                  )
-                : null,
-            padding: const EdgeInsets.all(2),
-            child: Row(children: [
-              handle,
-              const SizedBox(width: 4),
-              Flexible(child: chip),
-            ]),
-          ),
-        );
+    final running = row.node.id == widget.highlightedNodeId;
+    return Padding(
+      padding: EdgeInsets.only(left: 16.0 * row.depth, bottom: 6),
+      child: Container(
+        key: running ? const Key('running-block') : null,
+        decoration: running
+            ? BoxDecoration(
+                border: Border.all(color: Colors.amber.shade700, width: 3),
+                borderRadius: BorderRadius.circular(12),
+              )
+            : null,
+        padding: const EdgeInsets.all(2),
+        child: Row(children: [
+          handle,
+          const SizedBox(width: 4),
+          Flexible(child: chip),
+        ]),
+      ),
+    );
   }
 }

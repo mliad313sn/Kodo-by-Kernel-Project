@@ -201,8 +201,8 @@ class StageSetup {
   static const plain = StageSetup();
 
   static StageSetup fromJson(Map<String, Object?> j) => StageSetup(
-        sprites: ((j['sprites'] as List<Object?>?) ?? const ['tika'])
-            .cast<String>(),
+        sprites:
+            ((j['sprites'] as List<Object?>?) ?? const ['tika']).cast<String>(),
         costumes: (j['costumes'] as int?) ?? 0,
         backdrops:
             ((j['backdrops'] as List<Object?>?) ?? const []).cast<String>(),

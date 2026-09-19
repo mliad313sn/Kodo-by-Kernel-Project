@@ -23,10 +23,8 @@ Program parsed(String source) {
 
 HeadlessCanvas run(String source, {RunTrigger trigger = const FlagClicked()}) {
   final canvas = HeadlessCanvas();
-  final machine =
-      Interpreter(parsed(source), canvas, trigger: trigger)..run();
-  expect(machine.error, isNull,
-      reason: machine.error?.message('fr') ?? '');
+  final machine = Interpreter(parsed(source), canvas, trigger: trigger)..run();
+  expect(machine.error, isNull, reason: machine.error?.message('fr') ?? '');
   return canvas;
 }
 
@@ -67,7 +65,8 @@ void main() {
       expect(canvas.positionY, 160);
     });
 
-    test('statements outside every script are the main script and always run', () {
+    test('statements outside every script are the main script and always run',
+        () {
       final canvas = run('avance 30\nquand touche "a" {\n  avance 200\n}');
       expect(canvas.positionY, 170, reason: 'the loose statement ran');
       expect(canvas.segments, hasLength(1));
@@ -94,14 +93,21 @@ void main() {
     test('two scripts share their variables, because that is the lesson', () {
       final canvas = HeadlessCanvas();
       Interpreter(
-        parsed(r'quand drapeau {' '\n'
-            r'  $score = 0' '\n'
-            r'  $score = $score + 1' '\n'
+        parsed(r'quand drapeau {'
+            '\n'
+            r'  $score = 0'
+            '\n'
+            r'  $score = $score + 1'
+            '\n'
             '}\n'
-            r'quand drapeau {' '\n'
-            r'  attends 1' '\n'
-            r'  $score = $score + 10' '\n'
-            r'  écris $score' '\n'
+            r'quand drapeau {'
+            '\n'
+            r'  attends 1'
+            '\n'
+            r'  $score = $score + 10'
+            '\n'
+            r'  écris $score'
+            '\n'
             '}'),
         canvas,
       ).run();
@@ -132,7 +138,8 @@ void main() {
           reason: 'a child who says stop has stopped the program');
     });
 
-    test('a stepped run draws what a full-speed run draws, with two scripts', () {
+    test('a stepped run draws what a full-speed run draws, with two scripts',
+        () {
       // FR-M1-05, which concurrency is the obvious way to break.
       const source = 'quand drapeau {\n  répète 6 {\n    avance 10\n'
           '    tournedroite 60\n  }\n}\n'
@@ -240,7 +247,8 @@ void curriculumIsExpressibleTests() {
       ];
       for (final id in required) {
         expect(Opcode.byId(id), isNotNull,
-            reason: '$id is named by the curriculum and missing from the language');
+            reason:
+                '$id is named by the curriculum and missing from the language');
       }
     });
 
@@ -254,15 +262,18 @@ void curriculumIsExpressibleTests() {
 
     test('every syntax word is written in both shipped languages', () {
       for (final word in SyntaxWord.values) {
-        expect(KeywordTables.fr.writeSyntax(word), isNotEmpty, reason: word.name);
-        expect(KeywordTables.en.writeSyntax(word), isNotEmpty, reason: word.name);
+        expect(KeywordTables.fr.writeSyntax(word), isNotEmpty,
+            reason: word.name);
+        expect(KeywordTables.en.writeSyntax(word), isNotEmpty,
+            reason: word.name);
       }
     });
 
     test('a trigger is the only kind of opcode that cannot be a step', () {
       final events =
           Opcode.values.where((o) => o.kind == OpcodeKind.event).toList();
-      expect(events, hasLength(3), reason: '§5.2 commits World 5 to three triggers');
+      expect(events, hasLength(3),
+          reason: '§5.2 commits World 5 to three triggers');
       for (final e in events) {
         expect(e.family, OpcodeFamily.evenements);
       }

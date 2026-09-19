@@ -429,7 +429,9 @@ List<Item> conceptC82() {
         turn = entry.$7,
         bug = entry.$8;
     final solution = counted(start, test, step, side, turn);
-    final away = step.startsWith('+') ? '- ${step.substring(2)}' : '+ ${step.substring(2)}';
+    final away = step.startsWith('+')
+        ? '- ${step.substring(2)}'
+        : '+ ${step.substring(2)}';
     final broken = bug == 'no-step'
         ? solution.replaceFirst('\n  \$i = \$i $step', '')
         : solution.replaceFirst('\$i = \$i $step', '\$i = \$i $away');
@@ -455,8 +457,8 @@ List<Item> conceptC82() {
         // Stops, but one turn early.
         counted(start, shortTest, step, side, turn),
         // Stops immediately: the test is false before the first turn.
-        counted(start, test, step, side, turn)
-            .replaceFirst('\$i = $start', '\$i = ${test.startsWith('<') ? 99 : -99}'),
+        counted(start, test, step, side, turn).replaceFirst(
+            '\$i = $start', '\$i = ${test.startsWith('<') ? 99 : -99}'),
       ],
       assertions: [
         const ContainsNode('While'),
@@ -514,7 +516,8 @@ List<Item> conceptC82() {
             correct: false,
             misconception: 'C8.1-while-never-runs'),
         Choice(
-            labelKeys: b('Il fait exactement un tour.', 'It does exactly one turn.'),
+            labelKeys:
+                b('Il fait exactement un tour.', 'It does exactly one turn.'),
             correct: false,
             misconception: 'C8.1-while-is-if'),
       ],
@@ -588,16 +591,14 @@ List<Item> conceptC82() {
     conceptId: 'C8.2',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b('Qu\'est-ce qui arrête un tantque ?',
-        'What stops a while?'),
+    promptKeys: b('Qu\'est-ce qui arrête un tantque ?', 'What stops a while?'),
     choices: [
       Choice(
-          labelKeys: b('Son test qui devient faux.',
-              'Its test turning false.'),
+          labelKeys: b('Son test qui devient faux.', 'Its test turning false.'),
           correct: true),
       Choice(
-          labelKeys: b('Rien : il s\'arrête tout seul.',
-              'Nothing: it stops by itself.'),
+          labelKeys: b(
+              'Rien : il s\'arrête tout seul.', 'Nothing: it stops by itself.'),
           correct: false,
           misconception: 'C8.2-loops-always-end'),
       Choice(
@@ -634,8 +635,8 @@ List<Item> conceptC82() {
               'The loop goes round for ever and Tika stops.'),
           correct: true),
       Choice(
-          labelKeys: b('La boucle fait un seul tour.',
-              'The loop does one turn.'),
+          labelKeys:
+              b('La boucle fait un seul tour.', 'The loop does one turn.'),
           correct: false,
           misconception: 'C8.1-while-is-if'),
       Choice(
@@ -679,8 +680,8 @@ List<Item> conceptC82() {
           correct: false,
           misconception: 'C8.2-loops-always-end'),
       Choice(
-          labelKeys: b('Elle s\'arrête tout de suite.',
-              'It stops straight away.'),
+          labelKeys:
+              b('Elle s\'arrête tout de suite.', 'It stops straight away.'),
           correct: false,
           misconception: 'C8.1-while-never-runs'),
       Choice(
@@ -716,8 +717,7 @@ List<Item> conceptC82() {
               'Only if something turns its test false.'),
           correct: true),
       Choice(
-          labelKeys: b('Oui, au bout d\'un moment.',
-              'Yes, after a while.'),
+          labelKeys: b('Oui, au bout d\'un moment.', 'Yes, after a while.'),
           correct: false,
           misconception: 'C8.2-loops-always-end'),
       Choice(
@@ -726,8 +726,8 @@ List<Item> conceptC82() {
           correct: false,
           misconception: 'C8.2-loops-end-when-full'),
       Choice(
-          labelKeys: b('Non, aucune boucle ne s\'arrête.',
-              'No, no loop ever stops.'),
+          labelKeys:
+              b('Non, aucune boucle ne s\'arrête.', 'No, no loop ever stops.'),
           correct: false,
           misconception: 'C8.2-loops-never-end'),
     ],
@@ -762,8 +762,7 @@ List<Item> conceptC82() {
           correct: false,
           misconception: 'C8.2-loops-always-end'),
       Choice(
-          labelKeys: b('Parce qu\'elle est fatiguée.',
-              'Because she is tired.'),
+          labelKeys: b('Parce qu\'elle est fatiguée.', 'Because she is tired.'),
           correct: false,
           misconception: 'C8.2-loops-end-when-full'),
       Choice(
@@ -780,8 +779,7 @@ List<Item> conceptC82() {
     ),
     wrongChoiceFr:
         'L\'arrêt est un avertissement : la boucle n\'avait pas de sortie.',
-    wrongChoiceEn:
-        'The stop is a warning: the loop had no way out.',
+    wrongChoiceEn: 'The stop is a warning: the loop had no way out.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -798,13 +796,12 @@ List<Item> conceptC82() {
               'That a line inside moves towards the way out.'),
           correct: true),
       Choice(
-          labelKeys: b('Que la boîte part de zéro.',
-              'That the box starts at zero.'),
+          labelKeys:
+              b('Que la boîte part de zéro.', 'That the box starts at zero.'),
           correct: false,
           misconception: 'C8.2-only-zero-works'),
       Choice(
-          labelKeys: b('Que le test se sert de <.',
-              'That the test uses <.'),
+          labelKeys: b('Que le test se sert de <.', 'That the test uses <.'),
           correct: false,
           misconception: 'C8.2-only-plus-one-ends'),
       Choice(
@@ -1004,13 +1001,11 @@ List<Item> conceptC83() {
           labelKeys: b('Une fois par tour.', 'Once every turn.'),
           correct: true),
       Choice(
-          labelKeys: b('Une seule fois, au début.',
-              'Once only, at the start.'),
+          labelKeys: b('Une seule fois, au début.', 'Once only, at the start.'),
           correct: false,
           misconception: 'C8.3-sensor-asked-once'),
       Choice(
-          labelKeys: b('Une seule fois, à la fin.',
-              'Once only, at the end.'),
+          labelKeys: b('Une seule fois, à la fin.', 'Once only, at the end.'),
           correct: false,
           misconception: 'C8.3-sensor-asked-once'),
       Choice(
@@ -1027,8 +1022,7 @@ List<Item> conceptC83() {
     ),
     wrongChoiceFr:
         'Le capteur est dans le test, donc il est relu à chaque tour.',
-    wrongChoiceEn:
-        'The sensor is in the test, so it is read again every turn.',
+    wrongChoiceEn: 'The sensor is in the test, so it is read again every turn.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1042,13 +1036,13 @@ List<Item> conceptC83() {
               'True or false, depending on where Tika is.'),
           correct: true),
       Choice(
-          labelKeys: b('La distance jusqu\'au bord.',
-              'The distance to the edge.'),
+          labelKeys:
+              b('La distance jusqu\'au bord.', 'The distance to the edge.'),
           correct: false,
           misconception: 'C8.3-sensor-returns-a-number'),
       Choice(
-          labelKeys: b('Le nom du bord touché.',
-              'The name of the edge touched.'),
+          labelKeys:
+              b('Le nom du bord touché.', 'The name of the edge touched.'),
           correct: false,
           misconception: 'C8.3-sensor-returns-a-name'),
       Choice(
@@ -1087,8 +1081,7 @@ List<Item> conceptC83() {
           correct: false,
           misconception: 'C8.3-sensor-always-true'),
       Choice(
-          labelKeys: b('Elle traverse la feuille.',
-              'She goes off the sheet.'),
+          labelKeys: b('Elle traverse la feuille.', 'She goes off the sheet.'),
           correct: false,
           misconception: 'C8.3-sensor-asked-once'),
     ],
@@ -1116,18 +1109,17 @@ List<Item> conceptC83() {
               'It says whether Tika is on a red line.'),
           correct: true),
       Choice(
-          labelKeys: b('Il met le crayon en rouge.',
-              'It makes the pen red.'),
+          labelKeys: b('Il met le crayon en rouge.', 'It makes the pen red.'),
           correct: false,
           misconception: 'C8.3-sensor-sets-instead-of-asks'),
       Choice(
-          labelKeys: b('Il compte les traits rouges.',
-              'It counts the red lines.'),
+          labelKeys:
+              b('Il compte les traits rouges.', 'It counts the red lines.'),
           correct: false,
           misconception: 'C8.3-sensor-returns-a-number'),
       Choice(
-          labelKeys: b('Il efface les traits rouges.',
-              'It erases the red lines.'),
+          labelKeys:
+              b('Il efface les traits rouges.', 'It erases the red lines.'),
           correct: false,
           misconception: 'C8.3-sensor-sets-instead-of-asks'),
     ],
@@ -1388,8 +1380,7 @@ List<Item> conceptC84() {
       ),
       wrongChoiceFr:
           'coupure quitte la boucle ; les lignes d\'après se jouent quand même.',
-      wrongChoiceEn:
-          'break leaves the loop; the lines after it still play.',
+      wrongChoiceEn: 'break leaves the loop; the lines after it still play.',
     ));
   }
 
@@ -1448,8 +1439,8 @@ List<Item> conceptC84() {
               'It leaves the loop and carries on after it.'),
           correct: true),
       Choice(
-          labelKeys: b('Elle arrête tout le programme.',
-              'It stops the whole program.'),
+          labelKeys: b(
+              'Elle arrête tout le programme.', 'It stops the whole program.'),
           correct: false,
           misconception: 'C8.4-break-ends-the-program'),
       Choice(
@@ -1458,8 +1449,8 @@ List<Item> conceptC84() {
           correct: false,
           misconception: 'C8.4-break-skips-one-turn'),
       Choice(
-          labelKeys: b('Elle recommence la boucle.',
-              'It starts the loop again.'),
+          labelKeys:
+              b('Elle recommence la boucle.', 'It starts the loop again.'),
           correct: false,
           misconception: 'C8.4-break-restarts'),
     ],
@@ -1508,10 +1499,8 @@ List<Item> conceptC84() {
       'Avec l\'un, il ne reste rien à dessiner.',
       'With one of them there is nothing left to draw.',
     ),
-    wrongChoiceFr:
-        'La seconde figure dit lequel des deux tu as écrit.',
-    wrongChoiceEn:
-        'The second shape tells you which of the two you wrote.',
+    wrongChoiceFr: 'La seconde figure dit lequel des deux tu as écrit.',
+    wrongChoiceEn: 'The second shape tells you which of the two you wrote.',
   ));
 
   return items;
@@ -1528,8 +1517,8 @@ List<Item> conceptC84() {
 List<Tutorial> world8Tutorials() => [
       tutorialFor(
         conceptId: 'C8.1',
-        conceptName: b('Tant que repose la question.',
-            'While asks the question again.'),
+        conceptName:
+            b('Tant que repose la question.', 'While asks the question again.'),
         palette: palette,
         steps: [
           watchStep(
@@ -1561,8 +1550,8 @@ List<Tutorial> world8Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C8.2',
-        conceptName: b('Une boucle a besoin d\'une sortie.',
-            'A loop needs a way out.'),
+        conceptName:
+            b('Une boucle a besoin d\'une sortie.', 'A loop needs a way out.'),
         palette: palette,
         steps: [
           watchStep(
@@ -1626,8 +1615,7 @@ List<Tutorial> world8Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C8.4',
-        conceptName: b('Coupure sort de la boucle.',
-            'Break leaves the loop.'),
+        conceptName: b('Coupure sort de la boucle.', 'Break leaves the loop.'),
         palette: palette,
         steps: [
           watchStep(

@@ -15198,8 +15198,8 @@
       "type": "T9",
       "difficulty": "D4",
       "prompt": {
-        "fr": "Fais une fleur avec un bloc pétale.",
-        "en": "Make a flower with a petal block."
+        "fr": "Fais une fleur avec un bloc pétale et un bloc tige.",
+        "en": "Make a flower with a petal block and a stem block."
       },
       "wrong": [],
       "alternatives": [],
@@ -15646,8 +15646,8 @@
       "type": "T9",
       "difficulty": "D4",
       "prompt": {
-        "fr": "Fais un escalier avec un bloc marche.",
-        "en": "Make a staircase with a step block."
+        "fr": "Fais un escalier avec un bloc marche et un bloc palier.",
+        "en": "Make a staircase with a step block and a landing block."
       },
       "wrong": [],
       "alternatives": [],
@@ -15870,8 +15870,8 @@
       "type": "T9",
       "difficulty": "D4",
       "prompt": {
-        "fr": "Fais un arbre avec un bloc branche.",
-        "en": "Make a tree with a branch block."
+        "fr": "Fais un arbre avec un bloc branche et un bloc tronc.",
+        "en": "Make a tree with a branch block and a trunk block."
       },
       "wrong": [],
       "alternatives": [],
@@ -16896,5 +16896,5 @@
     "art/tika.svg",
     "art/world9-mesblocs.svg"
   ],
-  "sizeBytes": 567406
+  "sizeBytes": 567512
 }

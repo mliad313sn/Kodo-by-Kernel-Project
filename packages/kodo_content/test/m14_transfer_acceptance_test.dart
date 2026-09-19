@@ -62,8 +62,8 @@ class StreamOnlySource implements ChunkSource {
 
 void main() {
   /// A pack's worth of bytes: big enough to need several chunks.
-  final payload = Uint8List.fromList(
-      List.generate(10000, (i) => (i * 7 + 3) % 256));
+  final payload =
+      Uint8List.fromList(List.generate(10000, (i) => (i * 7 + 3) % 256));
   final manifest = PackManifest(
     world: 1,
     version: 1,
@@ -126,12 +126,13 @@ void main() {
       expect(counted.bytesServed, payload.length);
     });
 
-    test('a connection that dies mid-transfer is a pause, not a loss', () async {
+    test('a connection that dies mid-transfer is a pause, not a loss',
+        () async {
       final store = MemoryPartialStore();
       final flaky = FlakySource(payload, diesAfter: 2);
-      final first = await PackTransfer(
-              source: flaky, store: store, manifest: manifest)
-          .run(state: freshState());
+      final first =
+          await PackTransfer(source: flaky, store: store, manifest: manifest)
+              .run(state: freshState());
       // Two empty reads running is a stall, and what arrived before it is kept.
       expect(first.outcome, TransferOutcome.stalled);
       expect(first.state!.received, 2 * 1024);
@@ -190,7 +191,8 @@ void main() {
       expect(again.bytes, rebuilt);
     });
 
-    test('a corrupted transfer is caught before anything is installed', () async {
+    test('a corrupted transfer is caught before anything is installed',
+        () async {
       final store = MemoryPartialStore();
       final damaged = Uint8List.fromList(payload)..[500] = 0;
       final result = await PackTransfer(
@@ -235,9 +237,7 @@ void main() {
         _CountingSource(payload),
       ]) {
         final result = await PackTransfer(
-                source: source,
-                store: MemoryPartialStore(),
-                manifest: manifest)
+                source: source, store: MemoryPartialStore(), manifest: manifest)
             .run(state: freshState());
         expect(result.outcome, TransferOutcome.complete);
         expect(result.bytes, payload);
@@ -256,7 +256,8 @@ void main() {
       expect(result.bytes, isNotNull);
       // There is no `install` on a transfer, by design: the bytes still have to face
       // ContentLibrary, which verifies the manifest before anything reaches a child.
-      expect(PackTransfer(
+      expect(
+          PackTransfer(
               source: BytesSource(payload),
               store: MemoryPartialStore(),
               manifest: manifest),

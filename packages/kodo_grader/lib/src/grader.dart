@@ -227,8 +227,7 @@ class Grader {
 
       final targetCanvas = _surfaceFor(item);
       final targetProgram =
-          parseEither(item.targetProgramSource!, locale: item.keywords)
-              .program;
+          parseEither(item.targetProgramSource!, locale: item.keywords).program;
       runProgram(targetProgram, targetCanvas,
           seed: item.seed, inputs: item.inputs, trigger: trigger);
 
@@ -367,7 +366,8 @@ class Grader {
     return surface;
   }
 
-  DiagnosticSituation _stageSituation(String difference) => switch (difference) {
+  DiagnosticSituation _stageSituation(String difference) =>
+      switch (difference) {
         'costume' => DiagnosticSituation.wrongCostume,
         'backdrop' => DiagnosticSituation.wrongBackdrop,
         'sound' => DiagnosticSituation.wrongSound,
@@ -415,7 +415,9 @@ class Grader {
     if (m.drewTooLittle) return DiagnosticSituation.drewTooLittle;
     if (m.drewTooMuch) return DiagnosticSituation.drewTooMuch;
     final inkIsRight = m.attemptCoverage >= 0.98 && m.targetCoverage >= 0.98;
-    if (inkIsRight && !m.sizeMatches) return DiagnosticSituation.wrongCanvasSize;
+    if (inkIsRight && !m.sizeMatches) {
+      return DiagnosticSituation.wrongCanvasSize;
+    }
     if (inkIsRight && !m.backgroundMatches) {
       return DiagnosticSituation.wrongBackground;
     }

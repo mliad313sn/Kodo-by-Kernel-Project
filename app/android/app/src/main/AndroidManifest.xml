@@ -1,7 +1,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- No <uses-permission> anywhere in this file, and that is the point.
+
+         KODO's central promise is that it works with the aircraft mode on and sends a
+         child's work nowhere. Enforcing that in Dart is a lint; enforcing it here means
+         Android itself will not let the process open a socket. INTERNET appears only in
+         the debug and profile manifests, where the Flutter tooling needs it to attach a
+         debugger, and never in a release build.
+
+         Adding a plugin can add a permission without anyone reading this file, so a test
+         reads it instead: app/test/m19_acceptance_test.dart. -->
+    <!-- allowBackup is off on purpose. A child's progress, their projects and their
+         session are theirs and stay on the device; Android's automatic backup would copy
+         the app's own directory into whoever's Google account owns the phone, which is a
+         silent export of a child's work to a third party and exactly what NFR-PRIV-01
+         says will not happen. The extraction rules say the same for Android 12 and
+         later, including device-to-device transfer. -->
     <application
-        android:label="kodo"
+        android:label="KODO"
         android:name="${applicationName}"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

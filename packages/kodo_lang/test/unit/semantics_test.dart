@@ -329,8 +329,7 @@ for _ in range(int(4)):
          of change that would have slipped through. */
       final unnamed = <String>[];
       for (final op in Opcode.values) {
-        final program = parse(
-            _sampleFor(op) ?? '', KeywordTables.fr);
+        final program = parse(_sampleFor(op) ?? '', KeywordTables.fr);
         if (_sampleFor(op) == null) continue;
         expect(program.errors, isEmpty, reason: '${op.id}: ${_sampleFor(op)}');
         final python = toPython(program.program, header: false);
@@ -364,9 +363,8 @@ for _ in range(int(4)):
     });
 
     test('an event script becomes a function, not a promise', () {
-      final program = parse(
-              'quand drapeau {\n  avance 50\n}', KeywordTables.fr)
-          .program;
+      final program =
+          parse('quand drapeau {\n  avance 50\n}', KeywordTables.fr).program;
       final python = toPython(program, header: false);
       expect(python, contains('def on_flag_script():'));
       expect(python, contains('forward(50)'));

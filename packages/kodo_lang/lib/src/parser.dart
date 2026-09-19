@@ -283,7 +283,8 @@ class _Parser {
       }
     }
     if (trigger == null) {
-      errors.add(KodoError(code: ErrorCode.expectedTrigger, span: current.span));
+      errors
+          .add(KodoError(code: ErrorCode.expectedTrigger, span: current.span));
       // Recover as a flag script: the child meant "when something", and the body is still
       // worth parsing so the rest of their program does not disappear behind one word.
       trigger = Opcode.whenFlag;

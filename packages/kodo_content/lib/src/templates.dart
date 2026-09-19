@@ -29,9 +29,31 @@ String fill(String template, Map<String, Object?> values) {
   return out;
 }
 
+/// [fill] over every locale of an authored pair, refusing a value with nowhere to go.
+///
+/// A value that no locale mentions is an **error**, not a no-op. An authoring loop that
+/// varies its numbers and hands them to a sentence that never mentions them writes the
+/// same item over and over, and nothing downstream can tell: the ids differ, the JSON is
+/// valid, and the publish gate passes each one on its own. Eight items shipped in World 0
+/// that way — the first world an eight-year-old ever opens — three of them the same
+/// question three times. Failing loudly here is the only place it is cheap.
+///
+/// The check is across the locales together, never one at a time, because a hole per
+/// language is a real and deliberate shape: `{cfr}` appears only in the French sentence
+/// and `{cen}` only in the English one, and each is dead in the other. Checking per string
+/// would condemn the idiom that makes a colour name translatable.
 Map<String, String> fillBoth(
-        Map<String, String> keys, Map<String, Object?> values) =>
-    {for (final e in keys.entries) e.key: fill(e.value, values)};
+    Map<String, String> keys, Map<String, Object?> values) {
+  for (final name in values.keys) {
+    final hole = '{$name}';
+    if (!keys.values.any((template) => template.contains(hole))) {
+      throw ArgumentError(
+          'no "$hole" in any locale of ${keys.values.first} — a value with '
+          'nowhere to go means every run of this loop writes the same item');
+    }
+  }
+  return {for (final e in keys.entries) e.key: fill(e.value, values)};
+}
 
 /// The diagnostic patterns every drawing item shares.
 ///
@@ -216,6 +238,7 @@ Item buildToTarget({
   String? lookAtFr,
   String? lookAtEn,
   bool requireFinalPose = false,
+
   /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
   /// items are graded under their own event, or a `quand touche` script never
   /// fires and every answer draws nothing.
@@ -225,6 +248,7 @@ Item buildToTarget({
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+
   /// The stage this item is graded on, when it needs one (`FR-M21-04`).
   ///
   /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
@@ -232,6 +256,7 @@ Item buildToTarget({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+
   /// The keyword language this item's programs are written in (`fr` or `en`).
   ///
   /// World 11's fourth concept is that English keywords are the same language in
@@ -366,6 +391,7 @@ Item fixTheBug({
   String? lookAtFr,
   String? lookAtEn,
   bool requireFinalPose = false,
+
   /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
   /// items are graded under their own event, or a `quand touche` script never
   /// fires and every answer draws nothing.
@@ -375,16 +401,19 @@ Item fixTheBug({
   /// green flag — it has to, or every item in Worlds 0 to 4 stops working — so
   /// "you forgot the trigger" is a wrong answer that draws the right picture.
   List<StructuralAssertion> assertions = const [],
+
   /// Two programs that are also right, authored when the language cannot
   /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
   /// nothing else, so a body made of `recule` or `direction` yields one.
   List<String>? alternatives,
+
   /// What the keyboard and pointer are doing while this item is graded.
   ///
   /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+
   /// The stage this item is graded on, when it needs one (`FR-M21-04`).
   ///
   /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
@@ -392,6 +421,7 @@ Item fixTheBug({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+
   /// The keyword language this item's programs are written in (`fr` or `en`).
   ///
   /// World 11's fourth concept is that English keywords are the same language in
@@ -410,8 +440,7 @@ Item fixTheBug({
       startingProgramSource: broken,
       targetProgramSource: solution,
       referenceSolutionSource: solution,
-      alternativeSolutionSources:
-          alternatives ?? equivalentsOf(solution),
+      alternativeSolutionSources: alternatives ?? equivalentsOf(solution),
       wrongSolutionSources: [broken, ...wrong],
       hints: itemHints,
       diagnostics: drawingDiagnostics(lookAtFr: lookAtFr, lookAtEn: lookAtEn),
@@ -439,6 +468,7 @@ Item fillTheGap({
   /// Needed wherever the marks coincide and only the pose differs — World 4's jumps do
   /// this constantly, because a jump leaves no ink to tell two answers apart.
   bool requireFinalPose = false,
+
   /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
   /// items are graded under their own event, or a `quand touche` script never
   /// fires and every answer draws nothing.
@@ -448,16 +478,19 @@ Item fillTheGap({
   /// green flag — it has to, or every item in Worlds 0 to 4 stops working — so
   /// "you forgot the trigger" is a wrong answer that draws the right picture.
   List<StructuralAssertion> assertions = const [],
+
   /// Two programs that are also right, authored when the language cannot
   /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
   /// nothing else, so a body made of `recule` or `direction` yields one.
   List<String>? alternatives,
+
   /// What the keyboard and pointer are doing while this item is graded.
   ///
   /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+
   /// The stage this item is graded on, when it needs one (`FR-M21-04`).
   ///
   /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
@@ -465,6 +498,7 @@ Item fillTheGap({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+
   /// The keyword language this item's programs are written in (`fr` or `en`).
   ///
   /// World 11's fourth concept is that English keywords are the same language in
@@ -483,8 +517,7 @@ Item fillTheGap({
       startingProgramSource: withHoles,
       targetProgramSource: solution,
       referenceSolutionSource: solution,
-      alternativeSolutionSources:
-          alternatives ?? equivalentsOf(solution),
+      alternativeSolutionSources: alternatives ?? equivalentsOf(solution),
       wrongSolutionSources: wrong,
       hints: itemHints,
       diagnostics: drawingDiagnostics(),
@@ -512,6 +545,7 @@ Item parsons({
   /// Needed whenever a wrong ordering retraces the right one: a staircase assembled in the
   /// wrong order can leave exactly the same pixels and only a different final pose.
   bool requireFinalPose = false,
+
   /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
   /// items are graded under their own event, or a `quand touche` script never
   /// fires and every answer draws nothing.
@@ -521,16 +555,19 @@ Item parsons({
   /// green flag — it has to, or every item in Worlds 0 to 4 stops working — so
   /// "you forgot the trigger" is a wrong answer that draws the right picture.
   List<StructuralAssertion> assertions = const [],
+
   /// Two programs that are also right, authored when the language cannot
   /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
   /// nothing else, so a body made of `recule` or `direction` yields one.
   List<String>? alternatives,
+
   /// What the keyboard and pointer are doing while this item is graded.
   ///
   /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+
   /// The stage this item is graded on, when it needs one (`FR-M21-04`).
   ///
   /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
@@ -538,6 +575,7 @@ Item parsons({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+
   /// The keyword language this item's programs are written in (`fr` or `en`).
   ///
   /// World 11's fourth concept is that English keywords are the same language in
@@ -555,8 +593,7 @@ Item parsons({
       promptKeys: promptKeys,
       targetProgramSource: solution,
       referenceSolutionSource: solution,
-      alternativeSolutionSources:
-          alternatives ?? equivalentsOf(solution),
+      alternativeSolutionSources: alternatives ?? equivalentsOf(solution),
       wrongSolutionSources: wrong,
       hints: itemHints,
       diagnostics: drawingDiagnostics(),
@@ -587,12 +624,14 @@ Item openBuild({
   required List<RubricLine> rubric,
   required List<Hint> itemHints,
   List<String> paletteScope = const [],
+
   /// What the keyboard and pointer are doing while this item is graded.
   ///
   /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+
   /// The stage this item is graded on, when it needs one (`FR-M21-04`).
   ///
   /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
@@ -600,6 +639,7 @@ Item openBuild({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+
   /// The keyword language this item's programs are written in (`fr` or `en`).
   ///
   /// World 11's fourth concept is that English keywords are the same language in
@@ -640,6 +680,7 @@ Item golf({
   required List<String> wrong,
   required List<Hint> itemHints,
   List<String> paletteScope = const [],
+
   /// Structural checks the block budget cannot make.
   ///
   /// A budget bounds how *much* a program may be; it says nothing about what it is made
@@ -647,6 +688,7 @@ Item golf({
   /// types the answer meets the budget with room to spare — so the claim about the box
   /// has to be made here, as it is on every other item type.
   List<StructuralAssertion> assertions = const [],
+
   /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
   /// items are graded under their own event, or a `quand touche` script never
   /// fires and every answer draws nothing.
@@ -654,12 +696,14 @@ Item golf({
   /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
   /// nothing else, so a body made of `recule` or `direction` yields one.
   List<String>? alternatives,
+
   /// What the keyboard and pointer are doing while this item is graded.
   ///
   /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+
   /// The stage this item is graded on, when it needs one (`FR-M21-04`).
   ///
   /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
@@ -667,6 +711,7 @@ Item golf({
   /// sprite with none cannot change its look, and an item where nothing can happen
   /// passes every answer.
   StageSetup? stage,
+
   /// The keyword language this item's programs are written in (`fr` or `en`).
   ///
   /// World 11's fourth concept is that English keywords are the same language in
@@ -684,8 +729,7 @@ Item golf({
       promptKeys: promptKeys,
       targetProgramSource: solution,
       referenceSolutionSource: solution,
-      alternativeSolutionSources:
-          alternatives ?? equivalentsOf(solution),
+      alternativeSolutionSources: alternatives ?? equivalentsOf(solution),
       wrongSolutionSources: wrong,
       blockBudget: budget,
       hints: itemHints,

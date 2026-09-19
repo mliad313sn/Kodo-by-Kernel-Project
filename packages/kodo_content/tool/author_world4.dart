@@ -18,7 +18,6 @@ import 'dart:io';
 import 'package:kodo_content/kodo_content.dart';
 import 'package:kodo_grader/kodo_grader.dart';
 
-
 Map<String, String> b(String fr, String en) => {'fr': fr, 'en': en};
 
 /// The five concepts of World 4, from the concept ledger.
@@ -142,8 +141,9 @@ List<Item> conceptC41() {
       difficulty: Difficulty.d3,
       solution: '${markAt(a[0], a[1])}\n${markAt(c[0], c[1])}',
       promptKeys: fillBoth(
-        b('Fais une marque de 30 pas en ({ax} ; {ay}), puis une autre en '
-            '({cx} ; {cy}).',
+        b(
+            'Fais une marque de 30 pas en ({ax} ; {ay}), puis une autre en '
+                '({cx} ; {cy}).',
             'Make a 30-step mark at ({ax}, {ay}), then another at ({cx}, {cy}).'),
         {'ax': a[0], 'ay': a[1], 'cx': c[0], 'cy': c[1]},
       ),
@@ -236,7 +236,8 @@ List<Item> conceptC41() {
             correct: false,
             misconception: 'C4.1-axes-swapped'),
         Choice(
-            labelKeys: b('(${200 + x} ; ${200 + y})', '(${200 + x}, ${200 + y})'),
+            labelKeys:
+                b('(${200 + x} ; ${200 + y})', '(${200 + x}, ${200 + y})'),
             correct: false,
             misconception: 'C4.1-relative-to-turtle'),
         Choice(
@@ -251,7 +252,8 @@ List<Item> conceptC41() {
         'A point is a place on the paper, not a distance.',
       ),
       wrongChoiceFr: 'Aller à un point mène à ce point, d\'où qu\'on parte.',
-      wrongChoiceEn: 'Going to a point lands on that point, wherever you started.',
+      wrongChoiceEn:
+          'Going to a point lands on that point, wherever you started.',
     ));
   }
 
@@ -305,10 +307,11 @@ List<Item> conceptC41() {
       solution: 'va $x, $y\ndirection 90\navance 30\ntournedroite 90\n'
           'avance 30',
       promptKeys: fillBoth(
-        b('Remets dans l\'ordre : depuis ({x} ; {y}), un trait de 30 pas vers '
-            'la droite, puis un de 30 pas vers le bas.',
+        b(
+            'Remets dans l\'ordre : depuis ({x} ; {y}), un trait de 30 pas vers '
+                'la droite, puis un de 30 pas vers le bas.',
             'Put these in order: from ({x}, {y}), a 30-step line to the right, '
-            'then a 30-step line downwards.'),
+                'then a 30-step line downwards.'),
         {'x': x, 'y': y},
       ),
       wrong: [
@@ -359,10 +362,11 @@ List<Item> conceptC42() {
       difficulty: Difficulty.d2,
       solution: solution,
       promptKeys: fillBoth(
-        b('Va en ({x} ; {y}), glisse de {d} vers la droite sans changer de '
-            'hauteur, puis fais une marque de 30 pas.',
+        b(
+            'Va en ({x} ; {y}), glisse de {d} vers la droite sans changer de '
+                'hauteur, puis fais une marque de 30 pas.',
             'Go to ({x}, {y}), slide {d} to the right without changing height, '
-            'then make a 30-step mark.'),
+                'then make a 30-step mark.'),
         {'x': startX, 'y': y, 'd': slide},
       ),
       wrong: [
@@ -399,10 +403,11 @@ List<Item> conceptC42() {
       difficulty: Difficulty.d2,
       solution: solution,
       promptKeys: fillBoth(
-        b('Va en ({x} ; {y}), monte ou descends jusqu\'à la hauteur {t} sans '
-            'changer de côté, puis fais une marque de 30 pas.',
+        b(
+            'Va en ({x} ; {y}), monte ou descends jusqu\'à la hauteur {t} sans '
+                'changer de côté, puis fais une marque de 30 pas.',
             'Go to ({x}, {y}), move up or down to height {t} without changing '
-            'side, then make a 30-step mark.'),
+                'side, then make a 30-step mark.'),
         {'x': x, 'y': startY, 't': target},
       ),
       wrong: [
@@ -520,14 +525,16 @@ List<Item> conceptC42() {
       solution: solution,
       promptKeys: fillBoth(
         op == 'vax'
-            ? b('Complète : Tika doit glisser sur le côté jusqu\'à {t}, '
-                'sans changer de hauteur.',
+            ? b(
+                'Complète : Tika doit glisser sur le côté jusqu\'à {t}, '
+                    'sans changer de hauteur.',
                 'Fill in the blank: Tika slides sideways to {t}, without '
-                'changing height.')
-            : b('Complète : Tika doit monter ou descendre jusqu\'à {t}, '
-                'sans changer de côté.',
+                    'changing height.')
+            : b(
+                'Complète : Tika doit monter ou descendre jusqu\'à {t}, '
+                    'sans changer de côté.',
                 'Fill in the blank: Tika moves up or down to {t}, without '
-                'changing side.'),
+                    'changing side.'),
         {'t': target},
       ),
       wrong: [
@@ -576,8 +583,10 @@ List<Item> conceptC42() {
       '250 reste 250.',
       '250 stays 250.',
     ),
-    wrongChoiceFr: 'vax remplace le nombre horizontal et laisse l\'autre tel quel.',
-    wrongChoiceEn: 'Go-x replaces the across number and leaves the other alone.',
+    wrongChoiceFr:
+        'vax remplace le nombre horizontal et laisse l\'autre tel quel.',
+    wrongChoiceEn:
+        'Go-x replaces the across number and leaves the other alone.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -587,14 +596,16 @@ List<Item> conceptC42() {
     promptKeys: b('Quelle paire de blocs fait la même chose que va 80, 320 ?',
         'Which pair of blocks does the same thing as go to 80, 320?'),
     choices: [
-      Choice(labelKeys: b('vax 80 puis vay 320', 'go-x 80 then go-y 320'),
+      Choice(
+          labelKeys: b('vax 80 puis vay 320', 'go-x 80 then go-y 320'),
           correct: true),
       Choice(
           labelKeys: b('vax 80 puis vax 320', 'go-x 80 then go-x 320'),
           correct: false,
           misconception: 'C4.2-one-axis-does-both'),
       Choice(
-          labelKeys: b('avance 80 puis avance 320', 'forward 80 then forward 320'),
+          labelKeys:
+              b('avance 80 puis avance 320', 'forward 80 then forward 320'),
           correct: false,
           misconception: 'C4.2-go-is-move'),
       Choice(
@@ -623,8 +634,8 @@ List<Item> conceptC42() {
               'No: it is a jump, like go to.'),
           correct: true),
       Choice(
-          labelKeys: b('Oui, si le crayon est baissé.',
-              'Yes, if the pen is down.'),
+          labelKeys:
+              b('Oui, si le crayon est baissé.', 'Yes, if the pen is down.'),
           correct: false,
           misconception: 'C4.2-jump-draws'),
       Choice(
@@ -679,10 +690,11 @@ List<Item> conceptC43() {
         '# une autre façon\nva $x, $y\nécris positionx\nécris positiony',
       ],
       promptKeys: fillBoth(
-        b('Va en ({x} ; {y}) et écris les deux nombres de ta position, '
-            'l\'horizontal puis le vertical.',
+        b(
+            'Va en ({x} ; {y}) et écris les deux nombres de ta position, '
+                'l\'horizontal puis le vertical.',
             'Go to ({x}, {y}) and write out both numbers of your position, '
-            'across then down.'),
+                'across then down.'),
         {'x': x, 'y': y},
       ),
       wrong: [
@@ -719,11 +731,12 @@ List<Item> conceptC43() {
         '# une autre façon\nva $x, $y\nva $otherX, positiony\navance 30',
       ],
       promptKeys: fillBoth(
-        b('Va en ({x} ; {y}). Puis va en {o} sur l\'horizontale, en gardant '
-            'exactement la même hauteur — sans réécrire le nombre. '
-            'Fais une marque de 30 pas.',
+        b(
+            'Va en ({x} ; {y}). Puis va en {o} sur l\'horizontale, en gardant '
+                'exactement la même hauteur — sans réécrire le nombre. '
+                'Fais une marque de 30 pas.',
             'Go to ({x}, {y}). Then go across to {o}, keeping exactly the same '
-            'height — without writing the number again. Make a 30-step mark.'),
+                'height — without writing the number again. Make a 30-step mark.'),
         {'x': x, 'y': y, 'o': otherX},
       ),
       wrong: [
@@ -829,8 +842,10 @@ List<Item> conceptC43() {
         'Puis lis le nombre qu\'on lui demande.',
         'Then read the number it asks her for.',
       ),
-      wrongChoiceFr: 'positionx et positiony donnent la position au moment où on les lit.',
-      wrongChoiceEn: 'Position-x and position-y give the position at the moment they are read.',
+      wrongChoiceFr:
+          'positionx et positiony donnent la position au moment où on les lit.',
+      wrongChoiceEn:
+          'Position-x and position-y give the position at the moment they are read.',
     ));
   }
 
@@ -848,8 +863,8 @@ List<Item> conceptC43() {
               'Nothing you can see: it is a number, not an order.'),
           correct: true),
       Choice(
-          labelKeys: b('Il déplace Tika sur l\'horizontale.',
-              'It moves Tika across.'),
+          labelKeys:
+              b('Il déplace Tika sur l\'horizontale.', 'It moves Tika across.'),
           correct: false,
           misconception: 'C4.3-reporter-is-command'),
       Choice(
@@ -858,7 +873,8 @@ List<Item> conceptC43() {
           correct: false,
           misconception: 'C4.3-reporter-prints'),
       Choice(
-          labelKeys: b('Il remet Tika au centre.', 'It sends Tika to the centre.'),
+          labelKeys:
+              b('Il remet Tika au centre.', 'It sends Tika to the centre.'),
           correct: false,
           misconception: 'C4.3-reporter-is-command'),
     ],
@@ -868,7 +884,8 @@ List<Item> conceptC43() {
       'Un nombre ne fait rien : il sert à quelque chose d\'autre.',
       'A number does nothing: it is used by something else.',
     ),
-    wrongChoiceFr: 'positionx donne un nombre ; il faut un bloc qui s\'en serve.',
+    wrongChoiceFr:
+        'positionx donne un nombre ; il faut un bloc qui s\'en serve.',
     wrongChoiceEn: 'Position-x gives a number; something else has to use it.',
   ));
   items.add(choiceItem(
@@ -879,7 +896,8 @@ List<Item> conceptC43() {
     promptKeys: b('Tika est en (120 ; 300). Que fait va positionx, 50 ?',
         'Tika is at (120, 300). What does go to position-x, 50 do?'),
     choices: [
-      Choice(labelKeys: b('Elle va en (120 ; 50).', 'She goes to (120, 50).'),
+      Choice(
+          labelKeys: b('Elle va en (120 ; 50).', 'She goes to (120, 50).'),
           correct: true),
       Choice(
           labelKeys: b('Elle va en (50 ; 50).', 'She goes to (50, 50).'),
@@ -916,15 +934,18 @@ List<Item> conceptC43() {
               'Because it works wherever Tika happens to be.'),
           correct: true),
       Choice(
-          labelKeys: b('Parce que c\'est plus rapide.', 'Because it is faster.'),
+          labelKeys:
+              b('Parce que c\'est plus rapide.', 'Because it is faster.'),
           correct: false,
           misconception: 'C4.3-speed'),
       Choice(
-          labelKeys: b('Parce que 140 est interdit.', 'Because 140 is not allowed.'),
+          labelKeys:
+              b('Parce que 140 est interdit.', 'Because 140 is not allowed.'),
           correct: false,
           misconception: 'C4.3-reporter-required'),
       Choice(
-          labelKeys: b('Il n\'y a pas de différence.', 'There is no difference.'),
+          labelKeys:
+              b('Il n\'y a pas de différence.', 'There is no difference.'),
           correct: false,
           misconception: 'C4.3-reporter-is-decoration'),
     ],
@@ -935,7 +956,8 @@ List<Item> conceptC43() {
       'A number written by hand does not follow.',
     ),
     wrongChoiceFr: 'Un nombre écrit à la main ne vaut que pour un seul départ.',
-    wrongChoiceEn: 'A hand-written number is only right for one starting place.',
+    wrongChoiceEn:
+        'A hand-written number is only right for one starting place.',
   ));
 
   // T8 — explain.
@@ -976,8 +998,10 @@ List<Item> conceptC43() {
       'La hauteur actuelle, c\'est positiony.',
       'The current height is position-y.',
     ),
-    wrongChoiceFr: 'Le deuxième nombre est la hauteur, et la hauteur actuelle est positiony.',
-    wrongChoiceEn: 'The second number is the height, and the current height is position-y.',
+    wrongChoiceFr:
+        'Le deuxième nombre est la hauteur, et la hauteur actuelle est positiony.',
+    wrongChoiceEn:
+        'The second number is the height, and the current height is position-y.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1015,8 +1039,10 @@ List<Item> conceptC43() {
       'Tu obtiens la position actuelle.',
       'You get the current position.',
     ),
-    wrongChoiceFr: 'Les deux blocs donnent la position actuelle : la destination est le départ.',
-    wrongChoiceEn: 'The two blocks give the current position: the destination is the start.',
+    wrongChoiceFr:
+        'Les deux blocs donnent la position actuelle : la destination est le départ.',
+    wrongChoiceEn:
+        'The two blocks give the current position: the destination is the start.',
   ));
 
   return items;
@@ -1049,10 +1075,11 @@ List<Item> conceptC44() {
       difficulty: heading % 90 == 0 ? Difficulty.d1 : Difficulty.d3,
       solution: 'tournedroite 30\ndirection $heading\navance $length',
       promptKeys: fillBoth(
-        b('Tourne de 30 vers la droite, puis pointe vers {h} degrés et avance '
-            'de {l}. Le trait doit être le même quoi qu\'il arrive avant.',
+        b(
+            'Tourne de 30 vers la droite, puis pointe vers {h} degrés et avance '
+                'de {l}. Le trait doit être le même quoi qu\'il arrive avant.',
             'Turn 30 to the right, then point at {h} degrees and move {l}. '
-            'The line must be the same whatever came before.'),
+                'The line must be the same whatever came before.'),
         {'h': heading, 'l': length},
       ),
       wrong: [
@@ -1086,10 +1113,11 @@ List<Item> conceptC44() {
           'direction 180\navance $arm\ncentre\n'
           'direction 270\navance $arm',
       promptKeys: fillBoth(
-        b('Depuis le centre, trace quatre branches de {a} pas : vers le haut, '
-            'la droite, le bas et la gauche.',
+        b(
+            'Depuis le centre, trace quatre branches de {a} pas : vers le haut, '
+                'la droite, le bas et la gauche.',
             'From the centre, draw four arms of {a} steps: up, right, down and '
-            'left.'),
+                'left.'),
         {'a': arm},
       ),
       wrong: [
@@ -1118,10 +1146,11 @@ List<Item> conceptC44() {
       broken: 'tournedroite 40\ntournedroite $heading\navance 60',
       solution: 'tournedroite 40\ndirection $heading\navance 60',
       promptKeys: fillBoth(
-        b('Le trait doit partir vers {h} degrés, quel que soit le tour '
-            'd\'avant. Répare.',
+        b(
+            'Le trait doit partir vers {h} degrés, quel que soit le tour '
+                'd\'avant. Répare.',
             'The line must head at {h} degrees, whatever turn came before. '
-            'Fix it.'),
+                'Fix it.'),
         {'h': heading},
       ),
       wrong: [
@@ -1207,11 +1236,13 @@ List<Item> conceptC44() {
             correct: false,
             misconception: 'C4.4-heading-is-a-turn'),
         Choice(
-            labelKeys: b('${(heading + 180) % 360}', '${(heading + 180) % 360}'),
+            labelKeys:
+                b('${(heading + 180) % 360}', '${(heading + 180) % 360}'),
             correct: false,
             misconception: 'C4.4-heading-is-opposite'),
         Choice(
-            labelKeys: b('${(heading + 270) % 360}', '${(heading + 270) % 360}'),
+            labelKeys:
+                b('${(heading + 270) % 360}', '${(heading + 270) % 360}'),
             correct: false,
             misconception: 'C4.4-heading-turns-the-other-way'),
       ],
@@ -1232,16 +1263,18 @@ List<Item> conceptC44() {
     conceptId: 'C4.4',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b('Quelle est la différence entre direction 90 et tournedroite 90 ?',
+    promptKeys: b(
+        'Quelle est la différence entre direction 90 et tournedroite 90 ?',
         'What is the difference between heading 90 and turn right 90?'),
     choices: [
       Choice(
-          labelKeys: b('L\'un pose le cap, l\'autre l\'ajoute à celui d\'avant.',
+          labelKeys: b(
+              'L\'un pose le cap, l\'autre l\'ajoute à celui d\'avant.',
               'One sets the bearing, the other adds to the one before.'),
           correct: true),
       Choice(
-          labelKeys: b('Aucune : les deux tournent de 90.',
-              'None: both turn by 90.'),
+          labelKeys:
+              b('Aucune : les deux tournent de 90.', 'None: both turn by 90.'),
           correct: false,
           misconception: 'C4.4-heading-is-a-turn'),
       Choice(
@@ -1261,7 +1294,8 @@ List<Item> conceptC44() {
       'Une boussole ne dépend pas d\'où tu regardais avant.',
       'A compass does not depend on where you were looking before.',
     ),
-    wrongChoiceFr: 'Ils ne donnent le même résultat que si Tika regardait déjà vers 0.',
+    wrongChoiceFr:
+        'Ils ne donnent le même résultat que si Tika regardait déjà vers 0.',
     wrongChoiceEn: 'They only agree when Tika was already facing 0.',
   ));
   items.add(choiceItem(
@@ -1412,10 +1446,11 @@ List<Item> conceptC45() {
           'répète 4 {\n  avance $side\n  tournedroite 90\n}\n'
           'centre\navance 40',
       promptKeys: fillBoth(
-        b('Dessine un carré de {s} pas en (300 ; 300), reviens au centre, puis '
-            'fais une marque de 40 pas. Le carré doit rester.',
+        b(
+            'Dessine un carré de {s} pas en (300 ; 300), reviens au centre, puis '
+                'fais une marque de 40 pas. Le carré doit rester.',
             'Draw a square of {s} steps at (300, 300), come back to the centre, '
-            'then make a 40-step mark. The square must stay.'),
+                'then make a 40-step mark. The square must stay.'),
         {'s': side},
       ),
       wrong: [
@@ -1476,8 +1511,8 @@ List<Item> conceptC45() {
             correct: false,
             misconception: 'C4.5-centre-erases'),
         Choice(
-            labelKeys: b('Rien n\'a été dessiné du tout.',
-                'Nothing was drawn at all.'),
+            labelKeys: b(
+                'Rien n\'a été dessiné du tout.', 'Nothing was drawn at all.'),
             correct: false,
             misconception: 'C4.5-centre-stops'),
       ],
@@ -1503,10 +1538,11 @@ List<Item> conceptC45() {
       solution: 'direction 90\navance $length\ncentre\n'
           'direction 180\navance $length',
       promptKeys: fillBoth(
-        b('Complète : les deux branches de {l} pas doivent partir du même '
-            'point de départ.',
+        b(
+            'Complète : les deux branches de {l} pas doivent partir du même '
+                'point de départ.',
             'Fill in the blank: both {l}-step arms must start from the same '
-            'starting point.'),
+                'starting point.'),
         {'l': length},
       ),
       wrong: [
@@ -1544,11 +1580,8 @@ List<Item> conceptC45() {
           'direction 180\navance $second',
       solution: 'direction 90\navance $first\ncentre\n'
           'direction 180\navance $second',
-      promptKeys: fillBoth(
-        b('Les deux branches doivent rester toutes les deux. Répare.',
-            'Both arms must still be there at the end. Fix it.'),
-        {'a': first, 'b': second},
-      ),
+      promptKeys: b('Les deux branches doivent rester toutes les deux. Répare.',
+          'Both arms must still be there at the end. Fix it.'),
       wrong: [
         'direction 90\navance $first\ninitialise\n'
             'direction 180\navance $second',
@@ -1602,8 +1635,10 @@ List<Item> conceptC45() {
       'C\'est la même chose, en plus court.',
       'It is the same thing, written shorter.',
     ),
-    wrongChoiceFr: 'centre fait exactement va 200, 200 : un déplacement, rien d\'autre.',
-    wrongChoiceEn: 'Centre does exactly go to 200, 200: a move, and nothing else.',
+    wrongChoiceFr:
+        'centre fait exactement va 200, 200 : un déplacement, rien d\'autre.',
+    wrongChoiceEn:
+        'Centre does exactly go to 200, 200: a move, and nothing else.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1614,8 +1649,8 @@ List<Item> conceptC45() {
         'Does centre leave a line if the pen is down?'),
     choices: [
       Choice(
-          labelKeys: b('Non : les sauts ne dessinent jamais.',
-              'No: jumps never draw.'),
+          labelKeys: b(
+              'Non : les sauts ne dessinent jamais.', 'No: jumps never draw.'),
           correct: true),
       Choice(
           labelKeys: b('Oui, un trait jusqu\'au milieu.',
@@ -1639,7 +1674,8 @@ List<Item> conceptC45() {
       'Aucun d\'eux ne dessine.',
       'None of them draws.',
     ),
-    wrongChoiceFr: 'Un saut ne dessine jamais, quel que soit l\'état du crayon.',
+    wrongChoiceFr:
+        'Un saut ne dessine jamais, quel que soit l\'état du crayon.',
     wrongChoiceEn: 'A jump never draws, whatever the pen is doing.',
   ));
 
@@ -1670,7 +1706,8 @@ TutorialStep watchStep(String conceptId, String fr, String en, String demo,
       id: '$conceptId-s1',
       beat: Beat.jeRegarde,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s1.opus', 'audio/en/$conceptId-s1.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s1.opus', 'audio/en/$conceptId-s1.opus'),
       expectedAction: ExpectedAction.watch,
       spotlight: spotlight,
       demoProgramSource: demo,
@@ -1686,7 +1723,8 @@ TutorialStep togetherStep(String conceptId, String fr, String en,
       id: '$conceptId-s2',
       beat: Beat.onFaitEnsemble,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s2.opus', 'audio/en/$conceptId-s2.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s2.opus', 'audio/en/$conceptId-s2.opus'),
       expectedAction: action,
       spotlight: SpotlightTarget.scriptArea,
       successCondition: SuccessCondition(opcodeId: opcodeId),
@@ -1701,7 +1739,8 @@ TutorialStep doStep(String conceptId, String fr, String en,
       id: '$conceptId-s3',
       beat: Beat.jeFais,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s3.opus', 'audio/en/$conceptId-s3.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s3.opus', 'audio/en/$conceptId-s3.opus'),
       expectedAction: ExpectedAction.buildProgram,
       spotlight: SpotlightTarget.scriptArea,
       successCondition: SuccessCondition(opcodeId: opcodeId),

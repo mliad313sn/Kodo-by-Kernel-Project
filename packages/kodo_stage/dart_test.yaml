@@ -1,0 +1,17 @@
+# The language core runs in a browser as well as on the VM.
+#
+# Not for coverage's sake: KODO's promise is that a verdict is the same verdict on an
+# Android phone, on a school desktop and in a browser, and the way that breaks is
+# arithmetic. A Dart `int` is 64-bit on the VM and a JavaScript number on the web, so a
+# hash or a seeded shuffle that overflows 2^53 gives two different answers and nothing
+# says so. `Bitmap.hash` shipped exactly that way, under a comment promising it was
+# "identical on every platform".
+#
+#   dart test                 # the VM, as before
+#   dart test -p headless     # Chrome, for the parity the product actually promises
+define_platforms:
+  headless:
+    name: Headless Chrome
+    extends: chrome
+    settings:
+      arguments: --no-sandbox --disable-dev-shm-usage

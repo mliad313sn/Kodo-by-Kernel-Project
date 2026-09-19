@@ -281,13 +281,15 @@ final Map<Opcode, BlockHelp> blockHelp = {
   // --- Événements (D-014 / FR-M21-01) ---------------------------------------------------
   Opcode.whenFlag: BlockHelp(
     family: BlockFamily.evenements,
-    summaryKeys: _b('Ce qui est dedans se fait quand tu appuies sur le drapeau.',
+    summaryKeys: _b(
+        'Ce qui est dedans se fait quand tu appuies sur le drapeau.',
         'What is inside happens when you press the flag.'),
     exampleSource: 'quand drapeau {\n  avance 50\n}',
   ),
   Opcode.whenKey: BlockHelp(
     family: BlockFamily.evenements,
-    summaryKeys: _b('Ce qui est dedans se fait quand tu appuies sur cette touche.',
+    summaryKeys: _b(
+        'Ce qui est dedans se fait quand tu appuies sur cette touche.',
         'What is inside happens when you press that key.'),
     exampleSource: 'quand touche "espace" {\n  avance 50\n}',
   ),
@@ -313,8 +315,8 @@ final Map<Opcode, BlockHelp> blockHelp = {
   ),
   Opcode.mouseY: BlockHelp(
     family: BlockFamily.capteurs,
-    summaryKeys: _b('Le nombre vertical du pointeur.',
-        'The down number of the pointer.'),
+    summaryKeys: _b(
+        'Le nombre vertical du pointeur.', 'The down number of the pointer.'),
     exampleSource: 'va 200, sourisy\navance 20\ntournedroite 90',
   ),
   Opcode.mouseDown: BlockHelp(
@@ -345,14 +347,15 @@ final Map<Opcode, BlockHelp> blockHelp = {
   ),
   Opcode.nextCostume: BlockHelp(
     family: BlockFamily.apparence,
-    summaryKeys: _b('Passe au costume suivant. Deux d\'affilée font bouger Tika.',
+    summaryKeys: _b(
+        'Passe au costume suivant. Deux d\'affilée font bouger Tika.',
         'Moves to the next costume. Two in a row make Tika move.'),
     exampleSource: 'costumesuivant\nattends 1\ncostumesuivant',
   ),
   Opcode.setCostume: BlockHelp(
     family: BlockFamily.apparence,
-    summaryKeys: _b('Choisit un costume par son numéro.',
-        'Picks a costume by its number.'),
+    summaryKeys: _b(
+        'Choisit un costume par son numéro.', 'Picks a costume by its number.'),
     exampleSource: 'costume 1\nattends 1\ncostume 2',
   ),
   Opcode.costumeNumber: BlockHelp(
@@ -363,8 +366,8 @@ final Map<Opcode, BlockHelp> blockHelp = {
   ),
   Opcode.setBackdrop: BlockHelp(
     family: BlockFamily.apparence,
-    summaryKeys: _b('Change le décor derrière Tika.',
-        'Changes the scene behind Tika.'),
+    summaryKeys:
+        _b('Change le décor derrière Tika.', 'Changes the scene behind Tika.'),
     exampleSource: 'arrièreplan "plage"\navance 50\ntournedroite 90',
   ),
   Opcode.setEffect: BlockHelp(
@@ -392,14 +395,14 @@ final Map<Opcode, BlockHelp> blockHelp = {
   ),
   Opcode.playDrum: BlockHelp(
     family: BlockFamily.son,
-    summaryKeys: _b('Frappe un tambour pendant un moment.',
-        'Hits a drum for a moment.'),
+    summaryKeys:
+        _b('Frappe un tambour pendant un moment.', 'Hits a drum for a moment.'),
     exampleSource: 'tambour 2, 1\ntambour 5, 1\ntambour 2, 1',
   ),
   Opcode.playNote: BlockHelp(
     family: BlockFamily.son,
-    summaryKeys: _b('Joue une note pendant un moment.',
-        'Plays a note for a moment.'),
+    summaryKeys:
+        _b('Joue une note pendant un moment.', 'Plays a note for a moment.'),
     exampleSource: 'note 60, 0.5\nnote 64, 0.5\nnote 67, 1',
   ),
 };

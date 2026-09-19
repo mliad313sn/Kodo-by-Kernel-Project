@@ -5,12 +5,14 @@ import 'package:kodo_stage/kodo_stage.dart';
 void run(String src) {
   final p = parseEither(src);
   if (p.errors.isNotEmpty) {
-    print('${src.replaceAll('\n', ' ; ')}\n  PARSE ERROR: ${p.errors.first.message('fr')}');
+    print(
+        '${src.replaceAll('\n', ' ; ')}\n  PARSE ERROR: ${p.errors.first.message('fr')}');
     return;
   }
   final s = VectorCanvas();
   final r = runProgram(p.program, s, seed: 1);
-  print('${src.replaceAll('\n', ' ; ')}\n  out=${s.output} err=${r.error?.code} n=${s.segmentCount}');
+  print(
+      '${src.replaceAll('\n', ' ; ')}\n  out=${s.output} err=${r.error?.code} n=${s.segmentCount}');
 }
 
 void main() {

@@ -45,9 +45,9 @@ void main() {
   });
 
   group('FR-M3-08 · the image half', () {
-    String svg({SyntaxTheme? theme}) => codeToSvg(
-        source, KeywordTables.fr, theme ?? SyntaxTheme.light,
-        title: 'Mon carré');
+    String svg({SyntaxTheme? theme}) =>
+        codeToSvg(source, KeywordTables.fr, theme ?? SyntaxTheme.light,
+            title: 'Mon carré');
 
     test('it is a standalone picture of the program', () {
       final out = svg();
@@ -91,19 +91,21 @@ void main() {
       expect(out, isNot(contains('"a & b"')));
     });
 
-    test('it carries a description, because FR-M16-04 does not stop at the '
+    test(
+        'it carries a description, because FR-M16-04 does not stop at the '
         'edge of the app', () {
       expect(svg(), contains('<desc>'));
       expect(svg(), contains('tournedroite 90'));
     });
 
-    test('the picture is as wide as the longest line and as tall as the program',
+    test(
+        'the picture is as wide as the longest line and as tall as the program',
         () {
       final one = codeToSvg('avance 10\n', KeywordTables.fr, SyntaxTheme.light);
       final many = codeToSvg('avance 10\navance 20\navance 30\n',
           KeywordTables.fr, SyntaxTheme.light);
-      double heightOf(String s) => double.parse(
-          RegExp(r'height="([\d.]+)"').firstMatch(s)!.group(1)!);
+      double heightOf(String s) =>
+          double.parse(RegExp(r'height="([\d.]+)"').firstMatch(s)!.group(1)!);
       expect(heightOf(many), greaterThan(heightOf(one)));
 
       // A trailing newline is how a program ends; it may not become a band of blank

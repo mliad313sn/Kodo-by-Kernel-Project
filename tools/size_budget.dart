@@ -67,18 +67,24 @@ void main() {
     final size = json + audio;
     total += size;
     final share = size / worldBudget * 100;
-    say('${world.toString().padLeft(5)}   '
-        '${mb(json).padLeft(8)}  ${mb(audio).padLeft(8)}  '
-        '${mb(size).padLeft(8)}  ${share.toStringAsFixed(1).padLeft(6)} %');
+    say(
+      '${world.toString().padLeft(5)}   '
+      '${mb(json).padLeft(8)}  ${mb(audio).padLeft(8)}  '
+      '${mb(size).padLeft(8)}  ${share.toStringAsFixed(1).padLeft(6)} %',
+    );
     if (size > worldBudget) {
-      stderr.writeln('OVER BUDGET: world $world is ${mb(size)}, '
-          'and FR-M14-02 allows ${mb(worldBudget)}');
+      stderr.writeln(
+        'OVER BUDGET: world $world is ${mb(size)}, '
+        'and FR-M14-02 allows ${mb(worldBudget)}',
+      );
       failures++;
     }
   }
 
-  say('\ncurriculum: ${mb(total)} of ${mb(curriculumBudget)} '
-      '(${(total / curriculumBudget * 100).toStringAsFixed(1)} %)');
+  say(
+    '\ncurriculum: ${mb(total)} of ${mb(curriculumBudget)} '
+    '(${(total / curriculumBudget * 100).toStringAsFixed(1)} %)',
+  );
   if (total > curriculumBudget) {
     stderr.writeln('OVER BUDGET: NFR-SIZE-01 allows ${mb(curriculumBudget)}');
     failures++;
@@ -87,8 +93,10 @@ void main() {
   /* The base app. Not measured, and said so. A binary needs a platform, a toolchain and
      a release build; this tool has none of the three, and a check that prints nothing
      about a number it cannot see reads as a pass. */
-  say('base app:   not measured here — needs a release build. '
-      'NFR-SIZE-01 allows ${mb(25 * 1024 * 1024)}.');
+  say(
+    'base app:   not measured here — needs a release build. '
+    'NFR-SIZE-01 allows ${mb(25 * 1024 * 1024)}.',
+  );
 
   Directory('build').createSync(recursive: true);
   File('build/size_budget.txt').writeAsStringSync(report.toString());

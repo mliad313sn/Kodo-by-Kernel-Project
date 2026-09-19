@@ -101,19 +101,58 @@ Uint8List encodePng(int width, int height, Uint8List pixels) {
   return out.toBytes();
 }
 
+/// Encodes an image whose pixels are indices into [palette] (PNG colour type 3).
+///
+/// One byte per pixel instead of three, which matters here more than it usually would:
+/// the stream is *stored* rather than deflated, so the file is exactly the size of the
+/// pixels. A child's drawing exported as truecolour came to 480 KB whatever they drew —
+/// on a 2 GB phone, a dozen saved pictures for the sake of a few thousand black ones.
+/// The same drawing as a two-entry palette is 160 KB, and a real deflate would take it to
+/// a few thousand bytes if one is ever worth writing.
+///
+/// [palette] holds at most 256 packed `0xRRGGBB` colours.
+Uint8List encodeIndexedPng(
+    int width, int height, Uint8List indices, List<int> palette) {
+  assert(indices.length == width * height, 'one index per pixel');
+  assert(palette.isNotEmpty && palette.length <= 256, '1 to 256 colours');
+
+  final raw = Uint8List(height * (width + 1));
+  for (var y = 0; y < height; y++) {
+    final rowStart = y * (width + 1);
+    raw[rowStart] = 0; // filter 0: none, so the output stays reproducible.
+    raw.setRange(rowStart + 1, rowStart + 1 + width, indices, y * width);
+  }
+
+  final out = BytesBuilder()
+    ..add([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]);
+  final header = BytesBuilder();
+  _u32(header, width);
+  _u32(header, height);
+  header.add([8, 3, 0, 0, 0]); // 8-bit, indexed colour, no interlace
+  _chunk(out, 'IHDR', header.toBytes());
+  _chunk(out, 'PLTE', [
+    for (final colour in palette) ...[
+      (colour >> 16) & 0xFF,
+      (colour >> 8) & 0xFF,
+      colour & 0xFF,
+    ],
+  ]);
+  _chunk(out, 'IDAT', _zlibStored(raw));
+  _chunk(out, 'IEND', const []);
+  return out.toBytes();
+}
+
 /// Renders a [Bitmap] as a two-colour PNG. Used for grading diagnostics and for the
 /// "here is your figure next to the target" panel of the failure message.
+///
+/// Indexed, because two colours do not need three bytes each.
 Uint8List bitmapToPng(Bitmap bitmap,
     {int ink = 0x000000, int paper = 0xFFFFFF}) {
-  final pixels = Uint8List(bitmap.width * bitmap.height * 3);
+  final indices = Uint8List(bitmap.width * bitmap.height);
   for (var y = 0; y < bitmap.height; y++) {
     for (var x = 0; x < bitmap.width; x++) {
-      final colour = bitmap.at(x, y) ? ink : paper;
-      final i = (y * bitmap.width + x) * 3;
-      pixels[i] = (colour >> 16) & 0xFF;
-      pixels[i + 1] = (colour >> 8) & 0xFF;
-      pixels[i + 2] = colour & 0xFF;
+      indices[y * bitmap.width + x] = bitmap.at(x, y) ? 1 : 0;
     }
   }
-  return encodePng(bitmap.width, bitmap.height, pixels);
+  return encodeIndexedPng(bitmap.width, bitmap.height, indices, [paper, ink]);
 }

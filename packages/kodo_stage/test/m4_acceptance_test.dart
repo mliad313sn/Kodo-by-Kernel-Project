@@ -102,7 +102,9 @@ void main() {
       expect(m.extraColours, isNotEmpty);
 
       // Same colour, same drawing: nothing else changed.
-      expect(compareRaster(red, _draw('couleurcrayon 200, 30, 40\n$square')).matches,
+      expect(
+          compareRaster(red, _draw('couleurcrayon 200, 30, 40\n$square'))
+              .matches,
           isTrue);
     });
 
@@ -138,13 +140,18 @@ void main() {
       final onSand = _draw('couleurcanevas 253, 247, 236\navance 60');
       expect(compareRaster(onSand, plain).matches, isFalse);
       expect(compareRaster(onSand, plain).backgroundMatches, isFalse);
-      expect(compareRaster(onSand, plain).attemptCoverage, greaterThanOrEqualTo(0.98),
-          reason: 'the line itself is in the right place — only the paper changed');
+      expect(compareRaster(onSand, plain).attemptCoverage,
+          greaterThanOrEqualTo(0.98),
+          reason:
+              'the line itself is in the right place — only the paper changed');
 
       final small = _draw('taillecanevas 200, 200\navance 60');
       expect(compareRaster(small, plain).sizeMatches, isFalse);
       expect(compareRaster(small, plain).matches, isFalse);
-      expect(compareRaster(_draw('couleurcanevas 253, 247, 236\navance 60'), onSand).matches,
+      expect(
+          compareRaster(
+                  _draw('couleurcanevas 253, 247, 236\navance 60'), onSand)
+              .matches,
           isTrue);
     });
 
@@ -612,10 +619,12 @@ void stageCapabilityTests() {
          moment, a program that beats a drum between each line and one that draws
          everything and then beats produce identical scores — and the grader would have
          called the misconception correct. */
-      final stage = stageWith('avance 10\ntambour 1, 1\navance 10\ntambour 1, 1');
+      final stage =
+          stageWith('avance 10\ntambour 1, 1\navance 10\ntambour 1, 1');
       expect(stage.score.map((e) => e.after).toList(), [1, 2]);
 
-      final atTheEnd = stageWith('avance 10\navance 10\ntambour 1, 1\ntambour 1, 1');
+      final atTheEnd =
+          stageWith('avance 10\navance 10\ntambour 1, 1\ntambour 1, 1');
       expect(atTheEnd.score.map((e) => e.after).toList(), [2, 2]);
       expect(atTheEnd.score.map((e) => e.toString()).toList(),
           isNot(stage.score.map((e) => e.toString()).toList()));
@@ -630,8 +639,7 @@ void stageCapabilityTests() {
 
   group('FR-M21-03 · sensing answers the item, not a device', () {
     test('a key the item said is down reads as down', () {
-      final stage = stageWith(
-          'si touchepressée "espace" {\n  avance 50\n}',
+      final stage = stageWith('si touchepressée "espace" {\n  avance 50\n}',
           setUp: (s) => s.keysDown.add('espace'));
       expect(stage.positionY, 130);
     });
@@ -675,7 +683,8 @@ void stageCapabilityTests() {
 
     test('the same program run twice gives the same answers', () {
       // The whole reason sensing is scripted: an item has to be markable twice.
-      SpriteStage once() => stageWith('si touchepressée "espace" {\n'
+      SpriteStage once() => stageWith(
+          'si touchepressée "espace" {\n'
           '  avance 40\n}\nécris positiony',
           setUp: (s) => s.keysDown.add('espace'));
       expect(once().output, once().output);
@@ -690,8 +699,7 @@ void stageCapabilityTests() {
           'quand touche "a" {\n  avance 200\n}',
           KeywordTables.fr);
       expect(parsed.errors, isEmpty);
-      Interpreter(parsed.program, stage,
-              trigger: const KeyPressed('espace'))
+      Interpreter(parsed.program, stage, trigger: const KeyPressed('espace'))
           .run();
       expect(stage.segments, hasLength(1));
     });

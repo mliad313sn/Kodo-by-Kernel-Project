@@ -398,8 +398,8 @@ class NumberField extends StatelessWidget {
               color: Colors.white,
               /* A hole is drawn with a heavier rim so a child can see there is something
                  to fill without being told. Shape, not colour. */
-              border:
-                  Border.all(color: family.colour, width: value == null ? 3 : 2),
+              border: Border.all(
+                  color: family.colour, width: value == null ? 3 : 2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Padding(
@@ -479,7 +479,18 @@ class _NumberPadState extends State<NumberPad> {
           childAspectRatio: 1.3,
           children: [
             for (final key in const [
-              '1', '2', '3', '4', '5', '6', '7', '8', '9', '−', '0', _back
+              '1',
+              '2',
+              '3',
+              '4',
+              '5',
+              '6',
+              '7',
+              '8',
+              '9',
+              '−',
+              '0',
+              _back
             ])
               FilledButton.tonal(
                 key: Key('pad-$key'),
@@ -553,8 +564,8 @@ class ChoiceField extends StatelessWidget {
             : () async {
                 final next = await showDialog<String>(
                   context: context,
-                  builder: (context) =>
-                      ChoiceList(value: value, options: options, locale: locale),
+                  builder: (context) => ChoiceList(
+                      value: value, options: options, locale: locale),
                 );
                 if (next != null) onChanged(next);
               },
@@ -564,8 +575,8 @@ class ChoiceField extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: Colors.white,
-              border:
-                  Border.all(color: family.colour, width: value == null ? 3 : 2),
+              border: Border.all(
+                  color: family.colour, width: value == null ? 3 : 2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Padding(
@@ -594,7 +605,10 @@ class ChoiceField extends StatelessWidget {
 /// The list a [ChoiceField] opens: one name per row, each a full touch target.
 class ChoiceList extends StatelessWidget {
   const ChoiceList(
-      {super.key, required this.value, required this.options, this.locale = 'fr'});
+      {super.key,
+      required this.value,
+      required this.options,
+      this.locale = 'fr'});
 
   final String? value;
   final List<String> options;
@@ -628,7 +642,8 @@ class ChoiceList extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             // The same word the number pad uses. Two ways out of two very similar
             // dialogues should not read differently.
-            child: Text(uiStrings.render('button.undo', UiLocale.byCode(locale))),
+            child:
+                Text(uiStrings.render('button.undo', UiLocale.byCode(locale))),
           ),
         ],
       );
@@ -671,9 +686,7 @@ class GrabHandle extends StatelessWidget {
         width: minimumTouchTarget,
         height: minimumTouchTarget,
         child: Material(
-          color: held
-              ? family.colour
-              : family.colour.withValues(alpha: 0.28),
+          color: held ? family.colour : family.colour.withValues(alpha: 0.28),
           borderRadius: BorderRadius.circular(8),
           child: InkWell(
             onTap: onGrab,

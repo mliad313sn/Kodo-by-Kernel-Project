@@ -53,8 +53,7 @@ String partialWordAt(String text, int cursor) {
   return text.substring(start, end);
 }
 
-bool _isWordCharacter(String c) =>
-    RegExp(r"[A-Za-zÀ-ÿ_']").hasMatch(c);
+bool _isWordCharacter(String c) => RegExp(r"[A-Za-zÀ-ÿ_']").hasMatch(c);
 
 /// What to offer for the word being typed.
 ///

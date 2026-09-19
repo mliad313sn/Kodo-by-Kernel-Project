@@ -300,6 +300,7 @@
     "NFR-SEC-01": "Pen test and interpreter fuzzing by someone who is not the author.",
     "NFR-COMP-01": "Device matrix.",
     "NFR-A11Y-01": "An external WCAG 2.2 AA audit. Deliberately external.",
-    "NFR-COST-01": "A cost model review, which is a finance decision."
+    "NFR-COST-01": "A cost model review, which is a finance decision.",
+    "NFR-OFF-01": "Offline ability. Enforced three ways on Android: no learning content behind a network call (gated in CI), no INTERNET permission in the release manifest so the OS refuses a socket, and no automatic backup. NOT enforced on the web target: Flutter's service worker unregisters itself, so a cold web visit fetches the app over the network. Recorded in docs/reports/G5_FINAL_REVIEW.md, finding 4."
   }
 }

@@ -7,6 +7,7 @@ library;
 export 'src/geometry.dart';
 export 'src/motion.dart';
 export 'src/palette.dart';
+export 'src/raster_out.dart';
 export 'src/svg_out.dart';
 export 'src/tika.dart';
 export 'src/worlds.dart';

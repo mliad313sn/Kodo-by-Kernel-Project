@@ -23,7 +23,6 @@ import 'dart:io';
 import 'package:kodo_content/kodo_content.dart';
 import 'package:kodo_grader/kodo_grader.dart';
 
-
 Map<String, String> b(String fr, String en) => {'fr': fr, 'en': en};
 
 const conceptGraph = <String, List<String>>{
@@ -85,11 +84,12 @@ List<Item> conceptC51() {
       difficulty: sides <= 4 ? Difficulty.d1 : Difficulty.d2,
       solution: script('drapeau', figure),
       promptKeys: fillBoth(
-        b('Fais en sorte que la figure à {k} côtés se dessine toute seule '
-            'quand on appuie sur le drapeau vert.',
+        b(
+            'Fais en sorte que la figure à {k} côtés se dessine toute seule '
+                'quand on appuie sur le drapeau vert.',
             'Make the {k}-sided shape draw itself when the green flag is '
-            'pressed.'),
-        {'k': sides, 's': side},
+                'pressed.'),
+        {'k': sides},
       ),
       wrong: [
         // The misconception: the figure is there, but nothing says when.
@@ -119,12 +119,18 @@ List<Item> conceptC51() {
 
   // T3 — predict which script runs.
   for (final entry in [
-    ('quand drapeau {\n  avance 50\n}', 'la figure se dessine',
-        'the shape gets drawn'),
+    (
+      'quand drapeau {\n  avance 50\n}',
+      'la figure se dessine',
+      'the shape gets drawn'
+    ),
     ('avance 50', 'la figure se dessine', 'the shape gets drawn'),
     ('quand clic {\n  avance 50\n}', 'rien ne se passe', 'nothing happens'),
-    ('quand touche "a" {\n  avance 50\n}', 'rien ne se passe',
-        'nothing happens'),
+    (
+      'quand touche "a" {\n  avance 50\n}',
+      'rien ne se passe',
+      'nothing happens'
+    ),
   ]) {
     final source = entry.$1, rightFr = entry.$2, rightEn = entry.$3;
     items.add(predict(
@@ -160,7 +166,8 @@ List<Item> conceptC51() {
         'Un script ne part que sur SON déclencheur.',
         'A script only starts on ITS OWN trigger.',
       ),
-      wrongChoiceFr: 'Un script part tout seul, et seulement sur son déclencheur.',
+      wrongChoiceFr:
+          'Un script part tout seul, et seulement sur son déclencheur.',
       wrongChoiceEn: 'A script starts on its own, and only on its own trigger.',
     ));
   }
@@ -174,10 +181,11 @@ List<Item> conceptC51() {
       withHoles: 'quand ___ {\n  avance $side\n}',
       solution: 'quand drapeau {\n  avance $side\n}',
       promptKeys: fillBoth(
-        b('Complète : le trait de {s} pas doit se dessiner quand on appuie '
-            'sur le drapeau vert.',
+        b(
+            'Complète : le trait de {s} pas doit se dessiner quand on appuie '
+                'sur le drapeau vert.',
             'Fill in the blank: the {s}-step line must be drawn when the green '
-            'flag is pressed.'),
+                'flag is pressed.'),
         {'s': side},
       ),
       wrong: [
@@ -270,7 +278,8 @@ List<Item> conceptC51() {
       'Les blocs se lisent tout seuls, du haut vers le bas.',
       'The blocks read themselves, from the top down.',
     ),
-    wrongChoiceFr: 'Le déclencheur fait partir le script tout entier, tout seul.',
+    wrongChoiceFr:
+        'Le déclencheur fait partir le script tout entier, tout seul.',
     wrongChoiceEn: 'The trigger starts the whole script, by itself.',
   ));
   items.add(choiceItem(
@@ -307,7 +316,8 @@ List<Item> conceptC51() {
       'Le déclencheur peut se produire autant de fois qu\'on veut.',
       'The trigger can happen as many times as you like.',
     ),
-    wrongChoiceFr: 'Un déclencheur se produit autant de fois qu\'on le déclenche.',
+    wrongChoiceFr:
+        'Un déclencheur se produit autant de fois qu\'on le déclenche.',
     wrongChoiceEn: 'A trigger happens as many times as you set it off.',
   ));
 
@@ -328,7 +338,8 @@ List<Item> conceptC51() {
       rubric: [
         rubricLine('Il y a un bloc « quand drapeau ».',
             'There is a "when flag" block.', const UsesOpcode('WHEN_FLAG')),
-        rubricLine('Le dessin est à l\'intérieur du bloc.',
+        rubricLine(
+            'Le dessin est à l\'intérieur du bloc.',
             'The drawing is inside the block.',
             const UsesOpcode('MOVE_FORWARD', min: 2)),
         rubricLine('Tika tourne au moins une fois.',
@@ -484,8 +495,10 @@ List<Item> conceptC52() {
         'Un script n\'écoute que sa propre touche.',
         'A script only listens for its own key.',
       ),
-      wrongChoiceFr: 'Chaque script écoute une seule touche, et autant de fois qu\'on l\'appuie.',
-      wrongChoiceEn: 'Each script listens for one key, as many times as it is pressed.',
+      wrongChoiceFr:
+          'Chaque script écoute une seule touche, et autant de fois qu\'on l\'appuie.',
+      wrongChoiceEn:
+          'Each script listens for one key, as many times as it is pressed.',
     ));
   }
 
@@ -541,7 +554,8 @@ List<Item> conceptC52() {
             'There is a "when key" block.', const UsesOpcode('WHEN_KEY')),
         rubricLine('Tika avance à l\'intérieur.', 'Tika moves inside it.',
             const UsesOpcode('MOVE_FORWARD')),
-        rubricLine('Tout tient en dix blocs ou moins.',
+        rubricLine(
+            'Tout tient en dix blocs ou moins.',
             'It all fits in ten blocks or fewer.',
             const BlockCountWithin(max: 10)),
       ],
@@ -563,7 +577,8 @@ List<Item> conceptC52() {
     conceptId: 'C5.2',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d3,
-    promptKeys: b('Combien de fois une touche peut-elle déclencher son script ?',
+    promptKeys: b(
+        'Combien de fois une touche peut-elle déclencher son script ?',
         'How many times can a key set off its script?'),
     choices: [
       Choice(
@@ -590,7 +605,8 @@ List<Item> conceptC52() {
       'Le script repart à chaque appui.',
       'The script starts again on every press.',
     ),
-    wrongChoiceFr: 'Une touche déclenche son script à chaque fois qu\'on l\'appuie.',
+    wrongChoiceFr:
+        'Une touche déclenche son script à chaque fois qu\'on l\'appuie.',
     wrongChoiceEn: 'A key sets off its script every time it is pressed.',
   ));
   items.add(choiceItem(
@@ -612,8 +628,7 @@ List<Item> conceptC52() {
           correct: false,
           misconception: 'C5.2-one-script-many-keys'),
       Choice(
-          labelKeys: b('Un seul, et Tika choisit.',
-              'One, and Tika decides.'),
+          labelKeys: b('Un seul, et Tika choisit.', 'One, and Tika decides.'),
           correct: false,
           misconception: 'C5.2-turtle-chooses'),
       Choice(
@@ -648,16 +663,28 @@ List<Item> conceptC53() {
   for (final entry in [
     ('tournedroite 90', 'tourne d\'un quart de tour', 'turns a quarter turn'),
     ('avance 40\nrecule 40', 'fait un aller-retour', 'goes there and back'),
-    ('couleurcrayon 255, 0, 0\navance 50', 'trace un trait rouge',
-        'draws a red line'),
-    ('répète 3 {\n  avance 30\n  tournedroite 120\n}', 'trace un triangle',
-        'draws a triangle'),
-    ('répète 4 {\n  avance 35\n  tournedroite 90\n}', 'trace un carré',
-        'draws a square'),
+    (
+      'couleurcrayon 255, 0, 0\navance 50',
+      'trace un trait rouge',
+      'draws a red line'
+    ),
+    (
+      'répète 3 {\n  avance 30\n  tournedroite 120\n}',
+      'trace un triangle',
+      'draws a triangle'
+    ),
+    (
+      'répète 4 {\n  avance 35\n  tournedroite 90\n}',
+      'trace un carré',
+      'draws a square'
+    ),
     ('direction 180\navance 50', 'descend', 'goes down'),
-    ('couleurcrayon 0, 0, 255\nrépète 6 {\n  avance 20\n'
-        '  tournedroite 60\n}', 'trace un hexagone bleu',
-        'draws a blue hexagon'),
+    (
+      'couleurcrayon 0, 0, 255\nrépète 6 {\n  avance 20\n'
+          '  tournedroite 60\n}',
+      'trace un hexagone bleu',
+      'draws a blue hexagon'
+    ),
   ]) {
     final body = entry.$1, fr = entry.$2, en = entry.$3;
     items.add(buildToTarget(
@@ -705,7 +732,8 @@ List<Item> conceptC53() {
       id: id(),
       conceptId: 'C5.3',
       difficulty: Difficulty.d1,
-      withHoles: 'quand ___ {\n${body.split('\n').map((l) => '  $l').join('\n')}\n}',
+      withHoles:
+          'quand ___ {\n${body.split('\n').map((l) => '  $l').join('\n')}\n}',
       solution: script('clic', body),
       alternatives: [
         '# une autre façon\n${script('clic', body)}',
@@ -733,14 +761,30 @@ List<Item> conceptC53() {
 
   // T3 — predict which trigger fires.
   for (final entry in [
-    ('quand clic {\n  avance 50\n}', 'on clique sur Tika', 'Tika is clicked',
-        true),
-    ('quand clic {\n  avance 50\n}', 'on appuie sur le drapeau',
-        'the flag is pressed', false),
-    ('quand drapeau {\n  avance 50\n}', 'on clique sur Tika',
-        'Tika is clicked', false),
-    ('quand clic {\n  avance 50\n}', 'on appuie sur espace',
-        'space is pressed', false),
+    (
+      'quand clic {\n  avance 50\n}',
+      'on clique sur Tika',
+      'Tika is clicked',
+      true
+    ),
+    (
+      'quand clic {\n  avance 50\n}',
+      'on appuie sur le drapeau',
+      'the flag is pressed',
+      false
+    ),
+    (
+      'quand drapeau {\n  avance 50\n}',
+      'on clique sur Tika',
+      'Tika is clicked',
+      false
+    ),
+    (
+      'quand clic {\n  avance 50\n}',
+      'on appuie sur espace',
+      'space is pressed',
+      false
+    ),
   ]) {
     final source = entry.$1, whatFr = entry.$2, whatEn = entry.$3;
     final fires = entry.$4;
@@ -749,8 +793,7 @@ List<Item> conceptC53() {
       conceptId: 'C5.3',
       difficulty: Difficulty.d2,
       promptKeys: fillBoth(
-        b('Que se passe-t-il si {w} ?\n\n{p}',
-            'What happens if {e}?\n\n{p}'),
+        b('Que se passe-t-il si {w} ?\n\n{p}', 'What happens if {e}?\n\n{p}'),
         {'w': whatFr, 'e': whatEn, 'p': source},
       ),
       choices: [
@@ -780,8 +823,10 @@ List<Item> conceptC53() {
         'Un script n\'écoute que son propre déclencheur.',
         'A script only listens for its own trigger.',
       ),
-      wrongChoiceFr: 'Chaque script attend un déclencheur précis, et rien d\'autre.',
-      wrongChoiceEn: 'Each script waits for one particular trigger, and nothing else.',
+      wrongChoiceFr:
+          'Chaque script attend un déclencheur précis, et rien d\'autre.',
+      wrongChoiceEn:
+          'Each script waits for one particular trigger, and nothing else.',
     ));
   }
 
@@ -799,8 +844,7 @@ List<Item> conceptC53() {
               'Nothing: you have to click Tika herself.'),
           correct: true),
       Choice(
-          labelKeys: b('Le script part quand même.',
-              'The script runs anyway.'),
+          labelKeys: b('Le script part quand même.', 'The script runs anyway.'),
           correct: false,
           misconception: 'C5.3-any-click'),
       Choice(
@@ -819,7 +863,8 @@ List<Item> conceptC53() {
       'C\'est un clic SUR Tika.',
       'It is a click ON Tika.',
     ),
-    wrongChoiceFr: 'Le déclencheur est un clic sur Tika, pas un clic n\'importe où.',
+    wrongChoiceFr:
+        'Le déclencheur est un clic sur Tika, pas un clic n\'importe où.',
     wrongChoiceEn: 'The trigger is a click on Tika, not a click anywhere.',
   ));
   items.add(choiceItem(
@@ -845,7 +890,8 @@ List<Item> conceptC53() {
           correct: false,
           misconception: 'C5.3-first-wins'),
       Choice(
-          labelKeys: b('Seulement si on clique avant d\'appuyer sur le drapeau.',
+          labelKeys: b(
+              'Seulement si on clique avant d\'appuyer sur le drapeau.',
               'Only if you click before pressing the flag.'),
           correct: false,
           misconception: 'C5.3-order-matters'),
@@ -856,7 +902,8 @@ List<Item> conceptC53() {
       'Ils n\'attendent pas la même chose.',
       'They are not waiting for the same thing.',
     ),
-    wrongChoiceFr: 'Un programme peut avoir autant de scripts que de déclencheurs.',
+    wrongChoiceFr:
+        'Un programme peut avoir autant de scripts que de déclencheurs.',
     wrongChoiceEn: 'A program can have as many scripts as it has triggers.',
   ));
 
@@ -873,13 +920,11 @@ List<Item> conceptC53() {
     ),
     rubric: [
       rubricLine('Il y a un bloc « quand clic ».',
-          'There is a "when clicked" block.',
-          const UsesOpcode('WHEN_CLICKED')),
+          'There is a "when clicked" block.', const UsesOpcode('WHEN_CLICKED')),
       rubricLine('Quelque chose se dessine à l\'intérieur.',
-          'Something gets drawn inside it.',
-          const UsesOpcode('MOVE_FORWARD')),
-      rubricLine('Tika tourne au moins une fois.',
-          'Tika turns at least once.', const UsesOpcode('TURN_RIGHT')),
+          'Something gets drawn inside it.', const UsesOpcode('MOVE_FORWARD')),
+      rubricLine('Tika tourne au moins une fois.', 'Tika turns at least once.',
+          const UsesOpcode('TURN_RIGHT')),
     ],
     itemHints: hints(
       'Commence par « quand clic ».',
@@ -975,8 +1020,10 @@ List<Item> conceptC54() {
         'Ils avancent chacun leur tour, une ligne à la fois.',
         'They take turns, one line each.',
       ),
-      wrongChoiceFr: 'Les scripts avancent chacun leur tour, pas l\'un après l\'autre.',
-      wrongChoiceEn: 'The scripts take turns; they do not run one after the other.',
+      wrongChoiceFr:
+          'Les scripts avancent chacun leur tour, pas l\'un après l\'autre.',
+      wrongChoiceEn:
+          'The scripts take turns; they do not run one after the other.',
     ));
   }
 
@@ -986,8 +1033,10 @@ List<Item> conceptC54() {
     ('couleurcrayon 255, 0, 0\navance 50', 'direction 90\navance 50'),
     ('répète 3 {\n  avance 20\n}', 'direction 180\navance 40'),
     ('avance 40', 'direction 270\navance 40'),
-    ('répète 4 {\n  avance 15\n  tournedroite 90\n}',
-        'direction 45\navance 50'),
+    (
+      'répète 4 {\n  avance 15\n  tournedroite 90\n}',
+      'direction 45\navance 50'
+    ),
     ('couleurcrayon 0, 0, 255\navance 30', 'direction 135\navance 30'),
   ]) {
     final first = entry.$1, second = entry.$2;
@@ -1066,15 +1115,15 @@ List<Item> conceptC54() {
       choices: [
         Choice(labelKeys: b('$marks', '$marks'), correct: true),
         Choice(
-            labelKeys: b('${marks + firstOnly + 1}', '${marks + firstOnly + 1}'),
+            labelKeys:
+                b('${marks + firstOnly + 1}', '${marks + firstOnly + 1}'),
             correct: false,
             misconception: 'C5.4-counts-every-script'),
         Choice(
             labelKeys: b('$firstOnly', '$firstOnly'),
             correct: false,
-            misconception: marks == 1
-                ? 'C5.4-counts-every-script'
-                : 'C5.4-one-at-a-time'),
+            misconception:
+                marks == 1 ? 'C5.4-counts-every-script' : 'C5.4-one-at-a-time'),
         Choice(
             labelKeys: b('0', '0'),
             correct: false,
@@ -1086,8 +1135,10 @@ List<Item> conceptC54() {
         'Vérifie que le deuxième part bien sur le drapeau.',
         'Check that the second one really starts on the flag.',
       ),
-      wrongChoiceFr: 'Compte les traits des scripts qui partent sur CE déclencheur.',
-      wrongChoiceEn: 'Count the lines from the scripts that start on THIS trigger.',
+      wrongChoiceFr:
+          'Compte les traits des scripts qui partent sur CE déclencheur.',
+      wrongChoiceEn:
+          'Count the lines from the scripts that start on THIS trigger.',
     ));
   }
 
@@ -1125,8 +1176,10 @@ List<Item> conceptC54() {
       'Celui qui a le moins de lignes arrive au bout avant.',
       'The one with fewer lines reaches the end sooner.',
     ),
-    wrongChoiceFr: 'Chacun avance d\'une ligne à son tour : le plus court finit avant.',
-    wrongChoiceEn: 'Each advances one line per turn: the shorter one ends sooner.',
+    wrongChoiceFr:
+        'Chacun avance d\'une ligne à son tour : le plus court finit avant.',
+    wrongChoiceEn:
+        'Each advances one line per turn: the shorter one ends sooner.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1163,7 +1216,8 @@ List<Item> conceptC54() {
       'Les deux scripts écrivent dedans à tour de rôle.',
       'Both scripts write into it, each in its turn.',
     ),
-    wrongChoiceFr: 'Une boîte est partagée : les deux scripts écrivent dans la même.',
+    wrongChoiceFr:
+        'Une boîte est partagée : les deux scripts écrivent dans la même.',
     wrongChoiceEn: 'A box is shared: both scripts write into the same one.',
   ));
 
@@ -1183,8 +1237,8 @@ List<Item> conceptC54() {
               'Because the two things happen at the same time.'),
           correct: true),
       Choice(
-          labelKeys: b('Parce que c\'est plus joli à lire.',
-              'Because it looks tidier.'),
+          labelKeys: b(
+              'Parce que c\'est plus joli à lire.', 'Because it looks tidier.'),
           correct: false,
           misconception: 'C5.4-cosmetic'),
       Choice(
@@ -1193,8 +1247,7 @@ List<Item> conceptC54() {
           correct: false,
           misconception: 'C5.4-length-limit'),
       Choice(
-          labelKeys: b('Parce que ça va plus vite.',
-              'Because it is faster.'),
+          labelKeys: b('Parce que ça va plus vite.', 'Because it is faster.'),
           correct: false,
           misconception: 'C5.4-speed'),
     ],
@@ -1204,7 +1257,8 @@ List<Item> conceptC54() {
       'Un seul script les ferait l\'une après l\'autre.',
       'One script would do them one after the other.',
     ),
-    wrongChoiceFr: 'Deux scripts avancent ensemble ; un seul les met à la queue leu leu.',
+    wrongChoiceFr:
+        'Deux scripts avancent ensemble ; un seul les met à la queue leu leu.',
     wrongChoiceEn: 'Two scripts advance together; one would queue them up.',
   ));
   items.add(choiceItem(
@@ -1244,7 +1298,8 @@ List<Item> conceptC54() {
       'Les deux avancent chacun leur tour.',
       'Both advance, each in its turn.',
     ),
-    wrongChoiceFr: 'Les deux scripts avancent en même temps, une ligne chacun à tour de rôle.',
+    wrongChoiceFr:
+        'Les deux scripts avancent en même temps, une ligne chacun à tour de rôle.',
     wrongChoiceEn: 'Both scripts advance together, one line each in turn.',
   ));
 
@@ -1252,7 +1307,10 @@ List<Item> conceptC54() {
   for (final entry in [
     ('deux choses qui bougent ensemble', 'two things moving together'),
     ('un dessin et un compteur', 'a drawing and a counter'),
-    ('deux dessins de couleurs différentes', 'two drawings in different colours'),
+    (
+      'deux dessins de couleurs différentes',
+      'two drawings in different colours'
+    ),
   ]) {
     final fr = entry.$1, en = entry.$2;
     items.add(openBuild(
@@ -1266,13 +1324,16 @@ List<Item> conceptC54() {
             'before you start:',
       ),
       rubric: [
-        rubricLine('Il y a deux blocs « quand drapeau ».',
+        rubricLine(
+            'Il y a deux blocs « quand drapeau ».',
             'There are two "when flag" blocks.',
             const UsesOpcode('WHEN_FLAG', min: 2)),
-        rubricLine('Chacun fait quelque chose de différent.',
+        rubricLine(
+            'Chacun fait quelque chose de différent.',
             'Each one does something different.',
             const UsesOpcode('MOVE_FORWARD', min: 2)),
-        rubricLine('Tout tient en quinze blocs ou moins.',
+        rubricLine(
+            'Tout tient en quinze blocs ou moins.',
             'It all fits in fifteen blocks or fewer.',
             const BlockCountWithin(max: 15)),
       ],
@@ -1313,7 +1374,8 @@ TutorialStep watchStep(String conceptId, String fr, String en, String demo,
       id: '$conceptId-s1',
       beat: Beat.jeRegarde,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s1.opus', 'audio/en/$conceptId-s1.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s1.opus', 'audio/en/$conceptId-s1.opus'),
       expectedAction: ExpectedAction.watch,
       spotlight: spotlight,
       demoProgramSource: demo,
@@ -1329,7 +1391,8 @@ TutorialStep togetherStep(String conceptId, String fr, String en,
       id: '$conceptId-s2',
       beat: Beat.onFaitEnsemble,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s2.opus', 'audio/en/$conceptId-s2.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s2.opus', 'audio/en/$conceptId-s2.opus'),
       expectedAction: action,
       spotlight: SpotlightTarget.scriptArea,
       successCondition: SuccessCondition(opcodeId: opcodeId),
@@ -1344,7 +1407,8 @@ TutorialStep doStep(String conceptId, String fr, String en,
       id: '$conceptId-s3',
       beat: Beat.jeFais,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s3.opus', 'audio/en/$conceptId-s3.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s3.opus', 'audio/en/$conceptId-s3.opus'),
       expectedAction: ExpectedAction.buildProgram,
       spotlight: SpotlightTarget.scriptArea,
       successCondition: SuccessCondition(opcodeId: opcodeId),

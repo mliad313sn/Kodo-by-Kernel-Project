@@ -271,9 +271,26 @@ class ContentLibrary {
   ContentPack? world(int n) => _installed[n];
 
   /// Installs, or refuses and says why.
-  PackRefused? install(ContentPack pack, PackManifest manifest) {
-    final refusal = _verifier.verify(pack, manifest);
-    if (refusal != null) return refusal;
+  /// Installs [pack], or says why not.
+  ///
+  /// [verify] exists for one measured reason. Hashing thirteen worlds is about 4.7 MB of
+  /// SHA-256 — half a second on a developer's machine, two to three on the 2 GB reference
+  /// device — and a host that re-hashes its own signed bundle on every cold start spends
+  /// that in front of a child, to answer a question the operating system already
+  /// answered. A host may therefore skip it for content it shipped itself. It may not
+  /// skip it for anything that arrived from outside, and the default is to verify, so
+  /// skipping is always a decision somebody wrote down.
+  PackRefused? install(ContentPack pack, PackManifest manifest,
+      {bool verify = true}) {
+    if (verify) {
+      final refusal = _verifier.verify(pack, manifest);
+      if (refusal != null) return refusal;
+    } else if (manifest.world != pack.world) {
+      /* Even unverified, a manifest that describes a different world is a packaging
+         mistake rather than a corrupt download, and it is free to catch. */
+      return const PackRefused(
+          PackRejection.corrupted, 'manifest describes a different pack');
+    }
 
     final existing = _installed[pack.world];
     if (existing != null && existing.version > pack.version) {

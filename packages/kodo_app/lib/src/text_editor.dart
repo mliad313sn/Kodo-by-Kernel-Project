@@ -39,8 +39,7 @@ List<TextSpan> highlightLine(
     for (final span in highlightSpans(line, keywords))
       TextSpan(
         text: span.text,
-        style:
-            theme.styleFor(span.category).toTextStyle(fontSize, fontFamily),
+        style: theme.styleFor(span.category).toTextStyle(fontSize, fontFamily),
       ),
   ];
 }

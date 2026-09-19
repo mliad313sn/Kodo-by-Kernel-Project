@@ -48,7 +48,8 @@ void main() {
       expect(lines['b'], 3);
     });
 
-    test('the cursor lands on the statement about to happen, not the last one', () {
+    test('the cursor lands on the statement about to happen, not the last one',
+        () {
       final program = parsed('avance 10\ntournedroite 90\navance 20');
       final cursor = RunCursor(
           program: program,
@@ -57,7 +58,8 @@ void main() {
           speed: RunSpeed.step);
       final ids = program.body.cast<Node>().map((n) => n.id).toList();
 
-      expect(cursor.nodeId, isNull, reason: 'nothing runs before the first step');
+      expect(cursor.nodeId, isNull,
+          reason: 'nothing runs before the first step');
       cursor.step();
       expect(cursor.nodeId, ids[0]);
       expect(cursor.line, 1);
@@ -227,7 +229,8 @@ void main() {
           speed: RunSpeed.step);
 
       final preview = cursor.ghost();
-      expect(preview.length, 1, reason: 'the first `avance` has not happened yet');
+      expect(preview.length, 1,
+          reason: 'the first `avance` has not happened yet');
       cursor.step();
       // And what it drew is exactly what was promised — the same interpreter, so the
       // ghost cannot disagree with what actually happens.
@@ -277,7 +280,8 @@ void main() {
       cursor.dispose();
     });
 
-    test('a small device is shown nothing rather than something cheaper (FR-M4-09)',
+    test(
+        'a small device is shown nothing rather than something cheaper (FR-M4-09)',
         () {
       final program = parsed('avance 50');
       final cursor = RunCursor(

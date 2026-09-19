@@ -30,7 +30,8 @@ enum BodySlot { body, orElse }
 
 /// A place a stack can land: a mouth, and a position in it.
 class DropSite {
-  const DropSite({this.ownerId, this.slot = BodySlot.body, required this.index});
+  const DropSite(
+      {this.ownerId, this.slot = BodySlot.body, required this.index});
 
   /// The C-block whose mouth this is, or null for the program's own body.
   final String? ownerId;
@@ -75,12 +76,30 @@ AsStmt rebuildBodies(
         :final body
       ):
       return For(id, span, variable, from, to, step, map(body, BodySlot.body));
-    case If(:final id, :final span, :final condition, :final then, :final orElse):
+    case If(
+        :final id,
+        :final span,
+        :final condition,
+        :final then,
+        :final orElse
+      ):
       return If(id, span, condition, map(then, BodySlot.body),
           orElse == null ? null : map(orElse, BodySlot.orElse));
-    case ProcDef(:final id, :final span, :final name, :final params, :final body):
+    case ProcDef(
+        :final id,
+        :final span,
+        :final name,
+        :final params,
+        :final body
+      ):
       return ProcDef(id, span, name, params, map(body, BodySlot.body));
-    case WhenEvent(:final id, :final span, :final trigger, :final args, :final body):
+    case WhenEvent(
+        :final id,
+        :final span,
+        :final trigger,
+        :final args,
+        :final body
+      ):
       return WhenEvent(id, span, trigger, args, map(body, BodySlot.body));
     default:
       // A leaf: a command, an assignment, a comment. Nothing to rebuild.
@@ -195,10 +214,10 @@ Program dropStack(Program program, List<AsStmt> stack, DropSite site) {
         for (final stmt in body)
           rebuildBodies(
             stmt,
-            (mouth, slot) => (stmt as Node).id == site.ownerId &&
-                    slot == site.slot
-                ? insert(mouth)
-                : place(mouth),
+            (mouth, slot) =>
+                (stmt as Node).id == site.ownerId && slot == site.slot
+                    ? insert(mouth)
+                    : place(mouth),
           ),
       ];
 

@@ -53,7 +53,8 @@ TutorialStep watchStep(
       id: '$conceptId-s1',
       beat: Beat.jeRegarde,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s1.opus', 'audio/en/$conceptId-s1.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s1.opus', 'audio/en/$conceptId-s1.opus'),
       expectedAction: ExpectedAction.watch,
       spotlight: spotlight,
       demoProgramSource: demo,
@@ -76,7 +77,8 @@ TutorialStep togetherStep(
       id: '$conceptId-s2',
       beat: Beat.onFaitEnsemble,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s2.opus', 'audio/en/$conceptId-s2.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s2.opus', 'audio/en/$conceptId-s2.opus'),
       expectedAction: action,
       spotlight: spotlight,
       successCondition:
@@ -101,7 +103,8 @@ TutorialStep doStep(
       id: '$conceptId-s3',
       beat: Beat.jeFais,
       narrationKeys: b(fr, en),
-      audioKeys: b('audio/fr/$conceptId-s3.opus', 'audio/en/$conceptId-s3.opus'),
+      audioKeys:
+          b('audio/fr/$conceptId-s3.opus', 'audio/en/$conceptId-s3.opus'),
       expectedAction: ExpectedAction.buildProgram,
       spotlight: SpotlightTarget.scriptArea,
       successCondition:

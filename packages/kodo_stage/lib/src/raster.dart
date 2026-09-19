@@ -82,13 +82,14 @@ class Bitmap {
   /// A stable fingerprint. Used for storage and for spotting an exact match cheaply;
   /// never for deciding a verdict, because equality is not what the tolerance means.
   String hash() {
-    // FNV-1a over the packed rows. Small, stable, and identical on every platform.
-    var h = 0x811c9dc5;
-    for (final b in bits) {
-      h ^= b;
-      h = (h * 0x01000193) & 0xFFFFFFFF;
-    }
-    return '${width}x$height:${h.toRadixString(16).padLeft(8, '0')}';
+    /* FNV-1a over the packed rows, through `fnv1a32` rather than written out here.
+       The textbook three lines used to live in this method under a comment claiming they
+       were "identical on every platform", and they were not: `0xFFFFFFFF * 16777619` is
+       about 2^56, which a JavaScript number cannot hold exactly, so a browser lost the
+       low bits before the mask could take them and every drawing in the curriculum
+       hashed differently there. */
+    return '${width}x$height:'
+        '${fnv1a32(bits).toRadixString(16).padLeft(8, '0')}';
   }
 }
 
@@ -148,7 +149,9 @@ class RasterMatch {
   bool get widthMatches => extraWidths.isEmpty && missingWidths.isEmpty;
 
   /// Every pen landed where the target put it.
-  bool get penMatches => colourMatches && widthMatches &&
+  bool get penMatches =>
+      colourMatches &&
+      widthMatches &&
       planeCoverage.values.every((c) => c >= 0.98);
 
   /// Everything about the drawing that is not its geometry: the pens, the paper colour and
@@ -279,15 +282,22 @@ RasterMatch compareRaster(
   final targetColours = target.segments.map((s) => s.color).toSet();
   final attemptWidths = attempt.segments.map((s) => s.width).toSet();
   final targetWidths = target.segments.map((s) => s.width).toSet();
-  final targetPens =
-      target.segments.map((s) => (s.color, s.width)).toSet();
+  final targetPens = target.segments.map((s) => (s.color, s.width)).toSet();
 
   final coverage = <(int, double), double>{};
   for (final pen in targetPens) {
     final ap = rasterise(attempt,
-        scale: scale, width: w, height: h, onlyColour: pen.$1, onlyPenWidth: pen.$2);
+        scale: scale,
+        width: w,
+        height: h,
+        onlyColour: pen.$1,
+        onlyPenWidth: pen.$2);
     final bp = rasterise(target,
-        scale: scale, width: w, height: h, onlyColour: pen.$1, onlyPenWidth: pen.$2);
+        scale: scale,
+        width: w,
+        height: h,
+        onlyColour: pen.$1,
+        onlyPenWidth: pen.$2);
     if (bp.inkCount == 0) continue;
     coverage[pen] = bp.coverageBy(ap.dilate(radius));
   }
@@ -295,17 +305,22 @@ RasterMatch compareRaster(
   final missing = targetColours.difference(attemptColours);
   final extraW = attemptWidths.difference(targetWidths);
   final missingW = targetWidths.difference(attemptWidths);
-  final penOk = extra.isEmpty && missing.isEmpty &&
-      extraW.isEmpty && missingW.isEmpty &&
+  final penOk = extra.isEmpty &&
+      missing.isEmpty &&
+      extraW.isEmpty &&
+      missingW.isEmpty &&
       coverage.values.every((c) => c >= requiredCoverage);
 
   final backgroundOk = attempt.canvasBackground == target.canvasBackground;
-  final sizeOk = attempt.width == target.width && attempt.height == target.height;
+  final sizeOk =
+      attempt.width == target.width && attempt.height == target.height;
 
   return RasterMatch(
     matches: attemptCoverage >= requiredCoverage &&
         targetCoverage >= requiredCoverage &&
-        penOk && backgroundOk && sizeOk,
+        penOk &&
+        backgroundOk &&
+        sizeOk,
     attemptCoverage: attemptCoverage,
     targetCoverage: targetCoverage,
     attemptInk: a.inkCount,

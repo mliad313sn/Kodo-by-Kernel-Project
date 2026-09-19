@@ -314,8 +314,7 @@ List<Item> conceptC71() {
           correct: false,
           misconception: 'C7.1-test-is-just-words'),
       Choice(
-          labelKeys: b('Aucune : ce sont des mots.',
-              'None: they are words.'),
+          labelKeys: b('Aucune : ce sont des mots.', 'None: they are words.'),
           correct: false,
           misconception: 'C7.1-test-is-just-words'),
     ],
@@ -359,7 +358,8 @@ List<Item> conceptC71() {
       'Un oui se range pareil.',
       'A yes is stored the same way.',
     ),
-    wrongChoiceFr: 'Une boîte garde une valeur : un nombre, un vrai ou un faux.',
+    wrongChoiceFr:
+        'Une boîte garde une valeur : un nombre, un vrai ou un faux.',
     wrongChoiceEn: 'A box keeps a value: a number, a true or a false.',
   ));
   items.add(choiceItem(
@@ -414,8 +414,7 @@ List<Item> conceptC71() {
       'Quatre n\'est pas plus grand que neuf.',
       'Four is not bigger than nine.',
     ),
-    wrongChoiceFr:
-        'Le test est calculé, et c\'est sa réponse qui est rangée.',
+    wrongChoiceFr: 'Le test est calculé, et c\'est sa réponse qui est rangée.',
     wrongChoiceEn:
         'The test is worked out, and it is its answer that is stored.',
   ));
@@ -428,8 +427,8 @@ List<Item> conceptC71() {
         r'What does if $ok { … } do when $ok keeps a false?'),
     choices: [
       Choice(
-          labelKeys: b('Elle saute ce qu\'il y a dedans.',
-              'It skips what is inside.'),
+          labelKeys:
+              b('Elle saute ce qu\'il y a dedans.', 'It skips what is inside.'),
           correct: true),
       Choice(
           labelKeys: b('Elle fait quand même ce qu\'il y a dedans.',
@@ -437,8 +436,7 @@ List<Item> conceptC71() {
           correct: false,
           misconception: 'C7.3-if-always-runs'),
       Choice(
-          labelKeys: b('Elle arrête le programme.',
-              'It stops the program.'),
+          labelKeys: b('Elle arrête le programme.', 'It stops the program.'),
           correct: false,
           misconception: 'C7.3-false-stops-everything'),
       Choice(
@@ -479,8 +477,8 @@ List<Item> conceptC71() {
           correct: false,
           misconception: 'C7.1-test-is-just-words'),
       Choice(
-          labelKeys: b('Ce sont des nombres déguisés.',
-              'They are numbers in disguise.'),
+          labelKeys: b(
+              'Ce sont des nombres déguisés.', 'They are numbers in disguise.'),
           correct: false,
           misconception: 'C7.1-yes-is-a-number'),
       Choice(
@@ -519,8 +517,8 @@ List<Item> conceptC71() {
           correct: false,
           misconception: 'C7.1-if-needs-a-box'),
       Choice(
-          labelKeys: b('Pour que le test soit plus vrai.',
-              'To make the test truer.'),
+          labelKeys:
+              b('Pour que le test soit plus vrai.', 'To make the test truer.'),
           correct: false,
           misconception: 'C7.1-box-changes-the-answer'),
       Choice(
@@ -577,8 +575,7 @@ List<Item> conceptC71() {
     ),
     wrongChoiceFr:
         'Le = range toujours une réponse, jamais le calcul qui l\'a donnée.',
-    wrongChoiceEn:
-        'The = always stores an answer, never the sum that gave it.',
+    wrongChoiceEn: 'The = always stores an answer, never the sum that gave it.',
   ));
 
   return items;
@@ -619,8 +616,11 @@ List<Item> conceptC72() {
     (r'écris 5 != 5', false, 'C7.2-not-equal-means-equal'),
     (r'écris 4 < 4', false, 'C7.2-strict-and-loose-are-the-same'),
     (r'$x = 3' '\n' r'écris $x == 3', true, 'C7.2-double-equals-assigns'),
-    (r'$a = 7' '\n' r'$b = 2' '\n' r'écris $a <= $b', false,
-        'C7.2-comparison-reads-backwards'),
+    (
+      r'$a = 7' '\n' r'$b = 2' '\n' r'écris $a <= $b',
+      false,
+      'C7.2-comparison-reads-backwards'
+    ),
     (r'$a = 6' '\n' r'écris $a != 6', false, 'C7.2-not-equal-means-equal'),
   ]) {
     final source = entry.$1, answer = entry.$2, slip = entry.$3;
@@ -650,8 +650,7 @@ List<Item> conceptC72() {
         'La réponse est un oui ou un non.',
         'The answer is a yes or a no.',
       ),
-      wrongChoiceFr:
-          'Un test compare deux nombres et rend vrai ou faux.',
+      wrongChoiceFr: 'Un test compare deux nombres et rend vrai ou faux.',
       wrongChoiceEn:
           'A test compares two numbers and gives back true or false.',
     ));
@@ -792,8 +791,7 @@ List<Item> conceptC72() {
     ),
     wrongChoiceFr:
         'Un seul = range ; pour comparer il en faut deux, et Tika le signale.',
-    wrongChoiceEn:
-        'One = puts in; comparing needs two, and Tika says so.',
+    wrongChoiceEn: 'One = puts in; comparing needs two, and Tika says so.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -813,8 +811,8 @@ List<Item> conceptC72() {
           correct: false,
           misconception: 'C7.2-single-equals-compares'),
       Choice(
-          labelKeys: b('== est la version rapide de =.',
-              '== is the fast version of =.'),
+          labelKeys: b(
+              '== est la version rapide de =.', '== is the fast version of =.'),
           correct: false,
           misconception: 'C7.2-single-equals-compares'),
       Choice(
@@ -840,8 +838,8 @@ List<Item> conceptC72() {
     promptKeys: b(r'Quand 5 >= 5 est-il vrai ?', r'When is 5 >= 5 true?'),
     choices: [
       Choice(
-          labelKeys: b('Toujours : cinq est égal à cinq.',
-              'Always: five equals five.'),
+          labelKeys: b(
+              'Toujours : cinq est égal à cinq.', 'Always: five equals five.'),
           correct: true),
       Choice(
           labelKeys: b('Jamais : il faut être plus grand.',
@@ -849,13 +847,11 @@ List<Item> conceptC72() {
           correct: false,
           misconception: 'C7.2-strict-and-loose-are-the-same'),
       Choice(
-          labelKeys: b('Seulement la première fois.',
-              'Only the first time.'),
+          labelKeys: b('Seulement la première fois.', 'Only the first time.'),
           correct: false,
           misconception: 'C7.2-comparison-wears-out'),
       Choice(
-          labelKeys: b('Ça dépend de la boîte.',
-              'It depends on the box.'),
+          labelKeys: b('Ça dépend de la boîte.', 'It depends on the box.'),
           correct: false,
           misconception: 'C7.2-comparison-reads-backwards'),
     ],
@@ -876,15 +872,16 @@ List<Item> conceptC72() {
     promptKeys: b(r'Comment se lit $a != $b ?', r'How do you read $a != $b?'),
     choices: [
       Choice(
-          labelKeys: b('\$a est différent de \$b.', '\$a is different from \$b.'),
+          labelKeys:
+              b('\$a est différent de \$b.', '\$a is different from \$b.'),
           correct: true),
       Choice(
           labelKeys: b('\$a est égal à \$b.', '\$a equals \$b.'),
           correct: false,
           misconception: 'C7.2-not-equal-means-equal'),
       Choice(
-          labelKeys: b('\$a est plus petit que \$b.',
-              '\$a is smaller than \$b.'),
+          labelKeys:
+              b('\$a est plus petit que \$b.', '\$a is smaller than \$b.'),
           correct: false,
           misconception: 'C7.2-comparison-reads-backwards'),
       Choice(
@@ -906,8 +903,7 @@ List<Item> conceptC72() {
     conceptId: 'C7.2',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d3,
-    promptKeys: b(
-        r'$a = 3 et $b = 3. Lequel de ces tests est faux ?',
+    promptKeys: b(r'$a = 3 et $b = 3. Lequel de ces tests est faux ?',
         r'$a = 3 and $b = 3. Which of these tests is false?'),
     choices: [
       Choice(labelKeys: b(r'$a > $b', r'$a > $b'), correct: true),
@@ -957,13 +953,12 @@ List<Item> conceptC72() {
           correct: false,
           misconception: 'C6.1-box-is-speed'),
       Choice(
-          labelKeys: b('Parce que deux, c\'est plus joli.',
-              'Because two looks nicer.'),
+          labelKeys: b(
+              'Parce que deux, c\'est plus joli.', 'Because two looks nicer.'),
           correct: false,
           misconception: 'C7.2-single-equals-compares'),
       Choice(
-          labelKeys: b('Il n\'y a pas de raison.',
-              'There is no reason.'),
+          labelKeys: b('Il n\'y a pas de raison.', 'There is no reason.'),
           correct: false,
           misconception: 'C7.2-single-equals-compares'),
     ],
@@ -973,8 +968,7 @@ List<Item> conceptC72() {
       'Un signe pour chacun évite de se tromper.',
       'One sign each means no mixing them up.',
     ),
-    wrongChoiceFr:
-        'Deux gestes différents veulent deux signes différents.',
+    wrongChoiceFr: 'Deux gestes différents veulent deux signes différents.',
     wrongChoiceEn: 'Two different actions want two different signs.',
   ));
   items.add(choiceItem(
@@ -992,13 +986,13 @@ List<Item> conceptC72() {
               'Because 5 is not bigger than 5.'),
           correct: true),
       Choice(
-          labelKeys: b('Parce que le si est cassé.',
-              'Because the if is broken.'),
+          labelKeys:
+              b('Parce que le si est cassé.', 'Because the if is broken.'),
           correct: false,
           misconception: 'C7.3-if-is-unreliable'),
       Choice(
-          labelKeys: b('Parce que la boîte est vide.',
-              'Because the box is empty.'),
+          labelKeys:
+              b('Parce que la boîte est vide.', 'Because the box is empty.'),
           correct: false,
           misconception: 'C6.1-box-is-empty'),
       Choice(
@@ -1013,8 +1007,7 @@ List<Item> conceptC72() {
       'Il demande strictement plus grand.',
       'It asks for strictly bigger.',
     ),
-    wrongChoiceFr:
-        'Le signe > refuse l\'égalité ; >= l\'accepte.',
+    wrongChoiceFr: 'Le signe > refuse l\'égalité ; >= l\'accepte.',
     wrongChoiceEn: 'The > sign refuses equality; >= accepts it.',
   ));
   items.add(choiceItem(
@@ -1037,13 +1030,12 @@ List<Item> conceptC72() {
           correct: false,
           misconception: 'C7.2-comparison-reads-backwards'),
       Choice(
-          labelKeys: b('Que \$age est un mauvais nom.',
-              'That \$age is a bad name.'),
+          labelKeys:
+              b('Que \$age est un mauvais nom.', 'That \$age is a bad name.'),
           correct: false,
           misconception: 'C6.1-name-is-cosmetic'),
       Choice(
-          labelKeys: b('Que ça marche quand même.',
-              'That it works anyway.'),
+          labelKeys: b('Que ça marche quand même.', 'That it works anyway.'),
           correct: false,
           misconception: 'C7.2-single-equals-compares'),
     ],
@@ -1053,8 +1045,7 @@ List<Item> conceptC72() {
       'Poser une question demande ==.',
       'Asking a question needs ==.',
     ),
-    wrongChoiceFr:
-        'Dans un si on compare, et comparer s\'écrit avec deux =.',
+    wrongChoiceFr: 'Dans un si on compare, et comparer s\'écrit avec deux =.',
     wrongChoiceEn:
         'Inside an if you compare, and comparing is written with two =.',
   ));
@@ -1132,7 +1123,9 @@ List<Item> conceptC73() {
         taken
             ? 'Le test est vrai pour $value.'
             : 'Le test est faux pour $value.',
-        taken ? 'The test is true for $value.' : 'The test is false for $value.',
+        taken
+            ? 'The test is true for $value.'
+            : 'The test is false for $value.',
         'Mets la seconde figure dans le si.',
         'Put the second shape inside the if.',
       ),
@@ -1219,8 +1212,7 @@ List<Item> conceptC73() {
     final drawn = taken ? alwaysSides + maybeSides : alwaysSides;
     // The mistake that is possible here, and only that one.
     final wrongCount = taken ? alwaysSides : alwaysSides + maybeSides;
-    final wrongTag =
-        taken ? 'C7.3-if-never-runs' : 'C7.3-if-always-runs';
+    final wrongTag = taken ? 'C7.3-if-never-runs' : 'C7.3-if-always-runs';
     items.add(predict(
       id: id(),
       conceptId: 'C7.3',
@@ -1274,7 +1266,18 @@ List<Item> conceptC73() {
   for (final entry in [
     (7, '> 5', ['>= 7', '!= 2'], ['< 5', '== 2', '> 9'], 4, 50, 90, 3, 50, 120),
     (2, '< 5', ['<= 2', '!= 9'], ['> 5', '== 9', '>= 4'], 6, 40, 60, 4, 45, 90),
-    (4, '== 4', ['>= 4', '<= 4'], ['> 4', '< 4', '!= 4'], 3, 70, 120, 5, 40, 72),
+    (
+      4,
+      '== 4',
+      ['>= 4', '<= 4'],
+      ['> 4', '< 4', '!= 4'],
+      3,
+      70,
+      120,
+      5,
+      40,
+      72
+    ),
     (9, '>= 9', ['> 8', '!= 1'], ['< 9', '== 1', '> 9'], 5, 45, 72, 4, 55, 90),
   ]) {
     final value = entry.$1, test = entry.$2;
@@ -1332,8 +1335,7 @@ List<Item> conceptC73() {
       difficulty: Difficulty.d3,
       solution: guarded(value, test, always, maybe),
       promptKeys: fillBoth(
-        b(
-            'Remets le programme en ordre : la seconde figure ne se dessine que si \$x {t}.',
+        b('Remets le programme en ordre : la seconde figure ne se dessine que si \$x {t}.',
             'Put the program back in order: the second shape is drawn only if \$x {t}.'),
         {'t': test},
       ),
@@ -1396,7 +1398,8 @@ List<Item> conceptC73() {
       'Make a drawing that adds a shape only sometimes.',
     ),
     rubric: [
-      rubricLine('Une figure est dessinée dans tous les cas.',
+      rubricLine(
+          'Une figure est dessinée dans tous les cas.',
           'One shape is drawn whatever happens.',
           const ContainsNode('Repeat', min: 2)),
       rubricLine('Une autre est sous un si.', 'Another one is under an if.',
@@ -1425,8 +1428,8 @@ List<Item> conceptC73() {
     rubric: [
       rubricLine('Ton programme pose une question avec si.',
           'Your program asks a question with if.', const ContainsNode('If')),
-      rubricLine('Tu changes la couleur du crayon.', 'You change the pen colour.',
-          const UsesOpcode('PEN_COLOR')),
+      rubricLine('Tu changes la couleur du crayon.',
+          'You change the pen colour.', const UsesOpcode('PEN_COLOR')),
       rubricLine('Le test lit une boîte.', 'The test reads a box.',
           const UsesVariable(minReads: 1)),
     ],
@@ -1550,7 +1553,8 @@ List<Item> conceptC74() {
       choices: [
         Choice(labelKeys: b('$drawn', '$drawn'), correct: true),
         Choice(
-            labelKeys: b('${thenSides + elseSides}', '${thenSides + elseSides}'),
+            labelKeys:
+                b('${thenSides + elseSides}', '${thenSides + elseSides}'),
             correct: false,
             misconception: 'C7.4-else-runs-too'),
         Choice(
@@ -1592,7 +1596,8 @@ List<Item> conceptC74() {
       withHoles: '\$x = $value\n${ifThen('\$x $test', then)}\n'
           '___ {\n${otherwise.split('\n').map((l) => '  $l').join('\n')}\n}',
       solution: branch(value, test, then, otherwise),
-      promptKeys: b('Complète pour qu\'une seule des deux figures soit dessinée.',
+      promptKeys: b(
+          'Complète pour qu\'une seule des deux figures soit dessinée.',
           'Fill in the blank so only one of the two shapes is drawn.'),
       wrong: [
         /* Both figures, with no test between them. A version that guards only the first
@@ -1638,8 +1643,7 @@ List<Item> conceptC74() {
       difficulty: Difficulty.d3,
       solution: branch(value, test, then, otherwise),
       promptKeys: fillBoth(
-        b(
-            'Remets en ordre : la première figure si \$x {t}, la seconde sinon.',
+        b('Remets en ordre : la première figure si \$x {t}, la seconde sinon.',
             'Put it back in order: the first shape if \$x {t}, the second otherwise.'),
         {'t': test},
       ),
@@ -1683,18 +1687,17 @@ List<Item> conceptC74() {
               'No: only one of the two paths is taken.'),
           correct: true),
       Choice(
-          labelKeys: b('Oui, l\'un après l\'autre.',
-              'Yes, one after the other.'),
+          labelKeys:
+              b('Oui, l\'un après l\'autre.', 'Yes, one after the other.'),
           correct: false,
           misconception: 'C7.4-else-runs-too'),
       Choice(
-          labelKeys: b('Oui, si le test est vrai.',
-              'Yes, if the test is true.'),
+          labelKeys:
+              b('Oui, si le test est vrai.', 'Yes, if the test is true.'),
           correct: false,
           misconception: 'C7.4-else-runs-too'),
       Choice(
-          labelKeys: b('Le sinon ne sert jamais.',
-              'The else is never used.'),
+          labelKeys: b('Le sinon ne sert jamais.', 'The else is never used.'),
           correct: false,
           misconception: 'C7.4-else-never-runs'),
     ],
@@ -1706,8 +1709,7 @@ List<Item> conceptC74() {
     ),
     wrongChoiceFr:
         'Le sinon est l\'autre chemin : il se joue quand le si ne se joue pas.',
-    wrongChoiceEn:
-        'The else is the other path: it plays when the if does not.',
+    wrongChoiceEn: 'The else is the other path: it plays when the if does not.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1732,8 +1734,8 @@ List<Item> conceptC74() {
           correct: false,
           misconception: 'C6.1-box-is-speed'),
       Choice(
-          labelKeys: b('Un sinon a besoin de deux tests.',
-              'An else needs two tests.'),
+          labelKeys:
+              b('Un sinon a besoin de deux tests.', 'An else needs two tests.'),
           correct: false,
           misconception: 'C7.4-else-needs-its-own-test'),
     ],
@@ -1745,8 +1747,7 @@ List<Item> conceptC74() {
     ),
     wrongChoiceFr:
         'Un sinon partage le test du si ; deux si sont deux questions.',
-    wrongChoiceEn:
-        'An else shares the if\'s test; two ifs are two questions.',
+    wrongChoiceEn: 'An else shares the if\'s test; two ifs are two questions.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1768,13 +1769,13 @@ List<Item> conceptC74() {
           correct: false,
           misconception: 'C7.4-else-needs-its-own-test'),
       Choice(
-          labelKeys: b('Parce qu\'il est toujours vrai.',
-              'Because it is always true.'),
+          labelKeys: b(
+              'Parce qu\'il est toujours vrai.', 'Because it is always true.'),
           correct: false,
           misconception: 'C7.4-else-runs-too'),
       Choice(
-          labelKeys: b('Parce qu\'il est toujours faux.',
-              'Because it is always false.'),
+          labelKeys: b(
+              'Parce qu\'il est toujours faux.', 'Because it is always false.'),
           correct: false,
           misconception: 'C7.4-else-never-runs'),
     ],
@@ -1784,10 +1785,8 @@ List<Item> conceptC74() {
       'Le sinon prend tout le reste.',
       'The else takes everything else.',
     ),
-    wrongChoiceFr:
-        'Le sinon est le reste de la question que le si a posée.',
-    wrongChoiceEn:
-        'The else is the rest of the question the if asked.',
+    wrongChoiceFr: 'Le sinon est le reste de la question que le si a posée.',
+    wrongChoiceEn: 'The else is the rest of the question the if asked.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1808,8 +1807,8 @@ List<Item> conceptC74() {
           correct: false,
           misconception: 'C7.3-false-stops-everything'),
       Choice(
-          labelKeys: b('À rendre le jeu plus difficile.',
-              'To make the game harder.'),
+          labelKeys:
+              b('À rendre le jeu plus difficile.', 'To make the game harder.'),
           correct: false,
           misconception: 'C7.4-else-is-decoration'),
       Choice(
@@ -1879,7 +1878,8 @@ List<Item> conceptC75() {
       conceptId: 'C7.5',
       difficulty: Difficulty.d2,
       promptKeys: fillBoth(
-        b('Que va écrire Tika ?\n\nécris {e}', 'What will Tika print?\n\nprint {e}'),
+        b('Que va écrire Tika ?\n\nécris {e}',
+            'What will Tika print?\n\nprint {e}'),
         {'e': expression},
       ),
       choices: [
@@ -1902,8 +1902,7 @@ List<Item> conceptC75() {
       ),
       wrongChoiceFr:
           'et demande les deux ; ou se contente d\'un seul ; non renverse.',
-      wrongChoiceEn:
-          'and wants both; or is happy with one; not flips it over.',
+      wrongChoiceEn: 'and wants both; or is happy with one; not flips it over.',
     ));
   }
 
@@ -1919,21 +1918,93 @@ List<Item> conceptC75() {
      second one only under the test, so "the triangle should be left out" is a target a
      child can see, and `et` gets to be a right answer rather than only a distractor. */
   for (final entry in [
-    (7, 2, r'$a > 5', r'$b > 5', 'ou', 'et',
-        [r'$a > 5 et $b > 5', r'non ($a > 5 ou $b > 5)', r'non ($a > 5) ou $b > 5'],
-        4, 50, 90, 3, 55, 120),
-    (7, 2, r'$a > 5', r'$b > 5', 'et', 'ou',
-        [r'$a > 5 ou $b > 5', r'non ($a > 5 et $b > 5)', r'non ($b > 5)'],
-        4, 50, 90, 3, 55, 120),
-    (1, 9, r'$a < 5', r'$b < 5', 'ou', 'et',
-        [r'$a < 5 et $b < 5', r'non ($a < 5 ou $b < 5)', r'non ($a < 5) ou $b < 5'],
-        6, 40, 60, 4, 50, 90),
-    (1, 9, r'$a < 5', r'$b < 5', 'et', 'ou',
-        [r'$a < 5 ou $b < 5', r'non ($a < 5 et $b < 5)', r'non ($b < 5)'],
-        6, 40, 60, 4, 50, 90),
-    (4, 9, r'$a == 4', r'$b == 4', 'ou', 'et',
-        [r'$a == 4 et $b == 4', r'non ($a == 4 ou $b == 4)', r'non ($a == 4) ou $b == 4'],
-        3, 70, 120, 5, 45, 72),
+    (
+      7,
+      2,
+      r'$a > 5',
+      r'$b > 5',
+      'ou',
+      'et',
+      [
+        r'$a > 5 et $b > 5',
+        r'non ($a > 5 ou $b > 5)',
+        r'non ($a > 5) ou $b > 5'
+      ],
+      4,
+      50,
+      90,
+      3,
+      55,
+      120
+    ),
+    (
+      7,
+      2,
+      r'$a > 5',
+      r'$b > 5',
+      'et',
+      'ou',
+      [r'$a > 5 ou $b > 5', r'non ($a > 5 et $b > 5)', r'non ($b > 5)'],
+      4,
+      50,
+      90,
+      3,
+      55,
+      120
+    ),
+    (
+      1,
+      9,
+      r'$a < 5',
+      r'$b < 5',
+      'ou',
+      'et',
+      [
+        r'$a < 5 et $b < 5',
+        r'non ($a < 5 ou $b < 5)',
+        r'non ($a < 5) ou $b < 5'
+      ],
+      6,
+      40,
+      60,
+      4,
+      50,
+      90
+    ),
+    (
+      1,
+      9,
+      r'$a < 5',
+      r'$b < 5',
+      'et',
+      'ou',
+      [r'$a < 5 ou $b < 5', r'non ($a < 5 et $b < 5)', r'non ($b < 5)'],
+      6,
+      40,
+      60,
+      4,
+      50,
+      90
+    ),
+    (
+      4,
+      9,
+      r'$a == 4',
+      r'$b == 4',
+      'ou',
+      'et',
+      [
+        r'$a == 4 et $b == 4',
+        r'non ($a == 4 ou $b == 4)',
+        r'non ($a == 4) ou $b == 4'
+      ],
+      3,
+      70,
+      120,
+      5,
+      45,
+      72
+    ),
   ]) {
     final a = entry.$1,
         bb = entry.$2,
@@ -1953,8 +2024,7 @@ List<Item> conceptC75() {
       withHoles: '$setup\n${ifThen('$left ___ $right', maybe)}',
       solution: '$setup\n${ifThen('$left $good $right', maybe)}',
       promptKeys: fillBoth(
-        b(
-            '\$a garde {a} et \$b garde {b}. Quel mot {w} la seconde figure ?',
+        b('\$a garde {a} et \$b garde {b}. Quel mot {w} la seconde figure ?',
             '\$a holds {a} and \$b holds {b}. Which word {w} the second shape?'),
         {
           'a': a,
@@ -2034,7 +2104,6 @@ List<Item> conceptC75() {
     ));
   }
 
-
   // T6 — read and answer.
   items.add(choiceItem(
     id: id(),
@@ -2048,13 +2117,13 @@ List<Item> conceptC75() {
               'As soon as at least one of them is true.'),
           correct: true),
       Choice(
-          labelKeys: b('Seulement si les deux sont vrais.',
-              'Only if both are true.'),
+          labelKeys:
+              b('Seulement si les deux sont vrais.', 'Only if both are true.'),
           correct: false,
           misconception: 'C7.5-or-needs-both'),
       Choice(
-          labelKeys: b('Seulement si un seul est vrai.',
-              'Only if exactly one is true.'),
+          labelKeys: b(
+              'Seulement si un seul est vrai.', 'Only if exactly one is true.'),
           correct: false,
           misconception: 'C7.5-or-is-exclusive'),
       Choice(
@@ -2068,7 +2137,8 @@ List<Item> conceptC75() {
       'Un seul vrai suffit déjà.',
       'One true is already enough.',
     ),
-    wrongChoiceFr: 'ou est vrai dès qu\'une moitié l\'est, et aussi si les deux le sont.',
+    wrongChoiceFr:
+        'ou est vrai dès qu\'une moitié l\'est, et aussi si les deux le sont.',
     wrongChoiceEn: 'or is true as soon as one half is, and also when both are.',
   ));
   items.add(choiceItem(
@@ -2079,8 +2149,8 @@ List<Item> conceptC75() {
     promptKeys: b('Quand « A et B » est-il vrai ?', 'When is "A and B" true?'),
     choices: [
       Choice(
-          labelKeys: b('Seulement si les deux sont vrais.',
-              'Only if both are true.'),
+          labelKeys:
+              b('Seulement si les deux sont vrais.', 'Only if both are true.'),
           correct: true),
       Choice(
           labelKeys: b('Dès qu\'un des deux est vrai.',
@@ -2088,8 +2158,8 @@ List<Item> conceptC75() {
           correct: false,
           misconception: 'C7.5-and-means-or'),
       Choice(
-          labelKeys: b('Seulement si les deux sont faux.',
-              'Only if both are false.'),
+          labelKeys:
+              b('Seulement si les deux sont faux.', 'Only if both are false.'),
           correct: false,
           misconception: 'C7.5-and-is-inverted'),
       Choice(
@@ -2174,8 +2244,7 @@ List<Item> conceptC75() {
     promptKeys: b('Dans faux et vrai ou vrai, que fait Tika en premier ?',
         'In false and true or true, what does Tika do first?'),
     choices: [
-      Choice(
-          labelKeys: b('faux et vrai', 'false and true'), correct: true),
+      Choice(labelKeys: b('faux et vrai', 'false and true'), correct: true),
       Choice(
           labelKeys: b('vrai ou vrai', 'true or true'),
           correct: false,
@@ -2185,8 +2254,8 @@ List<Item> conceptC75() {
           correct: false,
           misconception: 'C6.3-no-order'),
       Choice(
-          labelKeys: b('Elle lit de droite à gauche.',
-              'She reads right to left.'),
+          labelKeys:
+              b('Elle lit de droite à gauche.', 'She reads right to left.'),
           correct: false,
           misconception: 'C6.3-right-to-left'),
     ],
@@ -2225,8 +2294,7 @@ List<Item> conceptC75() {
           correct: false,
           misconception: 'C7.5-or-is-exclusive'),
       Choice(
-          labelKeys: b('Non : ou est toujours vrai.',
-              'No: or is always true.'),
+          labelKeys: b('Non : ou est toujours vrai.', 'No: or is always true.'),
           correct: false,
           misconception: 'C7.5-or-is-always-true'),
     ],
@@ -2238,8 +2306,7 @@ List<Item> conceptC75() {
     ),
     wrongChoiceFr:
         'ou est vrai avec une moitié vraie, et reste vrai avec les deux.',
-    wrongChoiceEn:
-        'or is true with one half true, and stays true with both.',
+    wrongChoiceEn: 'or is true with one half true, and stays true with both.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -2296,18 +2363,17 @@ List<Item> conceptC75() {
               'Because the equal case changes sides.'),
           correct: true),
       Choice(
-          labelKeys: b('Parce que c\'est plus rapide.',
-              'Because it is faster.'),
+          labelKeys:
+              b('Parce que c\'est plus rapide.', 'Because it is faster.'),
           correct: false,
           misconception: 'C6.1-box-is-speed'),
       Choice(
-          labelKeys: b('Parce que non est obligatoire.',
-              'Because not is compulsory.'),
+          labelKeys:
+              b('Parce que non est obligatoire.', 'Because not is compulsory.'),
           correct: false,
           misconception: 'C6.1-box-is-compulsory'),
       Choice(
-          labelKeys: b('C\'est exactement pareil.',
-              'It is exactly the same.'),
+          labelKeys: b('C\'est exactement pareil.', 'It is exactly the same.'),
           correct: false,
           misconception: 'C7.2-strict-and-loose-are-the-same'),
     ],
@@ -2337,8 +2403,8 @@ List<Item> conceptC75() {
 List<Tutorial> world7Tutorials() => [
       tutorialFor(
         conceptId: 'C7.1',
-        conceptName:
-            b('Une boîte garde un oui ou un non.', 'A box keeps a yes or a no.'),
+        conceptName: b(
+            'Une boîte garde un oui ou un non.', 'A box keeps a yes or a no.'),
         palette: palette,
         steps: [
           watchStep(
@@ -2437,8 +2503,8 @@ List<Tutorial> world7Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C7.4',
-        conceptName: b('Sinon garde l\'autre chemin.',
-            'Else keeps the other path.'),
+        conceptName:
+            b('Sinon garde l\'autre chemin.', 'Else keeps the other path.'),
         palette: palette,
         steps: [
           watchStep(

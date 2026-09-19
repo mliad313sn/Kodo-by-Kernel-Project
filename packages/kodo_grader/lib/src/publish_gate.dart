@@ -10,8 +10,11 @@
 /// can then run it over every content pack without starting a CMS.
 library;
 
+import 'dart:convert';
+
 import 'package:kodo_lang/kodo_lang.dart';
 
+import 'choice_order.dart';
 import 'grader.dart';
 import 'item.dart';
 import 'keyword_agnostic.dart';
@@ -108,9 +111,10 @@ List<PublishFailure> checkItem(Item item, {Grader grader = const Grader()}) {
   final isOpenBuild = item.type == ItemType.t9OpenBuild;
   if (isOpenBuild) {
     if (item.rubric.isEmpty) {
-      fail('open-build-rubric',
+      fail(
+          'open-build-rubric',
           'an open build needs a rubric; without one a child cannot know what '
-          'good looks like before they start');
+              'good looks like before they start');
     }
     for (var i = 0; i < item.rubric.length; i++) {
       for (final locale in requiredLocales) {
@@ -245,12 +249,84 @@ List<PublishFailure> checkBank(Iterable<Item> items,
     {Grader grader = const Grader()}) {
   final failures = <PublishFailure>[];
   final seen = <String>{};
+  final fingerprints = <String, String>{};
+  final slotsByConcept = <String, Map<int, List<String>>>{};
+  final promptOwners = <String, (String conceptId, String itemId)>{};
+
   for (final item in items) {
     if (!seen.add(item.id)) {
       failures.add(
           PublishFailure(item.id, 'duplicate-id', 'appears twice in the bank'));
     }
     failures.addAll(checkItem(item, grader: grader));
+
+    /* Two items that differ only in their id are one item served twice, and the
+       scheduler's "never the same item twice in N" rule cannot see it — it compares ids.
+       Three byte-identical questions shipped in World 0 this way, which is the first
+       world an eight-year-old ever opens. */
+    final fingerprint = _fingerprintOf(item);
+    final twin = fingerprints[fingerprint];
+    if (twin != null) {
+      failures.add(PublishFailure(
+          item.id, 'duplicate-item', 'is the same question as $twin'));
+    } else {
+      fingerprints[fingerprint] = item.id;
+    }
+
+    /* One instruction, one bar. The same words in two concepts mean two different
+       rubrics behind one prompt, and a child cannot tell which one they are being held
+       to: "Fais une fleur avec un bloc pétale" appeared in C9.1, where one named block
+       was the whole task, and again in C9.4, whose rubric demanded two. */
+    final prompt = (item.promptKeys['fr'] ?? '').trim();
+    if (prompt.isNotEmpty) {
+      final owner = promptOwners[prompt];
+      if (owner == null) {
+        promptOwners[prompt] = (item.conceptId, item.id);
+      } else if (owner.$1 != item.conceptId) {
+        failures.add(PublishFailure(item.id, 'prompt-crosses-concepts',
+            'asks what ${owner.$2} asks, under a different concept'));
+      }
+    }
+
+    if (item.choices.length >= 2) {
+      final at = presentedCorrectIndex(item);
+      ((slotsByConcept[item.conceptId] ??= {})[at] ??= []).add(item.id);
+    }
+  }
+
+  /* `choice-position`. Every item in this curriculum is authored with the right answer
+     written first, which is the readable way to author one and would have been a
+     catastrophe to deliver: a child who taps the top answer every time passes every
+     choice item there is, and an eight-year-old finds that out faster than any adult
+     expects. `choiceOrder` moves it; this proves it moved. Measured on the PRESENTED
+     order, because that is the only order a child can see. */
+  for (final entry in slotsByConcept.entries) {
+    final total = entry.value.values.fold<int>(0, (a, ids) => a + ids.length);
+    if (total < 6) continue;
+    final biggest = entry.value.entries
+        .reduce((a, b) => a.value.length >= b.value.length ? a : b);
+    if (entry.value.length < 2) {
+      failures.add(PublishFailure(entry.key, 'choice-position',
+          'every right answer in this concept sits in slot ${biggest.key}'));
+    } else if (biggest.value.length / total > 0.8) {
+      failures.add(PublishFailure(
+          entry.key,
+          'choice-position',
+          '${biggest.value.length} of $total right answers sit in '
+              'slot ${biggest.key}'));
+    }
   }
   return failures;
 }
+
+/// What makes two items the same question: the words, the choices, and what is graded.
+///
+/// Deliberately not the id, the seed or the hints. An author who copies an item and gives
+/// it a new id has made a duplicate, whatever else they changed around it.
+String _fingerprintOf(Item item) => jsonEncode({
+      'prompt': item.promptKeys,
+      'target': item.targetProgramSource,
+      'reference': item.referenceSolutionSource,
+      'choices': [for (final c in item.choices) c.toJson()],
+      'rubric': [for (final r in item.rubric) r.textKeys],
+    });

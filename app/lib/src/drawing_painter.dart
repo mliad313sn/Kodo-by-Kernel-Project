@@ -12,7 +12,8 @@ import 'package:kodo_art/kodo_art.dart';
 
 /// Paints a drawing into whatever box it is given, preserving its aspect.
 class DrawingPainter extends CustomPainter {
-  const DrawingPainter(this.drawing, {this.highContrast = false, this.turn = 0});
+  const DrawingPainter(this.drawing,
+      {this.highContrast = false, this.turn = 0});
 
   final Drawing drawing;
   final bool highContrast;
@@ -62,8 +63,8 @@ class DrawingPainter extends CustomPainter {
           if (closed) path.close();
           canvas.drawPath(path, paint);
         case Box(:final topLeft, :final bottomRight, :final radius):
-          final rect = Rect.fromLTRB(
-              topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+          final rect =
+              Rect.fromLTRB(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
           radius > 0
               ? canvas.drawRRect(
                   RRect.fromRectAndRadius(rect, Radius.circular(radius)), paint)
@@ -114,8 +115,8 @@ class Art extends StatelessWidget {
       image: true,
       child: CustomPaint(
         size: Size(size, size),
-        painter: DrawingPainter(drawing,
-            highContrast: highContrast, turn: turn),
+        painter:
+            DrawingPainter(drawing, highContrast: highContrast, turn: turn),
       ),
     );
   }

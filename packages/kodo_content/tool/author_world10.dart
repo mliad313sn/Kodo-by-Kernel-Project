@@ -211,7 +211,8 @@ List<Item> conceptC101() {
     ('chat', 'oiseau', 'cui'),
   ]) {
     final first = entry.$1, second = entry.$2, line = entry.$3;
-    final solution = 'lutin "$first"\ndis "bonjour"\nlutin "$second"\ndis "$line"';
+    final solution =
+        'lutin "$first"\ndis "bonjour"\nlutin "$second"\ndis "$line"';
     items.add(fillTheGap(
       id: id(),
       conceptId: 'C10.1',
@@ -290,18 +291,16 @@ List<Item> conceptC101() {
               'It chooses who the next blocks talk to.'),
           correct: true),
       Choice(
-          labelKeys: b('Il crée un nouveau chien.',
-              'It makes a new dog.'),
+          labelKeys: b('Il crée un nouveau chien.', 'It makes a new dog.'),
           correct: false,
           misconception: 'C10.1-select-creates'),
       Choice(
-          labelKeys: b('Il efface les autres lutins.',
-              'It erases the other sprites.'),
+          labelKeys:
+              b('Il efface les autres lutins.', 'It erases the other sprites.'),
           correct: false,
           misconception: 'C10.1-one-character-only'),
       Choice(
-          labelKeys: b('Il fait aboyer le chien.',
-              'It makes the dog bark.'),
+          labelKeys: b('Il fait aboyer le chien.', 'It makes the dog bark.'),
           correct: false,
           misconception: 'C10.1-select-acts'),
     ],
@@ -326,8 +325,7 @@ List<Item> conceptC101() {
         'You choose the dog, then write three blocks. Who do they talk to?'),
     choices: [
       Choice(
-          labelKeys: b('Tous les trois au chien.',
-              'All three to the dog.'),
+          labelKeys: b('Tous les trois au chien.', 'All three to the dog.'),
           correct: true),
       Choice(
           labelKeys: b('Le premier au chien, les autres à personne.',
@@ -335,13 +333,13 @@ List<Item> conceptC101() {
           correct: false,
           misconception: 'C10.1-selection-does-not-stick'),
       Choice(
-          labelKeys: b('À tous les lutins à la fois.',
-              'To every sprite at once.'),
+          labelKeys:
+              b('À tous les lutins à la fois.', 'To every sprite at once.'),
           correct: false,
           misconception: 'C10.1-one-character-only'),
       Choice(
-          labelKeys: b('Au premier lutin de la scène.',
-              'To the stage\'s first sprite.'),
+          labelKeys: b(
+              'Au premier lutin de la scène.', 'To the stage\'s first sprite.'),
           correct: false,
           misconception: 'C10.1-selection-does-not-stick'),
     ],
@@ -353,8 +351,7 @@ List<Item> conceptC101() {
     ),
     wrongChoiceFr:
         'Un lutin choisi le reste jusqu\'à ce qu\'on en choisisse un autre.',
-    wrongChoiceEn:
-        'A chosen sprite stays chosen until another one is chosen.',
+    wrongChoiceEn: 'A chosen sprite stays chosen until another one is chosen.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -365,8 +362,7 @@ List<Item> conceptC101() {
         'Can two sprites wear different costumes?'),
     choices: [
       Choice(
-          labelKeys: b('Oui : chacun a les siens.',
-              'Yes: each has its own.'),
+          labelKeys: b('Oui : chacun a les siens.', 'Yes: each has its own.'),
           correct: true),
       Choice(
           labelKeys: b('Non : le costume est celui de la scène.',
@@ -374,8 +370,8 @@ List<Item> conceptC101() {
           correct: false,
           misconception: 'C10.4-backdrop-is-a-sprite'),
       Choice(
-          labelKeys: b('Non : ils changent ensemble.',
-              'No: they change together.'),
+          labelKeys:
+              b('Non : ils changent ensemble.', 'No: they change together.'),
           correct: false,
           misconception: 'C10.1-one-character-only'),
       Choice(
@@ -390,20 +386,25 @@ List<Item> conceptC101() {
       'Changer l\'un ne change pas l\'autre.',
       'Changing one does not change the other.',
     ),
-    wrongChoiceFr:
-        'Chaque lutin a ses costumes et ses effets, rien qu\'à lui.',
+    wrongChoiceFr: 'Chaque lutin a ses costumes et ses effets, rien qu\'à lui.',
     wrongChoiceEn:
         'Each sprite has its own costumes and effects, and nobody else\'s.',
   ));
 
   // T9 — three open builds.
   for (final entry in [
-    ('Fais parler deux lutins chacun leur tour.',
-        'Make two sprites speak one after the other.'),
-    ('Fais une petite scène avec trois personnages.',
-        'Make a little scene with three characters.'),
-    ('Fais dire bonjour à chaque lutin de la scène.',
-        'Make every sprite on the stage say hello.'),
+    (
+      'Fais parler deux lutins chacun leur tour.',
+      'Make two sprites speak one after the other.'
+    ),
+    (
+      'Fais une petite scène avec trois personnages.',
+      'Make a little scene with three characters.'
+    ),
+    (
+      'Fais dire bonjour à chaque lutin de la scène.',
+      'Make every sprite on the stage say hello.'
+    ),
   ]) {
     items.add(openBuild(
       id: id(),
@@ -412,12 +413,14 @@ List<Item> conceptC101() {
       stage: troupe,
       promptKeys: b(entry.$1, entry.$2),
       rubric: [
-        rubricLine('Tu choisis au moins deux lutins.',
+        rubricLine(
+            'Tu choisis au moins deux lutins.',
             'You choose at least two sprites.',
             const UsesOpcode('SELECT_SPRITE', min: 2)),
         rubricLine('Chacun dit quelque chose.', 'Each one says something.',
             const UsesOpcode('SAY', min: 2)),
-        rubricLine('Ton programme tient debout tout seul.',
+        rubricLine(
+            'Ton programme tient debout tout seul.',
             'Your program stands up on its own.',
             const BlockCountWithin(min: 4)),
       ],
@@ -569,7 +572,8 @@ List<Item> conceptC102() {
       stage: troupe,
       withHoles: 'lutin "$who"\nrépète $times {\n  ___\n}',
       solution: solution,
-      promptKeys: b('Complète pour que le lutin change de costume à chaque tour.',
+      promptKeys: b(
+          'Complète pour que le lutin change de costume à chaque tour.',
           'Fill in the blank so the sprite changes costume every turn.'),
       wrong: [
         'lutin "$who"\nrépète $times {\n  costume 1\n}',
@@ -646,8 +650,8 @@ List<Item> conceptC102() {
           correct: false,
           misconception: 'C10.2-costumes-stop-at-the-last'),
       Choice(
-          labelKeys: b('Il crée un nouveau costume.',
-              'It makes a new costume.'),
+          labelKeys:
+              b('Il crée un nouveau costume.', 'It makes a new costume.'),
           correct: false,
           misconception: 'C10.2-costumes-do-not-wrap'),
       Choice(
@@ -669,7 +673,8 @@ List<Item> conceptC102() {
     conceptId: 'C10.2',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b('Quelle est la différence entre costume 2 et costumesuivant ?',
+    promptKeys: b(
+        'Quelle est la différence entre costume 2 et costumesuivant ?',
         'What is the difference between costume 2 and nextcostume?'),
     choices: [
       Choice(
@@ -681,8 +686,7 @@ List<Item> conceptC102() {
           correct: false,
           misconception: 'C10.2-costume-blocks-are-the-same'),
       Choice(
-          labelKeys: b('costume 2 est plus rapide.',
-              'costume 2 is faster.'),
+          labelKeys: b('costume 2 est plus rapide.', 'costume 2 is faster.'),
           correct: false,
           misconception: 'C10.2-animation-is-speed'),
       Choice(
@@ -715,8 +719,7 @@ List<Item> conceptC102() {
               'Several costumes and a loop.'),
           correct: true),
       Choice(
-          labelKeys: b('Une vidéo et un lecteur.',
-              'A video and a player.'),
+          labelKeys: b('Une vidéo et un lecteur.', 'A video and a player.'),
           correct: false,
           misconception: 'C10.2-animation-needs-video'),
       Choice(
@@ -743,14 +746,22 @@ List<Item> conceptC102() {
 
   // T9 — four open builds.
   for (final entry in [
-    ('Anime un lutin avec ses costumes.',
-        'Animate a sprite using its costumes.'),
-    ('Fais marcher un lutin sur la scène.',
-        'Make a sprite walk across the stage.'),
-    ('Fais une animation qui se répète dix fois.',
-        'Make an animation that repeats ten times.'),
-    ('Anime deux lutins en même temps.',
-        'Animate two sprites at the same time.'),
+    (
+      'Anime un lutin avec ses costumes.',
+      'Animate a sprite using its costumes.'
+    ),
+    (
+      'Fais marcher un lutin sur la scène.',
+      'Make a sprite walk across the stage.'
+    ),
+    (
+      'Fais une animation qui se répète dix fois.',
+      'Make an animation that repeats ten times.'
+    ),
+    (
+      'Anime deux lutins en même temps.',
+      'Animate two sprites at the same time.'
+    ),
   ]) {
     final twoSprites = entry.$1.startsWith('Anime deux');
     items.add(openBuild(
@@ -762,14 +773,16 @@ List<Item> conceptC102() {
       rubric: [
         rubricLine('Ton lutin change de costume.',
             'Your sprite changes costume.', const UsesOpcode('NEXT_COSTUME')),
-        rubricLine('Le changement est dans une répétition.',
+        rubricLine(
+            'Le changement est dans une répétition.',
             'The change is inside a repeat.',
             const NestedInside('Repeat', 'Command')),
         if (twoSprites)
           rubricLine('Tu animes deux lutins.', 'You animate two sprites.',
               const UsesOpcode('SELECT_SPRITE', min: 2))
         else
-          rubricLine('Tu choisis le lutin à animer.',
+          rubricLine(
+              'Tu choisis le lutin à animer.',
               'You choose the sprite to animate.',
               const UsesOpcode('SELECT_SPRITE')),
       ],
@@ -855,14 +868,34 @@ List<Item> conceptC103() {
   /* T3 — in what order? The answer a child who holds the misconception gives is always
      "the drawing first, then all the sound". */
   for (final entry in [
-    ('tambour 1, 1\navance 20\ntambour 2, 1', 'tambour, trait, tambour',
-        'drum, line, drum', 'trait, tambour, tambour', 'line, drum, drum'),
-    ('avance 20\ntambour 1, 1\navance 20', 'trait, tambour, trait',
-        'line, drum, line', 'trait, trait, tambour', 'line, line, drum'),
-    ('jouson "miaou"\navance 20', 'son, trait', 'sound, line', 'trait, son',
-        'line, sound'),
-    ('note 60, 1\nnote 64, 1\navance 20', 'note, note, trait',
-        'note, note, line', 'trait, note, note', 'line, note, note'),
+    (
+      'tambour 1, 1\navance 20\ntambour 2, 1',
+      'tambour, trait, tambour',
+      'drum, line, drum',
+      'trait, tambour, tambour',
+      'line, drum, drum'
+    ),
+    (
+      'avance 20\ntambour 1, 1\navance 20',
+      'trait, tambour, trait',
+      'line, drum, line',
+      'trait, trait, tambour',
+      'line, line, drum'
+    ),
+    (
+      'jouson "miaou"\navance 20',
+      'son, trait',
+      'sound, line',
+      'trait, son',
+      'line, sound'
+    ),
+    (
+      'note 60, 1\nnote 64, 1\navance 20',
+      'note, note, trait',
+      'note, note, line',
+      'trait, note, note',
+      'line, note, note'
+    ),
   ]) {
     final source = entry.$1;
     items.add(predict(
@@ -961,13 +994,13 @@ List<Item> conceptC103() {
           correct: false,
           misconception: 'C10.3-sound-plays-at-the-end'),
       Choice(
-          labelKeys: b('Au début, comme une musique.',
-              'At the start, like music.'),
+          labelKeys:
+              b('Au début, comme une musique.', 'At the start, like music.'),
           correct: false,
           misconception: 'C10.3-sound-plays-first'),
       Choice(
-          labelKeys: b('Tout le temps, en fond.',
-              'All the time, in the background.'),
+          labelKeys:
+              b('Tout le temps, en fond.', 'All the time, in the background.'),
           correct: false,
           misconception: 'C10.3-sound-is-a-soundtrack'),
     ],
@@ -977,10 +1010,8 @@ List<Item> conceptC103() {
       'Il se joue à son tour.',
       'It plays when its turn comes.',
     ),
-    wrongChoiceFr:
-        'Un son est une instruction : il se joue quand on y arrive.',
-    wrongChoiceEn:
-        'A sound is an instruction: it plays when you get to it.',
+    wrongChoiceFr: 'Un son est une instruction : il se joue quand on y arrive.',
+    wrongChoiceEn: 'A sound is an instruction: it plays when you get to it.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -991,17 +1022,16 @@ List<Item> conceptC103() {
         'What does the second number in drum 1, 2 mean?'),
     choices: [
       Choice(
-          labelKeys: b('Combien de temps le coup dure.',
-              'How long the beat lasts.'),
+          labelKeys:
+              b('Combien de temps le coup dure.', 'How long the beat lasts.'),
           correct: true),
       Choice(
-          labelKeys: b('Combien de coups on joue.',
-              'How many beats are played.'),
+          labelKeys:
+              b('Combien de coups on joue.', 'How many beats are played.'),
           correct: false,
           misconception: 'C10.3-beats-are-a-count'),
       Choice(
-          labelKeys: b('Quel tambour on choisit.',
-              'Which drum is chosen.'),
+          labelKeys: b('Quel tambour on choisit.', 'Which drum is chosen.'),
           correct: false,
           misconception: 'C10.3-arguments-swapped'),
       Choice(
@@ -1029,8 +1059,8 @@ List<Item> conceptC103() {
         'Can you play a sound inside a loop?'),
     choices: [
       Choice(
-          labelKeys: b('Oui : il se joue à chaque tour.',
-              'Yes: it plays every turn.'),
+          labelKeys:
+              b('Oui : il se joue à chaque tour.', 'Yes: it plays every turn.'),
           correct: true),
       Choice(
           labelKeys: b('Non : un son ne se joue qu\'une fois.',
@@ -1043,8 +1073,7 @@ List<Item> conceptC103() {
           correct: false,
           misconception: 'C10.3-sound-plays-at-the-end'),
       Choice(
-          labelKeys: b('Seulement le premier tour.',
-              'Only on the first turn.'),
+          labelKeys: b('Seulement le premier tour.', 'Only on the first turn.'),
           correct: false,
           misconception: 'C10.3-sound-plays-once-only'),
     ],
@@ -1064,8 +1093,7 @@ List<Item> conceptC103() {
     conceptId: 'C10.3',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d3,
-    promptKeys: b(
-        'Tu mets le tambour après avance. Qu\'est-ce qui change ?',
+    promptKeys: b('Tu mets le tambour après avance. Qu\'est-ce qui change ?',
         'You put the drum after forward. What changes?'),
     choices: [
       Choice(
@@ -1077,8 +1105,7 @@ List<Item> conceptC103() {
           correct: false,
           misconception: 'C10.3-sound-is-a-soundtrack'),
       Choice(
-          labelKeys: b('Le son devient plus fort.',
-              'The sound gets louder.'),
+          labelKeys: b('Le son devient plus fort.', 'The sound gets louder.'),
           correct: false,
           misconception: 'C10.3-beats-are-volume'),
       Choice(
@@ -1094,18 +1121,27 @@ List<Item> conceptC103() {
     ),
     wrongChoiceFr:
         'Déplacer une ligne de son change le moment où on l\'entend.',
-    wrongChoiceEn:
-        'Moving a sound line changes the moment you hear it.',
+    wrongChoiceEn: 'Moving a sound line changes the moment you hear it.',
   ));
 
   // T9 — four open builds.
   for (final entry in [
-    ('Fais un rythme avec le tambour.', 'Make a rhythm with the drum.', 'PLAY_DRUM'),
+    (
+      'Fais un rythme avec le tambour.',
+      'Make a rhythm with the drum.',
+      'PLAY_DRUM'
+    ),
     ('Joue une petite mélodie.', 'Play a little tune.', 'PLAY_NOTE'),
-    ('Fais un dessin qui joue un son à chaque trait.',
-        'Make a drawing that plays a sound on every line.', 'PLAY_DRUM'),
-    ('Fais parler un lutin et jouer un son.',
-        'Make a sprite speak and a sound play.', 'PLAY_SOUND'),
+    (
+      'Fais un dessin qui joue un son à chaque trait.',
+      'Make a drawing that plays a sound on every line.',
+      'PLAY_DRUM'
+    ),
+    (
+      'Fais parler un lutin et jouer un son.',
+      'Make a sprite speak and a sound play.',
+      'PLAY_SOUND'
+    ),
   ]) {
     items.add(openBuild(
       id: id(),
@@ -1116,10 +1152,12 @@ List<Item> conceptC103() {
       rubric: [
         rubricLine('Ton programme joue quelque chose.',
             'Your program plays something.', UsesOpcode(entry.$3)),
-        rubricLine('Le son est joué plusieurs fois.',
+        rubricLine(
+            'Le son est joué plusieurs fois.',
             'The sound is played more than once.',
             UsesOpcode(entry.$3, min: 2)),
-        rubricLine('Ton programme fait autre chose aussi.',
+        rubricLine(
+            'Ton programme fait autre chose aussi.',
             'Your program does something else too.',
             const BlockCountWithin(min: 3)),
       ],
@@ -1197,12 +1235,27 @@ List<Item> conceptC104() {
   // T3 — who changed, the place or the character?
   for (final entry in [
     ('arrièreplan "nuit"', 'le décor', 'the scene', 'le chat', 'the cat'),
-    ('costumesuivant', 'le lutin choisi', 'the chosen sprite', 'le décor',
-        'the scene'),
-    ('arrièreplan "plage"\ncostumesuivant', 'les deux', 'both of them',
-        'le décor seulement', 'the scene only'),
-    ('lutin "chien"\ncostumesuivant', 'le chien', 'the dog', 'tous les lutins',
-        'every sprite'),
+    (
+      'costumesuivant',
+      'le lutin choisi',
+      'the chosen sprite',
+      'le décor',
+      'the scene'
+    ),
+    (
+      'arrièreplan "plage"\ncostumesuivant',
+      'les deux',
+      'both of them',
+      'le décor seulement',
+      'the scene only'
+    ),
+    (
+      'lutin "chien"\ncostumesuivant',
+      'le chien',
+      'the dog',
+      'tous les lutins',
+      'every sprite'
+    ),
   ]) {
     final source = entry.$1;
     items.add(predict(
@@ -1224,8 +1277,8 @@ List<Item> conceptC104() {
             correct: false,
             misconception: 'C10.4-backdrop-needs-a-sprite'),
         Choice(
-            labelKeys: b('toute la scène disparaît',
-                'the whole stage disappears'),
+            labelKeys:
+                b('toute la scène disparaît', 'the whole stage disappears'),
             correct: false,
             misconception: 'C10.4-backdrop-replaces-everything'),
       ],
@@ -1293,21 +1346,21 @@ List<Item> conceptC104() {
         'Who does the backdrop belong to?'),
     choices: [
       Choice(
-          labelKeys: b('À la scène, pas à un lutin.',
-              'To the stage, not to a sprite.'),
+          labelKeys: b(
+              'À la scène, pas à un lutin.', 'To the stage, not to a sprite.'),
           correct: true),
       Choice(
           labelKeys: b('Au lutin choisi.', 'To the chosen sprite.'),
           correct: false,
           misconception: 'C10.4-backdrop-is-a-sprite'),
       Choice(
-          labelKeys: b('Au premier lutin de la scène.',
-              'To the stage\'s first sprite.'),
+          labelKeys: b(
+              'Au premier lutin de la scène.', 'To the stage\'s first sprite.'),
           correct: false,
           misconception: 'C10.4-backdrop-is-a-sprite'),
       Choice(
-          labelKeys: b('À personne : c\'est une image.',
-              'To nobody: it is a picture.'),
+          labelKeys: b(
+              'À personne : c\'est une image.', 'To nobody: it is a picture.'),
           correct: false,
           misconception: 'C10.4-backdrop-needs-a-sprite'),
     ],
@@ -1335,8 +1388,8 @@ List<Item> conceptC104() {
               'No: the background depends on no sprite.'),
           correct: true),
       Choice(
-          labelKeys: b('Oui, sinon rien ne change.',
-              'Yes, otherwise nothing changes.'),
+          labelKeys: b(
+              'Oui, sinon rien ne change.', 'Yes, otherwise nothing changes.'),
           correct: false,
           misconception: 'C10.4-backdrop-needs-a-sprite'),
       Choice(
@@ -1366,7 +1419,8 @@ List<Item> conceptC104() {
     conceptId: 'C10.4',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b('Quelle est la différence entre un costume et un arrière-plan ?',
+    promptKeys: b(
+        'Quelle est la différence entre un costume et un arrière-plan ?',
         'What is the difference between a costume and a backdrop?'),
     choices: [
       Choice(
@@ -1374,13 +1428,12 @@ List<Item> conceptC104() {
               'A costume dresses a sprite, a backdrop dresses the stage.'),
           correct: true),
       Choice(
-          labelKeys: b('Aucune : ce sont deux images.',
-              'None: they are both pictures.'),
+          labelKeys: b(
+              'Aucune : ce sont deux images.', 'None: they are both pictures.'),
           correct: false,
           misconception: 'C10.4-backdrop-is-a-sprite'),
       Choice(
-          labelKeys: b('Le fond est plus grand.',
-              'The backdrop is bigger.'),
+          labelKeys: b('Le fond est plus grand.', 'The backdrop is bigger.'),
           correct: false,
           misconception: 'C10.4-backdrop-is-a-big-costume'),
       Choice(
@@ -1410,8 +1463,8 @@ List<Item> conceptC104() {
     choices: [
       Choice(labelKeys: b('Les trois.', 'All three.'), correct: true),
       Choice(
-          labelKeys: b('Un seul : celui qui est choisi.',
-              'One: the chosen one.'),
+          labelKeys:
+              b('Un seul : celui qui est choisi.', 'One: the chosen one.'),
           correct: false,
           misconception: 'C10.4-backdrop-is-a-sprite'),
       Choice(
@@ -1419,8 +1472,7 @@ List<Item> conceptC104() {
           correct: false,
           misconception: 'C10.4-backdrop-needs-a-sprite'),
       Choice(
-          labelKeys: b('Ceux qui ont un costume.',
-              'The ones with a costume.'),
+          labelKeys: b('Ceux qui ont un costume.', 'The ones with a costume.'),
           correct: false,
           misconception: 'C10.4-backdrop-is-a-big-costume'),
     ],
@@ -1432,18 +1484,20 @@ List<Item> conceptC104() {
     ),
     wrongChoiceFr:
         'Un seul fond, une seule scène : il change pour tout le monde.',
-    wrongChoiceEn:
-        'One background, one stage: it changes for everybody.',
+    wrongChoiceEn: 'One background, one stage: it changes for everybody.',
   ));
 
   // T9 — three open builds.
   for (final entry in [
-    ('Fais une scène avec un décor et un personnage.',
-        'Make a scene with a backdrop and a character.'),
-    ('Raconte une histoire en deux endroits.',
-        'Tell a story in two places.'),
-    ('Fais changer de décor pendant que quelqu\'un parle.',
-        'Change the scene while somebody is speaking.'),
+    (
+      'Fais une scène avec un décor et un personnage.',
+      'Make a scene with a backdrop and a character.'
+    ),
+    ('Raconte une histoire en deux endroits.', 'Tell a story in two places.'),
+    (
+      'Fais changer de décor pendant que quelqu\'un parle.',
+      'Change the scene while somebody is speaking.'
+    ),
   ]) {
     final twoPlaces = entry.$1.startsWith('Raconte');
     items.add(openBuild(
@@ -1457,9 +1511,10 @@ List<Item> conceptC104() {
             twoPlaces ? 'Tu changes deux fois de décor.' : 'Tu poses un décor.',
             twoPlaces ? 'You change the scene twice.' : 'You set a scene.',
             UsesOpcode('SET_BACKDROP', min: twoPlaces ? 2 : 1)),
-        rubricLine('Un lutin dit quelque chose.',
-            'A sprite says something.', const UsesOpcode('SAY')),
-        rubricLine('Tu choisis à qui tu parles.',
+        rubricLine('Un lutin dit quelque chose.', 'A sprite says something.',
+            const UsesOpcode('SAY')),
+        rubricLine(
+            'Tu choisis à qui tu parles.',
             'You choose who you are talking to.',
             const UsesOpcode('SELECT_SPRITE')),
       ],
@@ -1502,7 +1557,10 @@ List<Item> conceptC105() {
     ('chat', 'pixel', 20, true),
     ('chien', 'luminosité', 40, true),
   ]) {
-    final who = entry.$1, effect = entry.$2, value = entry.$3, clears = entry.$4;
+    final who = entry.$1,
+        effect = entry.$2,
+        value = entry.$3,
+        clears = entry.$4;
     final solution = 'lutin "$who"\neffet "$effect", $value'
         '${clears ? '\neffaceeffets' : ''}';
     items.add(buildToTarget(
@@ -1562,13 +1620,28 @@ List<Item> conceptC105() {
   /* T3 — what is left at the end? The choice that says "l'effet est toujours là" is the
      misconception, and on the clearing programs it is simply false. */
   for (final entry in [
-    ('effet "fantôme", 50\neffaceeffets', 'rien', 'nothing', 'fantôme 50',
-        'ghost 50'),
+    (
+      'effet "fantôme", 50\neffaceeffets',
+      'rien',
+      'nothing',
+      'fantôme 50',
+      'ghost 50'
+    ),
     ('effet "fantôme", 50', 'fantôme 50', 'ghost 50', 'rien', 'nothing'),
-    ('effet "couleur", 25\neffet "fantôme", 10', 'les deux', 'both of them',
-        'couleur 25 seulement', 'colour 25 only'),
-    ('effet "pixel", 20\neffaceeffets\neffet "couleur", 5', 'couleur 5',
-        'colour 5', 'pixel 20 et couleur 5', 'pixel 20 and colour 5'),
+    (
+      'effet "couleur", 25\neffet "fantôme", 10',
+      'les deux',
+      'both of them',
+      'couleur 25 seulement',
+      'colour 25 only'
+    ),
+    (
+      'effet "pixel", 20\neffaceeffets\neffet "couleur", 5',
+      'couleur 5',
+      'colour 5',
+      'pixel 20 et couleur 5',
+      'pixel 20 and colour 5'
+    ),
     ('effaceeffets', 'rien', 'nothing', 'tous les effets', 'every effect'),
   ]) {
     final source = entry.$1;
@@ -1604,8 +1677,7 @@ List<Item> conceptC105() {
       ),
       wrongChoiceFr:
           'Un effet est une couche posée sur le costume ; elle s\'enlève.',
-      wrongChoiceEn:
-          'An effect is a layer over the costume; it comes off.',
+      wrongChoiceEn: 'An effect is a layer over the costume; it comes off.',
     ));
   }
 
@@ -1654,12 +1726,12 @@ List<Item> conceptC105() {
     conceptId: 'C10.5',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d1,
-    promptKeys: b('Un effet reste-t-il pour toujours ?',
-        'Does an effect stay for ever?'),
+    promptKeys: b(
+        'Un effet reste-t-il pour toujours ?', 'Does an effect stay for ever?'),
     choices: [
       Choice(
-          labelKeys: b('Non : un bloc l\'enlève.',
-              'No: one block takes it off.'),
+          labelKeys:
+              b('Non : un bloc l\'enlève.', 'No: one block takes it off.'),
           correct: true),
       Choice(
           labelKeys: b('Oui, une fois posé c\'est fini.',
@@ -1729,8 +1801,7 @@ List<Item> conceptC105() {
     conceptId: 'C10.5',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d3,
-    promptKeys: b(
-        'Tu poses un effet sur le chat. Le chien change-t-il aussi ?',
+    promptKeys: b('Tu poses un effet sur le chat. Le chien change-t-il aussi ?',
         'You put an effect on the cat. Does the dog change too?'),
     choices: [
       Choice(
@@ -1748,8 +1819,8 @@ List<Item> conceptC105() {
           correct: false,
           misconception: 'C10.2-costume-is-a-sprite'),
       Choice(
-          labelKeys: b('Seulement le chien, pas le chat.',
-              'The dog only, not the cat.'),
+          labelKeys: b(
+              'Seulement le chien, pas le chat.', 'The dog only, not the cat.'),
           correct: false,
           misconception: 'C10.1-selection-does-not-stick'),
     ],
@@ -1769,13 +1840,11 @@ List<Item> conceptC105() {
     conceptId: 'C10.5',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d3,
-    promptKeys: b(
-        'Tu poses deux effets différents. Combien en restent ?',
+    promptKeys: b('Tu poses deux effets différents. Combien en restent ?',
         'You put on two different effects. How many are left?'),
     choices: [
       Choice(
-          labelKeys: b('Les deux : ils s\'ajoutent.',
-              'Both: they add up.'),
+          labelKeys: b('Les deux : ils s\'ajoutent.', 'Both: they add up.'),
           correct: true),
       Choice(
           labelKeys: b('Un seul : le dernier.', 'One: the last.'),
@@ -1786,8 +1855,7 @@ List<Item> conceptC105() {
           correct: false,
           misconception: 'C10.5-effects-replace-each-other'),
       Choice(
-          labelKeys: b('Aucun : ils s\'annulent.',
-              'None: they cancel out.'),
+          labelKeys: b('Aucun : ils s\'annulent.', 'None: they cancel out.'),
           correct: false,
           misconception: 'C10.5-effects-cancel'),
     ],
@@ -1799,8 +1867,7 @@ List<Item> conceptC105() {
     ),
     wrongChoiceFr:
         'Chaque effet est réglé à part : deux effets tiennent ensemble.',
-    wrongChoiceEn:
-        'Each effect is set separately: two effects hold together.',
+    wrongChoiceEn: 'Each effect is set separately: two effects hold together.',
   ));
 
   // T9 — one open build, to round the concept out at twenty.
@@ -1843,8 +1910,8 @@ List<Item> conceptC105() {
 List<Tutorial> world10Tutorials() => [
       tutorialFor(
         conceptId: 'C10.1',
-        conceptName: b('Plusieurs lutins sur une scène.',
-            'Several sprites on one stage.'),
+        conceptName: b(
+            'Plusieurs lutins sur une scène.', 'Several sprites on one stage.'),
         palette: palette,
         steps: [
           watchStep(
@@ -1907,8 +1974,8 @@ List<Tutorial> world10Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C10.3',
-        conceptName: b('Un son se joue à sa ligne.',
-            'A sound plays at its line.'),
+        conceptName:
+            b('Un son se joue à sa ligne.', 'A sound plays at its line.'),
         palette: palette,
         steps: [
           watchStep(
@@ -1939,8 +2006,8 @@ List<Tutorial> world10Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C10.4',
-        conceptName: b('Le décor est à la scène.',
-            'The scene belongs to the stage.'),
+        conceptName:
+            b('Le décor est à la scène.', 'The scene belongs to the stage.'),
         palette: palette,
         steps: [
           watchStep(

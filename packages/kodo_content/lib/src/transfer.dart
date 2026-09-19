@@ -158,12 +158,10 @@ class MemoryPartialStore implements PartialStore {
   final Map<int, Uint8List> _parts = {};
 
   @override
-  Future<Uint8List> read(int world) async =>
-      _parts[world] ?? Uint8List(0);
+  Future<Uint8List> read(int world) async => _parts[world] ?? Uint8List(0);
 
   @override
-  Future<void> write(int world, Uint8List bytes) async =>
-      _parts[world] = bytes;
+  Future<void> write(int world, Uint8List bytes) async => _parts[world] = bytes;
 
   @override
   Future<void> discard(int world) async => _parts.remove(world);
@@ -186,7 +184,8 @@ class PackTransfer {
   /// [maxChunks] bounds one run so a host can do a little work and come back — which is
   /// what makes "resumable" usable rather than merely possible on a phone that may be put
   /// in a pocket at any moment.
-  Future<TransferResult> run({TransferState? state, int maxChunks = 1 << 30}) async {
+  Future<TransferResult> run(
+      {TransferState? state, int maxChunks = 1 << 30}) async {
     var current = state ?? TransferState.startingFrom(manifest);
 
     /* A resume whose source has moved on must not splice two versions together. The

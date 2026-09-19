@@ -169,7 +169,8 @@ void main() {
       /* The verdict panel. Three lines because the sentence beside it is the ITEM's
          authored diagnostic, which the M6 gate already bounds — this slot is only the
          shell's own four words around it. */
-      'feedback.': const LayoutSlot(name: 'verdict panel', characters: 29, lines: 3),
+      'feedback.':
+          const LayoutSlot(name: 'verdict panel', characters: 29, lines: 3),
       'profiles.':
           const LayoutSlot(name: 'picker heading', characters: 24, lines: 2),
       // A field label sits above its field and may wrap; a button may not, which is why

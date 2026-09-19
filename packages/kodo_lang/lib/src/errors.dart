@@ -249,8 +249,7 @@ abstract final class ErrorCatalogue {
     ErrorCode.eventNested:
         'A "when" block cannot go inside another block. Put it on its own, at '
             'the left edge.',
-    ErrorCode.expectedTrigger:
-        'After "when", say when: flag, key, or clicked.',
+    ErrorCode.expectedTrigger: 'After "when", say when: flag, key, or clicked.',
     ErrorCode.duplicateProc:
         'You already learned a block called "{name}". Give this one another name.',
     ErrorCode.type:

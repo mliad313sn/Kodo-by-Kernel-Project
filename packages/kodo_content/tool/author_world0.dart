@@ -14,7 +14,6 @@ import 'dart:io';
 import 'package:kodo_content/kodo_content.dart';
 import 'package:kodo_grader/kodo_grader.dart';
 
-
 Map<String, String> b(String fr, String en) => {'fr': fr, 'en': en};
 
 /// The four concepts of World 0, from the concept ledger.
@@ -375,8 +374,8 @@ List<Item> conceptC02() {
       conceptId: 'C0.2',
       difficulty: Difficulty.d2,
       promptKeys: fillBoth(
-        b('Mêmes blocs, autre ordre. Que dessinent les deux programmes ?',
-            'Same blocks, different order. What do the two programs draw?'),
+        b('Avance {a}, tourne, avance {b}. Et dans l\'autre ordre ?',
+            'Forward {a}, turn, forward {b}. And in the other order?'),
         {'a': triple[0], 'b': triple[1]},
       ),
       choices: [
@@ -413,8 +412,8 @@ List<Item> conceptC02() {
       type: ItemType.t6ReadAndAnswer,
       difficulty: Difficulty.d2,
       promptKeys: fillBoth(
-        b('Un programme fait : avance, tourne, avance. Quel bloc est le dernier ?',
-            'A program does: forward, turn, forward. Which block is the last?'),
+        b('Avance, tourne de {d}, avance. Quel bloc est le dernier ?',
+            'Forward, turn {d}, forward. Which block is the last?'),
         {'d': angle},
       ),
       choices: [
@@ -545,11 +544,8 @@ List<Item> conceptC03() {
       difficulty: Difficulty.d3,
       broken: 'tournedroite 90\n${stair(pair[0], pair[1])}',
       solution: stair(pair[0], pair[1]),
-      promptKeys: fillBoth(
-        b('L\'escalier part du mauvais côté. Enlève le bloc en trop.',
-            'The staircase starts the wrong way. Take out the extra block.'),
-        {'n': pair[0]},
-      ),
+      promptKeys: b('L\'escalier part du mauvais côté. Enlève le bloc en trop.',
+          'The staircase starts the wrong way. Take out the extra block.'),
       wrong: [
         stair(pair[0] + 1, pair[1]),
         'tournegauche 90\n${stair(pair[0], pair[1])}',
@@ -608,9 +604,13 @@ List<Item> conceptC03() {
 
   // T6 — read and answer: what changes if one block moves.
   for (final pair in [
+    /* Distinct first numbers, because the first number is what the question ASKS about.
+       This read `[2, 40], [3, 30], [2, 30]` and only the second number varied between the
+       first and the third — which the prompt never mentions, so two of the three items
+       were the same question. */
     [2, 40],
     [3, 30],
-    [2, 30],
+    [4, 30],
   ]) {
     items.add(choiceItem(
       id: id(),
@@ -618,8 +618,8 @@ List<Item> conceptC03() {
       type: ItemType.t6ReadAndAnswer,
       difficulty: Difficulty.d3,
       promptKeys: fillBoth(
-        b('Tu montes un bloc tourner plus haut. Qu\'est-ce qui change ?',
-            'You move a turn block higher up. What changes?'),
+        b('Tu montes le bloc numéro {n} plus haut. Qu\'est-ce qui change ?',
+            'You move block number {n} higher up. What changes?'),
         {'n': pair[0]},
       ),
       choices: [
@@ -713,11 +713,8 @@ List<Item> conceptC04() {
       broken:
           'avance $side\ntournedroite $angle\navance $side\navance ${side ~/ 2}',
       solution: 'avance $side\ntournedroite $angle\navance $side',
-      promptKeys: fillBoth(
-        b('Il y a un bloc de trop. Enlève-le. Rien n\'est cassé.',
-            'There is one block too many. Take it out. Nothing is broken.'),
-        {'a': side},
-      ),
+      promptKeys: b('Il y a un bloc de trop. Enlève-le. Rien n\'est cassé.',
+          'There is one block too many. Take it out. Nothing is broken.'),
       wrong: [
         'avance $side\ntournedroite $angle',
         'avance $side\navance $side',
@@ -805,19 +802,23 @@ List<Item> conceptC04() {
   }
 
   // T6 — read and answer. The misconception, named and answered.
+  /* Bilingual, and actually put into the sentence. This loop used to vary a French-only
+     string it never mentioned, so it wrote the same item three times. */
   for (final what in [
-    'un bloc en trop',
-    'un mauvais nombre',
-    'un bloc enlevé'
+    ('un bloc en trop', 'one block too many'),
+    ('un mauvais nombre', 'a wrong number'),
+    ('un bloc enlevé', 'a missing block'),
   ]) {
     items.add(choiceItem(
       id: id(),
       conceptId: 'C0.4',
       type: ItemType.t6ReadAndAnswer,
       difficulty: Difficulty.d1,
-      promptKeys: b(
-          'Tu as fait une erreur dans ton programme. Que peux-tu faire ?',
-          'You made a mistake in your program. What can you do?'),
+      promptKeys: fillBoth(
+        b('Ton programme a {what}. Que peux-tu faire ?',
+            'Your program has {what}. What can you do?'),
+        {'what': what.$1},
+      ),
       choices: [
         Choice(
             labelKeys: b('Annuler, et réessayer.', 'Undo it, and try again.'),
@@ -845,7 +846,6 @@ List<Item> conceptC04() {
           'Nothing is broken. The back arrow removes your last block, as many times as you like.',
       version: 1,
     ));
-    if (what.isEmpty) break;
   }
 
   // T5 — Parsons, rebuilding after a reset.
@@ -860,11 +860,8 @@ List<Item> conceptC04() {
       difficulty: Difficulty.d2,
       solution:
           'baissecrayon\navance ${pair[0]}\ntournedroite ${pair[1]}\navance ${pair[0]}',
-      promptKeys: fillBoth(
-        b('Tu as tout effacé. Remets les blocs en ordre.',
-            'You cleared everything. Put the blocks back in order.'),
-        {'a': pair[0]},
-      ),
+      promptKeys: b('Tu as tout effacé. Remets les blocs en ordre.',
+          'You cleared everything. Put the blocks back in order.'),
       wrong: [
         'lèvecrayon\navance ${pair[0]}\nbaissecrayon\ntournedroite ${pair[1]}'
             '\navance ${pair[0]}',

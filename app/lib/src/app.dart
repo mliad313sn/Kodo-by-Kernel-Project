@@ -124,8 +124,8 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
           ready: packs.any((p) => p.items.isNotEmpty),
           onStart: packs.isEmpty
               ? null
-              : () => shell.go(KodoScreen.item,
-                  conceptId: _firstConceptOf(packs)),
+              : () =>
+                  shell.go(KodoScreen.item, conceptId: _firstConceptOf(packs)),
         );
 
       case KodoScreen.item:

@@ -14,14 +14,17 @@ import 'package:kodo_lang/kodo_lang.dart';
 import 'package:kodo_stage/kodo_stage.dart';
 
 Widget _wrap(Widget child) => MaterialApp(
-    home: Scaffold(body: Center(child: SizedBox(width: 400, height: 400, child: child))));
+    home: Scaffold(
+        body: Center(child: SizedBox(width: 400, height: 400, child: child))));
 
 VectorCanvas _square() {
   final canvas = VectorCanvas();
   Interpreter(
-      parse('répète 4 {\n  avance 60\n  tournedroite 90\n}', KeywordTables.fr)
-          .program,
-      canvas).run();
+          parse('répète 4 {\n  avance 60\n  tournedroite 90\n}',
+                  KeywordTables.fr)
+              .program,
+          canvas)
+      .run();
   return canvas;
 }
 
@@ -69,7 +72,8 @@ void main() {
       final state =
           tester.state<TurtleCanvasViewState>(find.byType(TurtleCanvasView));
 
-      expect(state.canZoomOut, isFalse, reason: 'the whole drawing is the floor');
+      expect(state.canZoomOut, isFalse,
+          reason: 'the whole drawing is the floor');
       for (var i = 0; i < canvasZoomSteps.length + 3; i++) {
         state.zoomIn();
       }
@@ -78,7 +82,8 @@ void main() {
       expect(state.canZoomIn, isFalse);
     });
 
-    testWidgets('a magnified drawing can be dragged, and coming back out recentres it',
+    testWidgets(
+        'a magnified drawing can be dragged, and coming back out recentres it',
         (tester) async {
       await tester.pumpWidget(_wrap(TurtleCanvasView(canvas: _square())));
       await tester.pumpAndSettle();
@@ -87,7 +92,8 @@ void main() {
 
       await tester.tap(find.byKey(const Key('zoom-in')));
       await tester.pumpAndSettle();
-      await tester.drag(find.byKey(const Key('turtle-canvas')), const Offset(40, 20));
+      await tester.drag(
+          find.byKey(const Key('turtle-canvas')), const Offset(40, 20));
       await tester.pumpAndSettle();
       expect(state.pan, isNot(Offset.zero));
 
@@ -122,8 +128,8 @@ void main() {
     });
 
     testWidgets('an illustration is not something to inspect', (tester) async {
-      await tester
-          .pumpWidget(_wrap(TurtleCanvasView(canvas: _square(), zoomable: false)));
+      await tester.pumpWidget(
+          _wrap(TurtleCanvasView(canvas: _square(), zoomable: false)));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('zoom-in')), findsNothing);
       expect(find.byKey(const Key('turtle-canvas')), findsOneWidget);
@@ -134,12 +140,14 @@ void main() {
       final canvas = _square();
       await tester.pumpWidget(_wrap(TurtleCanvasView(canvas: canvas)));
       await tester.pumpAndSettle();
-      expect(find.bySemanticsLabel(canvas.describe(locale: 'fr')), findsOneWidget);
+      expect(
+          find.bySemanticsLabel(canvas.describe(locale: 'fr')), findsOneWidget);
       await tester.tap(find.byKey(const Key('zoom-in')));
       await tester.pumpAndSettle();
       // Magnifying a drawing does not change what is drawn, so it may not change what a
       // child who cannot see it is told.
-      expect(find.bySemanticsLabel(canvas.describe(locale: 'fr')), findsOneWidget);
+      expect(
+          find.bySemanticsLabel(canvas.describe(locale: 'fr')), findsOneWidget);
     });
   });
 }

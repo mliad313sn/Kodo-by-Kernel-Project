@@ -7,6 +7,7 @@ library;
 export 'src/assertions.dart';
 export 'src/attempt.dart';
 export 'src/grader.dart';
-export 'src/keyword_agnostic.dart';
+export 'src/choice_order.dart';
 export 'src/item.dart';
+export 'src/keyword_agnostic.dart';
 export 'src/publish_gate.dart';

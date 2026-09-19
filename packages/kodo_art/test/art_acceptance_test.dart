@@ -290,7 +290,8 @@ void main() {
       /* §5.2 names thirteen worlds. A map that draws three of them and numbers the other
          ten is the filing cabinet this package exists to replace, so the map is asserted
          complete here rather than left to whoever opens the app last. */
-      expect(worldPlaces.keys.toList()..sort(), [for (var n = 0; n < 13; n++) n]);
+      expect(
+          worldPlaces.keys.toList()..sort(), [for (var n = 0; n < 13; n++) n]);
 
       final ids = worldPlaces.values.map((d) => d.id).toSet();
       expect(ids, hasLength(13), reason: 'two worlds share an id');
@@ -305,7 +306,8 @@ void main() {
           expect(text.endsWith('.'), isTrue,
               reason: 'world ${entry.key}: "$text" is not a sentence');
           expect(text.length, greaterThan(16),
-              reason: 'world ${entry.key} is described too thinly to be spoken');
+              reason:
+                  'world ${entry.key} is described too thinly to be spoken');
         }
       }
     });
@@ -328,10 +330,12 @@ void main() {
             case Stroke(:final width):
               expect(width * shown / 100, greaterThan(0.8), reason: where);
             case Box(:final topLeft, :final bottomRight):
-              expect((bottomRight.x - topLeft.x) * shown / 100,
-                  greaterThan(1.0), reason: where);
-              expect((bottomRight.y - topLeft.y) * shown / 100,
-                  greaterThan(1.0), reason: where);
+              expect(
+                  (bottomRight.x - topLeft.x) * shown / 100, greaterThan(1.0),
+                  reason: where);
+              expect(
+                  (bottomRight.y - topLeft.y) * shown / 100, greaterThan(1.0),
+                  reason: where);
             case Poly():
               break;
           }

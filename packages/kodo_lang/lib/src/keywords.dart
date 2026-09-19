@@ -289,19 +289,19 @@ abstract final class KeywordTables {
           abbreviation: 'tp', aliases: ['touchepressee']),
       Opcode.mouseX: const KeywordEntry('sourisx'),
       Opcode.mouseY: const KeywordEntry('sourisy'),
-      Opcode.mouseDown: const KeywordEntry('sourisappuyée',
-          aliases: ['sourisappuyee']),
+      Opcode.mouseDown:
+          const KeywordEntry('sourisappuyée', aliases: ['sourisappuyee']),
       Opcode.touchingEdge: const KeywordEntry('touchebord'),
       Opcode.touchingColour: const KeywordEntry('touchecouleur'),
       // Lutins et scène
       Opcode.selectSprite: const KeywordEntry('lutin'),
-      Opcode.nextCostume: const KeywordEntry('costumesuivant',
-          abbreviation: 'cs'),
+      Opcode.nextCostume:
+          const KeywordEntry('costumesuivant', abbreviation: 'cs'),
       Opcode.setCostume: const KeywordEntry('costume'),
-      Opcode.costumeNumber: const KeywordEntry('numérocostume',
-          aliases: ['numerocostume']),
-      Opcode.setBackdrop: const KeywordEntry('arrièreplan',
-          aliases: ['arriereplan']),
+      Opcode.costumeNumber:
+          const KeywordEntry('numérocostume', aliases: ['numerocostume']),
+      Opcode.setBackdrop:
+          const KeywordEntry('arrièreplan', aliases: ['arriereplan']),
       Opcode.setEffect: const KeywordEntry('effet'),
       Opcode.clearEffects: const KeywordEntry('effaceeffets'),
       Opcode.say: const KeywordEntry('dis'),
@@ -384,8 +384,8 @@ abstract final class KeywordTables {
       Opcode.mouseY: const KeywordEntry('mousey'),
       Opcode.mouseDown: const KeywordEntry('mousedown'),
       Opcode.touchingEdge: const KeywordEntry('touchingedge'),
-      Opcode.touchingColour: const KeywordEntry('touchingcolour',
-          aliases: ['touchingcolor']),
+      Opcode.touchingColour:
+          const KeywordEntry('touchingcolour', aliases: ['touchingcolor']),
       // Sprites and stage
       Opcode.selectSprite: const KeywordEntry('sprite'),
       Opcode.nextCostume: const KeywordEntry('nextcostume', abbreviation: 'nc'),

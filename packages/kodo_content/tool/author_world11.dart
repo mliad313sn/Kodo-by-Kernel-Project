@@ -306,16 +306,15 @@ List<Item> conceptC111() {
     ),
     wrongChoiceFr:
         'Les blocs et le texte montrent le même programme de deux façons.',
-    wrongChoiceEn:
-        'Blocks and text show the same program in two ways.',
+    wrongChoiceEn: 'Blocks and text show the same program in two ways.',
   ));
   items.add(choiceItem(
     id: id(),
     conceptId: 'C11.1',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b('À quoi servent les accolades { } ?',
-        'What are the brackets { } for?'),
+    promptKeys: b(
+        'À quoi servent les accolades { } ?', 'What are the brackets { } for?'),
     choices: [
       Choice(
           labelKeys: b('À dire où commence et finit un bloc.',
@@ -377,8 +376,7 @@ List<Item> conceptC111() {
       'Au clavier, c\'est la même place.',
       'On the keyboard it is the same place.',
     ),
-    wrongChoiceFr:
-        'Le nombre suit le mot, comme la case suit le bloc.',
+    wrongChoiceFr: 'Le nombre suit le mot, comme la case suit le bloc.',
     wrongChoiceEn:
         'The number follows the word, as the slot follows the block.',
   ));
@@ -400,12 +398,13 @@ List<Item> conceptC111() {
           correct: false,
           misconception: 'C11.1-switching-loses-work'),
       Choice(
-          labelKeys: b('Il faut tout retaper.', 'You have to type it all again.'),
+          labelKeys:
+              b('Il faut tout retaper.', 'You have to type it all again.'),
           correct: false,
           misconception: 'C11.1-text-is-another-language'),
       Choice(
-          labelKeys: b('Les blocs changent d\'ordre.',
-              'The blocks change order.'),
+          labelKeys:
+              b('Les blocs changent d\'ordre.', 'The blocks change order.'),
           correct: false,
           misconception: 'C11.1-switching-loses-work'),
     ],
@@ -417,8 +416,7 @@ List<Item> conceptC111() {
     ),
     wrongChoiceFr:
         'Une seule chose est enregistrée ; blocs et texte la montrent tous deux.',
-    wrongChoiceEn:
-        'One thing is stored; blocks and text both show it.',
+    wrongChoiceEn: 'One thing is stored; blocks and text both show it.',
   ));
 
   return items;
@@ -570,16 +568,15 @@ List<Item> conceptC112() {
     conceptId: 'C11.2',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d1,
-    promptKeys: b('À qui s\'adresse un commentaire ?',
-        'Who is a comment for?'),
+    promptKeys: b('À qui s\'adresse un commentaire ?', 'Who is a comment for?'),
     choices: [
       Choice(
           labelKeys: b('À toi, et à qui lira ton programme.',
               'You, and whoever reads your program.'),
           correct: true),
       Choice(
-          labelKeys: b('À Tika, pour lui expliquer.',
-              'Tika, to explain things to her.'),
+          labelKeys: b(
+              'À Tika, pour lui expliquer.', 'Tika, to explain things to her.'),
           correct: false,
           misconception: 'C11.2-comments-run'),
       Choice(
@@ -619,13 +616,13 @@ List<Item> conceptC112() {
           correct: false,
           misconception: 'C11.2-comment-stops-the-program'),
       Choice(
-          labelKeys: b('Elle joue la ligne quand même.',
-              'She plays the line anyway.'),
+          labelKeys:
+              b('Elle joue la ligne quand même.', 'She plays the line anyway.'),
           correct: false,
           misconception: 'C11.2-comments-run'),
       Choice(
-          labelKeys: b('Elle saute tout le programme.',
-              'She skips the whole program.'),
+          labelKeys: b(
+              'Elle saute tout le programme.', 'She skips the whole program.'),
           correct: false,
           misconception: 'C11.2-comment-stops-the-program'),
     ],
@@ -635,10 +632,8 @@ List<Item> conceptC112() {
       'La ligne suivante se joue normalement.',
       'The next line plays as usual.',
     ),
-    wrongChoiceFr:
-        'Le # cache la fin de sa ligne, et rien de plus.',
-    wrongChoiceEn:
-        'The # hides the rest of its line, and nothing more.',
+    wrongChoiceFr: 'Le # cache la fin de sa ligne, et rien de plus.',
+    wrongChoiceEn: 'The # hides the rest of its line, and nothing more.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -649,8 +644,8 @@ List<Item> conceptC112() {
         'Does a comment slow the program down?'),
     choices: [
       Choice(
-          labelKeys: b('Non : il n\'est jamais joué.',
-              'No: it is never played.'),
+          labelKeys:
+              b('Non : il n\'est jamais joué.', 'No: it is never played.'),
           correct: true),
       Choice(
           labelKeys: b('Oui, un peu.', 'Yes, a little.'),
@@ -661,8 +656,8 @@ List<Item> conceptC112() {
           correct: false,
           misconception: 'C11.2-comments-run'),
       Choice(
-          labelKeys: b('Il accélère le programme.',
-              'It speeds the program up.'),
+          labelKeys:
+              b('Il accélère le programme.', 'It speeds the program up.'),
           correct: false,
           misconception: 'C11.2-comments-are-useless'),
     ],
@@ -672,10 +667,8 @@ List<Item> conceptC112() {
       'Tika ne fait rien avec.',
       'Tika does nothing with it.',
     ),
-    wrongChoiceFr:
-        'Une ligne que personne ne joue ne prend aucun temps.',
-    wrongChoiceEn:
-        'A line nobody plays takes no time at all.',
+    wrongChoiceFr: 'Une ligne que personne ne joue ne prend aucun temps.',
+    wrongChoiceEn: 'A line nobody plays takes no time at all.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -699,8 +692,7 @@ List<Item> conceptC112() {
           correct: false,
           misconception: 'C11.2-comment-stops-the-program'),
       Choice(
-          labelKeys: b('La ligne devient grise.',
-              'The line turns grey.'),
+          labelKeys: b('La ligne devient grise.', 'The line turns grey.'),
           correct: false,
           misconception: 'C11.2-comment-changes-colour'),
     ],
@@ -710,10 +702,8 @@ List<Item> conceptC112() {
       'Mais on peut la remettre facilement.',
       'But you can put it back easily.',
     ),
-    wrongChoiceFr:
-        'Commenter une ligne, c\'est l\'enlever sans la perdre.',
-    wrongChoiceEn:
-        'Commenting a line out removes it without losing it.',
+    wrongChoiceFr: 'Commenter une ligne, c\'est l\'enlever sans la perdre.',
+    wrongChoiceEn: 'Commenting a line out removes it without losing it.',
   ));
 
   // T8 — explain.
@@ -722,16 +712,15 @@ List<Item> conceptC112() {
     conceptId: 'C11.2',
     type: ItemType.t8Explain,
     difficulty: Difficulty.d3,
-    promptKeys: b('Pourquoi écrire des commentaires ?',
-        'Why write comments?'),
+    promptKeys: b('Pourquoi écrire des commentaires ?', 'Why write comments?'),
     choices: [
       Choice(
           labelKeys: b('Pour se rappeler ce que fait chaque part.',
               'To remember what each part does.'),
           correct: true),
       Choice(
-          labelKeys: b('Pour aider Tika à comprendre.',
-              'To help Tika understand.'),
+          labelKeys:
+              b('Pour aider Tika à comprendre.', 'To help Tika understand.'),
           correct: false,
           misconception: 'C11.2-comments-run'),
       Choice(
@@ -740,8 +729,8 @@ List<Item> conceptC112() {
           correct: false,
           misconception: 'C11.2-comments-are-useless'),
       Choice(
-          labelKeys: b('Il ne faut pas en écrire.',
-              'You should not write any.'),
+          labelKeys:
+              b('Il ne faut pas en écrire.', 'You should not write any.'),
           correct: false,
           misconception: 'C11.2-comments-are-useless'),
     ],
@@ -753,8 +742,7 @@ List<Item> conceptC112() {
     ),
     wrongChoiceFr:
         'Un commentaire garde une explication que le code ne dit pas.',
-    wrongChoiceEn:
-        'A comment keeps an explanation the code does not give.',
+    wrongChoiceEn: 'A comment keeps an explanation the code does not give.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -834,8 +822,7 @@ List<Item> conceptC112() {
     ),
     wrongChoiceFr:
         'Commente une instruction et regarde : elle ne se joue plus.',
-    wrongChoiceEn:
-        'Comment an instruction out and look: it no longer plays.',
+    wrongChoiceEn: 'Comment an instruction out and look: it no longer plays.',
   ));
 
   return items;
@@ -909,8 +896,8 @@ List<Item> conceptC113() {
         b('Tika s\'est arrêtée. Elle dit : « {m} » Répare le programme.',
             'Tika stopped. She says: "{m}" Fix the program.'),
         {'m': entry.$3},
-      )..['en'] = fill('Tika stopped. She says: "{m}" Fix the program.',
-          {'m': entry.$4}),
+      )..['en'] = fill(
+          'Tika stopped. She says: "{m}" Fix the program.', {'m': entry.$4}),
       wrong: [
         broken,
         /* Every line commented out, not just the first: `'# $broken'` hashes line one
@@ -984,7 +971,8 @@ List<Item> conceptC113() {
       conceptId: 'C11.3',
       difficulty: Difficulty.d2,
       promptKeys: fillBoth(
-        b('Tika dit : « {m} »\n\nQue fais-tu ?', 'Tika says: "{m}"\n\nWhat do you do?'),
+        b('Tika dit : « {m} »\n\nQue fais-tu ?',
+            'Tika says: "{m}"\n\nWhat do you do?'),
         {'m': entry.$1},
       )..['en'] = fill('Tika says: "{m}"\n\nWhat do you do?', {'m': entry.$2}),
       choices: [
@@ -1023,17 +1011,29 @@ List<Item> conceptC113() {
      `value + 30` and `value + 15` were both the right answer with a different label. */
   for (final entry in [
     ('avance ___', 'avance 60', 60, [90, 45, 30]),
-    ('répète 4 {\n  avance 50\n  tournedroite ___\n}',
-        'répète 4 {\n  avance 50\n  tournedroite 90\n}', 90, [120, 60, 45]),
-    ('\$c = ___\nrépète 4 {\n  avance \$c\n  tournedroite 90\n}',
-        '\$c = 45\nrépète 4 {\n  avance \$c\n  tournedroite 90\n}', 45, [75, 30, 20]),
+    (
+      'répète 4 {\n  avance 50\n  tournedroite ___\n}',
+      'répète 4 {\n  avance 50\n  tournedroite 90\n}',
+      90,
+      [120, 60, 45]
+    ),
+    (
+      '\$c = ___\nrépète 4 {\n  avance \$c\n  tournedroite 90\n}',
+      '\$c = 45\nrépète 4 {\n  avance \$c\n  tournedroite 90\n}',
+      45,
+      [75, 30, 20]
+    ),
     /* A hundred degrees, not a hundred and twenty. On a figure that closes, every
        count at or above the number of sides retraces it and leaves the identical ink —
        so only counts BELOW the answer could ever be wrong, and there are not three of
        those. An angle that does not divide 360 keeps adding new lines, which is what
        lets this item have three wrong answers either side of the right one. */
-    ('répète ___ {\n  avance 60\n  tournedroite 100\n}',
-        'répète 3 {\n  avance 60\n  tournedroite 100\n}', 3, [2, 4, 5]),
+    (
+      'répète ___ {\n  avance 60\n  tournedroite 100\n}',
+      'répète 3 {\n  avance 60\n  tournedroite 100\n}',
+      3,
+      [2, 4, 5]
+    ),
   ]) {
     final holes = entry.$1,
         solution = entry.$2,
@@ -1137,13 +1137,13 @@ List<Item> conceptC113() {
             correct: false,
             misconception: entry.$7),
         Choice(
-            labelKeys: b('Ça dépend de l\'appareil.',
-                'It depends on the device.'),
+            labelKeys:
+                b('Ça dépend de l\'appareil.', 'It depends on the device.'),
             correct: false,
             misconception: 'C11.3-error-means-broken'),
         Choice(
-            labelKeys: b('Il faut appeler un adulte.',
-                'You have to call a grown-up.'),
+            labelKeys:
+                b('Il faut appeler un adulte.', 'You have to call a grown-up.'),
             correct: false,
             misconception: 'C11.3-errors-mean-start-again'),
       ],
@@ -1155,8 +1155,7 @@ List<Item> conceptC113() {
       ),
       wrongChoiceFr:
           'Une erreur est un message qui aide : elle n\'a rien cassé.',
-      wrongChoiceEn:
-          'An error is a message that helps: it has broken nothing.',
+      wrongChoiceEn: 'An error is a message that helps: it has broken nothing.',
     ));
   }
 
@@ -1212,8 +1211,8 @@ List<Item> conceptC113() {
             correct: false,
             misconception: entry.$7),
         Choice(
-            labelKeys: b('Que le programme est perdu.',
-                'That the program is lost.'),
+            labelKeys:
+                b('Que le programme est perdu.', 'That the program is lost.'),
             correct: false,
             misconception: 'C11.3-errors-mean-start-again'),
         Choice(
@@ -1360,11 +1359,8 @@ List<Item> conceptC114() {
       keywords: 'en',
       withHoles: solution.replaceFirst(word, '___'),
       solution: solution,
-      promptKeys: fillBoth(
-        b('Complète avec le mot anglais qui manque.',
-            'Fill in the missing English word.'),
-        {'w': word},
-      ),
+      promptKeys: b('Complète avec le mot anglais qui manque.',
+          'Fill in the missing English word.'),
       wrong: [
         figureEn(sides, side + 25, turn),
         figureEn(sides - 1, side, turn),
@@ -1475,8 +1471,8 @@ List<Item> conceptC114() {
             correct: false,
             misconception: entry.$7),
         Choice(
-            labelKeys: b('Ça dépend du programme.',
-                'It depends on the program.'),
+            labelKeys:
+                b('Ça dépend du programme.', 'It depends on the program.'),
             correct: false,
             misconception: 'C11.4-words-are-guessed'),
         Choice(
@@ -1544,8 +1540,8 @@ List<Tutorial> world11Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C11.2',
-        conceptName: b('Le dièse met une ligne de côté.',
-            'The hash puts a line aside.'),
+        conceptName:
+            b('Le dièse met une ligne de côté.', 'The hash puts a line aside.'),
         palette: palette,
         steps: [
           watchStep(
@@ -1576,8 +1572,8 @@ List<Tutorial> world11Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C11.3',
-        conceptName: b('Une erreur dit ce qui manque.',
-            'An error says what is missing.'),
+        conceptName: b(
+            'Une erreur dit ce qui manque.', 'An error says what is missing.'),
         palette: palette,
         steps: [
           watchStep(

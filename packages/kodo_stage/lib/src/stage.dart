@@ -7,7 +7,6 @@
 /// and only the coordinate frame and the sprite model are new here.
 library;
 
-
 import 'package:kodo_lang/kodo_lang.dart';
 
 import 'consent.dart';
@@ -75,7 +74,7 @@ class Sprite {
     this.heading = 90,
     this.size = 100,
     this.visible = true,
-      /* Growable, and a copy. The default was `const []`, which meant the stage's own
+    /* Growable, and a copy. The default was `const []`, which meant the stage's own
          Tika could never be given a costume — a sprite whose looks cannot change makes
          World 10 unusable, and the failure was an "unmodifiable list" a child would never
          see and an author could not explain. */

@@ -43,8 +43,10 @@ enum KodoScreen {
   /// Whether this is one of the five §9.1 destinations the tab bar shows.
   final bool root;
 
-  static List<KodoScreen> get roots =>
-      [for (final s in KodoScreen.values) if (s.root) s];
+  static List<KodoScreen> get roots => [
+        for (final s in KodoScreen.values)
+          if (s.root) s
+      ];
 
   static KodoScreen byRoute(String route) => KodoScreen.values
       .firstWhere((s) => s.route == route, orElse: () => KodoScreen.carte);

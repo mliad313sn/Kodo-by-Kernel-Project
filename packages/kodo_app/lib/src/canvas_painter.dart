@@ -61,8 +61,8 @@ class TurtleCanvasPainter extends CustomPainter {
       Rect.fromLTWH(0, 0, canvas.width * fit, canvas.height * fit),
       Paint()..color = Color(0xFF000000 | canvas.canvasBackground),
     );
-    target.clipRect(
-        Rect.fromLTWH(0, 0, canvas.width * fit, canvas.height * fit));
+    target
+        .clipRect(Rect.fromLTWH(0, 0, canvas.width * fit, canvas.height * fit));
 
     /* Zooming about the middle of the paper, not its corner. A child who magnifies a
        figure expects the thing they were looking at to stay where it was. */
@@ -177,7 +177,9 @@ class TurtleCanvasPainter extends CustomPainter {
       old.canvas.direction != canvas.direction ||
       old.showTurtle != showTurtle ||
       old.ghost.length != ghost.length ||
-      (ghost.isNotEmpty && old.ghost.isNotEmpty && old.ghost.last != ghost.last) ||
+      (ghost.isNotEmpty &&
+          old.ghost.isNotEmpty &&
+          old.ghost.last != ghost.last) ||
       old.zoom != zoom ||
       old.pan != pan;
 }
@@ -297,8 +299,7 @@ class TurtleCanvasViewState extends State<TurtleCanvasView> {
                 _step = nearest;
                 _pan = _step == 0
                     ? Offset.zero
-                    : _panAtGestureStart +
-                        details.focalPointDelta / (zoom * 2);
+                    : _panAtGestureStart + details.focalPointDelta / (zoom * 2);
               });
             },
             child: drawing,

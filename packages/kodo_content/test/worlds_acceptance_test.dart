@@ -47,7 +47,8 @@ PackManifest manifestOf(int world) => PackManifest.fromJson(jsonDecode(
 Map<String, int> ledgerFor(Set<int> onlyWorlds) {
   final file = File('../../spec/concepts.json');
   final json = jsonDecode(file.readAsStringSync()) as Map<String, Object?>;
-  final concepts = (json['concepts']! as List<Object?>).cast<Map<String, Object?>>();
+  final concepts =
+      (json['concepts']! as List<Object?>).cast<Map<String, Object?>>();
   return {
     for (final concept in concepts)
       if (onlyWorlds.contains(concept['world'] as int))
@@ -403,8 +404,8 @@ void main() {
           .split('\n')
           .map((l) => l.startsWith('  ') ? l.substring(2) : l)
           .join('\n');
-      final verdict = Grader().grade(
-          item, ProgramResponse(parse(withoutTrigger, KeywordTables.fr).program));
+      final verdict = Grader().grade(item,
+          ProgramResponse(parse(withoutTrigger, KeywordTables.fr).program));
       expect(verdict.passed, isFalse);
       expect(verdict.situation, DiagnosticSituation.structureMissing,
           reason: 'the figure is right; the way of getting there is not');
@@ -457,21 +458,24 @@ void main() {
          item graded vacuously: printing the two numbers in the wrong order passed, and so
          did printing only one of them. A world whose third concept is "a position is a
          value" cannot be marked by a comparison that only looks at ink. */
-      final item = world4.items.firstWhere((i) =>
-          i.conceptId == 'C4.3' && i.type == ItemType.t1BuildToTarget);
+      final item = world4.items.firstWhere(
+          (i) => i.conceptId == 'C4.3' && i.type == ItemType.t1BuildToTarget);
       final reference = item.referenceSolutionSource!;
       expect(reference, contains('écris'));
 
       final grader = Grader();
       expect(
           grader
-              .grade(item, ProgramResponse(parse(reference, KeywordTables.fr).program))
+              .grade(item,
+                  ProgramResponse(parse(reference, KeywordTables.fr).program))
               .passed,
           isTrue);
 
       // The same program printing one number instead of two.
-      final truncated =
-          reference.split('\n').take(reference.split('\n').length - 1).join('\n');
+      final truncated = reference
+          .split('\n')
+          .take(reference.split('\n').length - 1)
+          .join('\n');
       final verdict = grader.grade(
           item, ProgramResponse(parse(truncated, KeywordTables.fr).program));
       expect(verdict.passed, isFalse);
@@ -479,7 +483,8 @@ void main() {
       expect(verdict.messageFor(item, 'fr'), isNotNull);
     });
 
-    test('C4.1 items pin the pose, because a jump leaves no ink to compare', () {
+    test('C4.1 items pin the pose, because a jump leaves no ink to compare',
+        () {
       for (final item in world4.items.where(
           (i) => i.conceptId == 'C4.1' && i.targetProgramSource != null)) {
         expect(item.requireFinalPose, isTrue, reason: item.id);
@@ -512,7 +517,8 @@ void main() {
 
      Remembering it a fourth time is not a plan, so it is a rule now, checked for every
      world that ships — and for every world that ever will. */
-  group('a world whose subject the canvas cannot show says so structurally', () {
+  group('a world whose subject the canvas cannot show says so structurally',
+      () {
     for (final n in [5, 6, 7, 8, 9]) {
       test('World $n\'s drawing items carry a structural claim', () {
         final items = worlds[n]!.items.where((i) =>
@@ -528,7 +534,8 @@ void main() {
                 'graded on the drawing alone');
       });
 
-      test('World $n\'s structural claims are each disproved by a distractor', () {
+      test('World $n\'s structural claims are each disproved by a distractor',
+          () {
         /* An assertion nobody can fail is decoration: if no wrong answer trips it,
            deleting it would change nothing and nothing would notice.
 
@@ -581,7 +588,8 @@ void main() {
       for (final pack in worlds.values) {
         final taught = pack.tutorials.map((t) => t.conceptId).toSet();
         expect(taught, pack.concepts.keys.toSet(),
-            reason: 'World ${pack.world}: ${pack.concepts.keys.length} concepts, '
+            reason:
+                'World ${pack.world}: ${pack.concepts.keys.length} concepts, '
                 '${taught.length} tutorials');
       }
     });
@@ -628,8 +636,8 @@ void main() {
     test('and only one screen is ever drawn', () {
       /* The misconception is "an app is one screen", and its distractor is the program
          that draws them all. It has to actually draw more than the answer does. */
-      final items = world12.items.where((i) =>
-          i.conceptId == 'C12.3' && i.referenceSolutionSource != null);
+      final items = world12.items.where(
+          (i) => i.conceptId == 'C12.3' && i.referenceSolutionSource != null);
       for (final item in items) {
         final one = VectorCanvas();
         final program = parse(item.referenceSolutionSource!, KeywordTables.fr);
@@ -652,7 +660,8 @@ void main() {
       // §4.3's choice, and the reason it is worth an item: a language that answered zero
       // silently would teach the off-by-one by letting a child get it wrong quietly.
       final canvas = VectorCanvas();
-      final program = parse(r'$l = [3, 1, 2]' '\n' r'écris $l[0]', KeywordTables.fr);
+      final program =
+          parse(r'$l = [3, 1, 2]' '\n' r'écris $l[0]', KeywordTables.fr);
       expect(program.errors, isEmpty);
       final run = runProgram(program.program, canvas);
       expect(run.error, isNotNull);
@@ -700,8 +709,10 @@ void main() {
       /* Not "they both work" — the same tree, which is the claim `FR-M15-03` makes and
          the reason switching keywords mid-edit cannot alter a program. */
       const pairs = [
-        ('répète 4 {\n  avance 60\n  tournedroite 90\n}',
-            'repeat 4 {\n  forward 60\n  turnright 90\n}'),
+        (
+          'répète 4 {\n  avance 60\n  tournedroite 90\n}',
+          'repeat 4 {\n  forward 60\n  turnright 90\n}'
+        ),
         ('si 3 > 1 {\n  avance 50\n}', 'if 3 > 1 {\n  forward 50\n}'),
         ('écris 7', 'print 7'),
       ];
@@ -724,12 +735,12 @@ void main() {
          actually stop would be teaching a skill with nothing to practise on. */
       // T2 only: a fill-the-gap also carries a starting program, and its holes are
       // written with `___`, which is not meant to parse.
-      final broken = world11.items.where((i) =>
-          i.conceptId == 'C11.3' && i.type == ItemType.t2FixTheBug);
+      final broken = world11.items.where(
+          (i) => i.conceptId == 'C11.3' && i.type == ItemType.t2FixTheBug);
       expect(broken, hasLength(5));
       for (final item in broken) {
-        final parsed = parseEither(item.startingProgramSource!,
-            locale: item.keywords);
+        final parsed =
+            parseEither(item.startingProgramSource!, locale: item.keywords);
         expect(parsed.errors, isEmpty,
             reason: '${item.id}: a program that never parses never runs, so '
                 'there is nothing to read the error of');
@@ -741,7 +752,8 @@ void main() {
       }
     });
 
-    test('C11.2 comments out rather than deletes, and it makes no difference', () {
+    test('C11.2 comments out rather than deletes, and it makes no difference',
+        () {
       /* The misconception is that comments run. The proof is that a commented line and
          a deleted line leave the same canvas — which is exactly why the deleted version
          is offered as a correct alternative. */
@@ -750,7 +762,8 @@ void main() {
           (i.referenceSolutionSource ?? '').startsWith('#'));
       expect(items, isNotEmpty);
       for (final item in items) {
-        final withComment = parse(item.referenceSolutionSource!, KeywordTables.fr);
+        final withComment =
+            parse(item.referenceSolutionSource!, KeywordTables.fr);
         final deleted = parse(
             item.referenceSolutionSource!.split('\n').skip(1).join('\n'),
             KeywordTables.fr);
@@ -789,8 +802,7 @@ void main() {
     test('every program item asks for a stage', () {
       /* A World 10 item on a canvas is refused by the interpreter before it draws
          anything: `costumesuivant` has nowhere to go. */
-      final items =
-          world10.items.where((i) => i.type.wantsProgram);
+      final items = world10.items.where((i) => i.type.wantsProgram);
       expect(items, isNotEmpty);
       for (final item in items) {
         expect(item.stage, isNotNull, reason: '${item.id} has no stage');
@@ -817,7 +829,8 @@ void main() {
       }
     });
 
-    test('a distractor really does leave a different stage, or trip a claim', () {
+    test('a distractor really does leave a different stage, or trip a claim',
+        () {
       for (final item in world10.items.where((i) =>
           i.type.wantsProgram &&
           i.type != ItemType.t9OpenBuild &&
@@ -827,8 +840,8 @@ void main() {
           final parsed = parse(source, KeywordTables.fr);
           if (parsed.errors.isNotEmpty) continue;
           final differs = stateOf(item, source).firstDifference(target) != null;
-          final tripped = item.assertions
-              .any((a) => !a.check(parsed.program).passed);
+          final tripped =
+              item.assertions.any((a) => !a.check(parsed.program).passed);
           expect(differs || tripped, isTrue,
               reason: '${item.id}: a wrong answer leaves the same stage and '
                   'breaks no claim');
@@ -847,8 +860,10 @@ void main() {
               .program,
           between);
       runProgram(
-          parse('répète 3 {\n  avance 20\n}\ntambour 1, 1\ntambour 1, 1\n'
-                  'tambour 1, 1', KeywordTables.fr)
+          parse(
+                  'répète 3 {\n  avance 20\n}\ntambour 1, 1\ntambour 1, 1\n'
+                  'tambour 1, 1',
+                  KeywordTables.fr)
               .program,
           atEnd);
       expect(between.state.score.length, atEnd.state.score.length);
@@ -914,7 +929,8 @@ void main() {
          a write would fail every correct answer. This is the reason World 6's
          `UsesVariable` grew a `min`. */
       final items = world9.items.where((i) =>
-          i.conceptId == 'C9.2' && i.assertions.whereType<UsesVariable>().isNotEmpty);
+          i.conceptId == 'C9.2' &&
+          i.assertions.whereType<UsesVariable>().isNotEmpty);
       expect(items, isNotEmpty);
       for (final item in items) {
         for (final claim in item.assertions.whereType<UsesVariable>()) {
@@ -947,12 +963,14 @@ void main() {
             KeywordTables.fr);
         if (swapped.errors.isNotEmpty) continue;
         final canvas = VectorCanvas();
-        if (runProgram(swapped.program, canvas, seed: item.seed).error != null) {
+        if (runProgram(swapped.program, canvas, seed: item.seed).error !=
+            null) {
           stopped++;
         }
       }
       expect(stopped, greaterThanOrEqualTo(items.length - 4),
-          reason: 'only $stopped of ${items.length} C9.3 items notice the swap');
+          reason:
+              'only $stopped of ${items.length} C9.3 items notice the swap');
     });
 
     test('no narration in World 9 says the word it is teaching', () {
@@ -1001,14 +1019,15 @@ void main() {
       expect(sensing, isNotEmpty);
       for (final item in sensing) {
         expect(
-            item.assertions.whereType<UsesOpcode>().any(
-                (a) => a.opcodeId == 'TOUCHING_EDGE' || a.opcodeId == 'KEY_DOWN'),
+            item.assertions.whereType<UsesOpcode>().any((a) =>
+                a.opcodeId == 'TOUCHING_EDGE' || a.opcodeId == 'KEY_DOWN'),
             isTrue,
             reason: '${item.id} can be passed by counting the steps');
       }
     });
 
-    test('C8.4 draws something after the loop, or the word does not matter', () {
+    test('C8.4 draws something after the loop, or the word does not matter',
+        () {
       /* `coupure` and `sortie` produce the identical picture unless the program has
          something left to do. Every C8.4 program item therefore has to draw after the
          loop closes, and the proof is that swapping the word changes the drawing. */
@@ -1080,8 +1099,9 @@ void main() {
       for (final item in drawing) {
         final without = unguardedSegments(item);
         final differs = without != null && without != guardedSegments(item);
-        final claims = item.assertions.whereType<ContainsNode>().any((a) =>
-            a.node == 'If');
+        final claims = item.assertions
+            .whereType<ContainsNode>()
+            .any((a) => a.node == 'If');
         expect(differs || claims, isTrue,
             reason: '${item.id} grades the same with the si removed');
       }
@@ -1222,8 +1242,8 @@ void main() {
 
     test('C6.5 offers the misconception as a choice a child can be shown wrong',
         () {
-      final predicts = world6.items.where(
-          (i) => i.conceptId == 'C6.5' && i.type == ItemType.t3Predict);
+      final predicts = world6.items
+          .where((i) => i.conceptId == 'C6.5' && i.type == ItemType.t3Predict);
       expect(predicts, hasLength(5));
       for (final item in predicts) {
         expect(
@@ -1271,35 +1291,38 @@ void main() {
        whose "wrong" answers passed. These tests are the line holding that fix in place. */
 
     test('a right shape in the wrong colour does not pass', () {
-      final item = world3.items.firstWhere((i) => i.conceptId == 'C3.3' &&
-          i.type == ItemType.t1BuildToTarget);
+      final item = world3.items.firstWhere(
+          (i) => i.conceptId == 'C3.3' && i.type == ItemType.t1BuildToTarget);
       final reference = item.referenceSolutionSource!;
       // The same program, one channel changed. Nothing else about it moves.
       final recoloured = reference.replaceFirst(
           RegExp(r'couleurcrayon [\d, ]+'), 'couleurcrayon 12, 34, 56');
-      expect(recoloured, isNot(reference), reason: 'the substitution must bite');
+      expect(recoloured, isNot(reference),
+          reason: 'the substitution must bite');
 
       final grader = Grader();
       expect(
           grader
-              .grade(item, ProgramResponse(parse(reference, KeywordTables.fr).program))
+              .grade(item,
+                  ProgramResponse(parse(reference, KeywordTables.fr).program))
               .passed,
           isTrue);
       expect(
           grader
-              .grade(item, ProgramResponse(parse(recoloured, KeywordTables.fr).program))
+              .grade(item,
+                  ProgramResponse(parse(recoloured, KeywordTables.fr).program))
               .passed,
           isFalse,
           reason: 'a blue square is not a red square');
     });
 
     test('the message names the colour rather than the shape', () {
-      final item = world3.items.firstWhere((i) => i.conceptId == 'C3.3' &&
-          i.type == ItemType.t1BuildToTarget);
+      final item = world3.items.firstWhere(
+          (i) => i.conceptId == 'C3.3' && i.type == ItemType.t1BuildToTarget);
       final recoloured = item.referenceSolutionSource!.replaceFirst(
           RegExp(r'couleurcrayon [\d, ]+'), 'couleurcrayon 12, 34, 56');
-      final verdict =
-          Grader().grade(item, ProgramResponse(parse(recoloured, KeywordTables.fr).program));
+      final verdict = Grader().grade(
+          item, ProgramResponse(parse(recoloured, KeywordTables.fr).program));
       expect(verdict.situation, DiagnosticSituation.wrongColour,
           reason: 'telling a child their correct shape is wrong sends them '
               'back to redraw something that was already right');
@@ -1327,8 +1350,8 @@ void main() {
       /* `nettoietout` and `initialise` differ only in where Tika ends up. Without
          `requireFinalPose` the grader would accept either one wherever the surviving
          marks happen to coincide, and the concept would be untestable. */
-      for (final item in world3.items.where((i) =>
-          i.conceptId == 'C3.5' && i.targetProgramSource != null)) {
+      for (final item in world3.items.where(
+          (i) => i.conceptId == 'C3.5' && i.targetProgramSource != null)) {
         expect(item.requireFinalPose, isTrue, reason: item.id);
       }
     });
@@ -1385,18 +1408,73 @@ void maintenanceTests(Map<int, ContentPack> worlds) {
       for (final pack in worlds.values) {
         for (final item in pack.items) {
           for (final id in item.paletteScope) {
-            expect(Opcode.byId(id) != null || syntaxPaletteIds.contains(id), isTrue,
-                reason: '${item.id} offers "$id", which the engine does not have');
+            expect(Opcode.byId(id) != null || syntaxPaletteIds.contains(id),
+                isTrue,
+                reason:
+                    '${item.id} offers "$id", which the engine does not have');
           }
         }
         for (final tutorial in pack.tutorials) {
           for (final id in tutorial.paletteScope) {
-            expect(Opcode.byId(id) != null || syntaxPaletteIds.contains(id), isTrue,
-                reason: '${tutorial.id} offers "$id", which the engine does not have');
+            expect(Opcode.byId(id) != null || syntaxPaletteIds.contains(id),
+                isTrue,
+                reason:
+                    '${tutorial.id} offers "$id", which the engine does not have');
           }
         }
       }
     });
   });
 
+  /* The bank-wide claims. Every rule above is about one item or one concept; these are
+     about the 1 240 of them together, which is where the defects that no single item can
+     show up in live. */
+  group('the curriculum as a whole', () {
+    test('the right answer is not always in the same place', () {
+      /* This is what a review found: all 436 choice items in the curriculum were
+         authored with the right answer first, and delivered in that order. A child who
+         taps the top answer passes a third of the bank, and an eight-year-old works that
+         out faster than any adult expects. Measured on the PRESENTED order, because that
+         is the only order a child can see. */
+      final slots = <int, int>{};
+      var total = 0;
+      for (final pack in worlds.values) {
+        for (final item in pack.items) {
+          if (item.choices.length < 2) continue;
+          final at = presentedCorrectIndex(item);
+          slots[at] = (slots[at] ?? 0) + 1;
+          total++;
+        }
+      }
+      expect(total, greaterThan(300), reason: 'too few choice items to judge');
+      expect(slots.keys.length, greaterThanOrEqualTo(3));
+      for (final entry in slots.entries) {
+        expect(entry.value / total, lessThan(0.40),
+            reason: 'slot ${entry.key} holds ${entry.value} of $total right '
+                'answers — the shuffle is gone or biased');
+      }
+    });
+
+    test('no question is asked twice', () {
+      final failures = checkBank([
+        for (final pack in worlds.values) ...pack.items,
+      ]).where((f) =>
+          f.rule == 'duplicate-item' ||
+          f.rule == 'duplicate-id' ||
+          f.rule == 'prompt-crosses-concepts');
+      expect(failures, isEmpty);
+    });
+
+    test('every concept a child can practise has a tutorial in front of it',
+        () {
+      for (final pack in worlds.values) {
+        final taught = pack.tutorials.map((t) => t.conceptId).toSet();
+        for (final conceptId in pack.concepts.keys) {
+          expect(taught, contains(conceptId),
+              reason: 'world ${pack.world} practises $conceptId and never '
+                  'teaches it');
+        }
+      }
+    });
+  });
 }

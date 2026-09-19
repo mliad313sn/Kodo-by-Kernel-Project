@@ -80,7 +80,10 @@ enum DemoPhase { ghosted, real }
 const Map<ExpectedAction, Map<String, String>> defaultCallsToAction = {
   ExpectedAction.watch: {'fr': 'Continuer', 'en': 'Next'},
   ExpectedAction.placeBlock: {'fr': 'Pose le bloc', 'en': 'Put the block'},
-  ExpectedAction.editNumber: {'fr': 'Écris le nombre', 'en': 'Write the number'},
+  ExpectedAction.editNumber: {
+    'fr': 'Écris le nombre',
+    'en': 'Write the number'
+  },
   ExpectedAction.runProgram: {'fr': 'Appuie sur le vert', 'en': 'Press green'},
   ExpectedAction.buildProgram: {'fr': 'À toi', 'en': 'Your turn'},
   ExpectedAction.toggleView: {'fr': 'Change de vue', 'en': 'Switch the view'},
@@ -158,7 +161,9 @@ class TutorialStep {
         if (successCondition != null) 'success': successCondition!.toJson(),
         if (retryHintKeys.isNotEmpty) 'retry': retryHintKeys,
         if (newIdeas.isNotEmpty) 'newIdeas': newIdeas,
-        'cta': {for (final l in const ['fr', 'en']) l: callToActionIn(l)},
+        'cta': {
+          for (final l in const ['fr', 'en']) l: callToActionIn(l)
+        },
       };
 
   static TutorialStep fromJson(Map<String, Object?> j) => TutorialStep(
@@ -516,7 +521,8 @@ List<TutorialFailure> checkTutorial(Tutorial tutorial,
     for (final locale in locales) {
       final cta = step.callToActionIn(locale).trim();
       if (cta.isEmpty) {
-        fail(step.id, 'single-call-to-action', 'no call to action in "$locale"');
+        fail(
+            step.id, 'single-call-to-action', 'no call to action in "$locale"');
       } else if (cta.split(RegExp(r'\s+')).length > 4) {
         fail(step.id, 'call-to-action-length',
             '"$locale" call to action is ${cta.split(RegExp(r'\s+')).length} words; a button is four');

@@ -145,12 +145,72 @@ List<Item> conceptC61() {
      where the number lives. The last is the sharpest: copying a box takes a snapshot, it
      does not tie the two boxes together. */
   for (final entry in [
-    (r'$a = 7', 'a', '7', '0', 'C6.1-box-is-empty', 'a', 'C6.1-box-holds-its-name', '1', 'C6.1-box-holds-position'),
-    (r'$a = 7' '\n' r'$b = 3', 'b', '3', '7', 'C6.1-box-holds-another', '10', 'C6.1-boxes-add-up', '0', 'C6.1-box-is-empty'),
-    (r'$a = 7' '\n' r'$a = 9', 'a', '9', '7', 'C6.1-first-value-wins', '16', 'C6.1-boxes-add-up', '79', 'C6.1-box-holds-history'),
-    (r'$a = 7' '\n' r'$b = $a', 'b', '7', '0', 'C6.1-box-is-empty', 'a', 'C6.1-box-holds-its-name', '14', 'C6.1-boxes-add-up'),
-    (r'$a = 5' '\n' r'$b = 2' '\n' r'$a = $b', 'a', '2', '5', 'C6.1-first-value-wins', '7', 'C6.1-boxes-add-up', '52', 'C6.1-box-holds-history'),
-    (r'$a = 4' '\n' r'$b = $a' '\n' r'$a = 9', 'b', '4', '9', 'C6.1-copy-follows-original', '13', 'C6.1-boxes-add-up', '0', 'C6.1-box-is-empty'),
+    (
+      r'$a = 7',
+      'a',
+      '7',
+      '0',
+      'C6.1-box-is-empty',
+      'a',
+      'C6.1-box-holds-its-name',
+      '1',
+      'C6.1-box-holds-position'
+    ),
+    (
+      r'$a = 7' '\n' r'$b = 3',
+      'b',
+      '3',
+      '7',
+      'C6.1-box-holds-another',
+      '10',
+      'C6.1-boxes-add-up',
+      '0',
+      'C6.1-box-is-empty'
+    ),
+    (
+      r'$a = 7' '\n' r'$a = 9',
+      'a',
+      '9',
+      '7',
+      'C6.1-first-value-wins',
+      '16',
+      'C6.1-boxes-add-up',
+      '79',
+      'C6.1-box-holds-history'
+    ),
+    (
+      r'$a = 7' '\n' r'$b = $a',
+      'b',
+      '7',
+      '0',
+      'C6.1-box-is-empty',
+      'a',
+      'C6.1-box-holds-its-name',
+      '14',
+      'C6.1-boxes-add-up'
+    ),
+    (
+      r'$a = 5' '\n' r'$b = 2' '\n' r'$a = $b',
+      'a',
+      '2',
+      '5',
+      'C6.1-first-value-wins',
+      '7',
+      'C6.1-boxes-add-up',
+      '52',
+      'C6.1-box-holds-history'
+    ),
+    (
+      r'$a = 4' '\n' r'$b = $a' '\n' r'$a = 9',
+      'b',
+      '4',
+      '9',
+      'C6.1-copy-follows-original',
+      '13',
+      'C6.1-boxes-add-up',
+      '0',
+      'C6.1-box-is-empty'
+    ),
   ]) {
     final source = entry.$1, box = entry.$2, value = entry.$3;
     items.add(predict(
@@ -245,11 +305,9 @@ List<Item> conceptC61() {
           'répète 4 {\n  ___\n  tournedroite 90\n}',
       solution: '\$$name = $value\n'
           'répète 4 {\n  avance \$$name\n  tournedroite 90\n}',
-      promptKeys: fillBoth(
-        b('La boîte est déjà remplie. Complète pour que Tika s\'en serve.',
-            'The box is already filled. Fill in the blank so Tika uses it.'),
-        {'v': value},
-      ),
+      promptKeys: b(
+          'La boîte est déjà remplie. Complète pour que Tika s\'en serve.',
+          'The box is already filled. Fill in the blank so Tika uses it.'),
       wrong: [
         // Draws exactly the right square, and never opens the box.
         '\$$name = $value\n'
@@ -287,8 +345,8 @@ List<Item> conceptC61() {
           correct: false,
           misconception: 'C6.1-box-holds-the-program'),
       Choice(
-          labelKeys: b(
-              'Tous les nombres qu\'on y a mis.', 'Every number ever put in it.'),
+          labelKeys: b('Tous les nombres qu\'on y a mis.',
+              'Every number ever put in it.'),
           correct: false,
           misconception: 'C6.1-box-holds-history'),
       Choice(
@@ -323,8 +381,8 @@ List<Item> conceptC61() {
           correct: false,
           misconception: 'C6.1-name-is-cosmetic'),
       Choice(
-          labelKeys: b(
-              'À dire ce que la boîte va faire.', 'To say what the box will do.'),
+          labelKeys: b('À dire ce que la boîte va faire.',
+              'To say what the box will do.'),
           correct: false,
           misconception: 'C6.1-box-does-something'),
       Choice(
@@ -385,16 +443,17 @@ List<Item> conceptC61() {
         r'A box $size is used in three places. You change the number inside it. What happens?'),
     choices: [
       Choice(
-          labelKeys: b('Les trois endroits changent.',
-              'All three places change.'),
+          labelKeys:
+              b('Les trois endroits changent.', 'All three places change.'),
           correct: true),
       Choice(
-          labelKeys: b('Seul le premier change.', 'Only the first one changes.'),
+          labelKeys:
+              b('Seul le premier change.', 'Only the first one changes.'),
           correct: false,
           misconception: 'C6.1-box-is-copied-once'),
       Choice(
-          labelKeys:
-              b('Rien ne change, c\'est déjà dessiné.', 'Nothing changes, it is already drawn.'),
+          labelKeys: b('Rien ne change, c\'est déjà dessiné.',
+              'Nothing changes, it is already drawn.'),
           correct: false,
           misconception: 'C6.1-box-holds-the-drawing'),
       Choice(
@@ -470,8 +529,8 @@ List<Item> conceptC61() {
               'It keeps a number, not instructions.'),
           correct: true),
       Choice(
-          labelKeys: b('Oui, et on peut la relancer.',
-              'Yes, and you can run it again.'),
+          labelKeys: b(
+              'Oui, et on peut la relancer.', 'Yes, and you can run it again.'),
           correct: false,
           misconception: 'C6.1-box-holds-the-program'),
       Choice(
@@ -480,7 +539,8 @@ List<Item> conceptC61() {
           correct: false,
           misconception: 'C6.1-box-holds-the-program'),
       Choice(
-          labelKeys: b('Elle garde le dessin fini.', 'It keeps the finished drawing.'),
+          labelKeys:
+              b('Elle garde le dessin fini.', 'It keeps the finished drawing.'),
           correct: false,
           misconception: 'C6.1-box-holds-the-drawing'),
     ],
@@ -492,8 +552,7 @@ List<Item> conceptC61() {
     ),
     wrongChoiceFr:
         'Une boîte contient une valeur ; les instructions restent dans le programme.',
-    wrongChoiceEn:
-        'A box holds a value; the instructions stay in the program.',
+    wrongChoiceEn: 'A box holds a value; the instructions stay in the program.',
   ));
 
   return items;
@@ -642,8 +701,7 @@ List<Item> conceptC62() {
         '  tournedroite 90\n  \$c = \$c / 2\n}',
     solution: '\$c = 10\nrépète 5 {\n  avance \$c\n'
         '  tournedroite 90\n  \$c = \$c * 2\n}',
-    promptKeys: b(
-        'Le carré devait doubler à chaque tour. Corrige le calcul.',
+    promptKeys: b('Le carré devait doubler à chaque tour. Corrige le calcul.',
         'The square was supposed to double every turn. Fix the sum.'),
     wrong: [
       '\$c = 10\nrépète 5 {\n  avance \$c\n  tournedroite 90\n  \$c = \$c + 2\n}',
@@ -824,7 +882,8 @@ List<Item> conceptC62() {
          A single template with a shared hole would have produced English word order in
          French, which `FR-M15-01` treats as a translation bug, not a style one. */
       promptKeys: b(
-        fill('Complète pour que chaque trait soit {w} de {s} pas que le précédent.',
+        fill(
+            'Complète pour que chaque trait soit {w} de {s} pas que le précédent.',
             {'w': wayFr, 's': size}),
         fill('Fill in the blank so each line is {s} steps {w} than the last.',
             {'w': wayEn, 's': size}),
@@ -880,7 +939,8 @@ List<Item> conceptC62() {
       'Le nombre voyage vers la boîte.',
       'The number travels into the box.',
     ),
-    wrongChoiceFr: 'Le = range : la droite est calculée, la gauche est remplie.',
+    wrongChoiceFr:
+        'Le = range : la droite est calculée, la gauche est remplie.',
     wrongChoiceEn:
         'The = puts: the right side is worked out, the left side is filled.',
   ));
@@ -907,8 +967,8 @@ List<Item> conceptC62() {
           correct: false,
           misconception: 'C6.2-false-equation'),
       Choice(
-          labelKeys: b('Elle range \$x dans \$x + 1.',
-              'She puts \$x into \$x + 1.'),
+          labelKeys:
+              b('Elle range \$x dans \$x + 1.', 'She puts \$x into \$x + 1.'),
           correct: false,
           misconception: 'C6.2-arrow-points-backwards'),
     ],
@@ -932,8 +992,7 @@ List<Item> conceptC62() {
         r'$a = 4 puis $a = 9. Combien de nombres la boîte $a garde-t-elle ?',
         r'$a = 4 then $a = 9. How many numbers does the box $a keep?'),
     choices: [
-      Choice(
-          labelKeys: b('Un seul : 9.', 'Just one: 9.'), correct: true),
+      Choice(labelKeys: b('Un seul : 9.', 'Just one: 9.'), correct: true),
       Choice(
           labelKeys: b('Deux : 4 et 9.', 'Two: 4 and 9.'),
           correct: false,
@@ -943,8 +1002,8 @@ List<Item> conceptC62() {
           correct: false,
           misconception: 'C6.1-first-value-wins'),
       Choice(
-          labelKeys: b('Aucun : les deux s\'annulent.',
-              'None: the two cancel out.'),
+          labelKeys:
+              b('Aucun : les deux s\'annulent.', 'None: the two cancel out.'),
           correct: false,
           misconception: 'C6.2-assignment-does-nothing'),
     ],
@@ -962,8 +1021,7 @@ List<Item> conceptC62() {
     conceptId: 'C6.2',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d3,
-    promptKeys: b(
-        r'Tu écris avance $c avant la ligne $c = 40. Que fait Tika ?',
+    promptKeys: b(r'Tu écris avance $c avant la ligne $c = 40. Que fait Tika ?',
         r'You write forward $c before the line $c = 40. What does Tika do?'),
     choices: [
       Choice(
@@ -971,8 +1029,7 @@ List<Item> conceptC62() {
               'She stops: the box is still empty.'),
           correct: true),
       Choice(
-          labelKeys: b('Elle avance de 40 quand même.',
-              'She moves 40 anyway.'),
+          labelKeys: b('Elle avance de 40 quand même.', 'She moves 40 anyway.'),
           correct: false,
           misconception: 'C6.2-lines-are-read-out-of-order'),
       Choice(
@@ -993,8 +1050,7 @@ List<Item> conceptC62() {
     ),
     wrongChoiceFr:
         'Tika lit de haut en bas : la boîte doit être remplie avant.',
-    wrongChoiceEn:
-        'Tika reads top to bottom: the box has to be filled first.',
+    wrongChoiceEn: 'Tika reads top to bottom: the box has to be filled first.',
   ));
 
   // T8 — explain.
@@ -1035,8 +1091,7 @@ List<Item> conceptC62() {
     ),
     wrongChoiceFr:
         'Les deux = ne disent pas la même chose : celui de KODO range.',
-    wrongChoiceEn:
-        'The two = do not say the same thing: KODO\'s one puts.',
+    wrongChoiceEn: 'The two = do not say the same thing: KODO\'s one puts.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -1073,8 +1128,7 @@ List<Item> conceptC62() {
       'Elle efface ce que le tour d\'avant avait ajouté.',
       'It wipes out what the last turn had added.',
     ),
-    wrongChoiceFr:
-        'Remplir dans la boucle efface la valeur du tour précédent.',
+    wrongChoiceFr: 'Remplir dans la boucle efface la valeur du tour précédent.',
     wrongChoiceEn:
         'Filling it inside the loop wipes out the previous turn\'s value.',
   ));
@@ -1097,13 +1151,12 @@ List<Item> conceptC62() {
           correct: false,
           misconception: 'C6.2-right-side-only'),
       Choice(
-          labelKeys: b('Ça crée une deuxième boîte.',
-              'It makes a second box.'),
+          labelKeys: b('Ça crée une deuxième boîte.', 'It makes a second box.'),
           correct: false,
           misconception: 'C6.2-assignment-makes-a-new-box'),
       Choice(
-          labelKeys: b('Ça compare le total avec 25.',
-              'It compares the total with 25.'),
+          labelKeys: b(
+              'Ça compare le total avec 25.', 'It compares the total with 25.'),
           correct: false,
           misconception: 'C6.2-equals-is-a-test'),
     ],
@@ -1210,7 +1263,8 @@ List<Item> conceptC63() {
       conceptId: 'C6.3',
       difficulty: Difficulty.d3,
       promptKeys: fillBoth(
-        b('Que va écrire Tika ?\n\nécris {s}', 'What will Tika print?\n\nprint {s}'),
+        b('Que va écrire Tika ?\n\nécris {s}',
+            'What will Tika print?\n\nprint {s}'),
         {'s': sum},
       ),
       choices: [
@@ -1322,16 +1376,15 @@ List<Item> conceptC63() {
     conceptId: 'C6.3',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b('À quoi servent les parenthèses ?',
-        'What are brackets for?'),
+    promptKeys: b('À quoi servent les parenthèses ?', 'What are brackets for?'),
     choices: [
       Choice(
           labelKeys: b('À dire ce qui se calcule en premier.',
               'To say what is worked out first.'),
           correct: true),
       Choice(
-          labelKeys: b('À rendre le calcul plus joli.',
-              'To make the sum look nicer.'),
+          labelKeys:
+              b('À rendre le calcul plus joli.', 'To make the sum look nicer.'),
           correct: false,
           misconception: 'C6.3-brackets-are-decoration'),
       Choice(
@@ -1398,13 +1451,13 @@ List<Item> conceptC63() {
           labelKeys: b('Il donne le reste : 2.', 'It gives the remainder: 2.'),
           correct: true),
       Choice(
-          labelKeys: b('Il donne 17 ÷ 5, soit 3,4.',
-              'It gives 17 ÷ 5, which is 3.4.'),
+          labelKeys:
+              b('Il donne 17 ÷ 5, soit 3,4.', 'It gives 17 ÷ 5, which is 3.4.'),
           correct: false,
           misconception: 'C6.3-mod-is-division'),
       Choice(
-          labelKeys: b('Il donne 3, la part entière.',
-              'It gives 3, the whole part.'),
+          labelKeys:
+              b('Il donne 3, la part entière.', 'It gives 3, the whole part.'),
           correct: false,
           misconception: 'C6.3-mod-is-division'),
       Choice(
@@ -1503,7 +1556,8 @@ List<Item> conceptC64() {
     difficulty: Difficulty.d2,
     broken: '\$a = 3\n\$b = 8\nécris \$a',
     solution: '\$a = 3\n\$b = 8\nécris \$b',
-    promptKeys: b('Tu veux voir ce qu\'il y a dans \$b. Corrige la dernière ligne.',
+    promptKeys: b(
+        'Tu veux voir ce qu\'il y a dans \$b. Corrige la dernière ligne.',
         'You want to see what is inside \$b. Fix the last line.'),
     wrong: [
       // Says 8 without ever opening the box. Right answer, wrong habit.
@@ -1588,8 +1642,7 @@ List<Item> conceptC64() {
       '\$c = 10\n\$c = \$c + 4\nécris \$c',
     ],
     assertions: [UsesVariable(name: 'c', minReads: 2)],
-    alternatives:
-        printedAlternatives('\$c = 10\n\$c = \$c * 4\nécris \$c'),
+    alternatives: printedAlternatives('\$c = 10\n\$c = \$c * 4\nécris \$c'),
     itemHints: hints(
       'L\'inspecteur montre la boîte au moment où on regarde.',
       'The inspector shows the box at the moment you look.',
@@ -1736,7 +1789,8 @@ List<Item> conceptC64() {
     conceptId: 'C6.4',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d1,
-    promptKeys: b('Que montre l\'inspecteur ?', 'What does the inspector show?'),
+    promptKeys:
+        b('Que montre l\'inspecteur ?', 'What does the inspector show?'),
     choices: [
       Choice(
           labelKeys: b('Le contenu de chaque boîte pendant que ça tourne.',
@@ -1820,13 +1874,12 @@ List<Item> conceptC64() {
               'The box is never changed inside the loop.'),
           correct: true),
       Choice(
-          labelKeys: b('L\'inspecteur est cassé.',
-              'The inspector is broken.'),
+          labelKeys: b('L\'inspecteur est cassé.', 'The inspector is broken.'),
           correct: false,
           misconception: 'C6.4-inspector-is-unreliable'),
       Choice(
-          labelKeys: b('La boucle ne tourne qu\'une fois.',
-              'The loop only runs once.'),
+          labelKeys: b(
+              'La boucle ne tourne qu\'une fois.', 'The loop only runs once.'),
           correct: false,
           misconception: 'C6.2-loop-runs-once'),
       Choice(
@@ -1860,8 +1913,8 @@ List<Item> conceptC64() {
               'Because the box tells the truth, and you might not.'),
           correct: true),
       Choice(
-          labelKeys: b('Parce que c\'est plus court.',
-              'Because it is shorter.'),
+          labelKeys:
+              b('Parce que c\'est plus court.', 'Because it is shorter.'),
           correct: false,
           misconception: 'C6.1-box-is-shorthand'),
       Choice(
@@ -1903,8 +1956,8 @@ List<Item> conceptC64() {
               'You can: the inspector shows it, or you print it.'),
           correct: true),
       Choice(
-          labelKeys: b('C\'est vrai, il faut deviner.',
-              'True, you have to guess.'),
+          labelKeys:
+              b('C\'est vrai, il faut deviner.', 'True, you have to guess.'),
           correct: false,
           misconception: 'C6.4-box-is-invisible'),
       Choice(
@@ -1913,8 +1966,8 @@ List<Item> conceptC64() {
           correct: false,
           misconception: 'C6.4-box-is-invisible'),
       Choice(
-          labelKeys: b('On le voit dans le dessin.',
-              'You can see it in the drawing.'),
+          labelKeys:
+              b('On le voit dans le dessin.', 'You can see it in the drawing.'),
           correct: false,
           misconception: 'C6.1-box-holds-the-drawing'),
     ],
@@ -1926,8 +1979,7 @@ List<Item> conceptC64() {
     ),
     wrongChoiceFr:
         'Deux moyens de voir dedans : le panneau de l\'inspecteur, et écris.',
-    wrongChoiceEn:
-        'Two ways to see inside: the inspector panel, and print.',
+    wrongChoiceEn: 'Two ways to see inside: the inspector panel, and print.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -2051,7 +2103,8 @@ List<Item> conceptC65() {
     id: id(),
     conceptId: 'C6.5',
     difficulty: Difficulty.d3,
-    solution: '\$n = hasard 3, 6\nrépète \$n {\n  avance 60\n  tournedroite 90\n}',
+    solution:
+        '\$n = hasard 3, 6\nrépète \$n {\n  avance 60\n  tournedroite 90\n}',
     promptKeys: b(
         'Tire un nombre avec hasard 3, 6 et fais autant de côtés de 60 pas.',
         'Draw a number with random 3, 6 and make that many 60-step sides.'),
@@ -2088,8 +2141,7 @@ List<Item> conceptC65() {
       conceptId: 'C6.5',
       difficulty: Difficulty.d3,
       promptKeys: fillBoth(
-        b(
-            'Dans cet exercice, le dé de Tika est toujours lancé pareil. Que va-t-elle écrire ?\n\nécris {d}',
+        b('Dans cet exercice, le dé de Tika est toujours lancé pareil. Que va-t-elle écrire ?\n\nécris {d}',
             'In this exercise Tika\'s dice is always thrown the same way. What will she print?\n\nprint {d}'),
         {'d': draw},
       ),
@@ -2160,8 +2212,7 @@ List<Item> conceptC65() {
     conceptId: 'C6.5',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b('hasard 1, 6 peut-il donner 6 ?',
-        'Can random 1, 6 give 6?'),
+    promptKeys: b('hasard 1, 6 peut-il donner 6 ?', 'Can random 1, 6 give 6?'),
     choices: [
       Choice(
           labelKeys: b('Oui : les deux bouts sont compris.',
@@ -2209,8 +2260,8 @@ List<Item> conceptC65() {
           correct: false,
           misconception: 'C6.5-seed-freezes-the-value'),
       Choice(
-          labelKeys: b('Oui : c\'est la même ligne.',
-              'Yes: it is the same line.'),
+          labelKeys:
+              b('Oui : c\'est la même ligne.', 'Yes: it is the same line.'),
           correct: false,
           misconception: 'C6.5-seed-freezes-the-value'),
       Choice(
@@ -2306,10 +2357,8 @@ List<Item> conceptC65() {
       'C\'est parce que le dé est réglé.',
       'That is because the dice is set.',
     ),
-    wrongChoiceFr:
-        'Un dé réglé rend le hasard répétable, donc vérifiable.',
-    wrongChoiceEn:
-        'A set dice makes randomness repeatable, and so checkable.',
+    wrongChoiceFr: 'Un dé réglé rend le hasard répétable, donc vérifiable.',
+    wrongChoiceEn: 'A set dice makes randomness repeatable, and so checkable.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -2326,8 +2375,8 @@ List<Item> conceptC65() {
               'So it is not the same every game.'),
           correct: true),
       Choice(
-          labelKeys: b('Pour que le jeu soit plus rapide.',
-              'To make the game faster.'),
+          labelKeys: b(
+              'Pour que le jeu soit plus rapide.', 'To make the game faster.'),
           correct: false,
           misconception: 'C6.1-box-is-speed'),
       Choice(
@@ -2335,8 +2384,8 @@ List<Item> conceptC65() {
           correct: false,
           misconception: 'C6.5-random-hides-bugs'),
       Choice(
-          labelKeys: b('Parce que c\'est obligatoire.',
-              'Because it is compulsory.'),
+          labelKeys:
+              b('Parce que c\'est obligatoire.', 'Because it is compulsory.'),
           correct: false,
           misconception: 'C6.1-box-is-compulsory'),
     ],
@@ -2376,8 +2425,8 @@ List<Item> conceptC65() {
           correct: false,
           misconception: 'C6.1-box-holds-the-drawing'),
       Choice(
-          labelKeys: b('Parce que tu as de la chance.',
-              'Because you are lucky.'),
+          labelKeys:
+              b('Parce que tu as de la chance.', 'Because you are lucky.'),
           correct: false,
           misconception: 'C6.5-random-is-untestable'),
     ],
@@ -2389,8 +2438,7 @@ List<Item> conceptC65() {
     ),
     wrongChoiceFr:
         'Le tirage est réel ; c\'est son point de départ qui est fixé.',
-    wrongChoiceEn:
-        'The draw is real; it is its starting point that is fixed.',
+    wrongChoiceEn: 'The draw is real; it is its starting point that is fixed.',
   ));
 
   /* T9 — three open builds. The rubric is the item: there is no target picture, and the
@@ -2407,8 +2455,7 @@ List<Item> conceptC65() {
       rubricLine('Ton programme tire un nombre au hasard.',
           'Your program draws a number at random.', const UsesOpcode('RANDOM')),
       rubricLine('Tu ranges ce nombre dans une boîte.',
-          'You put that number into a box.',
-          const UsesVariable(minReads: 1)),
+          'You put that number into a box.', const UsesVariable(minReads: 1)),
       rubricLine('Ton dessin répète quelque chose.',
           'Your drawing repeats something.', const ContainsNode('Repeat')),
     ],
@@ -2431,7 +2478,8 @@ List<Item> conceptC65() {
     rubric: [
       rubricLine('Ton programme tire un nombre au hasard.',
           'Your program draws a number at random.', const UsesOpcode('RANDOM')),
-      rubricLine('Le nombre tiré compte les tours.',
+      rubricLine(
+          'Le nombre tiré compte les tours.',
           'The number drawn counts the turns.',
           const UsesVariable(minReads: 1)),
       rubricLine('Tu te sers d\'un répète.', 'You use a repeat.',
@@ -2456,12 +2504,14 @@ List<Item> conceptC65() {
       'Make a drawing that changes colour at random.',
     ),
     rubric: [
-      rubricLine('Ton programme tire des nombres au hasard.',
+      rubricLine(
+          'Ton programme tire des nombres au hasard.',
           'Your program draws numbers at random.',
           const UsesOpcode('RANDOM', min: 1)),
       rubricLine('Tu changes la couleur du crayon.',
           'You change the pen colour.', const UsesOpcode('PEN_COLOR')),
-      rubricLine('Tu ranges au moins un tirage dans une boîte.',
+      rubricLine(
+          'Tu ranges au moins un tirage dans une boîte.',
           'You put at least one draw into a box.',
           const UsesVariable(minReads: 1)),
       rubricLine('Ton dessin répète quelque chose.',
@@ -2522,7 +2572,8 @@ List<Tutorial> world6Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C6.2',
-        conceptName: b('Le signe = range un nombre.', 'The = sign puts a number in.'),
+        conceptName:
+            b('Le signe = range un nombre.', 'The = sign puts a number in.'),
         palette: palette,
         steps: [
           watchStep(
@@ -2554,8 +2605,8 @@ List<Tutorial> world6Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C6.3',
-        conceptName: b('Les fois passent avant les plus.',
-            'Times comes before plus.'),
+        conceptName:
+            b('Les fois passent avant les plus.', 'Times comes before plus.'),
         palette: palette,
         steps: [
           watchStep(

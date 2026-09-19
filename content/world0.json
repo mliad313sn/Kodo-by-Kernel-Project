@@ -5531,8 +5531,8 @@
       "type": "T3",
       "difficulty": "D2",
       "prompt": {
-        "fr": "Mêmes blocs, autre ordre. Que dessinent les deux programmes ?",
-        "en": "Same blocks, different order. What do the two programs draw?"
+        "fr": "Avance 60, tourne, avance 40. Et dans l'autre ordre ?",
+        "en": "Forward 60, turn, forward 40. And in the other order?"
       },
       "wrong": [],
       "alternatives": [],
@@ -5596,8 +5596,8 @@
       "type": "T3",
       "difficulty": "D2",
       "prompt": {
-        "fr": "Mêmes blocs, autre ordre. Que dessinent les deux programmes ?",
-        "en": "Same blocks, different order. What do the two programs draw?"
+        "fr": "Avance 70, tourne, avance 30. Et dans l'autre ordre ?",
+        "en": "Forward 70, turn, forward 30. And in the other order?"
       },
       "wrong": [],
       "alternatives": [],
@@ -5661,8 +5661,8 @@
       "type": "T3",
       "difficulty": "D2",
       "prompt": {
-        "fr": "Mêmes blocs, autre ordre. Que dessinent les deux programmes ?",
-        "en": "Same blocks, different order. What do the two programs draw?"
+        "fr": "Avance 50, tourne, avance 80. Et dans l'autre ordre ?",
+        "en": "Forward 50, turn, forward 80. And in the other order?"
       },
       "wrong": [],
       "alternatives": [],
@@ -5726,8 +5726,8 @@
       "type": "T6",
       "difficulty": "D2",
       "prompt": {
-        "fr": "Un programme fait : avance, tourne, avance. Quel bloc est le dernier ?",
-        "en": "A program does: forward, turn, forward. Which block is the last?"
+        "fr": "Avance, tourne de 90, avance. Quel bloc est le dernier ?",
+        "en": "Forward, turn 90, forward. Which block is the last?"
       },
       "wrong": [],
       "alternatives": [],
@@ -5791,8 +5791,8 @@
       "type": "T6",
       "difficulty": "D2",
       "prompt": {
-        "fr": "Un programme fait : avance, tourne, avance. Quel bloc est le dernier ?",
-        "en": "A program does: forward, turn, forward. Which block is the last?"
+        "fr": "Avance, tourne de 120, avance. Quel bloc est le dernier ?",
+        "en": "Forward, turn 120, forward. Which block is the last?"
       },
       "wrong": [],
       "alternatives": [],
@@ -5856,8 +5856,8 @@
       "type": "T6",
       "difficulty": "D2",
       "prompt": {
-        "fr": "Un programme fait : avance, tourne, avance. Quel bloc est le dernier ?",
-        "en": "A program does: forward, turn, forward. Which block is the last?"
+        "fr": "Avance, tourne de 60, avance. Quel bloc est le dernier ?",
+        "en": "Forward, turn 60, forward. Which block is the last?"
       },
       "wrong": [],
       "alternatives": [],
@@ -8325,8 +8325,8 @@
       "type": "T6",
       "difficulty": "D3",
       "prompt": {
-        "fr": "Tu montes un bloc tourner plus haut. Qu'est-ce qui change ?",
-        "en": "You move a turn block higher up. What changes?"
+        "fr": "Tu montes le bloc numéro 2 plus haut. Qu'est-ce qui change ?",
+        "en": "You move block number 2 higher up. What changes?"
       },
       "wrong": [],
       "alternatives": [],
@@ -8390,8 +8390,8 @@
       "type": "T6",
       "difficulty": "D3",
       "prompt": {
-        "fr": "Tu montes un bloc tourner plus haut. Qu'est-ce qui change ?",
-        "en": "You move a turn block higher up. What changes?"
+        "fr": "Tu montes le bloc numéro 3 plus haut. Qu'est-ce qui change ?",
+        "en": "You move block number 3 higher up. What changes?"
       },
       "wrong": [],
       "alternatives": [],
@@ -8455,8 +8455,8 @@
       "type": "T6",
       "difficulty": "D3",
       "prompt": {
-        "fr": "Tu montes un bloc tourner plus haut. Qu'est-ce qui change ?",
-        "en": "You move a turn block higher up. What changes?"
+        "fr": "Tu montes le bloc numéro 4 plus haut. Qu'est-ce qui change ?",
+        "en": "You move block number 4 higher up. What changes?"
       },
       "wrong": [],
       "alternatives": [],
@@ -11071,8 +11071,8 @@
       "type": "T6",
       "difficulty": "D1",
       "prompt": {
-        "fr": "Tu as fait une erreur dans ton programme. Que peux-tu faire ?",
-        "en": "You made a mistake in your program. What can you do?"
+        "fr": "Ton programme a un bloc en trop. Que peux-tu faire ?",
+        "en": "Your program has un bloc en trop. What can you do?"
       },
       "wrong": [],
       "alternatives": [],
@@ -11136,8 +11136,8 @@
       "type": "T6",
       "difficulty": "D1",
       "prompt": {
-        "fr": "Tu as fait une erreur dans ton programme. Que peux-tu faire ?",
-        "en": "You made a mistake in your program. What can you do?"
+        "fr": "Ton programme a un mauvais nombre. Que peux-tu faire ?",
+        "en": "Your program has un mauvais nombre. What can you do?"
       },
       "wrong": [],
       "alternatives": [],
@@ -11201,8 +11201,8 @@
       "type": "T6",
       "difficulty": "D1",
       "prompt": {
-        "fr": "Tu as fait une erreur dans ton programme. Que peux-tu faire ?",
-        "en": "You made a mistake in your program. What can you do?"
+        "fr": "Ton programme a un bloc enlevé. Que peux-tu faire ?",
+        "en": "Your program has un bloc enlevé. What can you do?"
       },
       "wrong": [],
       "alternatives": [],
@@ -12282,5 +12282,5 @@
     "art/tika.svg",
     "art/world0-plage.svg"
   ],
-  "sizeBytes": 443145
+  "sizeBytes": 443001
 }

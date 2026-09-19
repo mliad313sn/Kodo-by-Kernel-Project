@@ -8,6 +8,12 @@
 /// discharge the requirement. The reference-device measurement is a named G3 deliverable
 /// and is recorded as outstanding in `docs/modules/M1_DONE.md`. Saying so here is cheaper
 /// than discovering at G3 that a green tick meant nothing.
+///
+/// **VM only**, and it is the only file in M1 that is. The rest of the language suite runs
+/// in a browser as well, which is how the product's cross-platform promise is kept honest
+/// — this one writes its measurements to a file, and a browser has no filesystem. A timing
+/// number from a JavaScript runtime would also be measuring the wrong machine.
+@TestOn('vm')
 library;
 
 import 'dart:convert';

@@ -416,11 +416,14 @@ void main() {
     test('every shipped tutorial passes the three rules', () {
       for (final tutorial in world1.tutorials) {
         final rules = checkTutorial(tutorial).map((f) => f.rule).toSet();
-        expect(rules.intersection({
-          'single-call-to-action',
-          'call-to-action-length',
-          'spotlight-required',
-        }), isEmpty, reason: tutorial.id);
+        expect(
+            rules.intersection({
+              'single-call-to-action',
+              'call-to-action-length',
+              'spotlight-required',
+            }),
+            isEmpty,
+            reason: tutorial.id);
       }
     });
   });

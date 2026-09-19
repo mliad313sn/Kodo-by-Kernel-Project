@@ -96,8 +96,7 @@ class KodoScaffold extends StatelessWidget {
         actions: actions,
       ),
       body: SafeArea(child: child),
-      bottomNavigationBar:
-          shell.current.root ? const KodoRootBar() : null,
+      bottomNavigationBar: shell.current.root ? const KodoRootBar() : null,
     );
   }
 }
@@ -225,8 +224,8 @@ class _WorldCard extends StatelessWidget {
         key: Key('world-$number'),
         onTap: open
             ? onTap
-            : () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(_s(context, 'carte.locked')))),
+            : () => ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(_s(context, 'carte.locked')))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -236,7 +235,8 @@ class _WorldCard extends StatelessWidget {
                      placeholder that says "not drawn" — never another world's picture,
                      which would teach a child the wrong thing about where they are. */
                   ? ColoredBox(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
                       child: Center(
                           child: Text('$number',
                               style: const TextStyle(fontSize: 32))),
@@ -359,8 +359,7 @@ class GalerieScreen extends StatelessWidget {
               children: [
                 for (final title in projectTitles)
                   Material(
-                      child:
-                          ListTile(title: Text(title), minTileHeight: 56)),
+                      child: ListTile(title: Text(title), minTileHeight: 56)),
               ],
             ),
     );
@@ -483,7 +482,9 @@ class _ItemScreenState extends State<ItemScreen> {
   /// Rebuilt when the item changes and never otherwise: a controller that survives the
   /// item would carry the last child's program into the next question.
   EditorController _controllerFor(ItemInFlight flight, String keywordLocale) {
-    if (_forItemId == flight.item.id && _controller != null) return _controller!;
+    if (_forItemId == flight.item.id && _controller != null) {
+      return _controller!;
+    }
     _forItemId = flight.item.id;
     return _controller = EditorController(
       initialSource: flight.item.startingProgramSource ?? '',
@@ -548,7 +549,8 @@ class _ItemScreenState extends State<ItemScreen> {
           ],
           child: Column(
             children: [
-              _Prompt(text: item.promptIn(locale), locale: locale, prefs: prefs),
+              _Prompt(
+                  text: item.promptIn(locale), locale: locale, prefs: prefs),
               /* `FR-M6-06` — the rubric, before the child starts rather than after they
                  finish. An open build has no single right answer, so a child who cannot
                  see what "done" means can only produce something and hope; the rubric is
@@ -568,14 +570,16 @@ class _ItemScreenState extends State<ItemScreen> {
               Expanded(
                 child: choices.isNotEmpty
                     ? _Choices(
-                        choices: choices,
+                        // In the order the child sees them, never the authored order:
+                        // every item in the bank has its right answer written first.
+                        choices: presentedChoices(item),
                         locale: locale,
                         enabled: loop.phase == LoopPhase.working,
                         onChoose: loop.choose,
                       )
                     : _Work(
-                        controller: _controllerFor(
-                            flight, shell.session.keywordLocale),
+                        controller:
+                            _controllerFor(flight, shell.session.keywordLocale),
                         scope: PaletteScope.ofIds(item.paletteScope),
                         keywordLocale: shell.session.keywordLocale,
                         drawn: loop.drawn,
@@ -593,7 +597,8 @@ class _ItemScreenState extends State<ItemScreen> {
 }
 
 class _Prompt extends StatelessWidget {
-  const _Prompt({required this.text, required this.locale, required this.prefs});
+  const _Prompt(
+      {required this.text, required this.locale, required this.prefs});
   final String text;
   final String locale;
   final AccessibilityPreferences prefs;

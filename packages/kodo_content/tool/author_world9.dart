@@ -266,7 +266,8 @@ List<Item> conceptC91() {
         turn = entry.$3,
         sizes = entry.$4,
         budget = entry.$5;
-    final solution = '${learn(name, sidedBody(sides, '\$c', turn), params: '\$c')}\n'
+    final solution =
+        '${learn(name, sidedBody(sides, '\$c', turn), params: '\$c')}\n'
         '${sizes.map((s) => '$name $s').join('\n')}';
     items.add(golf(
       id: id(),
@@ -275,8 +276,7 @@ List<Item> conceptC91() {
       solution: solution,
       budget: budget,
       promptKeys: fillBoth(
-        b(
-            'Dessine les trois figures de {a}, {b} et {c} pas en {k} blocs au maximum.',
+        b('Dessine les trois figures de {a}, {b} et {c} pas en {k} blocs au maximum.',
             'Draw the three shapes of {a}, {b} and {c} steps in {k} blocks or fewer.'),
         {'a': sizes[0], 'b': sizes[1], 'c': sizes[2], 'k': budget},
       ),
@@ -310,16 +310,31 @@ List<Item> conceptC91() {
 
   // T9 — five open builds.
   for (final entry in [
-    ('Apprends un bloc et sers-t\'en trois fois.',
-        'Teach a block and use it three times.', 3),
-    ('Apprends un bloc qui dessine ta figure préférée.',
-        'Teach a block that draws your favourite shape.', 2),
-    ('Fais une fleur avec un bloc pétale.',
-        'Make a flower with a petal block.', 4),
-    ('Fais une frise avec un bloc que tu répètes.',
-        'Make a border with a block you repeat.', 3),
-    ('Apprends deux blocs et sers-toi des deux.',
-        'Teach two blocks and use both.', 2),
+    (
+      'Apprends un bloc et sers-t\'en trois fois.',
+      'Teach a block and use it three times.',
+      3
+    ),
+    (
+      'Apprends un bloc qui dessine ta figure préférée.',
+      'Teach a block that draws your favourite shape.',
+      2
+    ),
+    (
+      'Fais une fleur avec un bloc pétale.',
+      'Make a flower with a petal block.',
+      4
+    ),
+    (
+      'Fais une frise avec un bloc que tu répètes.',
+      'Make a border with a block you repeat.',
+      3
+    ),
+    (
+      'Apprends deux blocs et sers-toi des deux.',
+      'Teach two blocks and use both.',
+      2
+    ),
   ]) {
     final minCalls = entry.$3;
     final twoBlocks = entry.$1.startsWith('Apprends deux');
@@ -337,7 +352,8 @@ List<Item> conceptC91() {
                 ? 'You teach Tika two blocks.'
                 : 'You teach Tika one block.',
             DefinesProcedure(min: twoBlocks ? 2 : 1)),
-        rubricLine('Tu t\'en sers au moins $minCalls fois.',
+        rubricLine(
+            'Tu t\'en sers au moins $minCalls fois.',
             'You use it at least $minCalls times.',
             ContainsNode('ProcCall', min: minCalls)),
         rubricLine('Tika dessine quelque chose.', 'Tika draws something.',
@@ -465,7 +481,8 @@ List<Item> conceptC92() {
       id: id(),
       conceptId: 'C9.2',
       difficulty: Difficulty.d3,
-      broken: '${learn(name, sidedBody(sides, '$small', turn), params: '\$$param')}\n$calls',
+      broken:
+          '${learn(name, sidedBody(sides, '$small', turn), params: '\$$param')}\n$calls',
       solution: solution,
       promptKeys: fillBoth(
         b(
@@ -525,11 +542,9 @@ List<Item> conceptC92() {
       withHoles:
           '${learn(name, sidedBody(sides, '___', turn), params: '\$$param')}\n$calls',
       solution: solution,
-      promptKeys: fillBoth(
-        b('Complète pour que le bloc se serve de la taille qu\'on lui donne.',
-            'Fill in the blank so the block uses the size it is given.'),
-        {'n': name},
-      ),
+      promptKeys: b(
+          'Complète pour que le bloc se serve de la taille qu\'on lui donne.',
+          'Fill in the blank so the block uses the size it is given.'),
       wrong: [
         '${learn(name, sidedBody(sides, '$small', turn), params: '\$$param')}\n$calls',
         '${learn(name, sidedBody(sides, '$big', turn), params: '\$$param')}\n$calls',
@@ -561,8 +576,7 @@ List<Item> conceptC92() {
     conceptId: 'C9.2',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d2,
-    promptKeys: b(
-        'Dans apprends carré \$côté { … }, qu\'est-ce que \$côté ?',
+    promptKeys: b('Dans apprends carré \$côté { … }, qu\'est-ce que \$côté ?',
         r'In learn square $side { … }, what is $side?'),
     choices: [
       Choice(
@@ -589,10 +603,8 @@ List<Item> conceptC92() {
       'La boîte n\'a pas le même contenu les deux fois.',
       'The box does not hold the same thing both times.',
     ),
-    wrongChoiceFr:
-        'Le nombre écrit à l\'appel entre dans la boîte du bloc.',
-    wrongChoiceEn:
-        'The number written at the call goes into the block\'s box.',
+    wrongChoiceFr: 'Le nombre écrit à l\'appel entre dans la boîte du bloc.',
+    wrongChoiceEn: 'The number written at the call goes into the block\'s box.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -650,8 +662,8 @@ List<Item> conceptC92() {
           correct: false,
           misconception: 'C9.2-parameter-is-compulsory'),
       Choice(
-          labelKeys: b('Pour que le bloc aille plus vite.',
-              'To make the block faster.'),
+          labelKeys: b(
+              'Pour que le bloc aille plus vite.', 'To make the block faster.'),
           correct: false,
           misconception: 'C6.1-box-is-speed'),
       Choice(
@@ -680,12 +692,13 @@ List<Item> conceptC92() {
         r'The block takes $side but its body says forward 60. What happens?'),
     choices: [
       Choice(
-          labelKeys: b('Toutes les figures font 60, quelle que soit la taille donnée.',
+          labelKeys: b(
+              'Toutes les figures font 60, quelle que soit la taille donnée.',
               'Every shape is 60, whatever size you give.'),
           correct: true),
       Choice(
-          labelKeys: b('Tika refuse le programme.',
-              'Tika refuses the program.'),
+          labelKeys:
+              b('Tika refuse le programme.', 'Tika refuses the program.'),
           correct: false,
           misconception: 'C9.2-unused-parameter-is-an-error'),
       Choice(
@@ -705,10 +718,8 @@ List<Item> conceptC92() {
       'Le corps se sert du 60 écrit à la main.',
       'The body uses the 60 typed by hand.',
     ),
-    wrongChoiceFr:
-        'Une boîte qu\'on ne lit pas ne change rien au dessin.',
-    wrongChoiceEn:
-        'A box nobody reads changes nothing in the drawing.',
+    wrongChoiceFr: 'Une boîte qu\'on ne lit pas ne change rien au dessin.',
+    wrongChoiceEn: 'A box nobody reads changes nothing in the drawing.',
   ));
   items.add(choiceItem(
     id: id(),
@@ -719,8 +730,8 @@ List<Item> conceptC92() {
         r'Can a block take two numbers?'),
     choices: [
       Choice(
-          labelKeys: b('Oui, séparés par une virgule.',
-              'Yes, separated by a comma.'),
+          labelKeys:
+              b('Oui, séparés par une virgule.', 'Yes, separated by a comma.'),
           correct: true),
       Choice(
           labelKeys: b('Non, un seul.', 'No, only one.'),
@@ -742,22 +753,36 @@ List<Item> conceptC92() {
       'Deux boîtes, deux noms, une virgule.',
       'Two boxes, two names, one comma.',
     ),
-    wrongChoiceFr:
-        'Un bloc peut prendre autant de boîtes qu\'il lui en faut.',
-    wrongChoiceEn:
-        'A block can take as many boxes as it needs.',
+    wrongChoiceFr: 'Un bloc peut prendre autant de boîtes qu\'il lui en faut.',
+    wrongChoiceEn: 'A block can take as many boxes as it needs.',
   ));
 
   // T9 — four open builds.
   for (final entry in [
-    ('Apprends un bloc qui prend une taille. Sers-t\'en à trois tailles.',
-        'Teach a block that takes a size. Use it at three sizes.', 1, 3),
-    ('Apprends un bloc qui prend deux nombres.',
-        'Teach a block that takes two numbers.', 2, 2),
-    ('Fais une cible avec un bloc qui grandit.',
-        'Make a target with a block that grows.', 1, 3),
-    ('Fais une frise avec un bloc qui prend une taille.',
-        'Make a border with a block that takes a size.', 1, 3),
+    (
+      'Apprends un bloc qui prend une taille. Sers-t\'en à trois tailles.',
+      'Teach a block that takes a size. Use it at three sizes.',
+      1,
+      3
+    ),
+    (
+      'Apprends un bloc qui prend deux nombres.',
+      'Teach a block that takes two numbers.',
+      2,
+      2
+    ),
+    (
+      'Fais une cible avec un bloc qui grandit.',
+      'Make a target with a block that grows.',
+      1,
+      3
+    ),
+    (
+      'Fais une frise avec un bloc qui prend une taille.',
+      'Make a border with a block that takes a size.',
+      1,
+      3
+    ),
   ]) {
     final params = entry.$3, minCalls = entry.$4;
     items.add(openBuild(
@@ -776,7 +801,8 @@ List<Item> conceptC92() {
                 ? 'The block reads both its boxes.'
                 : 'The block reads the box it is given.',
             UsesVariable(min: 0, minReads: params)),
-        rubricLine('Tu t\'en sers au moins $minCalls fois.',
+        rubricLine(
+            'Tu t\'en sers au moins $minCalls fois.',
             'You use it at least $minCalls times.',
             ContainsNode('ProcCall', min: minCalls)),
         rubricLine('Tika dessine quelque chose.', 'Tika draws something.',
@@ -876,11 +902,39 @@ List<Item> conceptC93() {
   /* T3 — what does the program write? The answer is "rien" more often than a child
      expects, because a block that returns and is never printed shows nothing at all. */
   for (final entry in [
-    ('retourne \$x * 2', 'double 7', 'rien', 'nothing', '14', 'C9.3-return-prints'),
+    (
+      'retourne \$x * 2',
+      'double 7',
+      'rien',
+      'nothing',
+      '14',
+      'C9.3-return-prints'
+    ),
     ('écris \$x * 2', 'double 7', '14', '14', 'rien', 'C9.3-print-returns'),
-    ('retourne \$x * 2', 'écris double 7', '14', '14', 'rien', 'C9.3-return-prints'),
-    ('retourne \$x + 1', 'écris double double 3', '5', '5', '4', 'C9.3-nested-call-runs-once'),
-    ('écris \$x + 1', 'double 3\ndouble 5', '4 puis 6', '4 then 6', '10', 'C9.3-print-returns'),
+    (
+      'retourne \$x * 2',
+      'écris double 7',
+      '14',
+      '14',
+      'rien',
+      'C9.3-return-prints'
+    ),
+    (
+      'retourne \$x + 1',
+      'écris double double 3',
+      '5',
+      '5',
+      '4',
+      'C9.3-nested-call-runs-once'
+    ),
+    (
+      'écris \$x + 1',
+      'double 3\ndouble 5',
+      '4 puis 6',
+      '4 then 6',
+      '10',
+      'C9.3-print-returns'
+    ),
   ]) {
     final body = entry.$1, use = entry.$2, fr = entry.$3, en = entry.$4;
     items.add(predict(
@@ -928,8 +982,7 @@ List<Item> conceptC93() {
     ('triple', '\$x * 3', 25, 75),
   ]) {
     final name = entry.$1, expression = entry.$2, argument = entry.$3;
-    final solution =
-        '${learn(name, 'retourne $expression', params: '\$x')}\n'
+    final solution = '${learn(name, 'retourne $expression', params: '\$x')}\n'
         'avance $name $argument';
     items.add(fillTheGap(
       id: id(),
@@ -1012,17 +1065,15 @@ List<Item> conceptC93() {
         'What is the difference between print and return?'),
     choices: [
       Choice(
-          labelKeys: b('écris montre, retourne donne.',
-              'print shows, return gives.'),
+          labelKeys:
+              b('écris montre, retourne donne.', 'print shows, return gives.'),
           correct: true),
       Choice(
-          labelKeys: b('Aucune : les deux affichent.',
-              'None: both show it.'),
+          labelKeys: b('Aucune : les deux affichent.', 'None: both show it.'),
           correct: false,
           misconception: 'C9.3-return-prints'),
       Choice(
-          labelKeys: b('retourne est plus rapide.',
-              'return is faster.'),
+          labelKeys: b('retourne est plus rapide.', 'return is faster.'),
           correct: false,
           misconception: 'C6.1-box-is-speed'),
       Choice(
@@ -1097,13 +1148,13 @@ List<Item> conceptC93() {
           correct: false,
           misconception: 'C9.3-return-prints'),
       Choice(
-          labelKeys: b('Seulement sur sa propre ligne.',
-              'Only on a line of its own.'),
+          labelKeys:
+              b('Seulement sur sa propre ligne.', 'Only on a line of its own.'),
           correct: false,
           misconception: 'C9.3-call-is-a-statement-only'),
       Choice(
-          labelKeys: b('Seulement dans un autre bloc.',
-              'Only inside another block.'),
+          labelKeys:
+              b('Seulement dans un autre bloc.', 'Only inside another block.'),
           correct: false,
           misconception: 'C9.3-call-is-a-statement-only'),
     ],
@@ -1135,8 +1186,8 @@ List<Item> conceptC93() {
           correct: false,
           misconception: 'C9.3-return-prints'),
       Choice(
-          labelKeys: b('Elle range 14 quelque part.',
-              'It stores 14 somewhere.'),
+          labelKeys:
+              b('Elle range 14 quelque part.', 'It stores 14 somewhere.'),
           correct: false,
           misconception: 'C9.3-return-assigns'),
       Choice(
@@ -1176,11 +1227,13 @@ List<Item> conceptC93() {
           correct: false,
           misconception: 'C9.3-return-prints'),
       Choice(
-          labelKeys: b('Oui, sauf dans un bloc.', 'Yes, except inside a block.'),
+          labelKeys:
+              b('Oui, sauf dans un bloc.', 'Yes, except inside a block.'),
           correct: false,
           misconception: 'C9.3-return-prints'),
       Choice(
-          labelKeys: b('Non : écris est interdit.', 'No: print is not allowed.'),
+          labelKeys:
+              b('Non : écris est interdit.', 'No: print is not allowed.'),
           correct: false,
           misconception: 'C9.3-print-is-banned'),
     ],
@@ -1250,8 +1303,8 @@ List<Item> conceptC93() {
               'No: a block that draws has nothing to hand back.'),
           correct: true),
       Choice(
-          labelKeys: b('Oui, sinon il ne sert à rien.',
-              'Yes, otherwise it is useless.'),
+          labelKeys: b(
+              'Oui, sinon il ne sert à rien.', 'Yes, otherwise it is useless.'),
           correct: false,
           misconception: 'C9.3-return-is-compulsory'),
       Choice(
@@ -1308,7 +1361,13 @@ List<Item> conceptC94() {
      block that calls a block is the whole idea of the concept in three lines. */
   for (final entry in [
     ('côté', 'toit', 'avance 60', 'côté\ntournedroite 90', 4),
-    ('barre', 'marche', 'avance 40', 'barre\ntournedroite 90\nbarre\ntournegauche 90', 3),
+    (
+      'barre',
+      'marche',
+      'avance 40',
+      'barre\ntournedroite 90\nbarre\ntournegauche 90',
+      3
+    ),
     ('trait', 'branche', 'avance 50', 'trait\ntournedroite 120', 3),
     ('bord', 'coin', 'avance 45', 'bord\ntournedroite 60', 6),
   ]) {
@@ -1416,7 +1475,13 @@ List<Item> conceptC94() {
      cannot be written flat under these budgets, so the child has to name the part. */
   for (final entry in [
     ('pétale', 'répète 4 {\n  avance 40\n  tournedroite 90\n}', 6, 60, 7),
-    ('marche', 'avance 30\ntournedroite 90\navance 30\ntournegauche 90', 5, 0, 8),
+    (
+      'marche',
+      'avance 30\ntournedroite 90\navance 30\ntournegauche 90',
+      5,
+      0,
+      8
+    ),
     ('branche', 'répète 3 {\n  avance 35\n  tournedroite 120\n}', 8, 45, 7),
     ('dent', 'avance 25\ntournedroite 90\navance 25\ntournegauche 90', 6, 0, 8),
   ]) {
@@ -1487,8 +1552,8 @@ List<Item> conceptC94() {
           correct: false,
           misconception: 'C9.4-one-piece-only'),
       Choice(
-          labelKeys: b('Par la partie la plus difficile.',
-              'With the hardest part.'),
+          labelKeys:
+              b('Par la partie la plus difficile.', 'With the hardest part.'),
           correct: false,
           misconception: 'C9.4-hardest-first'),
     ],
@@ -1512,8 +1577,8 @@ List<Item> conceptC94() {
         'Can a block use another block?'),
     choices: [
       Choice(
-          labelKeys: b('Oui, s\'il a été appris avant.',
-              'Yes, if it was taught first.'),
+          labelKeys: b(
+              'Oui, s\'il a été appris avant.', 'Yes, if it was taught first.'),
           correct: true),
       Choice(
           labelKeys: b('Non, jamais.', 'No, never.'),
@@ -1545,7 +1610,8 @@ List<Item> conceptC94() {
     conceptId: 'C9.4',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d3,
-    promptKeys: b('Pourquoi un programme coupé en parts est-il plus facile à réparer ?',
+    promptKeys: b(
+        'Pourquoi un programme coupé en parts est-il plus facile à réparer ?',
         'Why is a program cut into parts easier to fix?'),
     choices: [
       Choice(
@@ -1558,8 +1624,8 @@ List<Item> conceptC94() {
           correct: false,
           misconception: 'C9.4-shorter-is-the-point'),
       Choice(
-          labelKeys: b('Parce que Tika va plus vite.',
-              'Because Tika goes faster.'),
+          labelKeys:
+              b('Parce que Tika va plus vite.', 'Because Tika goes faster.'),
           correct: false,
           misconception: 'C6.1-box-is-speed'),
       Choice(
@@ -1573,29 +1639,27 @@ List<Item> conceptC94() {
       'On le corrige à un seul endroit.',
       'You fix it in one place.',
     ),
-    wrongChoiceFr:
-        'Une part nommée se corrige une fois pour tous ses usages.',
-    wrongChoiceEn:
-        'A named part is fixed once for every place that uses it.',
+    wrongChoiceFr: 'Une part nommée se corrige une fois pour tous ses usages.',
+    wrongChoiceEn: 'A named part is fixed once for every place that uses it.',
   ));
   items.add(choiceItem(
     id: id(),
     conceptId: 'C9.4',
     type: ItemType.t6ReadAndAnswer,
     difficulty: Difficulty.d3,
-    promptKeys: b('Quel nom donner à un bloc ?', 'What should a block be called?'),
+    promptKeys:
+        b('Quel nom donner à un bloc ?', 'What should a block be called?'),
     choices: [
       Choice(
-          labelKeys: b('Ce qu\'il dessine.', 'What it draws.'),
-          correct: true),
+          labelKeys: b('Ce qu\'il dessine.', 'What it draws.'), correct: true),
       Choice(
-          labelKeys: b('Une lettre, c\'est plus court.',
-              'A letter, it is shorter.'),
+          labelKeys:
+              b('Une lettre, c\'est plus court.', 'A letter, it is shorter.'),
           correct: false,
           misconception: 'C9.4-names-do-not-matter'),
       Choice(
-          labelKeys: b('Son numéro dans le programme.',
-              'Its number in the program.'),
+          labelKeys:
+              b('Son numéro dans le programme.', 'Its number in the program.'),
           correct: false,
           misconception: 'C9.4-names-do-not-matter'),
       Choice(
@@ -1627,13 +1691,13 @@ List<Item> conceptC94() {
       Choice(
           labelKeys: b('Les six changent.', 'All six change.'), correct: true),
       Choice(
-          labelKeys: b('Seul le premier change.',
-              'Only the first one changes.'),
+          labelKeys:
+              b('Seul le premier change.', 'Only the first one changes.'),
           correct: false,
           misconception: 'C6.1-box-is-copied-once'),
       Choice(
-          labelKeys: b('Aucun : le dessin est fait.',
-              'None: the drawing is finished.'),
+          labelKeys: b(
+              'Aucun : le dessin est fait.', 'None: the drawing is finished.'),
           correct: false,
           misconception: 'C6.1-box-holds-the-drawing'),
       Choice(
@@ -1654,18 +1718,31 @@ List<Item> conceptC94() {
         'Six calls of one block all follow the latest version of its body.',
   ));
 
-  // T9 — five open builds. Two named parts, both used.
+  /* T9 — five open builds. Two named parts, both used, and now the prompts SAY so.
+     Four of these asked for one block and the rubric below marked the child down for not
+     making two — which a child experiences as the app changing its mind. One of them also
+     repeated a C9.1 prompt word for word against a different bar. */
   for (final entry in [
-    ('Fais une fleur avec un bloc pétale.',
-        'Make a flower with a petal block.'),
-    ('Fais une maison avec un bloc mur et un bloc toit.',
-        'Make a house with a wall block and a roof block.'),
-    ('Fais un escalier avec un bloc marche.',
-        'Make a staircase with a step block.'),
-    ('Fais un arbre avec un bloc branche.',
-        'Make a tree with a branch block.'),
-    ('Coupe ton dessin préféré en deux blocs nommés.',
-        'Cut your favourite drawing into two named blocks.'),
+    (
+      'Fais une fleur avec un bloc pétale et un bloc tige.',
+      'Make a flower with a petal block and a stem block.'
+    ),
+    (
+      'Fais une maison avec un bloc mur et un bloc toit.',
+      'Make a house with a wall block and a roof block.'
+    ),
+    (
+      'Fais un escalier avec un bloc marche et un bloc palier.',
+      'Make a staircase with a step block and a landing block.'
+    ),
+    (
+      'Fais un arbre avec un bloc branche et un bloc tronc.',
+      'Make a tree with a branch block and a trunk block.'
+    ),
+    (
+      'Coupe ton dessin préféré en deux blocs nommés.',
+      'Cut your favourite drawing into two named blocks.'
+    ),
   ]) {
     items.add(openBuild(
       id: id(),
@@ -1677,7 +1754,8 @@ List<Item> conceptC94() {
             'You teach Tika two blocks.', const DefinesProcedure(min: 2)),
         rubricLine('Tu te sers des deux.', 'You use both of them.',
             const ContainsNode('ProcCall', min: 2)),
-        rubricLine('Ton programme principal tient en peu de lignes.',
+        rubricLine(
+            'Ton programme principal tient en peu de lignes.',
             'Your main program fits in a few lines.',
             const BlockCountWithin(min: 3, max: 24)),
         rubricLine('Tika dessine quelque chose.', 'Tika draws something.',
@@ -1771,8 +1849,8 @@ List<Tutorial> world9Tutorials() => [
       ),
       tutorialFor(
         conceptId: 'C9.3',
-        conceptName: b('Retourne rend un nombre.',
-            'Return hands a number back.'),
+        conceptName:
+            b('Retourne rend un nombre.', 'Return hands a number back.'),
         palette: palette,
         steps: [
           watchStep(

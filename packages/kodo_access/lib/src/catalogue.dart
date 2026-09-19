@@ -181,8 +181,7 @@ final StringCatalogue uiStrings = StringCatalogue([
           'this, so a child using a screen reader can place a stack without seeing '
           'where the gaps are.'),
   _s('a11y.keep_program', 'Garder mon programme.', 'Keep my program.',
-      context:
-          'The button that exports the program as text and as a picture '
+      context: 'The button that exports the program as text and as a picture '
           '(`FR-M3-08`). "Keep", not "export": a child is saving something they made.'),
   _s('a11y.block_level', 'Il est au niveau {level}.', 'It is at level {level}.',
       context:

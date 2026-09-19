@@ -217,12 +217,14 @@ void main() {
        existed there was no way in the application to write a number: the exercise could
        be opened, read, and not answered. */
 
-    testWidgets('every number in a block has a target beside it', (tester) async {
+    testWidgets('every number in a block has a target beside it',
+        (tester) async {
       final controller = EditorController(initialSource: 'avance 50');
       await tester.pumpWidget(
           _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
 
-      final literal = (controller.program.body.first as Command).args.first as Node;
+      final literal =
+          (controller.program.body.first as Command).args.first as Node;
       expect(find.byKey(Key('literal-${literal.id}')), findsOneWidget);
     });
 
@@ -232,7 +234,8 @@ void main() {
       await tester.pumpWidget(
           _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
 
-      final literal = (controller.program.body.first as Command).args.first as Node;
+      final literal =
+          (controller.program.body.first as Command).args.first as Node;
       await tester.tap(find.byKey(Key('literal-${literal.id}')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('number-pad')), findsOneWidget);
@@ -259,7 +262,8 @@ void main() {
       await tester.pumpWidget(
           _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
 
-      final literal = (controller.program.body.first as Command).args.first as Node;
+      final literal =
+          (controller.program.body.first as Command).args.first as Node;
       await tester.tap(find.byKey(Key('literal-${literal.id}')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('pad-−')));
@@ -275,7 +279,8 @@ void main() {
       final controller = EditorController(initialSource: 'avance 50');
       await tester.pumpWidget(
           _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
-      final literal = (controller.program.body.first as Command).args.first as Node;
+      final literal =
+          (controller.program.body.first as Command).args.first as Node;
       await tester.tap(find.byKey(Key('literal-${literal.id}')));
       await tester.pumpAndSettle();
 
@@ -293,7 +298,8 @@ void main() {
       final controller = EditorController(initialSource: 'avance 50');
       await tester.pumpWidget(
           _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
-      final literal = (controller.program.body.first as Command).args.first as Node;
+      final literal =
+          (controller.program.body.first as Command).args.first as Node;
       await tester.tap(find.byKey(Key('literal-${literal.id}')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('pad-9')));
@@ -319,16 +325,19 @@ void main() {
               controller: controller,
               scope: scopeForWorld(1),
               compact: true))));
-      final literal = (controller.program.body.first as Command).args.first as Node;
+      final literal =
+          (controller.program.body.first as Command).args.first as Node;
       final size = tester.getSize(find.byKey(Key('literal-${literal.id}')));
 
       expect(size.width, greaterThanOrEqualTo(minimumTouchTarget));
       expect(size.height, greaterThanOrEqualTo(minimumTouchTarget));
       expect(size.width, lessThan(120),
-          reason: 'a two-digit number does not need a hundred and twenty pixels');
+          reason:
+              'a two-digit number does not need a hundred and twenty pixels');
     });
 
-    testWidgets('the number is inside the block, not beside it', (tester) async {
+    testWidgets('the number is inside the block, not beside it',
+        (tester) async {
       /* A block spans the width of the script, so a number placed NEXT to it lands on a
          line of its own and stops reading as part of anything. Written out, `avance 50`
          is one thing; on screen it has to stay one thing. */
@@ -381,10 +390,12 @@ void main() {
           _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
 
       final command = controller.program.body.first as Command;
-      expect(command.args, isEmpty, reason: 'the gap really is a missing argument');
+      expect(command.args, isEmpty,
+          reason: 'the gap really is a missing argument');
 
       final gap = find.byKey(Key('literal-${command.id}-gap-0'));
-      expect(gap, findsOneWidget, reason: 'the hole must be visible and tappable');
+      expect(gap, findsOneWidget,
+          reason: 'the hole must be visible and tappable');
 
       await tester.tap(gap);
       await tester.pumpAndSettle();
@@ -415,11 +426,13 @@ void main() {
       expect(render(controller.program, KeywordTables.fr), 'avance 5');
     });
 
-    testWidgets('editing a number is one undo step, not several', (tester) async {
+    testWidgets('editing a number is one undo step, not several',
+        (tester) async {
       final controller = EditorController(initialSource: 'avance 50');
       await tester.pumpWidget(
           _wrap(BlockEditor(controller: controller, scope: scopeForWorld(1))));
-      final literal = (controller.program.body.first as Command).args.first as Node;
+      final literal =
+          (controller.program.body.first as Command).args.first as Node;
       await tester.tap(find.byKey(Key('literal-${literal.id}')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('pad-back')));
@@ -883,7 +896,8 @@ void main() {
           onRunStack: onRun,
         );
 
-    testWidgets('the list opens and there is no keyboard in it', (tester) async {
+    testWidgets('the list opens and there is no keyboard in it',
+        (tester) async {
       final controller = EditorController(initialSource: 'lutin "chat"');
       Program? ran;
       await tester.pumpWidget(_wrap(editor(controller, onRun: (s) => ran = s)));
@@ -897,7 +911,8 @@ void main() {
       }
       expect(find.byType(TextField), findsNothing,
           reason: 'a name is chosen, never spelled');
-      expect(ran, isNull, reason: 'opening the list is not running the program');
+      expect(ran, isNull,
+          reason: 'opening the list is not running the program');
     });
 
     testWidgets('choosing rewrites the program and nothing else',
@@ -906,7 +921,8 @@ void main() {
       await tester.pumpWidget(_wrap(editor(controller)));
       final before = controller.program.body.first as Command;
 
-      await tester.tap(find.byKey(Key('choice-${(before.args.first as Node).id}')));
+      await tester
+          .tap(find.byKey(Key('choice-${(before.args.first as Node).id}')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('choice-chien')));
       await tester.pumpAndSettle();
@@ -919,7 +935,8 @@ void main() {
       expect((after.args.first as Node).id, (before.args.first as Node).id);
     });
 
-    testWidgets('each kind of block offers its own kind of list', (tester) async {
+    testWidgets('each kind of block offers its own kind of list',
+        (tester) async {
       for (final probe in [
         ('arrièreplan "nuit"', ['nuit', 'plage']),
         ('jouson "miaou"', ['miaou', 'ouaf']),
@@ -981,11 +998,11 @@ void main() {
       }
       for (final entry in namedArguments.entries) {
         expect(
-            const BlockChoices(
-                    sprites: ['s'], backdrops: ['b'], sounds: ['n'])
+            const BlockChoices(sprites: ['s'], backdrops: ['b'], sounds: ['n'])
                 .optionsFor(entry.value, 'fr'),
             isNotEmpty,
-            reason: '${entry.key.id} has an empty list even with a full project');
+            reason:
+                '${entry.key.id} has an empty list even with a full project');
       }
     });
   });
@@ -1020,7 +1037,8 @@ void main() {
       expect(av.first.equivalent, 'forward');
     });
 
-    test('grammar is offered as well as blocks — `répète` is not an opcode', () {
+    test('grammar is offered as well as blocks — `répète` is not an opcode',
+        () {
       final offers = suggestKeywords('rép',
           keywords: KeywordTables.fr, other: KeywordTables.en);
       final repeat = offers.firstWhere((o) => o.word == 'répète');
@@ -1127,9 +1145,10 @@ void main() {
     Program parsed(String source) => parse(source, KeywordTables.fr).program;
     String shown(Program p) => render(p, KeywordTables.fr).trim();
     String idOf(Program p, String word) => (p.body.firstWhere((s) =>
-        render(Program('t', SourceSpan.none, [s]), KeywordTables.fr)
-            .trim()
-            .startsWith(word)) as Node).id;
+            render(Program('t', SourceSpan.none, [s]), KeywordTables.fr)
+                .trim()
+                .startsWith(word)) as Node)
+        .id;
 
     test('a stack is the block and everything under it', () {
       final p = parsed('avance 10\ntournedroite 90\navance 20');
@@ -1160,8 +1179,8 @@ void main() {
     test('moving a stack into a loop puts every block in it', () {
       final p = parsed('répète 3 {\n  avance 10\n}\ntournedroite 90\ncentre');
       final loop = p.body.first as Repeat;
-      final moved = moveStack(p, idOf(p, 'tournedroite'),
-          DropSite(ownerId: loop.id, index: 1));
+      final moved = moveStack(
+          p, idOf(p, 'tournedroite'), DropSite(ownerId: loop.id, index: 1));
       expect(shown(moved),
           'répète 3 {\n  avance 10\n  tournedroite 90\n  centre\n}');
     });
@@ -1177,16 +1196,16 @@ void main() {
     });
 
     test('`si … sinon` has two mouths and they stay different', () {
-      final p = parsed(
-          'si 1 == 1 {\n  avance 10\n} sinon {\n  recule 10\n}\ncentre');
+      final p =
+          parsed('si 1 == 1 {\n  avance 10\n} sinon {\n  recule 10\n}\ncentre');
       final branch = p.body.first as If;
       final toElse = moveStack(p, idOf(p, 'centre'),
           DropSite(ownerId: branch.id, slot: BodySlot.orElse, index: 1));
       expect(shown(toElse),
           'si 1 == 1 {\n  avance 10\n} sinon {\n  recule 10\n  centre\n}');
 
-      final toThen = moveStack(p, idOf(p, 'centre'),
-          DropSite(ownerId: branch.id, index: 1));
+      final toThen = moveStack(
+          p, idOf(p, 'centre'), DropSite(ownerId: branch.id, index: 1));
       expect(shown(toThen),
           'si 1 == 1 {\n  avance 10\n  centre\n} sinon {\n  recule 10\n}');
     });
@@ -1275,7 +1294,8 @@ void main() {
       // loop inside itself and cannot be told off for trying.
       expect(find.byKey(Key('gap-${DropSite(ownerId: loop.id, index: 0)}')),
           findsNothing);
-      expect(find.byKey(Key('gap-${const DropSite(index: 0)}')), findsOneWidget);
+      expect(
+          find.byKey(Key('gap-${const DropSite(index: 0)}')), findsOneWidget);
     });
 
     testWidgets('a held stack changes what a tap on a block means',

@@ -173,7 +173,8 @@ class LearningLoop extends ChangeNotifier {
 
     // The canvas the child is shown is the canvas that ran. One execution, not two.
     final canvas = VectorCanvas();
-    runProgram(program, canvas, seed: flight.item.seed, inputs: flight.item.inputs);
+    runProgram(program, canvas,
+        seed: flight.item.seed, inputs: flight.item.inputs);
     _drawn = canvas;
 
     final verdict = _grader.grade(flight.item, ProgramResponse(program));
@@ -192,9 +193,8 @@ class LearningLoop extends ChangeNotifier {
         attempts: flight.attempts,
         runs: flight.runs,
         hintsShown: flight.hintsShown,
-        millisecondsToFirstRun: flight.firstRunAt!
-            .difference(flight.startedAt)
-            .inMilliseconds,
+        millisecondsToFirstRun:
+            flight.firstRunAt!.difference(flight.startedAt).inMilliseconds,
         millisecondsOnItem:
             _clock.nowUtc().difference(flight.startedAt).inMilliseconds,
       ),
@@ -213,11 +213,19 @@ class LearningLoop extends ChangeNotifier {
   }
 
   /// The child answered a choice item.
-  Future<void> choose(int index) async {
+  ///
+  /// [displayedIndex] is where the answer sat *on screen*. The choices are presented in a
+  /// deterministic shuffled order (`choiceOrder`), because every item in the bank is
+  /// authored with the right answer first and delivering them that way would let a child
+  /// pass a third of the curriculum by always tapping the top one. The grader is given the
+  /// authored index and knows nothing about presentation, so a verdict recorded today is
+  /// still readable if the shuffle ever changes.
+  Future<void> choose(int displayedIndex) async {
     final flight = _current;
     if (flight == null) return;
     flight.attempts += 1;
 
+    final index = authoredIndexOf(flight.item, displayedIndex);
     final verdict = _grader.grade(flight.item, ChoiceResponse(index));
     _verdict = verdict;
     _drawn = null;

@@ -115,7 +115,8 @@ enum Opcode {
   mouseX('MOUSE_X', OpcodeKind.function, OpcodeFamily.capteurs, 0, 0),
   mouseY('MOUSE_Y', OpcodeKind.function, OpcodeFamily.capteurs, 0, 0),
   mouseDown('MOUSE_DOWN', OpcodeKind.function, OpcodeFamily.capteurs, 0, 0),
-  touchingEdge('TOUCHING_EDGE', OpcodeKind.function, OpcodeFamily.capteurs, 0, 0),
+  touchingEdge(
+      'TOUCHING_EDGE', OpcodeKind.function, OpcodeFamily.capteurs, 0, 0),
   touchingColour(
       'TOUCHING_COLOUR', OpcodeKind.function, OpcodeFamily.capteurs, 3, 3),
 
@@ -130,7 +131,8 @@ enum Opcode {
      the language was specified against Worlds 0 to 4 while the curriculum ran to World
      12. The stage could already hold several sprites and select between them; only the
      word was missing. */
-  selectSprite('SELECT_SPRITE', OpcodeKind.command, OpcodeFamily.apparence, 1, 1),
+  selectSprite(
+      'SELECT_SPRITE', OpcodeKind.command, OpcodeFamily.apparence, 1, 1),
   nextCostume('NEXT_COSTUME', OpcodeKind.command, OpcodeFamily.apparence, 0, 0),
   setCostume('SET_COSTUME', OpcodeKind.command, OpcodeFamily.apparence, 1, 1),
   costumeNumber(
