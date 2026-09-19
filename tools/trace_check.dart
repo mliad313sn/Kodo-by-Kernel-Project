@@ -14,6 +14,10 @@
 //      therefore what makes a grading verdict portable (§11.1).
 //   3. Every requirement id referenced in code must exist in the register. A reference to
 //      FR-M1-99 means someone is building against a requirement nobody agreed.
+//   4. Every concept in the ledger must be expressible in the language (`FR-M21-06`).
+//      This one exists because of what D-014 found: M1's prompt specified a language
+//      against Worlds 0-4, the curriculum runs to World 12, and nobody compared the two
+//      documents line by line because no gate read both. Now one does.
 //
 // Run: dart tools/trace_check.dart
 //
@@ -154,11 +158,89 @@ void main() {
       '${done.length} marked done, ${referencedInTests.length} named by a test');
   stdout.writeln('report: build/traceability.md');
 
+  _checkCurriculumIsExpressible(root.path);
+
   if (_failures > 0) {
     stderr.writeln('\n$_failures traceability failure(s)');
     exit(1);
   }
   stdout.writeln('OK');
+}
+
+/// `FR-M21-06` — a concept the language cannot express fails the build.
+///
+/// The ledger says what each world teaches, in words. This maps those words onto the
+/// opcode table and shouts when a world names something the language has no block for.
+/// It is a coarse check on purpose: it is looking for a WORLD with no vocabulary at all,
+/// which is the failure that actually happened, not for a missing argument.
+void _checkCurriculumIsExpressible(String root) {
+  final ledgerFile = File('$root/spec/concepts.json');
+  final opcodeFile = File('$root/packages/kodo_lang/lib/src/opcodes.dart');
+  if (!ledgerFile.existsSync() || !opcodeFile.existsSync()) return;
+
+  final opcodes = opcodeFile.readAsStringSync();
+  final keywords =
+      File('$root/packages/kodo_lang/lib/src/keywords.dart').existsSync()
+          ? File('$root/packages/kodo_lang/lib/src/keywords.dart')
+              .readAsStringSync()
+          : '';
+
+  /* A concept may need an OPCODE (`WHEN_FLAG`) or a SYNTAX WORD (`while_`). Both are
+     vocabulary as far as a curriculum designer is concerned, and checking only the first
+     is how this gate would have reported a missing `while` that has been there since M1.
+     Syntax words are named with a trailing underscore, which is how they are told apart. */
+  bool has(String id) => id.startsWith('syntax:')
+      ? keywords.contains('SyntaxWord.${id.substring(7)}')
+      : opcodes.contains("'$id'");
+
+  /* What a concept needs, by the words the ledger uses for it. Authored, because the
+     ledger is prose written for a curriculum designer and the opcode table is code: the
+     bridge between them is a judgement and belongs in one visible place. */
+  const needs = <String, List<String>>{
+    'green flag': ['WHEN_FLAG'],
+    'key pressed': ['WHEN_KEY'],
+    'sprite clicked': ['WHEN_CLICKED'],
+    'two scripts': ['WHEN_FLAG'],
+    'sensing': ['KEY_DOWN', 'MOUSE_X', 'TOUCHING_COLOUR'],
+    'costumes': ['NEXT_COSTUME', 'SET_COSTUME'],
+    'sounds': ['PLAY_SOUND', 'PLAY_DRUM'],
+    'backdrops': ['SET_BACKDROP'],
+    'graphic effects': ['SET_EFFECT', 'CLEAR_EFFECTS'],
+    'assignment': ['PRINT'],
+    'random': ['RANDOM'],
+    'while': ['syntax:while_'],
+    'if': ['syntax:if_'],
+    'else': ['syntax:else_'],
+    'define a block': ['syntax:learn'],
+    'return': ['syntax:return_'],
+    'break': ['syntax:break_'],
+    'booleans': ['syntax:true_', 'syntax:false_'],
+    'and / or / not': ['syntax:and', 'syntax:or', 'syntax:not'],
+  };
+
+  final ledger = jsonDecode(ledgerFile.readAsStringSync());
+  final rows = ledger is List
+      ? ledger.cast<Map<String, Object?>>()
+      : ((ledger as Map<String, Object?>)['concepts']! as List<Object?>)
+          .cast<Map<String, Object?>>();
+
+  var checked = 0;
+  for (final row in rows) {
+    final english = (row['en'] as String? ?? '').toLowerCase();
+    for (final entry in needs.entries) {
+      if (!english.contains(entry.key)) continue;
+      checked++;
+      for (final id in entry.value) {
+        if (!has(id)) {
+          _fail('${row['id']} — "${row['en']}" needs an opcode the language does '
+              'not have: $id. A concept the language cannot express is a world '
+              'nobody can author (FR-M21-06).');
+        }
+      }
+    }
+  }
+  stdout.writeln('curriculum: $checked concept(s) checked against the opcode '
+      'table, ${rows.length} in the ledger');
 }
 
 bool _isDone(String? status) {

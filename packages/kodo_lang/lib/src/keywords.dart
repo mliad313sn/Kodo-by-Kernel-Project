@@ -39,6 +39,9 @@ enum SyntaxWord {
   not,
   true_,
   false_,
+
+  /// `quand` — the head of an event script (`FR-M21-01`).
+  when_,
 }
 
 /// One opcode's written forms in one language.
@@ -259,8 +262,36 @@ abstract final class KeywordTables {
       Opcode.toNumber: const KeywordEntry('nombre', abbreviation: 'nb'),
       Opcode.wait: const KeywordEntry('attends'),
       Opcode.assertion: const KeywordEntry('assertion'),
+      // Événements (D-014)
+      Opcode.whenFlag: const KeywordEntry('drapeau'),
+      Opcode.whenKey: const KeywordEntry('touche'),
+      Opcode.whenClicked: const KeywordEntry('clic'),
+      // Capteurs
+      Opcode.keyDown: const KeywordEntry('touchepressée',
+          abbreviation: 'tp', aliases: ['touchepressee']),
+      Opcode.mouseX: const KeywordEntry('sourisx'),
+      Opcode.mouseY: const KeywordEntry('sourisy'),
+      Opcode.mouseDown: const KeywordEntry('sourisappuyée',
+          aliases: ['sourisappuyee']),
+      Opcode.touchingEdge: const KeywordEntry('touchebord'),
+      Opcode.touchingColour: const KeywordEntry('touchecouleur'),
+      // Lutins et scène
+      Opcode.nextCostume: const KeywordEntry('costumesuivant',
+          abbreviation: 'cs'),
+      Opcode.setCostume: const KeywordEntry('costume'),
+      Opcode.costumeNumber: const KeywordEntry('numérocostume',
+          aliases: ['numerocostume']),
+      Opcode.setBackdrop: const KeywordEntry('arrièreplan',
+          aliases: ['arriereplan']),
+      Opcode.setEffect: const KeywordEntry('effet'),
+      Opcode.clearEffects: const KeywordEntry('effaceeffets'),
+      Opcode.say: const KeywordEntry('dis'),
+      Opcode.playSound: const KeywordEntry('jouson'),
+      Opcode.playDrum: const KeywordEntry('tambour'),
+      Opcode.playNote: const KeywordEntry('note'),
     },
     syntax: {
+      SyntaxWord.when_: const KeywordEntry('quand'),
       SyntaxWord.repeat: const KeywordEntry('répète', aliases: ['repete']),
       SyntaxWord.while_: const KeywordEntry('tantque'),
       SyntaxWord.for_: const KeywordEntry('pour'),
@@ -324,8 +355,32 @@ abstract final class KeywordTables {
       Opcode.toNumber: const KeywordEntry('number', abbreviation: 'nb'),
       Opcode.wait: const KeywordEntry('wait'),
       Opcode.assertion: const KeywordEntry('assert'),
+      // Events (D-014)
+      Opcode.whenFlag: const KeywordEntry('flag'),
+      Opcode.whenKey: const KeywordEntry('key'),
+      Opcode.whenClicked: const KeywordEntry('clicked'),
+      // Sensing
+      Opcode.keyDown: const KeywordEntry('keydown', abbreviation: 'kd'),
+      Opcode.mouseX: const KeywordEntry('mousex'),
+      Opcode.mouseY: const KeywordEntry('mousey'),
+      Opcode.mouseDown: const KeywordEntry('mousedown'),
+      Opcode.touchingEdge: const KeywordEntry('touchingedge'),
+      Opcode.touchingColour: const KeywordEntry('touchingcolour',
+          aliases: ['touchingcolor']),
+      // Sprites and stage
+      Opcode.nextCostume: const KeywordEntry('nextcostume', abbreviation: 'nc'),
+      Opcode.setCostume: const KeywordEntry('costume'),
+      Opcode.costumeNumber: const KeywordEntry('costumenumber'),
+      Opcode.setBackdrop: const KeywordEntry('backdrop'),
+      Opcode.setEffect: const KeywordEntry('effect'),
+      Opcode.clearEffects: const KeywordEntry('cleareffects'),
+      Opcode.say: const KeywordEntry('say'),
+      Opcode.playSound: const KeywordEntry('playsound'),
+      Opcode.playDrum: const KeywordEntry('drum'),
+      Opcode.playNote: const KeywordEntry('note'),
     },
     syntax: {
+      SyntaxWord.when_: const KeywordEntry('when'),
       SyntaxWord.repeat: const KeywordEntry('repeat'),
       SyntaxWord.while_: const KeywordEntry('while'),
       SyntaxWord.for_: const KeywordEntry('for'),

@@ -24,6 +24,7 @@ VectorCanvas _draw(String source, {int seed = 1, RenderBudget? budget}) {
 }
 
 void main() {
+  stageCapabilityTests();
   group('FR-M4-01 · two surfaces, one turtle model', () {
     test('the canvas has a top-left origin and the stage a centre origin', () {
       final canvas = VectorCanvas();
@@ -528,6 +529,157 @@ répète 50 {
       expect(canvas.segmentCount, 0);
       expect(canvas.direction, 0);
       expect(canvas.canvasBackground, 0xFFFFFF);
+    });
+  });
+}
+
+/// D-014's second half, on the stage the blocks were written for (`FR-M21-03`,
+/// `FR-M21-04`).
+///
+/// The language extension is only half a feature until something implements it. These are
+/// the tests that say the stage does — and that a sensor reads what the ITEM said it
+/// would read, because a question a grader cannot answer the same way twice is not an
+/// exercise.
+void stageCapabilityTests() {
+  SpriteStage stageWith(String source, {void Function(SpriteStage)? setUp}) {
+    final stage = SpriteStage();
+    setUp?.call(stage);
+    final parsed = parse(source, KeywordTables.fr);
+    expect(parsed.errors, isEmpty,
+        reason: parsed.errors.map((e) => e.message('fr')).join('\n'));
+    final machine = Interpreter(parsed.program, stage)..run();
+    expect(machine.error, isNull, reason: machine.error?.message('fr') ?? '');
+    return stage;
+  }
+
+  group('FR-M21-04 · costumes, backdrops, effects, speech and a score', () {
+    test('costumesuivant walks the costumes and wraps', () {
+      final stage = stageWith('costumesuivant\ncostumesuivant\ncostumesuivant',
+          setUp: (s) => s.selected.costumes.addAll(const [
+                Costume('a', 'costume.a'),
+                Costume('b', 'costume.b'),
+              ]));
+      expect(stage.costumeNumber, 2, reason: 'three steps of two costumes');
+    });
+
+    test('costume n counts from one, the way the picker shows it', () {
+      final stage = stageWith('costume 2',
+          setUp: (s) => s.selected.costumes.addAll(const [
+                Costume('a', 'costume.a'),
+                Costume('b', 'costume.b'),
+                Costume('c', 'costume.c'),
+              ]));
+      expect(stage.costumeNumber, 2);
+      expect(stage.selected.costumeIndex, 1);
+    });
+
+    test('a costume out of range wraps rather than failing', () {
+      // A child typing 7 where there are three costumes is exploring, not erring.
+      final stage = stageWith('costume 7',
+          setUp: (s) => s.selected.costumes.addAll(const [
+                Costume('a', 'costume.a'),
+                Costume('b', 'costume.b'),
+                Costume('c', 'costume.c'),
+              ]));
+      expect(stage.costumeNumber, 1);
+    });
+
+    test('an effect is set by name, and cleared', () {
+      final stage = stageWith('effet "fantôme", 50\neffet "tourbillon", 20');
+      expect(stage.selected.effects.ghost, 50);
+      expect(stage.selected.effects.whirl, 20);
+
+      final cleared = stageWith('effet "fantôme", 50\neffaceeffets');
+      expect(cleared.selected.effects.isClear, isTrue);
+    });
+
+    test('an effect nobody has heard of is ignored, not fatal', () {
+      // The names are content; a pack may ship its own, so an unknown one is a missing
+      // asset rather than a bug in the child's program.
+      final stage = stageWith('effet "bidule", 30');
+      expect(stage.selected.effects.isClear, isTrue);
+    });
+
+    test('the score is recorded in order, and never played', () {
+      final stage =
+          stageWith('tambour 2, 1\nnote 60, 0.5\njouson "miaou"\ntambour 5, 2');
+      expect(stage.score.map((e) => e.toString()).toList(),
+          ['drum:2×1', 'note:60×0.5', 'sound:miaou×0', 'drum:5×2']);
+    });
+
+    test('dis is the sprite talking, message is the system talking', () {
+      final stage = stageWith('dis "bonjour"\nmessage "attention"');
+      expect(stage.saidLines.map((l) => l.text).toList(), ['bonjour']);
+      expect(stage.messages, ['attention']);
+    });
+  });
+
+  group('FR-M21-03 · sensing answers the item, not a device', () {
+    test('a key the item said is down reads as down', () {
+      final stage = stageWith(
+          'si touchepressée "espace" {\n  avance 50\n}',
+          setUp: (s) => s.keysDown.add('espace'));
+      expect(stage.positionY, 130);
+    });
+
+    test('a key the item did not name reads as up', () {
+      final stage = stageWith('si touchepressée "a" {\n  avance 50\n}',
+          setUp: (s) => s.keysDown.add('espace'));
+      expect(stage.segments, isEmpty);
+    });
+
+    test('the mouse is where the item put it', () {
+      final stage = stageWith('va sourisx, sourisy', setUp: (s) {
+        s.mousePointerX = 300;
+        s.mousePointerY = 120;
+      });
+      expect(stage.positionX, 300);
+      expect(stage.positionY, 120);
+    });
+
+    test('touchebord is true at the edge and false in the middle', () {
+      expect(stageWith('va 0, 100').touchingEdge, isTrue);
+      expect(stageWith('va 200, 150').touchingEdge, isFalse);
+    });
+
+    test('touchecouleur reads the ink already drawn', () {
+      /* Read from the segments rather than from a rasterised frame: the canvas is
+         vectors, and rasterising on every sensor read would cost more than the whole
+         program. */
+      final stage = stageWith(
+        'couleurcrayon 255, 0, 0\nlargeurcrayon 6\navance 60\n'
+        'si touchecouleur 255, 0, 0 {\n  écris "rouge"\n}',
+      );
+      expect(stage.output, ['rouge']);
+
+      final other = stageWith(
+        'couleurcrayon 255, 0, 0\navance 60\n'
+        'si touchecouleur 0, 0, 255 {\n  écris "bleu"\n}',
+      );
+      expect(other.output, isEmpty);
+    });
+
+    test('the same program run twice gives the same answers', () {
+      // The whole reason sensing is scripted: an item has to be markable twice.
+      SpriteStage once() => stageWith('si touchepressée "espace" {\n'
+          '  avance 40\n}\nécris positiony',
+          setUp: (s) => s.keysDown.add('espace'));
+      expect(once().output, once().output);
+    });
+  });
+
+  group('the stage drives events, which is what World 5 needs', () {
+    test('a key script runs on that key and draws on the stage', () {
+      final stage = SpriteStage();
+      final parsed = parse(
+          'quand touche "espace" {\n  avance 50\n}\n'
+          'quand touche "a" {\n  avance 200\n}',
+          KeywordTables.fr);
+      expect(parsed.errors, isEmpty);
+      Interpreter(parsed.program, stage,
+              trigger: const KeyPressed('espace'))
+          .run();
+      expect(stage.segments, hasLength(1));
     });
   });
 }

@@ -117,7 +117,7 @@ class _Parser {
     final body = <AsStmt>[];
     while (!atEnd) {
       final before = pos;
-      final stmt = parseStatement();
+      final stmt = parseStatement(topLevel: true);
       if (stmt != null) body.add(stmt);
       if (pos == before) {
         if (atEnd) break; // end-of-file is sticky; nothing left to skip
@@ -177,7 +177,12 @@ class _Parser {
     return one == null ? <AsStmt>[] : <AsStmt>[one];
   }
 
-  AsStmt? parseStatement() {
+  /// [topLevel] is false everywhere inside a block.
+  ///
+  /// Only `quand` cares: a trigger inside a loop would be asking "when the flag is
+  /// clicked" four times, which means nothing, so the parser refuses it with a sentence
+  /// rather than letting it through to puzzle a child at run time (`FR-M21-01`).
+  AsStmt? parseStatement({bool topLevel = false}) {
     if (check(TokenType.comment)) {
       final t = advance();
       return Comment(_id(), t.span, t.stringValue!);
@@ -190,6 +195,8 @@ class _Parser {
       final syntax = lookup?.syntax;
       if (syntax != null) {
         switch (syntax) {
+          case SyntaxWord.when_:
+            return parseWhenEvent(topLevel: topLevel);
           case SyntaxWord.repeat:
             return parseRepeat();
           case SyntaxWord.while_:
@@ -256,6 +263,38 @@ class _Parser {
     }
     final value = parseExpression();
     return Assign(_id(), t.span, t.text, value);
+  }
+
+  /// `quand <déclencheur> [argument] { … }`.
+  AsStmt parseWhenEvent({required bool topLevel}) {
+    final t = advance();
+    if (!topLevel) {
+      errors.add(KodoError(code: ErrorCode.eventNested, span: t.span));
+    }
+
+    /* The trigger is an ordinary word the keyword table resolves, so a Wolof table adds
+       triggers the same way it adds everything else: as data. */
+    Opcode? trigger;
+    if (check(TokenType.word)) {
+      final lookup = kw.resolve(current.text);
+      if (lookup?.opcode?.kind == OpcodeKind.event) {
+        trigger = lookup!.opcode;
+        advance();
+      }
+    }
+    if (trigger == null) {
+      errors.add(KodoError(code: ErrorCode.expectedTrigger, span: current.span));
+      // Recover as a flag script: the child meant "when something", and the body is still
+      // worth parsing so the rest of their program does not disappear behind one word.
+      trigger = Opcode.whenFlag;
+    }
+
+    final args = <AsExpr>[];
+    for (var i = 0; i < trigger.minArgs; i++) {
+      args.add(parseExpression());
+      if (i + 1 < trigger.minArgs) matchType(TokenType.comma);
+    }
+    return WhenEvent(_id(), t.span, trigger, args, expectBlock());
   }
 
   AsStmt parseRepeat() {

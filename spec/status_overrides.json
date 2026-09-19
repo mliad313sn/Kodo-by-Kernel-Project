@@ -132,7 +132,13 @@
     "FR-M20-03": "Done",
     "FR-M20-04": "Done",
     "FR-M20-05": "Done",
-    "FR-M20-06": "Done"
+    "FR-M20-06": "Done",
+    "FR-M21-01": "Done",
+    "FR-M21-02": "Done",
+    "FR-M21-03": "Done",
+    "FR-M21-04": "Done",
+    "FR-M21-05": "Done",
+    "FR-M21-06": "Done"
   },
   "owner": {
     "FR-M1-01": "M1 squad",
@@ -265,6 +271,12 @@
     "FR-M20-03": "A1 Art Director",
     "FR-M20-04": "A1 Art Director",
     "FR-M20-05": "A1 Art Director",
-    "FR-M20-06": "A1 Art Director"
+    "FR-M20-06": "A1 Art Director",
+    "FR-M21-01": "S1",
+    "FR-M21-02": "S1",
+    "FR-M21-03": "S1",
+    "FR-M21-04": "S1",
+    "FR-M21-05": "S1",
+    "FR-M21-06": "S1"
   }
 }

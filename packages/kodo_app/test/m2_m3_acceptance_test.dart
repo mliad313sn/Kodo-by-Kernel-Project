@@ -57,8 +57,13 @@ void main() {
       for (final entry in blockHelp.entries) {
         final program =
             parse(entry.value.exampleSource, KeywordTables.fr).program;
-        final used =
-            walk(program).whereType<Command>().map((c) => c.opcode).toSet();
+        /* A trigger is not a `Command`: it is the head of a `WhenEvent`, which is the
+           whole of what D-014 added. An example for `quand drapeau` uses the block
+           without ever containing a command with that opcode. */
+        final used = <Opcode>{
+          ...walk(program).whereType<Command>().map((c) => c.opcode),
+          ...walk(program).whereType<WhenEvent>().map((w) => w.trigger),
+        };
         expect(used, contains(entry.key),
             reason: '${entry.key.id}\'s example never uses it');
       }

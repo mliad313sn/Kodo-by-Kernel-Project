@@ -14,6 +14,11 @@ enum OpcodeKind {
   /// Yields a value. `hasard 1 10`. May also stand alone as a statement; the result is
   /// discarded, exactly as in the source tradition.
   function,
+
+  /// Names *when* a script runs. Only ever the head of a `quand` block, never a step
+  /// inside one (`FR-M21-01`). A trigger is not something a program does; it is the
+  /// question the world asks before anything is done at all.
+  event,
 }
 
 /// Palette family, mirroring the ten block families of `FR-M2-01`. M2 reads this rather
@@ -95,7 +100,38 @@ enum Opcode {
 
   // --- Contrôle ------------------------------------------------------------------------
   wait('WAIT', OpcodeKind.command, OpcodeFamily.controle, 1, 1),
-  assertion('ASSERT', OpcodeKind.command, OpcodeFamily.controle, 1, 1);
+  assertion('ASSERT', OpcodeKind.command, OpcodeFamily.controle, 1, 1),
+
+  // --- Événements (D-014 / FR-M21-01) --------------------------------------------------
+  // Three triggers at v1, which is what §5.2 commits World 5 to and no more.
+  whenFlag('WHEN_FLAG', OpcodeKind.event, OpcodeFamily.evenements, 0, 0),
+  whenKey('WHEN_KEY', OpcodeKind.event, OpcodeFamily.evenements, 1, 1),
+  whenClicked('WHEN_CLICKED', OpcodeKind.event, OpcodeFamily.evenements, 0, 0),
+
+  // --- Capteurs (FR-M21-03) ------------------------------------------------------------
+  // Every one of these reads the item's scripted inputs when grading, never a real device:
+  // a question a grader cannot answer the same way twice is not an exercise.
+  keyDown('KEY_DOWN', OpcodeKind.function, OpcodeFamily.capteurs, 1, 1),
+  mouseX('MOUSE_X', OpcodeKind.function, OpcodeFamily.capteurs, 0, 0),
+  mouseY('MOUSE_Y', OpcodeKind.function, OpcodeFamily.capteurs, 0, 0),
+  mouseDown('MOUSE_DOWN', OpcodeKind.function, OpcodeFamily.capteurs, 0, 0),
+  touchingEdge('TOUCHING_EDGE', OpcodeKind.function, OpcodeFamily.capteurs, 0, 0),
+  touchingColour(
+      'TOUCHING_COLOUR', OpcodeKind.function, OpcodeFamily.capteurs, 3, 3),
+
+  // --- Lutins, costumes, sons, arrière-plans, effets (FR-M21-04) -----------------------
+  nextCostume('NEXT_COSTUME', OpcodeKind.command, OpcodeFamily.apparence, 0, 0),
+  setCostume('SET_COSTUME', OpcodeKind.command, OpcodeFamily.apparence, 1, 1),
+  costumeNumber(
+      'COSTUME_NUMBER', OpcodeKind.function, OpcodeFamily.apparence, 0, 0),
+  setBackdrop('SET_BACKDROP', OpcodeKind.command, OpcodeFamily.apparence, 1, 1),
+  setEffect('SET_EFFECT', OpcodeKind.command, OpcodeFamily.apparence, 2, 2),
+  clearEffects(
+      'CLEAR_EFFECTS', OpcodeKind.command, OpcodeFamily.apparence, 0, 0),
+  say('SAY', OpcodeKind.command, OpcodeFamily.apparence, 1, 1),
+  playSound('PLAY_SOUND', OpcodeKind.command, OpcodeFamily.son, 1, 1),
+  playDrum('PLAY_DRUM', OpcodeKind.command, OpcodeFamily.son, 2, 2),
+  playNote('PLAY_NOTE', OpcodeKind.command, OpcodeFamily.son, 2, 2);
 
   const Opcode(this.id, this.kind, this.family, this.minArgs, this.maxArgs);
 

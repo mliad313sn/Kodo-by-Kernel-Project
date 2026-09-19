@@ -26,6 +26,13 @@ final Map<ErrorCode, String> _reachableBySource = {
   ErrorCode.expectedVariable: r'pour = 1 à 5 { avance 10 }',
   ErrorCode.expectedName: 'apprends { avance 10 }',
   ErrorCode.duplicateProc: 'apprends avance { avance 10 }',
+  // D-014: a trigger is only ever the head of a script, never a step inside one.
+  ErrorCode.eventNested: 'répète 2 {\n  quand drapeau {\n    avance 10\n  }\n}',
+  ErrorCode.expectedTrigger: 'quand {\n  avance 10\n}',
+  /* A block that needs a stage, run on a plain canvas. This is the one code whose
+     message is about the WORLD rather than about the program: the child wrote something
+     correct, and there is nothing here for it to act on. */
+  ErrorCode.needsStage: 'costumesuivant',
   ErrorCode.type: 'avance "bonjour"',
   ErrorCode.undefinedVar: r'avance $côté',
   ErrorCode.divZero: r'$x = 5 / 0',

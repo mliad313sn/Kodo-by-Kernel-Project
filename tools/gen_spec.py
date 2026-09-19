@@ -197,6 +197,40 @@ def main():
          "source": "[PO D-013], [CDC §10]", "priority": "M",
          "verification": "The stage pose has no face; the portrait and thinking poses do; no screen binds a pose to a grading outcome",
          "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M20"},
+        # --- PO amendment, D-014: the language the curriculum needs (M21) ---------------
+        # Found by trying to author World 5. M1's prompt specified a language against
+        # Worlds 0-4; the curriculum runs to World 12. Three worlds and roughly 280 of the
+        # 1 214 committed exercises could not be written at all.
+        {"id": "FR-M21-01", "module": "M21 Events, sensing and stage",
+         "requirement": "A program is a set of scripts: `quand` with a flag, key or click trigger, at top level only",
+         "source": "[PO D-014], [CDC §5.2 W5]", "priority": "M",
+         "verification": "Each trigger fires only its own scripts; a nested `quand` is refused in a child-language sentence",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M21"},
+        {"id": "FR-M21-02", "module": "M21 Events, sensing and stage",
+         "requirement": "Scripts interleave one statement at a time, share variables, and a stepped run draws what a full-speed run draws",
+         "source": "[PO D-014], [CDC §5.2 C5.4], [FR-M1-05]", "priority": "M",
+         "verification": "Two scripts produce interleaved output, share one variable, and the stepped path signature equals the full-speed one",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M21"},
+        {"id": "FR-M21-03", "module": "M21 Events, sensing and stage",
+         "requirement": "Sensing (key, mouse, edge, colour) answers from the item's scripted inputs, never from a live device",
+         "source": "[PO D-014], [CDC §5.2 W8]", "priority": "M",
+         "verification": "The same program run twice gives the same answers; a canvas without sensing refuses in a sentence",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M21"},
+        {"id": "FR-M21-04", "module": "M21 Events, sensing and stage",
+         "requirement": "A stage is an optional capability over Surface: costumes, backdrops, effects, speech and a recorded score",
+         "source": "[PO D-014], [CDC §5.2 W10]", "priority": "M",
+         "verification": "Every existing Surface implementer still runs unchanged; a stage block on a plain canvas is refused in a sentence",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M21"},
+        {"id": "FR-M21-05", "module": "M21 Events, sensing and stage",
+         "requirement": "Events, sensing and stage blocks are one AST with two projections, like every other block",
+         "source": "[PO D-014], [FR-M1-01]", "priority": "M",
+         "verification": "An event script round-trips through the renderer and reads identically in FR and EN",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M21"},
+        {"id": "FR-M21-06", "module": "M21 Events, sensing and stage",
+         "requirement": "Every concept in the ledger names blocks the language has; a concept the language cannot express fails the build",
+         "source": "[PO D-014]", "priority": "M",
+         "verification": "tools/trace_check.dart compares the concept ledger against the opcode table and fails on a gap",
+         "gate": "G3", "status": "Not started", "owner": "", "moduleId": "M21"},
     ]
     known = {r["id"] for r in reqs}
     for a in amendments:

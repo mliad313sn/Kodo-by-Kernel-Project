@@ -94,3 +94,61 @@ abstract class Surface {
   /// is exactly what happens when a grader forgets it.
   List<TurtlePose> get trace;
 }
+
+/// What a program can ask the world (`FR-M21-03`).
+///
+/// Separate from [Surface] and optional, because a sensor is a *question* and a canvas
+/// has no answers. A surface that does not implement this gets the sensing blocks refused
+/// with a sentence rather than silently answering zero — a sensor that always says "no"
+/// is worse than one that is missing, because a child debugs their own program for an
+/// hour before suspecting the world.
+///
+/// **Deterministic when grading.** Every answer comes from the item's scripted inputs, the
+/// same way `demande` already works. A question the grader cannot answer the same way
+/// twice is not an exercise.
+abstract class SensingSurface {
+  /// Whether the named key is held. The name is a child's word: `espace`, `a`, `haut`.
+  bool isKeyDown(String key);
+
+  num get mouseX;
+  num get mouseY;
+  bool get isMouseDown;
+
+  /// Whether the turtle is at or past the edge of the canvas.
+  bool get touchingEdge;
+
+  /// Whether the turtle stands on ink of that colour.
+  bool touchingColour(num r, num g, num b);
+}
+
+/// What a program can do to a stage: sprites, costumes, sounds, backdrops, effects
+/// (`FR-M21-04`).
+///
+/// A capability, not a bigger [Surface]. The canvas of Worlds 0–9 is not a stage, every
+/// existing implementer of `Surface` keeps working unchanged, and a program that asks a
+/// canvas for a costume is told so in a sentence. That is the test of whether an extension
+/// was designed or bolted on.
+abstract class StageSurface implements Surface {
+  /// Advances to the next costume, wrapping. World 10's animation is this in a loop.
+  void nextCostume();
+
+  /// One-based, because a child counts from one and the costume picker shows 1, 2, 3.
+  void setCostume(int number);
+  int get costumeNumber;
+
+  void setBackdrop(String name);
+
+  /// `effet <nom> <valeur>`. The names are content, not code: a pack may ship its own.
+  void setEffect(String name, num value);
+  void clearEffects();
+
+  /// A speech bubble. Not [Surface.message], which is the system talking to the child.
+  void say(String text);
+
+  void playSound(String name);
+
+  /// `tambour <numéro> <temps>` and `note <hauteur> <temps>`. Both are recorded rather
+  /// than played here: grading listens to the score, never to a speaker.
+  void playDrum(int drum, num beats);
+  void playNote(num pitch, num beats);
+}

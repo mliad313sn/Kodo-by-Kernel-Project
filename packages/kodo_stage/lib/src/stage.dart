@@ -7,6 +7,8 @@
 /// and only the coordinate frame and the sprite model are new here.
 library;
 
+import 'dart:math' as math;
+
 import 'package:kodo_lang/kodo_lang.dart';
 
 import 'consent.dart';
@@ -73,7 +75,11 @@ class Sprite {
     this.heading = 90,
     this.size = 100,
     this.visible = true,
-  }) : costumes = costumes ?? const [];
+      /* Growable, and a copy. The default was `const []`, which meant the stage's own
+         Tika could never be given a costume — a sprite whose looks cannot change makes
+         World 10 unusable, and the failure was an "unmodifiable list" a child would never
+         see and an author could not explain. */
+  }) : costumes = List<Costume>.of(costumes ?? const []);
 
   final String id;
   final String nameKey;
@@ -149,7 +155,47 @@ class SoundAsset {
 /// selected sprite; the pen draws onto the stage in the same segment model the canvas
 /// uses, so `pathSignature` means the same thing on both surfaces and the grader needs no
 /// special case.
-class SpriteStage extends HeadlessCanvas {
+/// One thing the score recorded: a drum hit or a note, and how long it lasted.
+///
+/// Recorded rather than played. Grading listens to the score and never to a speaker: a
+/// world that teaches *"sounds & drums"* has to be markable on a device with the volume
+/// off, in a classroom, with thirty children in it.
+class SoundEvent {
+  const SoundEvent(this.kind, this.value, this.beats);
+
+  /// `sound`, `drum` or `note`.
+  final String kind;
+
+  /// The sound's name, the drum's number, or the note's pitch.
+  final Object value;
+  final num beats;
+
+  @override
+  String toString() => '$kind:$value×$beats';
+
+  @override
+  bool operator ==(Object other) =>
+      other is SoundEvent &&
+      other.kind == kind &&
+      other.value == value &&
+      other.beats == beats;
+
+  @override
+  int get hashCode => Object.hash(kind, value, beats);
+}
+
+/// What the child said, and when. A speech bubble is a drawing a grader can read.
+class SaidLine {
+  const SaidLine(this.spriteId, this.text);
+  final String spriteId;
+  final String text;
+
+  @override
+  String toString() => '$spriteId: $text';
+}
+
+class SpriteStage extends HeadlessCanvas
+    implements StageSurface, SensingSurface {
   SpriteStage({
     super.width = 480,
     super.height = 360,
@@ -168,6 +214,21 @@ class SpriteStage extends HeadlessCanvas {
   final List<Backdrop> backdrops = [const Backdrop('blank', 'backdrop.blank')];
   final List<SoundAsset> sounds = [];
   final List<String> playedSounds = [];
+
+  /// The score, in order (`FR-M21-04`).
+  final List<SoundEvent> score = [];
+
+  /// Speech bubbles, in order.
+  final List<SaidLine> saidLines = [];
+
+  /* D-014's sensing inputs. Scripted, never a real device: an item a grader cannot mark
+     the same way twice is not an item, so a sensor reads what the item said it would
+     read. A Studio stage sets these from the real keyboard and mouse instead, which is
+     the same field with a different writer. */
+  final Set<String> keysDown = {};
+  double mousePointerX = 0;
+  double mousePointerY = 0;
+  bool mouseIsDown = false;
 
   int backdropIndex = 0;
   late Sprite _selected;
@@ -226,7 +287,136 @@ class SpriteStage extends HeadlessCanvas {
 
   /// Concept C10.3's misconception is *"the sound plays after the program ends"*, so a
   /// play is recorded at the moment it executes, in order, and the test asserts the order.
-  void playSound(String id) => playedSounds.add(id);
+  @override
+  void playSound(String id) {
+    playedSounds.add(id);
+    score.add(SoundEvent('sound', id, 0));
+  }
+
+  // --- the rest of StageSurface (D-014 / FR-M21-04) -------------------------------------
+
+  @override
+  void nextCostume() {
+    final costumes = _selected.costumes;
+    if (costumes.isEmpty) return;
+    _selected.costumeIndex = (_selected.costumeIndex + 1) % costumes.length;
+  }
+
+  @override
+  void setCostume(int number) {
+    final costumes = _selected.costumes;
+    if (costumes.isEmpty) return;
+    /* One-based, because a child counts from one and the costume picker shows 1, 2, 3.
+       Out of range wraps rather than failing: "costume 7" of three costumes is a child
+       exploring, not a child making a mistake worth an error message. */
+    final zero = (number - 1) % costumes.length;
+    _selected.costumeIndex = zero < 0 ? zero + costumes.length : zero;
+  }
+
+  @override
+  int get costumeNumber => _selected.costumeIndex + 1;
+
+  @override
+  void setBackdrop(String name) => switchBackdrop(name);
+
+  @override
+  void setEffect(String name, num value) {
+    final v = value.toDouble();
+    switch (name.toLowerCase()) {
+      case 'couleur':
+      case 'colour':
+      case 'color':
+        _selected.effects.colour = v;
+      case 'oeildepoisson':
+      case 'fisheye':
+        _selected.effects.fisheye = v;
+      case 'tourbillon':
+      case 'whirl':
+        _selected.effects.whirl = v;
+      case 'pixel':
+      case 'pixelate':
+        _selected.effects.pixelate = v;
+      case 'luminosité':
+      case 'luminosite':
+      case 'brightness':
+        _selected.effects.brightness = v;
+      case 'fantôme':
+      case 'fantome':
+      case 'ghost':
+        _selected.effects.ghost = v;
+      // An effect nobody has heard of is ignored rather than fatal: the names are content
+      // and a pack may ship its own, so an unknown one is a missing asset, not a bug.
+    }
+  }
+
+  @override
+  void clearEffects() => _selected.effects.clear();
+
+  @override
+  void say(String text) => saidLines.add(SaidLine(_selected.id, text));
+
+  @override
+  void playDrum(int drum, num beats) =>
+      score.add(SoundEvent('drum', drum, beats));
+
+  @override
+  void playNote(num pitch, num beats) =>
+      score.add(SoundEvent('note', pitch, beats));
+
+  // --- SensingSurface (FR-M21-03) -------------------------------------------------------
+
+  @override
+  bool isKeyDown(String key) => keysDown.contains(key.toLowerCase());
+
+  @override
+  num get mouseX => mousePointerX;
+
+  @override
+  num get mouseY => mousePointerY;
+
+  @override
+  bool get isMouseDown => mouseIsDown;
+
+  @override
+  bool get touchingEdge =>
+      positionX <= 0 ||
+      positionY <= 0 ||
+      positionX >= width ||
+      positionY >= height;
+
+  @override
+  bool touchingColour(num r, num g, num b) {
+    /* "Standing on ink of that colour" — read from the segments already drawn rather than
+       from a rasterised frame, because the canvas is vectors and rasterising on every
+       sensor read would cost more than the whole program. A segment counts when the
+       turtle is within its width of it. */
+    final wanted = ((r.round() & 0xFF) << 16) |
+        ((g.round() & 0xFF) << 8) |
+        (b.round() & 0xFF);
+    for (final s in segments) {
+      if (s.color != wanted) continue;
+      if (_distanceToSegment(
+              positionX.toDouble(), positionY.toDouble(), s) <=
+          s.width / 2 + 1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static double _distanceToSegment(double px, double py, Segment s) {
+    final dx = s.x2 - s.x1;
+    final dy = s.y2 - s.y1;
+    final lengthSquared = dx * dx + dy * dy;
+    if (lengthSquared == 0) {
+      return math.sqrt((px - s.x1) * (px - s.x1) + (py - s.y1) * (py - s.y1));
+    }
+    var t = ((px - s.x1) * dx + (py - s.y1) * dy) / lengthSquared;
+    t = t.clamp(0.0, 1.0);
+    final cx = s.x1 + t * dx;
+    final cy = s.y1 + t * dy;
+    return math.sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
+  }
 
   void switchBackdrop(String id) {
     final i = backdrops.indexWhere((b) => b.id == id);

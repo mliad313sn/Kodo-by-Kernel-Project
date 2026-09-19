@@ -277,4 +277,123 @@ final Map<Opcode, BlockHelp> blockHelp = {
         'Checks that something is true.'),
     exampleSource: r'$x = 5' '\n' r'assertion $x == 5' '\navance 50',
   ),
+
+  // --- Événements (D-014 / FR-M21-01) ---------------------------------------------------
+  Opcode.whenFlag: BlockHelp(
+    family: BlockFamily.evenements,
+    summaryKeys: _b('Ce qui est dedans se fait quand tu appuies sur le drapeau.',
+        'What is inside happens when you press the flag.'),
+    exampleSource: 'quand drapeau {\n  avance 50\n}',
+  ),
+  Opcode.whenKey: BlockHelp(
+    family: BlockFamily.evenements,
+    summaryKeys: _b('Ce qui est dedans se fait quand tu appuies sur cette touche.',
+        'What is inside happens when you press that key.'),
+    exampleSource: 'quand touche "espace" {\n  avance 50\n}',
+  ),
+  Opcode.whenClicked: BlockHelp(
+    family: BlockFamily.evenements,
+    summaryKeys: _b('Ce qui est dedans se fait quand on clique sur Tika.',
+        'What is inside happens when Tika is clicked.'),
+    exampleSource: 'quand clic {\n  tournedroite 90\n}',
+  ),
+
+  // --- Capteurs (FR-M21-03) -------------------------------------------------------------
+  Opcode.keyDown: BlockHelp(
+    family: BlockFamily.capteurs,
+    summaryKeys: _b('Vrai si cette touche est appuyée en ce moment.',
+        'True if that key is being held down right now.'),
+    exampleSource: 'si touchepressée "espace" {\n  avance 50\n}',
+  ),
+  Opcode.mouseX: BlockHelp(
+    family: BlockFamily.capteurs,
+    summaryKeys: _b('Le nombre horizontal du pointeur.',
+        'The across number of the pointer.'),
+    exampleSource: 'va sourisx, 200\navance 20\ntournedroite 90',
+  ),
+  Opcode.mouseY: BlockHelp(
+    family: BlockFamily.capteurs,
+    summaryKeys: _b('Le nombre vertical du pointeur.',
+        'The down number of the pointer.'),
+    exampleSource: 'va 200, sourisy\navance 20\ntournedroite 90',
+  ),
+  Opcode.mouseDown: BlockHelp(
+    family: BlockFamily.capteurs,
+    summaryKeys: _b('Vrai si on appuie sur l\'écran en ce moment.',
+        'True if the screen is being pressed right now.'),
+    exampleSource: 'si sourisappuyée {\n  avance 50\n}',
+  ),
+  Opcode.touchingEdge: BlockHelp(
+    family: BlockFamily.capteurs,
+    summaryKeys: _b('Vrai si Tika est arrivée au bord de la feuille.',
+        'True if Tika has reached the edge of the paper.'),
+    exampleSource: 'si touchebord {\n  tournedroite 180\n}',
+  ),
+  Opcode.touchingColour: BlockHelp(
+    family: BlockFamily.capteurs,
+    summaryKeys: _b('Vrai si Tika est posée sur un trait de cette couleur.',
+        'True if Tika is standing on a line of that colour.'),
+    exampleSource: 'si touchecouleur 255, 0, 0 {\n  tournedroite 90\n}',
+  ),
+
+  // --- Lutins, costumes, sons, scène (FR-M21-04) ----------------------------------------
+  Opcode.nextCostume: BlockHelp(
+    family: BlockFamily.apparence,
+    summaryKeys: _b('Passe au costume suivant. Deux d\'affilée font bouger Tika.',
+        'Moves to the next costume. Two in a row make Tika move.'),
+    exampleSource: 'costumesuivant\nattends 1\ncostumesuivant',
+  ),
+  Opcode.setCostume: BlockHelp(
+    family: BlockFamily.apparence,
+    summaryKeys: _b('Choisit un costume par son numéro.',
+        'Picks a costume by its number.'),
+    exampleSource: 'costume 1\nattends 1\ncostume 2',
+  ),
+  Opcode.costumeNumber: BlockHelp(
+    family: BlockFamily.apparence,
+    summaryKeys: _b('Le numéro du costume porté en ce moment.',
+        'The number of the costume being worn right now.'),
+    exampleSource: 'écris numérocostume\ncostumesuivant\nécris numérocostume',
+  ),
+  Opcode.setBackdrop: BlockHelp(
+    family: BlockFamily.apparence,
+    summaryKeys: _b('Change le décor derrière Tika.',
+        'Changes the scene behind Tika.'),
+    exampleSource: 'arrièreplan "plage"\navance 50\ntournedroite 90',
+  ),
+  Opcode.setEffect: BlockHelp(
+    family: BlockFamily.apparence,
+    summaryKeys: _b('Change la façon dont Tika est dessinée.',
+        'Changes the way Tika is drawn.'),
+    exampleSource: 'effet "fantôme", 50\navance 50\neffaceeffets',
+  ),
+  Opcode.clearEffects: BlockHelp(
+    family: BlockFamily.apparence,
+    summaryKeys: _b('Enlève tous les effets d\'un coup.',
+        'Takes every effect off at once.'),
+    exampleSource: 'effet "tourbillon", 30\nattends 1\neffaceeffets',
+  ),
+  Opcode.say: BlockHelp(
+    family: BlockFamily.apparence,
+    summaryKeys: _b('Fait apparaître une bulle au-dessus de Tika.',
+        'Puts a speech bubble above Tika.'),
+    exampleSource: 'dis "bonjour"\nattends 1\ndis "au revoir"',
+  ),
+  Opcode.playSound: BlockHelp(
+    family: BlockFamily.son,
+    summaryKeys: _b('Joue un son enregistré.', 'Plays a recorded sound.'),
+    exampleSource: 'jouson "miaou"\nattends 1\njouson "miaou"',
+  ),
+  Opcode.playDrum: BlockHelp(
+    family: BlockFamily.son,
+    summaryKeys: _b('Frappe un tambour pendant un moment.',
+        'Hits a drum for a moment.'),
+    exampleSource: 'tambour 2, 1\ntambour 5, 1\ntambour 2, 1',
+  ),
+  Opcode.playNote: BlockHelp(
+    family: BlockFamily.son,
+    summaryKeys: _b('Joue une note pendant un moment.',
+        'Plays a note for a moment.'),
+    exampleSource: 'note 60, 0.5\nnote 64, 0.5\nnote 67, 1',
+  ),
 };

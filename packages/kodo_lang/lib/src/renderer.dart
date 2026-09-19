@@ -71,6 +71,19 @@ class _Renderer {
         writeExpr(value);
         out.writeln();
 
+      case WhenEvent(:final trigger, :final args, :final body):
+        /* `quand drapeau { … }`. The trigger is written through the keyword table like
+           every other word, so an English child reads `when flag` and a French one
+           `quand drapeau` — the same tree, two projections, which is the rule this
+           extension had to keep rather than bend. */
+        pad(depth);
+        out.write('${kw.writeSyntax(SyntaxWord.when_)} ${kw.write(trigger)}');
+        for (var i = 0; i < args.length; i++) {
+          out.write(i == 0 ? ' ' : ', ');
+          writeExpr(args[i]);
+        }
+        writeBlock(body, depth);
+
       case Repeat(:final count, :final body):
         pad(depth);
         out.write('${kw.writeSyntax(SyntaxWord.repeat)} ');

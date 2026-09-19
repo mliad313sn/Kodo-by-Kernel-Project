@@ -322,6 +322,46 @@ class Exit extends Node with AsStmt {
   Map<String, Object?> toJson() => {'k': kind, 'id': id, 'sp': span.toJson()};
 }
 
+/// `quand <déclencheur> { … }` — a script, and when it runs (`FR-M21-01`).
+///
+/// A top-level statement and never a nested one: a trigger inside a loop would be asking
+/// "when the flag is clicked" four times, which means nothing. The parser refuses it, and
+/// the refusal is a sentence rather than a crash.
+///
+/// A program with event scripts is a **set** of scripts, not one. §5.2's World 5 ends on
+/// *"two scripts at once"*, and running them one after another would teach the opposite of
+/// the thing it exists to teach.
+class WhenEvent extends Node with AsStmt {
+  WhenEvent(super.id, super.span, this.trigger, this.args, this.body);
+
+  /// One of the [OpcodeKind.event] opcodes.
+  final Opcode trigger;
+
+  /// The trigger's own arguments — the key name, for `quand touche`.
+  final List<AsExpr> args;
+
+  final List<AsStmt> body;
+
+  @override
+  String get kind => 'WhenEvent';
+
+  @override
+  List<Node> get children => [
+        for (final a in args) a as Node,
+        for (final s in body) s as Node,
+      ];
+
+  @override
+  Map<String, Object?> toJson() => {
+        'k': kind,
+        'id': id,
+        'sp': span.toJson(),
+        'trigger': trigger.id,
+        'args': [for (final a in args) (a as Node).toJson()],
+        'body': [for (final s in body) (s as Node).toJson()],
+      };
+}
+
 /// A `#` comment, kept in the tree.
 ///
 /// Comments are nodes and not trivia because World 11 teaches commenting a line out as a

@@ -416,6 +416,69 @@ measurement.
 
 ---
 
+## D-014 — The language must be able to say what the curriculum teaches (M21)
+
+**Date.** 2026-09-19 · **Status.** Decided · **Scope.** Specification amendment (six
+requirements) · **Requirements.** `FR-M21-01` … `FR-M21-06`
+
+**The decision.** M1's language gains **events, sensing and a stage**, because without them
+three of the thirteen worlds cannot be written at all.
+
+**How this was found.** By trying to author World 5. §5.2 says World 5 is *"green flag; key
+pressed; click on sprite; two scripts at once"*, and there is no way to express any of it:
+the opcode table has no event, no sensor and no sprite command, and a program is a single
+linear script with a single continuation stack. World 8's *"sensing (touching, key,
+mouse)"* and the whole of World 10 — *"sprite; costume switching & animation; sounds &
+drums; backdrops; graphic effects"* — are in the same position. Between them that is
+**three worlds and roughly 280 of the 1 214 committed exercises** that the language cannot
+say.
+
+**This is the third gap of the same shape, and that is the finding.** D-012 found that
+eighteen module prompts specified every organ and no body. D-013 found that they specified
+capability and no appearance. This one is narrower and sharper: **M1's prompt specified a
+language against Worlds 0–4, and the curriculum runs to World 12.** Nobody compared the
+opcode table with §5.2 line by line, because the two documents were written for different
+readers and no gate reads both. The traceability checker now does — see `FR-M21-06`.
+
+**What is added, and what is deliberately not.**
+
+* **Events.** `quand <déclencheur> { … }` as a top-level script. Three triggers at v1:
+  the green flag, a named key, and a click. A program becomes a *set* of scripts rather
+  than one, which is what §5.2's *"two scripts at once"* means and cannot be faked by
+  running them one after another — C5.4's whole point is that the child sees them
+  interleave.
+* **Concurrency, by stepping.** The interpreter is already step-resumable, because
+  `FR-M1-05` asked for a stepped run that draws the same figure as a full-speed one. That
+  property is what makes concurrency cheap and honest here: several scripts are several
+  continuation stacks advanced in turn, sharing globals and one surface. No threads, no
+  scheduler to explain to a nine-year-old, and a stepped run still draws what a full-speed
+  run draws.
+* **Sensing, deterministically.** A sensor reads from the item's scripted inputs, exactly
+  as `demande` already does. A question a grader cannot answer the same way twice is not
+  an exercise, so sensing that reads a real mouse is a Studio affordance and never an
+  item's.
+* **A stage is a capability, not a bigger Surface.** `Surface` stays as it is and
+  `StageSurface` extends it. A canvas is not a stage, and a program that asks a canvas for
+  a costume gets a sentence saying so rather than a crash. Every existing implementer keeps
+  working, which is the test of whether an extension was designed or bolted on.
+* **Not added:** networking, a physics model, collision between sprites beyond `touche`,
+  or user-defined events. None is in §5.2 and each would need its own misconception
+  ledger.
+
+**Why the PO is deciding this rather than a squad.** Because the alternative was a squad
+quietly writing World 5 out of the blocks that happen to exist, and shipping a world that
+teaches something other than what the curriculum committed to — which is a change to the
+product that looks like an authoring choice.
+
+**What this decision is not.** It is not a change to any of the thirteen worlds, to the
+mastery rule, or to the one-AST rule — which it in fact extends, since blocks and text
+remain two projections of the same tree and events are a node in that tree like any other.
+
+**Consulted.** Seats 8 and 9 (architecture), seat 5 (curriculum). Recorded as the PO's
+answer to a specification gap found in delivery.
+
+---
+
 ## Open items the PO has *not* decided
 
 Recorded so that silence is not mistaken for a decision.

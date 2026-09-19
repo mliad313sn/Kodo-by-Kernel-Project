@@ -232,6 +232,78 @@ class _ApplyReturn extends _K {
 // The machine
 // ---------------------------------------------------------------------------------------
 
+/// One script in flight: its continuations, its operand stack, its call frames.
+///
+/// The globals are NOT here. Two scripts changing the same box is the whole of C5.4, and
+/// a per-script variable table would make that impossible while looking correct.
+class _Thread {
+  final List<_K> k = [];
+  final List<KodoValue> values = [];
+  final List<_Frame> frames = [];
+  KodoValue? pendingReturn;
+}
+
+/// What started this run, and therefore which `quand` scripts fire (`FR-M21-01`).
+///
+/// A sealed set, because the three triggers of §5.2 are the three triggers of v1 and a
+/// fourth is a curriculum decision rather than a code one.
+sealed class RunTrigger {
+  const RunTrigger();
+
+  /// Whether [event] fires for this trigger.
+  bool fires(WhenEvent event, Interpreter interpreter);
+}
+
+/// The green flag. The default, and what the run button means.
+class FlagClicked extends RunTrigger {
+  const FlagClicked();
+
+  @override
+  bool fires(WhenEvent event, Interpreter interpreter) =>
+      event.trigger == Opcode.whenFlag;
+}
+
+/// A named key went down. The name is a child's word: `espace`, `a`, `haut`.
+class KeyPressed extends RunTrigger {
+  const KeyPressed(this.key);
+  final String key;
+
+  @override
+  bool fires(WhenEvent event, Interpreter interpreter) {
+    if (event.trigger != Opcode.whenKey) return false;
+    final named = event.args.isEmpty ? null : event.args.first;
+    /* The key is compared as a literal rather than evaluated. Evaluating it would mean
+       running the child's expressions before the program has started, which is a rule
+       nobody could explain — and every key in the curriculum is written out. */
+    if (named is Literal) {
+      final v = named.value;
+      final text = v is StringValue ? v.value : v.source;
+      return text.toLowerCase() == key.toLowerCase();
+    }
+    return false;
+  }
+}
+
+/// The sprite, or the stage, was clicked.
+class Clicked extends RunTrigger {
+  const Clicked();
+
+  @override
+  bool fires(WhenEvent event, Interpreter interpreter) =>
+      event.trigger == Opcode.whenClicked;
+}
+
+/// Every event script, whatever its trigger.
+///
+/// Used by the grader and by `FR-M21-05`'s item checks: an item about events has to be
+/// able to run the child's scripts without pretending to be a keyboard.
+class AnyTrigger extends RunTrigger {
+  const AnyTrigger();
+
+  @override
+  bool fires(WhenEvent event, Interpreter interpreter) => true;
+}
+
 class Interpreter {
   Interpreter(
     this.program,
@@ -240,9 +312,39 @@ class Interpreter {
     this.limits = const RunLimits(),
     this.emitVariableSnapshots = false,
     this.inputs = const [],
+    this.trigger = const FlagClicked(),
   }) : random = SeededRandom(seed) {
     _hoistProcedures(program);
-    _k.add(_Seq(program.body, 0));
+    _start();
+  }
+
+  /* D-014 — a program is a SET of scripts.
+
+     Everything outside a `quand` block is the main script and runs as it always did, so
+     every program written for Worlds 0–4 behaves exactly as before. Each `quand` whose
+     trigger matches gets a script of its own, and the scripts advance in turn.
+
+     The turn-taking is what §5.2's "two scripts at once" means, and it is honest rather
+     than simulated: the interpreter was already step-resumable because `FR-M1-05` asked
+     for a stepped run that draws the same figure as a full-speed one, and several
+     continuation stacks advanced one statement at a time is exactly that property used
+     twice. There is no thread and no scheduler to explain to a nine-year-old. */
+  void _start() {
+    final main = <AsStmt>[];
+    final scripts = <List<AsStmt>>[];
+    for (final stmt in program.body) {
+      if (stmt is WhenEvent) {
+        if (trigger.fires(stmt, this)) scripts.add(stmt.body);
+      } else {
+        main.add(stmt);
+      }
+    }
+    /* The main script first, and it exists even when empty: a program that is nothing but
+       event scripts still has to be able to finish. */
+    _threads.add(_Thread()..k.add(_Seq(main, 0)));
+    for (final body in scripts) {
+      _threads.add(_Thread()..k.add(_Seq(body, 0)));
+    }
   }
 
   final Program program;
@@ -257,10 +359,20 @@ class Interpreter {
   /// headlessly. When they run out the run suspends on [RunStatus.awaitingInput].
   final List<String> inputs;
 
-  final List<_K> _k = [];
-  final List<KodoValue> _values = [];
+  /// What started this run. `quand drapeau` scripts fire on [FlagClicked], and so on.
+  final RunTrigger trigger;
+
+  /* One continuation stack, one value stack and one call stack PER SCRIPT; the globals,
+     the procedures and the surface are shared. Sharing the globals is the point: World 5
+     ends on two scripts changing the same box, and two interpreters could not do that. */
+  final List<_Thread> _threads = [];
+  int _current = 0;
+
+  List<_K> get _k => _threads[_current].k;
+  List<KodoValue> get _values => _threads[_current].values;
+  List<_Frame> get _frames => _threads[_current].frames;
+
   final Map<String, KodoValue> _globals = {};
-  final List<_Frame> _frames = [];
   final Map<String, _Procedure> _procedures = {};
   final List<ExecutionEvent> events = [];
 
@@ -270,7 +382,12 @@ class Interpreter {
   RunSpeed _speed = RunSpeed.full;
   RunStatus _status = RunStatus.ready;
   KodoError? _error;
-  KodoValue? _pendingReturn;
+
+  KodoValue? get _pendingReturn => _threads[_current].pendingReturn;
+  set _pendingReturn(KodoValue? v) => _threads[_current].pendingReturn = v;
+
+  /// How many scripts this run started with. One means an ordinary linear program.
+  int get scriptCount => _threads.length;
 
   /// Virtual, in milliseconds. `attends` advances this instead of sleeping, which is what
   /// makes a stepped run and a full-speed run draw the same figure (acceptance test 4).
@@ -307,8 +424,10 @@ class Interpreter {
   }
 
   void stop() {
-    _k.clear();
-    _values.clear();
+    for (final t in _threads) {
+      t.k.clear();
+      t.values.clear();
+    }
     if (!isDone) _status = RunStatus.finished;
   }
 
@@ -357,6 +476,32 @@ class Interpreter {
   }
 
   // -------------------------------------------------------------------------------------
+
+  /// The next script with work left, starting after the current one. Null when none has.
+  int? _nextLiveThread() {
+    for (var i = 1; i <= _threads.length; i++) {
+      final at = (_current + i) % _threads.length;
+      if (_threads[at].k.isNotEmpty) return at;
+    }
+    return null;
+  }
+
+  /// Hands the turn to the next script that has work, after one statement.
+  ///
+  /// Called once per COMPLETED statement rather than per continuation, so a script's
+  /// turn is a thing a child can see happen: one block lights up, one consequence, then
+  /// the other script's turn.
+  void _yieldTurn() {
+    if (_threads.length < 2) return;
+    final next = _nextLiveThread();
+    if (next != null) _current = next;
+  }
+
+  SensingSurface? get _sensing =>
+      surface is SensingSurface ? surface as SensingSurface : null;
+
+  StageSurface? get _stage =>
+      surface is StageSurface ? surface as StageSurface : null;
 
   void _hoistProcedures(Node root) {
     for (final node in walk(root)) {
@@ -421,10 +566,17 @@ class Interpreter {
       return false;
     }
 
+    /* The current script has nothing left: hand the turn on. The run is over only when
+       every script is out of continuations — a program whose main script finishes while
+       an event script is still drawing has not finished. */
     if (_k.isEmpty) {
-      _status = RunStatus.finished;
-      _emit(EventKind.programFinished, program.id);
-      return false;
+      final next = _nextLiveThread();
+      if (next == null) {
+        _status = RunStatus.finished;
+        _emit(EventKind.programFinished, program.id);
+        return false;
+      }
+      _current = next;
     }
 
     if (++_steps > limits.maxSteps) {
@@ -452,6 +604,7 @@ class Interpreter {
       case _Discard():
         _pop();
         _completed++;
+        _yieldTurn();
         return true;
 
       case _ApplyAssign(:final node):
@@ -463,6 +616,7 @@ class Interpreter {
         _assign(node.variable, assigned);
         _emit(EventKind.statementFinished, node.id);
         _completed++;
+        _yieldTurn();
         return true;
 
       case _ApplyCall(:final node, :final argCount):
@@ -553,6 +707,7 @@ class Interpreter {
               args: {'count': '$times'});
         }
         _completed++;
+        _yieldTurn();
         if (times == 0) return true;
         _k.add(_RepeatLoop(node, times));
         return true;
@@ -580,6 +735,7 @@ class Interpreter {
           });
         }
         _completed++;
+        _yieldTurn();
         if (!cond.value) return true;
         _k.add(_WhileTest(node));
         _k.add(_Seq(node.body, 0));
@@ -600,6 +756,7 @@ class Interpreter {
           });
         }
         _completed++;
+        _yieldTurn();
         if (stride.value == 0) {
           return _fail(ErrorCode.negativeCount, node, args: {'count': '0'});
         }
@@ -626,6 +783,7 @@ class Interpreter {
           });
         }
         _completed++;
+        _yieldTurn();
         if (cond.value) {
           _k.add(_Seq(node.then, 0));
         } else if (node.orElse != null) {
@@ -636,6 +794,7 @@ class Interpreter {
       case _ApplyReturn(:final node, :final hasValue):
         _pendingReturn = hasValue ? _pop() : VoidValue.instance;
         _completed++;
+        _yieldTurn();
         return _unwindToFrame(node);
 
       case _PopFrame(:final wantsValue):
@@ -718,15 +877,29 @@ class Interpreter {
       case Break():
         _emit(EventKind.statementStarted, stmt.id);
         _completed++;
+        _yieldTurn();
         return _unwindToLoop(stmt);
 
       case Exit():
         _emit(EventKind.statementStarted, stmt.id);
         _completed++;
-        _k.clear();
+        /* `sortie` ends the PROGRAM, so it clears every script and not only its own.
+           Anything else would leave a child watching the other half of their program
+           carry on after they told it to stop. */
+        for (final t in _threads) {
+          t.k.clear();
+        }
         _status = RunStatus.finished;
         _emit(EventKind.programFinished, program.id);
         return false;
+
+      case WhenEvent():
+        /* A `quand` that is not at the top level. The parser has already said so, but a
+           program can reach the interpreter without passing the parser — the block editor
+           builds trees directly — and "the interpreter never throws across the module
+           boundary" is `FR-M1-11`, which means this needs a catalogued failure and not an
+           assertion. */
+        return _fail(ErrorCode.eventNested, stmt as Node);
 
       default:
         _never();
@@ -892,6 +1065,15 @@ class Interpreter {
       Opcode.message,
       Opcode.ask,
       Opcode.toNumber,
+      /* D-014. A key has a NAME — `espace`, `a`, `haut` — and so do a backdrop, a sound
+         and a graphic effect. Leaving them out of this set made every one of them fail
+         the number check before reaching its own case, which reported a type error about
+         a program that was correct. */
+      Opcode.keyDown,
+      Opcode.setBackdrop,
+      Opcode.setEffect,
+      Opcode.say,
+      Opcode.playSound,
     };
     if (!takesText.contains(op)) {
       for (final a in args) {
@@ -986,6 +1168,90 @@ class Interpreter {
             'expected': 'type.boolean'
           });
         }
+      // --- Événements (D-014) -----------------------------------------------------------
+      case Opcode.whenFlag:
+      case Opcode.whenKey:
+      case Opcode.whenClicked:
+        /* A trigger is not a step. It only ever appears as the head of a `quand` block,
+           which `_runWhenEvent` handles before any of this; reaching here means a tree
+           built by hand rather than by the parser. */
+        return _fail(ErrorCode.eventNested, node);
+
+      // --- Capteurs (FR-M21-03) ---------------------------------------------------------
+      case Opcode.keyDown:
+        final sensing = _sensing;
+        if (sensing == null) return _fail(ErrorCode.needsStage, node);
+        _push(BoolValue(sensing.isKeyDown(_asText(args[0]))));
+        return true;
+      case Opcode.mouseX:
+        final sensing = _sensing;
+        if (sensing == null) return _fail(ErrorCode.needsStage, node);
+        _push(NumberValue(sensing.mouseX));
+        return true;
+      case Opcode.mouseY:
+        final sensing = _sensing;
+        if (sensing == null) return _fail(ErrorCode.needsStage, node);
+        _push(NumberValue(sensing.mouseY));
+        return true;
+      case Opcode.mouseDown:
+        final sensing = _sensing;
+        if (sensing == null) return _fail(ErrorCode.needsStage, node);
+        _push(BoolValue(sensing.isMouseDown));
+        return true;
+      case Opcode.touchingEdge:
+        final sensing = _sensing;
+        if (sensing == null) return _fail(ErrorCode.needsStage, node);
+        _push(BoolValue(sensing.touchingEdge));
+        return true;
+      case Opcode.touchingColour:
+        final sensing = _sensing;
+        if (sensing == null) return _fail(ErrorCode.needsStage, node);
+        _push(BoolValue(sensing.touchingColour(n(0), n(1), n(2))));
+        return true;
+
+      // --- Lutins et scène (FR-M21-04) --------------------------------------------------
+      case Opcode.nextCostume:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.nextCostume();
+      case Opcode.setCostume:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.setCostume(n(0).round());
+      case Opcode.costumeNumber:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        _push(NumberValue(stage.costumeNumber));
+        return true;
+      case Opcode.setBackdrop:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.setBackdrop(_asText(args[0]));
+      case Opcode.setEffect:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.setEffect(_asText(args[0]), _asNumber(args[1]) ?? 0);
+      case Opcode.clearEffects:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.clearEffects();
+      case Opcode.say:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.say(_asText(args[0]));
+      case Opcode.playSound:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.playSound(_asText(args[0]));
+      case Opcode.playDrum:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.playDrum(n(0).round(), n(1));
+      case Opcode.playNote:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.playNote(n(0), n(1));
+
       case Opcode.toNumber:
         final text = _asText(args[0]).trim().replaceAll(',', '.');
         final parsed = num.tryParse(text);

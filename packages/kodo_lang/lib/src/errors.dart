@@ -34,6 +34,12 @@ enum ErrorCode {
   expectedName('E_EXPECTED_NAME'),
   duplicateProc('E_DUPLICATE_PROC'),
 
+  /// A `quand` used somewhere other than the top level (`FR-M21-01`).
+  eventNested('E_EVENT_NESTED'),
+
+  /// `quand` without a trigger after it.
+  expectedTrigger('E_EXPECTED_TRIGGER'),
+
   // --- Running the program -------------------------------------------------------------
   type('E_TYPE'),
   undefinedVar('E_UNDEFINED_VAR'),
@@ -44,6 +50,9 @@ enum ErrorCode {
   negativeCount('E_NEGATIVE_COUNT'),
   breakOutsideLoop('E_BREAK_OUTSIDE_LOOP'),
   returnOutsideProc('E_RETURN_OUTSIDE_PROC'),
+
+  /// A block that needs a stage, run on something that is only a canvas (`FR-M21-04`).
+  needsStage('E_NEEDS_STAGE'),
 
   // --- Guards (FR-M1-12) ---------------------------------------------------------------
   depth('E_DEPTH'),
@@ -184,6 +193,11 @@ abstract final class ErrorCatalogue {
     ErrorCode.expectedVariable:
         "Ici j'attends le nom d'une boîte, qui commence par \$. Par exemple \$côté.",
     ErrorCode.expectedName: "Ici j'attends un nom pour ton nouveau bloc.",
+    ErrorCode.eventNested:
+        'Un bloc « quand » ne peut pas être à l\'intérieur d\'un autre bloc. '
+            'Mets-le tout seul, à gauche.',
+    ErrorCode.expectedTrigger:
+        'Après « quand », il faut dire quand : drapeau, touche, ou clic.',
     ErrorCode.duplicateProc:
         "Tu as déjà appris un bloc qui s'appelle « {name} ». Donne-lui un autre nom.",
     ErrorCode.type:
@@ -200,6 +214,9 @@ abstract final class ErrorCatalogue {
         "Ta liste a {size} case(s), et tu demandes la case {asked}.",
     ErrorCode.negativeCount:
         "On ne peut pas répéter {count} fois. Mets un nombre plus grand que zéro.",
+    ErrorCode.needsStage:
+        'Ce bloc a besoin d\'une scène avec des lutins. Sur le canevas simple, '
+            'il ne peut rien faire.',
     ErrorCode.breakOutsideLoop:
         'Coupure sert à sortir d\'une boucle, et ici il n\'y a pas de boucle.',
     ErrorCode.returnOutsideProc:
@@ -229,6 +246,11 @@ abstract final class ErrorCatalogue {
     ErrorCode.expectedVariable:
         'Here I need the name of a box, starting with \$. For example \$side.',
     ErrorCode.expectedName: 'Here I need a name for your new block.',
+    ErrorCode.eventNested:
+        'A "when" block cannot go inside another block. Put it on its own, at '
+            'the left edge.',
+    ErrorCode.expectedTrigger:
+        'After "when", say when: flag, key, or clicked.',
     ErrorCode.duplicateProc:
         'You already learned a block called "{name}". Give this one another name.',
     ErrorCode.type:
@@ -245,6 +267,9 @@ abstract final class ErrorCatalogue {
         'Your list has {size} slot(s), and you asked for slot {asked}.',
     ErrorCode.negativeCount:
         'We cannot repeat {count} times. Use a number bigger than zero.',
+    ErrorCode.needsStage:
+        'This block needs a stage with sprites. On the plain canvas it has '
+            'nothing to act on.',
     ErrorCode.breakOutsideLoop:
         'Break is for leaving a loop, and there is no loop here.',
     ErrorCode.returnOutsideProc:
