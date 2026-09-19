@@ -120,7 +120,13 @@
     "FR-M15-02": "In progress",
     "NFR-I18N-01": "Done",
     "NFR-MAINT-01": "Done",
-    "NFR-OFF-01": "In progress"
+    "NFR-OFF-01": "In progress",
+    "FR-M19-01": "Done",
+    "FR-M19-02": "Done",
+    "FR-M19-04": "Done",
+    "FR-M19-06": "Done",
+    "FR-M19-03": "In progress",
+    "FR-M19-05": "In progress"
   },
   "owner": {
     "FR-M1-01": "M1 squad",
@@ -241,6 +247,12 @@
     "FR-M15-02": "M15 squad",
     "NFR-I18N-01": "M15 squad",
     "NFR-MAINT-01": "M14 squad",
-    "NFR-OFF-01": "M14 squad"
+    "NFR-OFF-01": "M14 squad",
+    "FR-M19-01": "M19 squad (S1)",
+    "FR-M19-02": "M19 squad (S1)",
+    "FR-M19-04": "M19 squad (S1)",
+    "FR-M19-06": "M19 squad (S1)",
+    "FR-M19-03": "M19 squad (S1)",
+    "FR-M19-05": "M19 squad (S1)"
   }
 }

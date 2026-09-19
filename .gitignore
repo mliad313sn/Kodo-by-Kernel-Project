@@ -1,6 +1,9 @@
-.dart_tool/
-build/
 *.log
-packages/*/pubspec.lock
-packages/*/.dart_tool/
+.dart_tool/
+app/.dart_tool/
+app/assets/content/
+app/build/
+build/
 node_modules/
+packages/*/.dart_tool/
+packages/*/pubspec.lock

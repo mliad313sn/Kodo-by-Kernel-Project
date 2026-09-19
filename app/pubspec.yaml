@@ -1,0 +1,47 @@
+name: kodo
+description: >-
+  KODO — M19, the application shell. The body the eighteen modules go inside.
+
+  It assembles the packages and owns no learning logic of its own: no grader, no mastery
+  rule, no scheduler, no item. Those live in M6, M7 and M14 and are imported, never
+  reimplemented — `FR-M19-06`, and there is a test that enforces it.
+publish_to: none
+version: 1.0.0
+
+environment:
+  sdk: ^3.6.0
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  kodo_access:
+    path: ../packages/kodo_access
+  kodo_account:
+    path: ../packages/kodo_account
+  kodo_app:
+    path: ../packages/kodo_app
+  kodo_content:
+    path: ../packages/kodo_content
+  kodo_grader:
+    path: ../packages/kodo_grader
+  kodo_lang:
+    path: ../packages/kodo_lang
+  kodo_progress:
+    path: ../packages/kodo_progress
+  kodo_stage:
+    path: ../packages/kodo_stage
+  kodo_studio:
+    path: ../packages/kodo_studio
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  # The worlds ship inside the app, so a fresh install is usable with the aircraft mode
+  # already on — FR-M14-01, "the single most important test in the programme".
+  assets:
+    - assets/content/

@@ -55,8 +55,17 @@ void main() {
       .cast<Map<String, Object?>>();
   final known = {for (final r in requirements) r['id']! as String};
 
-  final testFiles = _dartFiles('${root.path}/packages', within: 'test');
-  final libFiles = _dartFiles('${root.path}/packages', within: 'lib');
+  // `app/` is a delivery location like any package: M19 lives there, and a requirement it
+  // claims must be named by a test there. Added when the application itself was built —
+  // before that there was no application, which is the whole of PO decision D-012.
+  final testFiles = [
+    ..._dartFiles('${root.path}/packages', within: 'test'),
+    ..._dartFiles('${root.path}/app', within: 'test'),
+  ];
+  final libFiles = [
+    ..._dartFiles('${root.path}/packages', within: 'lib'),
+    ..._dartFiles('${root.path}/app', within: 'lib'),
+  ];
 
   // --- 1. done requirements are named in a test ------------------------------------------
   final referencedInTests = <String, List<String>>{};

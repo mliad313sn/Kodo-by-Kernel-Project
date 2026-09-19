@@ -1571,8 +1571,8 @@
       "priority": "M",
       "verification": "The app builds and launches on each target in the device matrix",
       "gate": "G3",
-      "status": "Not started",
-      "owner": "",
+      "status": "Done",
+      "owner": "M19 squad (S1)",
       "moduleId": "M19"
     },
     {
@@ -1583,8 +1583,8 @@
       "priority": "M",
       "verification": "Navigation test: every screen reachable, every screen exitable, no dead end",
       "gate": "G3",
-      "status": "Not started",
-      "owner": "",
+      "status": "Done",
+      "owner": "M19 squad (S1)",
       "moduleId": "M19"
     },
     {
@@ -1595,8 +1595,8 @@
       "priority": "M",
       "verification": "Force-kill test on the reference device, 50 times, as FR-M9-03 does for the Studio",
       "gate": "G3",
-      "status": "Not started",
-      "owner": "",
+      "status": "In progress",
+      "owner": "M19 squad (S1)",
       "moduleId": "M19"
     },
     {
@@ -1607,8 +1607,8 @@
       "priority": "M",
       "verification": "Setting each preference once changes every screen; asserted across the widget tree",
       "gate": "G3",
-      "status": "Not started",
-      "owner": "",
+      "status": "Done",
+      "owner": "M19 squad (S1)",
       "moduleId": "M19"
     },
     {
@@ -1619,8 +1619,8 @@
       "priority": "M",
       "verification": "Cold start measured on the reference device with aircraft mode on",
       "gate": "G3",
-      "status": "Not started",
-      "owner": "",
+      "status": "In progress",
+      "owner": "M19 squad (S1)",
       "moduleId": "M19"
     },
     {
@@ -1631,8 +1631,8 @@
       "priority": "M",
       "verification": "Dependency test: the shell imports module APIs and defines no grader, no mastery rule and no item",
       "gate": "G3",
-      "status": "Not started",
-      "owner": "",
+      "status": "Done",
+      "owner": "M19 squad (S1)",
       "moduleId": "M19"
     }
   ]

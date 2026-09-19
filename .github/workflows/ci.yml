@@ -65,6 +65,19 @@ jobs:
             echo "::endgroup::"
           done
 
+      # Gate 4b — the application itself. M19 is where the eleven packages become
+      # something a child can open, so it is built as well as tested: a shell that passes
+      # its widget tests and does not compile is not a shell.
+      - name: Build and test the application (M19)
+        working-directory: app
+        run: |
+          sh tool/bundle_content.sh
+          flutter pub get
+          flutter analyze --fatal-infos --fatal-warnings
+          dart format --output=none --set-exit-if-changed .
+          flutter test --reporter=expanded
+          flutter build web --release --no-web-resources-cdn
+
       # Gate 5 — content. The authoring tool re-publishes every world through M6's publish
       # gate and M5's content gate, then the repository is diffed. A bank that ships and a
       # bank that was checked have to be the same bank, and a world over its size budget

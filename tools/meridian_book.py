@@ -14,7 +14,7 @@ Deliberately NOT invented: budgets. `NFR-COST-01` has no agreed figure and PO op
 O-01 records that. Writing a plausible number here would put fiction into the one screen
 Meridian is best at, so every project carries a zero budget and the report says why.
 """
-import json, pathlib, datetime as dt
+import json, pathlib, re, datetime as dt
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "delivery/meridian/kodo_book.json"
@@ -114,7 +114,31 @@ MODULES = [
     # Raised at G3 by PO decision D-012: eighteen modules were built and none of them was
     # the application. This is the critical path — every other module is invisible until it
     # lands. See docs/governance/04_COMMITTEE_AND_DELIVERY_ORGANISATION.md, squad S1.
-    ("M19", "Application shell and navigation", "PLT", "REM", "PE-09", "group", 12, 24),
+    ("M19", "Application shell and navigation", "PLT", "REM", "PE-09", "group", 12, 20),
+]
+
+# KODO's OWN gate model (§1.4). Meridian 5.9.0 had four gates in a constant, so these six
+# were squashed onto four and G4 and G5 — the two that actually block a KODO release —
+# became plain milestones with no gate lock and no gate evidence. Since MER-01 the model is
+# settings data, so the portfolio can hold the product's real gates.
+#
+# And they LOOP: G5 sends the programme back to G1, at least three times before public
+# launch. `loopsTo` says so, and `gateLoopLimit` says when the loop is itself the finding.
+GATE_MODEL = [
+    {"n": 0, "name": "G0 — Mandate", "at": 0.02, "owner": "Chair",
+     "evidence": "Committee seated, sources ingested, glossary agreed"},
+    {"n": 1, "name": "G1 — Cahier des charges", "at": 0.08, "owner": "Product Owner",
+     "evidence": "Spec accepted, every FR tagged and traceable, curriculum ledger complete"},
+    {"n": 2, "name": "G2 — Module prompts", "at": 0.12, "owner": "Seats 8, 9",
+     "evidence": "18 prompts with inputs, outputs, acceptance tests and adjacent interfaces"},
+    {"n": 3, "name": "G3 — Build & integrate", "at": 0.35, "owner": "Seat 14",
+     "evidence": "Vertical slice running ON THE REFERENCE DEVICE"},
+    {"n": 4, "name": "G4 — Deep review", "at": 0.75, "owner": "Committee + PO",
+     "evidence": "Line-level review against §14, zero S1, zero open safety findings"},
+    {"n": 5, "name": "G5 — Market challenge", "at": 0.95, "owner": "Chair + PO",
+     "evidence": "Benchmark evaluation with evidence, improvement backlog RICE-scored",
+     # The improvement loop, in data rather than in a footnote.
+     "loopsTo": 1},
 ]
 
 # The workbook's risk register, updated to reflect what is now true.
@@ -373,23 +397,39 @@ def build():
     # KODO's own gates, as milestones on the modules that carry them.
     gate_dates = {"G1": 4, "G2": 5, "G3": 12, "G4.1": 26, "G5.1": 27,
                   "G4.2": 40, "G5.2": 41, "G4.3": 52, "G5.3": 53}
+    milestones.append({"id": "MS-G0", "project": "M1", "name": "G0 — Committee seated, sources ingested",
+                       "date": week(1), "kind": "gate", "gate": 0, "loop": 1,
+                       "owner": "PE-02", "done": True})
     milestones.append({"id": "MS-G1", "project": "M1", "name": "G1 — Cahier des charges accepted",
-                       "date": week(gate_dates["G1"]), "kind": "gate", "gate": 1,
+                       "date": week(gate_dates["G1"]), "kind": "gate", "gate": 1, "loop": 1,
                        "owner": "PE-01", "done": True})
     milestones.append({"id": "MS-G2", "project": "M1", "name": "G2 — Module prompts reviewed",
-                       "date": week(gate_dates["G2"]), "kind": "gate", "gate": 2,
+                       "date": week(gate_dates["G2"]), "kind": "gate", "gate": 2, "loop": 1,
                        "owner": "PE-08", "done": True})
     milestones.append({"id": "MS-G3", "project": "M6", "name": "G3 — Vertical slice on the reference device",
-                       "date": week(gate_dates["G3"]), "kind": "gate", "gate": 3,
+                       "date": week(gate_dates["G3"]), "kind": "gate", "gate": 3, "loop": 1,
                        "owner": "PE-14", "done": False})
-    for n, (label, wk) in enumerate([("G4 loop 1", 26), ("G5 loop 1", 27), ("G4 loop 2", 40),
-                                     ("G5 loop 2", 41), ("G4 loop 3", 52), ("G5 loop 3", 53)]):
-        milestones.append({
-            "id": f"MS-{label.replace(' ', '-')}", "project": "M17",
-            "name": f"{label} — {'deep review' if label.startswith('G4') else 'market challenge'}",
-            "date": week(wk), "kind": "gate" if n < 2 else "milestone",
-            "gate": 4 if n < 2 else None,
-            "owner": "PE-13" if label.startswith("G4") else "PE-02", "done": False})
+    # G4 and G5, three loops each — as REAL gates now, on their real numbers.
+    #
+    # Before MER-01 these had to be squashed: Meridian had four gates, KODO's G4 and G5 did
+    # not fit, so the two that actually block a KODO release were emitted as plain
+    # milestones with `gate: None` — no gate lock, no gate evidence, nothing to withhold a
+    # release on. That was finding MER-01, and this is what it looked like in practice.
+    for turn in (1, 2, 3):
+        for gate_n, label, wk, owner in (
+            (4, "deep review", {1: 26, 2: 40, 3: 52}[turn], "PE-13"),
+            (5, "market challenge", {1: 27, 2: 41, 3: 53}[turn], "PE-02"),
+        ):
+            milestones.append({
+                "id": f"MS-G{gate_n}-L{turn}", "project": "M17",
+                "name": f"G{gate_n} loop {turn} — {label}",
+                "date": week(wk), "kind": "gate",
+                "gate": gate_n,
+                # Each loop carries its own evidence. Without this, loop 2's G4 is "already
+                # cleared" by loop 1's paperwork and the second review opens believing it
+                # is finished.
+                "loop": turn,
+                "owner": owner, "done": False})
 
     milestones.append({"id": "MS-M1-DONE", "project": "M1",
                        "name": "M1 acceptance tests green (7/7)", "date": week(12),
@@ -485,6 +525,33 @@ def build():
                      "gate": gate, "owner": owner, "rev": rev, "status": status,
                      "updated": week(4)})
 
+    # Which test names each requirement — the traceability report CI already produces.
+    trace = {}
+    trace_path = ROOT / "build/traceability.md"
+    if trace_path.exists():
+        for line in trace_path.read_text(encoding="utf-8").splitlines():
+            for rid in re.findall(r"\b((?:FR|NFR)-[A-Z0-9]+-\d{2})\b", line):
+                if "test" in line.lower():
+                    trace.setdefault(rid, line.strip()[:200])
+
+    requirements_rows = []
+    for r in _REQ_ROWS:
+        module = r.get("moduleId", "")
+        requirements_rows.append({
+            "id": r["id"],
+            # An NFR belongs to the module that carries it; see NFR_HOME.
+            "project": module if any(p[0] == module for p in MODULES)
+                       else NFR_HOME.get(module, (None, None))[0],
+            "statement": r.get("requirement", ""),
+            "source": r.get("source", ""),
+            "priority": r.get("priority", "M"),
+            "verification": r.get("verification", ""),
+            "verifiedBy": trace.get(r["id"], ""),
+            "gate": int(r["gate"][1]) if str(r.get("gate", "")).startswith("G") else None,
+            "status": r.get("status", "Not started"),
+            "owner": None,
+        })
+
     concepts = json.loads((ROOT / "spec/concepts.json").read_text(encoding="utf-8"))
     requirements = json.loads((ROOT / "spec/requirements.json").read_text(encoding="utf-8"))
     done = sum(1 for r in requirements["requirements"] if r.get("status") == "Done")
@@ -545,6 +612,12 @@ def build():
         "allocations": allocations,
         "docs": docs,
         "items": items,
+
+        # MER-03 — the register that had nowhere to live. Generated from
+        # spec/requirements.json, which CI already checks: a requirement marked Done
+        # without a test naming it fails the KODO build. `verification` is the method the
+        # Committee agreed; `verifiedBy` is the test that actually names it.
+        "requirements": requirements_rows,
         "narrative": {
             "highlights": [
                 "G1 and G2 closed on evidence. All six Annex E questions answered in the "
@@ -572,6 +645,10 @@ def build():
                 "NFR-MAINT-01 is closed by demonstration rather than by architecture: "
                 "Worlds 0 and 2 were added after every package was built, with no change "
                 "to any lib/ file.",
+                "M19 IS BUILT AND RUNS. The application exists: profile, world map, "
+                "concepts, item player and settings, with the three authored worlds "
+                "loaded from their verified packs. Driven from this portfolio — Meridian "
+                "named M19 as blocking three projects, and it was built next.",
                 "The Committee is seated and the delivery organisation is standing: 14 "
                 "seats with their vetoes and first actions, 7 squads with explicit "
                 "ownership, and a RACI over all 14 remaining work packages. See "
@@ -616,7 +693,12 @@ def build():
                 "D-010 proposes the fix; seats 3 and 4 hold the ruling.",
             ],
         },
-        "settings": {"autoRag": True, "gateLock": True, "ccb": True},
+        "settings": {
+            "autoRag": True, "gateLock": True, "ccb": True,
+            # MER-01 — six gates, not four, and they loop.
+            "gates": GATE_MODEL,
+            "gateLoopLimit": 3,
+        },
     }
 
 
