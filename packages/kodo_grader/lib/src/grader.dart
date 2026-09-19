@@ -251,7 +251,12 @@ class Grader {
         }
       }
 
-      if (!behavioural.matches && !samePath) {
+      /* The path signature rescues a different-but-valid drawing ORDER (`FR-M6-02`) and
+         nothing else. It is geometry only, so on its own it also waved through a right
+         shape in the wrong colour, the wrong pen width, the wrong paper and the wrong
+         page size — every one of World 3's five concepts. It may now rescue the ink and
+         only the ink. */
+      if (!behavioural.matches && !(samePath && behavioural.pageMatches)) {
         return Verdict(
           passed: false,
           itemId: item.id,
@@ -302,8 +307,19 @@ class Grader {
   }
 
   DiagnosticSituation _situationFor(RasterMatch m) {
+    /* Order matters, and it is the order a child would notice things in. The ink is
+       checked first: if the figure is not where the target is, saying "wrong colour"
+       would be true and useless. Once the ink lands, the remaining differences are the
+       pen, the paper and the page, and each gets its own sentence. */
     if (m.drewTooLittle) return DiagnosticSituation.drewTooLittle;
     if (m.drewTooMuch) return DiagnosticSituation.drewTooMuch;
+    final inkIsRight = m.attemptCoverage >= 0.98 && m.targetCoverage >= 0.98;
+    if (inkIsRight && !m.sizeMatches) return DiagnosticSituation.wrongCanvasSize;
+    if (inkIsRight && !m.backgroundMatches) {
+      return DiagnosticSituation.wrongBackground;
+    }
+    if (inkIsRight && !m.widthMatches) return DiagnosticSituation.wrongWidth;
+    if (inkIsRight && !m.penMatches) return DiagnosticSituation.wrongColour;
     return DiagnosticSituation.wrongShape;
   }
 

@@ -100,6 +100,13 @@ class RasterMatch {
     required this.targetCoverage,
     required this.attemptInk,
     required this.targetInk,
+    this.planeCoverage = const {},
+    this.extraColours = const {},
+    this.missingColours = const {},
+    this.extraWidths = const {},
+    this.missingWidths = const {},
+    this.backgroundMatches = true,
+    this.sizeMatches = true,
   });
 
   final bool matches;
@@ -112,6 +119,56 @@ class RasterMatch {
 
   final int attemptInk;
   final int targetInk;
+
+  /// Which pens the two drawings used, and whether each pen landed where the target put
+  /// it.
+  ///
+  /// Added while authoring World 3, which is *about* colour: `couleurcrayon` was a command
+  /// the child could run and the grader could not see, so a square drawn in blue graded
+  /// identically to the same square in red. A world that teaches colour cannot be marked
+  /// by a monochrome comparison — the drawing really is different, and the grader has to
+  /// look at what the canvas shows rather than at a convenient projection of it.
+  /// A *pen* is a colour and a width together, because that is what a child sets and what
+  /// a stroke carries. Comparing them separately would let a thick red line stand in for a
+  /// thin red one and a thick blue one at the same time.
+  final Map<(int, double), double> planeCoverage;
+
+  /// Colours the child used that the target does not have, and the other way round.
+  final Set<int> extraColours;
+  final Set<int> missingColours;
+
+  /// The same, for pen widths. A width difference survives the shape tolerance only
+  /// because it is checked here: at grading resolution a six-pixel line dilated by the
+  /// positional tolerance swallows a one-pixel line whole, which is how `largeurcrayon`
+  /// came to be a command a child could run and a grader could not mark.
+  final Set<double> extraWidths;
+  final Set<double> missingWidths;
+
+  bool get colourMatches => extraColours.isEmpty && missingColours.isEmpty;
+  bool get widthMatches => extraWidths.isEmpty && missingWidths.isEmpty;
+
+  /// Every pen landed where the target put it.
+  bool get penMatches => colourMatches && widthMatches &&
+      planeCoverage.values.every((c) => c >= 0.98);
+
+  /// Everything about the drawing that is not its geometry: the pens, the paper colour and
+  /// the page size.
+  ///
+  /// This is what the path signature may **not** rescue. A different-but-valid drawing
+  /// ORDER is a correct answer (`FR-M6-02`) and the signature exists to let it pass; a
+  /// different colour is a different drawing, and letting the signature wave it through is
+  /// how World 3 would have shipped with no gradable item in it.
+  bool get pageMatches => penMatches && backgroundMatches && sizeMatches;
+
+  /// Whether the two canvases are the same colour, and the same size.
+  ///
+  /// The second half of the World 3 defect. `couleurcanevas` and `taillecanevas` both
+  /// change what a child sees and neither reached the grader: the background was recorded
+  /// on the canvas and never read, and the attempt was rasterised into the TARGET's
+  /// dimensions, so a wrong canvas size was silently squashed to the right one. A world
+  /// whose fourth concept is the canvas cannot be marked by a comparison that ignores it.
+  final bool backgroundMatches;
+  final bool sizeMatches;
 
   /// True when the child drew the target and then kept going — a different mistake from
   /// missing part of it, and the diagnostic message should say so.
@@ -126,7 +183,11 @@ class RasterMatch {
 /// [scale] downsamples for speed; the grader's tolerance is expressed in canvas pixels and
 /// converted, so a scaled comparison means the same thing as an unscaled one.
 Bitmap rasterise(HeadlessCanvas canvas,
-    {double scale = 1.0, int? width, int? height}) {
+    {double scale = 1.0,
+    int? width,
+    int? height,
+    int? onlyColour,
+    double? onlyPenWidth}) {
   final w = width ?? (canvas.width * scale).round().clamp(1, 4096);
   final h = height ?? (canvas.height * scale).round().clamp(1, 4096);
   final bitmap = Bitmap(w, h);
@@ -134,9 +195,16 @@ Bitmap rasterise(HeadlessCanvas canvas,
   int px(double v) => (v * scale).round();
 
   for (final s in canvas.segments) {
+    /* One colour plane at a time, when asked. The segments keep their order and their
+       width; only the filter changes, so a plane is exactly the drawing a child would see
+       if every other pen had been lifted. */
+    if (onlyColour != null && s.color != onlyColour) continue;
+    if (onlyPenWidth != null && s.width != onlyPenWidth) continue;
     _line(bitmap, px(s.x1), px(s.y1), px(s.x2), px(s.y2),
         (s.width * scale).round().clamp(1, 64));
   }
+  // A plane is ink only: text has no pen, so it belongs to the whole-drawing comparison.
+  if (onlyColour != null || onlyPenWidth != null) return bitmap;
   // Text is ink too. It is marked as a filled box of the right size rather than glyph
   // shapes: the grader must notice that a label is there and roughly how big, and must not
   // depend on which font a device happened to load.
@@ -203,12 +271,51 @@ RasterMatch compareRaster(
   final attemptCoverage = a.coverageBy(b.dilate(radius));
   final targetCoverage = b.coverageBy(a.dilate(radius));
 
+  /* Colour, plane by plane. The overall ink comparison above answers "is it the same
+     shape"; this answers "is it the same drawing", and for World 3 those are different
+     questions. Each plane is compared with the same tolerance as the whole, so a colour
+     does not have to be more accurate than a line. */
+  final attemptColours = attempt.segments.map((s) => s.color).toSet();
+  final targetColours = target.segments.map((s) => s.color).toSet();
+  final attemptWidths = attempt.segments.map((s) => s.width).toSet();
+  final targetWidths = target.segments.map((s) => s.width).toSet();
+  final targetPens =
+      target.segments.map((s) => (s.color, s.width)).toSet();
+
+  final coverage = <(int, double), double>{};
+  for (final pen in targetPens) {
+    final ap = rasterise(attempt,
+        scale: scale, width: w, height: h, onlyColour: pen.$1, onlyPenWidth: pen.$2);
+    final bp = rasterise(target,
+        scale: scale, width: w, height: h, onlyColour: pen.$1, onlyPenWidth: pen.$2);
+    if (bp.inkCount == 0) continue;
+    coverage[pen] = bp.coverageBy(ap.dilate(radius));
+  }
+  final extra = attemptColours.difference(targetColours);
+  final missing = targetColours.difference(attemptColours);
+  final extraW = attemptWidths.difference(targetWidths);
+  final missingW = targetWidths.difference(attemptWidths);
+  final penOk = extra.isEmpty && missing.isEmpty &&
+      extraW.isEmpty && missingW.isEmpty &&
+      coverage.values.every((c) => c >= requiredCoverage);
+
+  final backgroundOk = attempt.canvasBackground == target.canvasBackground;
+  final sizeOk = attempt.width == target.width && attempt.height == target.height;
+
   return RasterMatch(
     matches: attemptCoverage >= requiredCoverage &&
-        targetCoverage >= requiredCoverage,
+        targetCoverage >= requiredCoverage &&
+        penOk && backgroundOk && sizeOk,
     attemptCoverage: attemptCoverage,
     targetCoverage: targetCoverage,
     attemptInk: a.inkCount,
     targetInk: b.inkCount,
+    planeCoverage: coverage,
+    extraColours: extra,
+    missingColours: missing,
+    extraWidths: extraW,
+    missingWidths: missingW,
+    backgroundMatches: backgroundOk,
+    sizeMatches: sizeOk,
   );
 }

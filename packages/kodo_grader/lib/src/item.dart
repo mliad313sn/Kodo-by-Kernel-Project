@@ -151,7 +151,24 @@ enum DiagnosticSituation {
   wrongChoice,
 
   /// The marks are right but the turtle did not end up where it should.
-  endedElsewhere;
+  endedElsewhere,
+
+  /* World 3's three. "Wrong shape" is the wrong sentence for a right shape in the wrong
+     colour, and `FR-M6-03` forbids a message that does not name the observable
+     difference — a child who drew the square perfectly and picked the wrong red should be
+     told about the red. */
+
+  /// The figure is in the right place and the wrong colour.
+  wrongColour,
+
+  /// The figure is in the right place and drawn with the wrong pen width.
+  wrongWidth,
+
+  /// The drawing is right and the paper is the wrong colour.
+  wrongBackground,
+
+  /// The drawing is right and the canvas is the wrong size.
+  wrongCanvasSize;
 
   static DiagnosticSituation? byName(String name) {
     for (final s in DiagnosticSituation.values) {

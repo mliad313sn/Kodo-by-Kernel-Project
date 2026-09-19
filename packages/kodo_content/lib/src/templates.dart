@@ -65,6 +65,41 @@ List<DiagnosticPattern> drawingDiagnostics(
             'It does not go to the same place.$tailEn',
       ),
     ),
+    /* World 3. A right shape in the wrong colour is not a wrong shape, and telling a
+       child it is sends them back to redraw something that was already correct. The
+       numbers are the ones the grader counted, so the sentence names what it saw. */
+    DiagnosticPattern(
+      when: 'wrongColour',
+      textKeys: _b(
+        'La figure est au bon endroit, mais pas de la bonne couleur : tu en as '
+            'utilisé {actualColours}, la cible en a {expectedColours}.$tailFr',
+        'The shape is in the right place, but not in the right colour: you used '
+            '{actualColours}, the target has {expectedColours}.$tailEn',
+      ),
+    ),
+    DiagnosticPattern(
+      when: 'wrongWidth',
+      textKeys: _b(
+        'La figure est au bon endroit, mais le crayon n\'a pas la bonne '
+            'épaisseur.$tailFr',
+        'The shape is in the right place, but the pen is not the right '
+            'thickness.$tailEn',
+      ),
+    ),
+    DiagnosticPattern(
+      when: 'wrongBackground',
+      textKeys: _b(
+        'Le dessin est bon. C\'est la couleur du fond qui n\'est pas la bonne.$tailFr',
+        'The drawing is right. It is the background colour that is not.$tailEn',
+      ),
+    ),
+    DiagnosticPattern(
+      when: 'wrongCanvasSize',
+      textKeys: _b(
+        'Le dessin est bon, mais la feuille n\'a pas la bonne taille.$tailFr',
+        'The drawing is right, but the sheet is not the right size.$tailEn',
+      ),
+    ),
     DiagnosticPattern(
       when: 'structureMissing',
       textKeys: _b(

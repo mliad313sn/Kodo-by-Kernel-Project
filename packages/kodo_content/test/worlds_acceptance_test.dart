@@ -1,7 +1,7 @@
-/// Worlds 0 and 2, as shipped.
+/// Worlds 0, 2 and 3, as shipped.
 ///
 /// The gate runs at authoring time in `tool/author_world0.dart` and
-/// `tool/author_world2.dart`. It runs again here, over the JSON that actually shipped,
+/// `tool/author_world2.dart` and `tool/author_world3.dart`. It runs again here, over the JSON that actually shipped,
 /// because the thing that ships and the thing that was checked have to be the same thing.
 ///
 /// Also the prerequisite edges: with Worlds 0, 1 and 2 present, the concept graph the
@@ -34,9 +34,10 @@ void main() {
   final world0 = load(0);
   final world1 = load(1);
   final world2 = load(2);
-  final worlds = {0: world0, 1: world1, 2: world2};
+  final world3 = load(3);
+  final worlds = {0: world0, 1: world1, 2: world2, 3: world3};
 
-  group('§6.3 · the three shipped worlds carry the committed item volume', () {
+  group('§6.3 · the shipped worlds carry the committed item volume', () {
     const committed = {
       'C0.1': 18,
       'C0.2': 20,
@@ -51,6 +52,11 @@ void main() {
       'C2.2': 22,
       'C2.3': 22,
       'C2.4': 18,
+      'C3.1': 20,
+      'C3.2': 18,
+      'C3.3': 22,
+      'C3.4': 20,
+      'C3.5': 18,
     };
 
     test('every concept meets or beats the ledger', () {
@@ -64,13 +70,14 @@ void main() {
       }
     });
 
-    test('the three worlds ship 266 items between them', () {
+    test('the four worlds ship 366 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
-      // 21 % of the 1 214 the curriculum commits across all thirteen worlds.
+      expect(world3.items, hasLength(100));
+      // 30 % of the 1 214 the curriculum commits across all thirteen worlds.
       expect(
-          world0.items.length + world1.items.length + world2.items.length, 266);
+          worlds.values.fold<int>(0, (n, p) => n + p.items.length), 366);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -86,7 +93,7 @@ void main() {
       }
     });
 
-    test('item ids are unique across all three worlds', () {
+    test('item ids are unique across every shipped world', () {
       final ids = [
         for (final pack in worlds.values) ...pack.items.map((i) => i.id)
       ];
@@ -95,7 +102,7 @@ void main() {
   });
 
   group('every shipped item passes the publish gate', () {
-    for (final entry in {0: 'World 0', 2: 'World 2'}.entries) {
+    for (final entry in {0: 'World 0', 2: 'World 2', 3: 'World 3'}.entries) {
       test('${entry.value}, over the JSON that shipped', () {
         final failures = checkBank(worlds[entry.key]!.items);
         expect(failures, isEmpty, reason: failures.take(8).join('\n'));
@@ -311,6 +318,77 @@ void main() {
       }
     });
   });
+
+  group('World 3 teaches the pen, and the grader can see it', () {
+    /* This world is the reason `compareRaster` learned about colour, pen width, canvas
+       colour and canvas size. Before that, every one of its five concepts was a command a
+       child could run and a grader could not mark: a blue square graded identically to a
+       red one, and the publish gate said so on the first run by refusing thirty-odd items
+       whose "wrong" answers passed. These tests are the line holding that fix in place. */
+
+    test('a right shape in the wrong colour does not pass', () {
+      final item = world3.items.firstWhere((i) => i.conceptId == 'C3.3' &&
+          i.type == ItemType.t1BuildToTarget);
+      final reference = item.referenceSolutionSource!;
+      // The same program, one channel changed. Nothing else about it moves.
+      final recoloured = reference.replaceFirst(
+          RegExp(r'couleurcrayon [\d, ]+'), 'couleurcrayon 12, 34, 56');
+      expect(recoloured, isNot(reference), reason: 'the substitution must bite');
+
+      final grader = Grader();
+      expect(
+          grader
+              .grade(item, ProgramResponse(parse(reference, KeywordTables.fr).program))
+              .passed,
+          isTrue);
+      expect(
+          grader
+              .grade(item, ProgramResponse(parse(recoloured, KeywordTables.fr).program))
+              .passed,
+          isFalse,
+          reason: 'a blue square is not a red square');
+    });
+
+    test('the message names the colour rather than the shape', () {
+      final item = world3.items.firstWhere((i) => i.conceptId == 'C3.3' &&
+          i.type == ItemType.t1BuildToTarget);
+      final recoloured = item.referenceSolutionSource!.replaceFirst(
+          RegExp(r'couleurcrayon [\d, ]+'), 'couleurcrayon 12, 34, 56');
+      final verdict =
+          Grader().grade(item, ProgramResponse(parse(recoloured, KeywordTables.fr).program));
+      expect(verdict.situation, DiagnosticSituation.wrongColour,
+          reason: 'telling a child their correct shape is wrong sends them '
+              'back to redraw something that was already right');
+    });
+
+    test('every C3.3 reference solution actually sets a colour', () {
+      for (final item in world3.items.where((i) => i.conceptId == 'C3.3')) {
+        final source = item.referenceSolutionSource;
+        if (source == null) continue;
+        expect(source, contains('couleurcrayon'),
+            reason: '${item.id} is a colour item that never sets a colour');
+      }
+    });
+
+    test('C3.1 is the pen, so every drawing item lifts it', () {
+      for (final item in world3.items.where((i) => i.conceptId == 'C3.1')) {
+        final source = item.referenceSolutionSource;
+        if (source == null) continue;
+        expect(source, contains('lèvecrayon'),
+            reason: '${item.id} teaches pen up without using it');
+      }
+    });
+
+    test('C3.5 items pin the pose, because that is the whole difference', () {
+      /* `nettoietout` and `initialise` differ only in where Tika ends up. Without
+         `requireFinalPose` the grader would accept either one wherever the surviving
+         marks happen to coincide, and the concept would be untestable. */
+      for (final item in world3.items.where((i) =>
+          i.conceptId == 'C3.5' && i.targetProgramSource != null)) {
+        expect(item.requireFinalPose, isTrue, reason: item.id);
+      }
+    });
+  });
 }
 
 /// `NFR-MAINT-01` — *"adding a world requires no app release"*.
@@ -366,4 +444,5 @@ void maintenanceTests(ContentPack world0, ContentPack world2) {
       }
     });
   });
+
 }

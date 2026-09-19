@@ -84,6 +84,69 @@ void main() {
               'attempt ${match.attemptCoverage}, target ${match.targetCoverage}');
     });
 
+    test('the grader sees colour, because World 3 is about colour', () {
+      /* Found while authoring World 3. `couleurcrayon` was a command a child could run
+         and the grader could not see: a square in blue graded identically to the same
+         square in red, in the world whose whole subject is the pen. A world that teaches
+         colour cannot be marked by a monochrome comparison. */
+      const square = 'répète 4 {\n  avance 80\n  tournedroite 90\n}';
+      final red = _draw('couleurcrayon 200, 30, 40\n$square');
+      final blue = _draw('couleurcrayon 20, 60, 200\n$square');
+
+      final m = compareRaster(red, blue);
+      expect(m.matches, isFalse, reason: 'red is not blue');
+      // The shape still matches, and the message a child gets must be able to say so.
+      expect(m.attemptCoverage, greaterThanOrEqualTo(0.98));
+      expect(m.missingColours, isNotEmpty);
+      expect(m.extraColours, isNotEmpty);
+
+      // Same colour, same drawing: nothing else changed.
+      expect(compareRaster(red, _draw('couleurcrayon 200, 30, 40\n$square')).matches,
+          isTrue);
+    });
+
+    test('a colour in the right place is not a colour in the wrong place', () {
+      /* Two drawings with the SAME two colours and the same total ink, with the halves
+         swapped. A comparison that only counted colours would pass this, which is why
+         each colour is compared as its own plane. */
+      const half = 'avance 80\ntournedroite 90\navance 80';
+      final a = _draw('couleurcrayon 200, 30, 40\n$half\n'
+          'couleurcrayon 20, 60, 200\ntournedroite 90\n$half');
+      final b = _draw('couleurcrayon 20, 60, 200\n$half\n'
+          'couleurcrayon 200, 30, 40\ntournedroite 90\n$half');
+
+      final m = compareRaster(a, b);
+      expect(m.extraColours, isEmpty, reason: 'both use the same two colours');
+      expect(m.missingColours, isEmpty);
+      expect(m.penMatches, isFalse, reason: 'each colour is in the other half');
+      expect(m.matches, isFalse);
+    });
+
+    test('pen width is graded too: a thick line is not a thin one', () {
+      final thin = _draw('largeurcrayon 1\navance 100');
+      final thick = _draw('largeurcrayon 12\navance 100');
+      expect(compareRaster(thick, thin).matches, isFalse);
+    });
+
+    test('the canvas is part of the drawing: its colour and its size', () {
+      /* The other half of the same defect. `couleurcanevas` was recorded and never read,
+         and a wrong `taillecanevas` was silently squashed into the target's dimensions
+         before comparison — so the two commands World 3's fourth concept is about were
+         both invisible to the grader. */
+      final plain = _draw('avance 60');
+      final onSand = _draw('couleurcanevas 253, 247, 236\navance 60');
+      expect(compareRaster(onSand, plain).matches, isFalse);
+      expect(compareRaster(onSand, plain).backgroundMatches, isFalse);
+      expect(compareRaster(onSand, plain).attemptCoverage, greaterThanOrEqualTo(0.98),
+          reason: 'the line itself is in the right place — only the paper changed');
+
+      final small = _draw('taillecanevas 200, 200\navance 60');
+      expect(compareRaster(small, plain).sizeMatches, isFalse);
+      expect(compareRaster(small, plain).matches, isFalse);
+      expect(compareRaster(_draw('couleurcanevas 253, 247, 236\navance 60'), onSand).matches,
+          isTrue);
+    });
+
     test('the tolerance is real: two pixels off passes, twenty does not', () {
       final target = _draw('avance 100');
       final nudged = _draw('va 200, 202\nbaissecrayon\navance 100');
