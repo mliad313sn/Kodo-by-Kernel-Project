@@ -67,7 +67,7 @@
     "FR-M3-05": "Done",
     "FR-M3-06": "Done",
     "FR-M3-07": "Done",
-    "FR-M3-08": "Not started",
+    "FR-M3-08": "Done",
     "FR-M3-09": "Done",
     "FR-M15-03": "Done",
     "FR-M16-01": "Done",
@@ -282,7 +282,6 @@
   "notes": {
     "_comment": "Why a requirement is still open, for the ones that cannot be closed from a repository. Written by the PO at the close of the content build.",
     "FR-M2-07": "Needs a device matrix and a child panel. Neither exists in a repository.",
-    "FR-M3-08": "Export as text and as a code image. The text half is the renderer that already exists; the image half needs a rasteriser on a real canvas.",
     "FR-M4-04": "Backdrop import and camera. Consent gating is built and tested; the platform pickers are not, and camera capture is out of v1 (D-007).",
     "FR-M4-05": "Sound import and recording. Same shape as FR-M4-04: the consent gate is built, the microphone is a platform API.",
     "FR-M4-08": "Ghosted future-path overlay. Verification is a child panel.",

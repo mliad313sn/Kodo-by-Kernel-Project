@@ -12,6 +12,7 @@ export 'src/block_help.dart';
 export 'src/block_stack.dart';
 export 'src/block_view.dart';
 export 'src/canvas_painter.dart';
+export 'src/code_export.dart';
 export 'src/keyword_suggestions.dart';
 export 'src/editor_controller.dart';
 export 'src/palette_scope.dart';

@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:kodo_lang/kodo_lang.dart';
 
 import 'block_view.dart';
+import 'code_export.dart';
 import 'editor_controller.dart';
 import 'keyword_suggestions.dart';
 import 'syntax_theme.dart';
@@ -30,69 +31,17 @@ List<TextSpan> highlightLine(
   double fontSize = 16,
   String? fontFamily,
 }) {
-  final spans = <TextSpan>[];
-  final tokens = tokenize(line).tokens;
-  var cursor = 0;
-
-  void emit(String text, SyntaxCategory category) {
-    if (text.isEmpty) return;
-    spans.add(TextSpan(
-      text: text,
-      style: theme.styleFor(category).toTextStyle(fontSize, fontFamily),
-    ));
-  }
-
-  for (final token in tokens) {
-    if (token.type == TokenType.eof) break;
-    if (token.span.start > cursor) {
-      emit(line.substring(cursor, token.span.start), SyntaxCategory.command);
-    }
-    final text = line.substring(token.span.start, token.span.end);
-    emit(text, _categoryOf(token, keywords));
-    cursor = token.span.end;
-  }
-  if (cursor < line.length) {
-    emit(line.substring(cursor), SyntaxCategory.command);
-  }
-  return spans;
-}
-
-SyntaxCategory _categoryOf(Token token, KeywordTable keywords) {
-  switch (token.type) {
-    case TokenType.comment:
-      return SyntaxCategory.comment;
-    case TokenType.string:
-      return SyntaxCategory.string;
-    case TokenType.number:
-      return SyntaxCategory.number;
-    case TokenType.variable:
-      return SyntaxCategory.variable;
-    case TokenType.lbrace:
-    case TokenType.rbrace:
-      return SyntaxCategory.brace;
-    case TokenType.operator:
-      return const {'==', '!=', '<', '>', '<=', '>='}.contains(token.text)
-          ? SyntaxCategory.comparisonOperator
-          : SyntaxCategory.mathOperator;
-    case TokenType.assign:
-      return SyntaxCategory.mathOperator;
-    case TokenType.word:
-      final lookup = keywords.resolve(token.text);
-      if (lookup == null) return SyntaxCategory.command;
-      final syntax = lookup.syntax;
-      if (syntax == null) return SyntaxCategory.command;
-      return switch (syntax) {
-        SyntaxWord.true_ || SyntaxWord.false_ => SyntaxCategory.boolean,
-        SyntaxWord.and ||
-        SyntaxWord.or ||
-        SyntaxWord.not =>
-          SyntaxCategory.booleanOperator,
-        SyntaxWord.learn => SyntaxCategory.learn,
-        _ => SyntaxCategory.controlFlow,
-      };
-    default:
-      return SyntaxCategory.command;
-  }
+  /* One categorisation, shared with the export (`FR-M3-08`). An exporter that worked the
+     colours out for itself would drift from the editor, and a child would print a program
+     that is not the one on their screen. */
+  return [
+    for (final span in highlightSpans(line, keywords))
+      TextSpan(
+        text: span.text,
+        style:
+            theme.styleFor(span.category).toTextStyle(fontSize, fontFamily),
+      ),
+  ];
 }
 
 /// The programming keyboard row (FR-M3-07).
@@ -204,6 +153,7 @@ class TextEditor extends StatefulWidget {
     this.showLineNumbers = true,
     this.compact = false,
     this.highlightedLine,
+    this.onExport,
   });
 
   final EditorController controller;
@@ -224,6 +174,13 @@ class TextEditor extends StatefulWidget {
   /// times they did not would teach a child that the blocks and the words are two
   /// different programs.
   final int? highlightedLine;
+
+  /// `FR-M3-08`: hands the program out as text and as a picture.
+  ///
+  /// The editor renders both and the caller decides what a file is — a share sheet on a
+  /// phone, a download in a browser, a folder on a desktop. None of that belongs in an
+  /// editor, and all of it differs per platform.
+  final void Function(CodeExport export)? onExport;
 
   @override
   State<TextEditor> createState() => TextEditorState();
@@ -290,6 +247,13 @@ class TextEditorState extends State<TextEditor> {
       scope: widget.worldOpcodes,
     );
   }
+
+  /// `FR-M3-08`. The program as text and as a picture of itself.
+  CodeExport buildExport() => exportProgram(
+        widget.controller.program,
+        widget.controller.keywords,
+        widget.theme,
+      );
 
   /// Takes an offer: replaces the partial word rather than appending to it.
   void accept(KeywordSuggestion suggestion) {
@@ -415,6 +379,29 @@ class TextEditorState extends State<TextEditor> {
             /* `FR-M3-06`. Above the keyboard row rather than floating over the program:
                a popup on a 5.5" screen covers the line being typed, which is the line a
                child is looking at. */
+            if (widget.onExport != null)
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Semantics(
+                    label: widget.locale == 'en'
+                        ? 'Save my program'
+                        : 'Garder mon programme',
+                    button: true,
+                    child: SizedBox(
+                      width: minimumTouchTarget,
+                      height: minimumTouchTarget,
+                      child: InkWell(
+                        key: const Key('export-code'),
+                        onTap: () => widget.onExport!(buildExport()),
+                        child: const ExcludeSemantics(
+                            child: Icon(Icons.ios_share, size: 22)),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             if (suggestions.isNotEmpty)
               KeywordSuggestionStrip(
                 key: const Key('suggestions'),
