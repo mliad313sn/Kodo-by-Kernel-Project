@@ -7,11 +7,11 @@
 /// and only the coordinate frame and the sprite model are new here.
 library;
 
-import 'dart:math' as math;
 
 import 'package:kodo_lang/kodo_lang.dart';
 
 import 'consent.dart';
+import 'sensing.dart';
 
 /// One of a sprite's looks.
 class Costume {
@@ -195,7 +195,8 @@ class SaidLine {
 }
 
 class SpriteStage extends HeadlessCanvas
-    implements StageSurface, SensingSurface {
+    with TurtleSensing
+    implements StageSurface {
   SpriteStage({
     super.width = 480,
     super.height = 360,
@@ -220,15 +221,6 @@ class SpriteStage extends HeadlessCanvas
 
   /// Speech bubbles, in order.
   final List<SaidLine> saidLines = [];
-
-  /* D-014's sensing inputs. Scripted, never a real device: an item a grader cannot mark
-     the same way twice is not an item, so a sensor reads what the item said it would
-     read. A Studio stage sets these from the real keyboard and mouse instead, which is
-     the same field with a different writer. */
-  final Set<String> keysDown = {};
-  double mousePointerX = 0;
-  double mousePointerY = 0;
-  bool mouseIsDown = false;
 
   int backdropIndex = 0;
   late Sprite _selected;
@@ -363,60 +355,13 @@ class SpriteStage extends HeadlessCanvas
   void playNote(num pitch, num beats) =>
       score.add(SoundEvent('note', pitch, beats));
 
-  // --- SensingSurface (FR-M21-03) -------------------------------------------------------
-
-  @override
-  bool isKeyDown(String key) => keysDown.contains(key.toLowerCase());
-
-  @override
-  num get mouseX => mousePointerX;
-
-  @override
-  num get mouseY => mousePointerY;
-
-  @override
-  bool get isMouseDown => mouseIsDown;
-
-  @override
-  bool get touchingEdge =>
-      positionX <= 0 ||
-      positionY <= 0 ||
-      positionX >= width ||
-      positionY >= height;
-
-  @override
-  bool touchingColour(num r, num g, num b) {
-    /* "Standing on ink of that colour" — read from the segments already drawn rather than
-       from a rasterised frame, because the canvas is vectors and rasterising on every
-       sensor read would cost more than the whole program. A segment counts when the
-       turtle is within its width of it. */
-    final wanted = ((r.round() & 0xFF) << 16) |
-        ((g.round() & 0xFF) << 8) |
-        (b.round() & 0xFF);
-    for (final s in segments) {
-      if (s.color != wanted) continue;
-      if (_distanceToSegment(
-              positionX.toDouble(), positionY.toDouble(), s) <=
-          s.width / 2 + 1) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  static double _distanceToSegment(double px, double py, Segment s) {
-    final dx = s.x2 - s.x1;
-    final dy = s.y2 - s.y1;
-    final lengthSquared = dx * dx + dy * dy;
-    if (lengthSquared == 0) {
-      return math.sqrt((px - s.x1) * (px - s.x1) + (py - s.y1) * (py - s.y1));
-    }
-    var t = ((px - s.x1) * dx + (py - s.y1) * dy) / lengthSquared;
-    t = t.clamp(0.0, 1.0);
-    final cx = s.x1 + t * dx;
-    final cy = s.y1 + t * dy;
-    return math.sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
-  }
+  /* SensingSurface (`FR-M21-03`) comes from `TurtleSensing`, and used to live here.
+     World 8 needed `touchebord` under the grader's canvas, which is not a stage — and the
+     answer turned out not to need one, because the sensor was geometry all along. Two
+     copies of that geometry would be two answers to the same question, which the M4
+     prompt forbids, so there is one and both surfaces mix it in. Keys and the pointer are
+     fields of the mixin; a Studio stage writes them from the real keyboard and mouse, and
+     an item writes them with `applyScene`. */
 
   void switchBackdrop(String id) {
     final i = backdrops.indexWhere((b) => b.id == id);

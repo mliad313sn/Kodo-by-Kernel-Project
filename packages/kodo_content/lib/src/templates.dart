@@ -16,6 +16,7 @@
 library;
 
 import 'package:kodo_grader/kodo_grader.dart';
+import 'package:kodo_lang/kodo_lang.dart';
 
 Map<String, String> _b(String fr, String en) => {'fr': fr, 'en': en};
 
@@ -179,6 +180,12 @@ Item buildToTarget({
   /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
   /// items are graded under their own event, or a `quand touche` script never
   /// fires and every answer draws nothing.
+  /// What the keyboard and pointer are doing while this item is graded.
+  ///
+  /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
+  /// nothing, and an item where every answer passes is not an item. `touchebord` and
+  /// `touchecouleur` need none of this — the canvas computes them from geometry.
+  SensingScene sensing = SensingScene.empty,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -199,6 +206,7 @@ Item buildToTarget({
       paletteScope: paletteScope,
       requireFinalPose: requireFinalPose,
       runTrigger: runTrigger,
+      sensing: sensing,
     );
 
 /// Two programs that draw exactly what [solution] draws, written differently.
@@ -318,6 +326,12 @@ Item fixTheBug({
   /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
   /// nothing else, so a body made of `recule` or `direction` yields one.
   List<String>? alternatives,
+  /// What the keyboard and pointer are doing while this item is graded.
+  ///
+  /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
+  /// nothing, and an item where every answer passes is not an item. `touchebord` and
+  /// `touchecouleur` need none of this — the canvas computes them from geometry.
+  SensingScene sensing = SensingScene.empty,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -339,6 +353,7 @@ Item fixTheBug({
       paletteScope: paletteScope,
       requireFinalPose: requireFinalPose,
       runTrigger: runTrigger,
+      sensing: sensing,
       assertions: assertions,
     );
 
@@ -370,6 +385,12 @@ Item fillTheGap({
   /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
   /// nothing else, so a body made of `recule` or `direction` yields one.
   List<String>? alternatives,
+  /// What the keyboard and pointer are doing while this item is graded.
+  ///
+  /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
+  /// nothing, and an item where every answer passes is not an item. `touchebord` and
+  /// `touchecouleur` need none of this — the canvas computes them from geometry.
+  SensingScene sensing = SensingScene.empty,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -391,6 +412,7 @@ Item fillTheGap({
       paletteScope: paletteScope,
       requireFinalPose: requireFinalPose,
       runTrigger: runTrigger,
+      sensing: sensing,
       assertions: assertions,
     );
 
@@ -422,6 +444,12 @@ Item parsons({
   /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
   /// nothing else, so a body made of `recule` or `direction` yields one.
   List<String>? alternatives,
+  /// What the keyboard and pointer are doing while this item is graded.
+  ///
+  /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
+  /// nothing, and an item where every answer passes is not an item. `touchebord` and
+  /// `touchecouleur` need none of this — the canvas computes them from geometry.
+  SensingScene sensing = SensingScene.empty,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -442,6 +470,7 @@ Item parsons({
       paletteScope: paletteScope,
       requireFinalPose: requireFinalPose,
       runTrigger: runTrigger,
+      sensing: sensing,
       assertions: assertions,
     );
 
@@ -463,6 +492,12 @@ Item openBuild({
   required List<RubricLine> rubric,
   required List<Hint> itemHints,
   List<String> paletteScope = const [],
+  /// What the keyboard and pointer are doing while this item is graded.
+  ///
+  /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
+  /// nothing, and an item where every answer passes is not an item. `touchebord` and
+  /// `touchecouleur` need none of this — the canvas computes them from geometry.
+  SensingScene sensing = SensingScene.empty,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -478,6 +513,7 @@ Item openBuild({
       diagnostics: drawingDiagnostics(),
       paletteScope: paletteScope,
       runTrigger: runTrigger,
+      sensing: sensing,
     );
 
 /// One line of a rubric: what it says to the child, and what it checks.
@@ -509,6 +545,12 @@ Item golf({
   /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
   /// nothing else, so a body made of `recule` or `direction` yields one.
   List<String>? alternatives,
+  /// What the keyboard and pointer are doing while this item is graded.
+  ///
+  /// World 8's sensing concept needs it: a key nobody holds makes every answer draw
+  /// nothing, and an item where every answer passes is not an item. `touchebord` and
+  /// `touchecouleur` need none of this — the canvas computes them from geometry.
+  SensingScene sensing = SensingScene.empty,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -529,5 +571,6 @@ Item golf({
       diagnostics: drawingDiagnostics(),
       paletteScope: paletteScope,
       runTrigger: runTrigger,
+      sensing: sensing,
       assertions: assertions,
     );

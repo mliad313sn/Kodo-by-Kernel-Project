@@ -202,7 +202,10 @@ class Grader {
     // --- behavioural ---------------------------------------------------------------------
     RasterMatch? behavioural;
     if (item.targetProgramSource != null) {
-      final attemptCanvas = VectorCanvas();
+      /* Both canvases are handed the item's authored scene before either runs, so the
+         child's program and the target answer `touchepressée` the same way. A sensor
+         that read differently for the two would fail every correct answer. */
+      final attemptCanvas = VectorCanvas()..applyScene(item.sensing);
       final trigger = _triggerFor(item.runTrigger);
       final run = runProgram(program, attemptCanvas,
           seed: item.seed, inputs: item.inputs, trigger: trigger);
@@ -216,7 +219,7 @@ class Grader {
         );
       }
 
-      final targetCanvas = VectorCanvas();
+      final targetCanvas = VectorCanvas()..applyScene(item.sensing);
       final targetProgram =
           parse(item.targetProgramSource!, KeywordTables.fr).program;
       runProgram(targetProgram, targetCanvas,

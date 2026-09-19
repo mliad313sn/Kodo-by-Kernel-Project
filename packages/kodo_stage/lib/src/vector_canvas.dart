@@ -12,6 +12,7 @@ import 'package:kodo_lang/kodo_lang.dart';
 
 import 'png.dart';
 import 'raster.dart';
+import 'sensing.dart';
 import 'svg.dart' as svg;
 
 /// How much the renderer is allowed to do (FR-M4-09, PO decision D-004).
@@ -49,7 +50,12 @@ class RenderBudget {
 }
 
 /// The drawing surface, with everything a renderer and a grader need.
-class VectorCanvas extends HeadlessCanvas {
+///
+/// It senses, which it did not until World 8 asked it to. `touchebord` and `touchecouleur`
+/// are the turtle against the page and the turtle against its own ink — geometry this
+/// class already holds — so answering them needed no stage, only the admission that the
+/// question was never about sprites. See `sensing.dart`.
+class VectorCanvas extends HeadlessCanvas with TurtleSensing {
   VectorCanvas({
     super.width,
     super.height,

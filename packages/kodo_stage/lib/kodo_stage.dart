@@ -10,6 +10,7 @@ export 'src/inspector.dart';
 export 'src/palette.dart';
 export 'src/png.dart';
 export 'src/raster.dart';
+export 'src/sensing.dart';
 export 'src/stage.dart';
 export 'src/svg.dart';
 export 'src/vector_canvas.dart';

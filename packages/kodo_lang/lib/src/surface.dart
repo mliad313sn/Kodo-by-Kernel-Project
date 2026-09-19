@@ -121,6 +121,44 @@ abstract class SensingSurface {
   bool touchingColour(num r, num g, num b);
 }
 
+/// What the world outside the program is doing while an item is graded.
+///
+/// Authored per item, for the same reason `seed` is: a pass may not depend on something
+/// the child cannot see and the author did not choose.
+class SensingScene {
+  const SensingScene({
+    this.keysDown = const [],
+    this.pointerX = 0,
+    this.pointerY = 0,
+    this.pointerDown = false,
+  });
+
+  /// Keys held for the whole run, in the child's words: `espace`, `a`, `haut`.
+  final List<String> keysDown;
+  final num pointerX;
+  final num pointerY;
+  final bool pointerDown;
+
+  bool get isDefault =>
+      keysDown.isEmpty && pointerX == 0 && pointerY == 0 && !pointerDown;
+
+  Map<String, Object?> toJson() => {
+        if (keysDown.isNotEmpty) 'keys': keysDown,
+        if (pointerX != 0) 'pointerX': pointerX,
+        if (pointerY != 0) 'pointerY': pointerY,
+        if (pointerDown) 'pointerDown': true,
+      };
+
+  static const empty = SensingScene();
+
+  static SensingScene fromJson(Map<String, Object?> j) => SensingScene(
+        keysDown: ((j['keys'] as List<Object?>?) ?? const []).cast<String>(),
+        pointerX: (j['pointerX'] as num?) ?? 0,
+        pointerY: (j['pointerY'] as num?) ?? 0,
+        pointerDown: (j['pointerDown'] as bool?) ?? false,
+      );
+}
+
 /// What a program can do to a stage: sprites, costumes, sounds, backdrops, effects
 /// (`FR-M21-04`).
 ///

@@ -253,6 +253,7 @@ class Item {
     this.blockBudget,
     this.seed = 1,
     this.inputs = const [],
+    this.sensing = SensingScene.empty,
     this.runTrigger = 'flag',
     this.requireFinalPose = false,
   });
@@ -306,6 +307,14 @@ class Item {
 
   /// Scripted answers for `demande`, so an asking item can still be graded headlessly.
   final List<String> inputs;
+
+  /// What the keyboard and the pointer are doing while this item is graded.
+  ///
+  /// The same idea as [seed] and [inputs], for the same reason: World 8's sensing concept
+  /// asks `touchepressée "espace"`, and a key nobody is holding makes every answer draw
+  /// nothing and all of them pass. `touchebord` and `touchecouleur` need none of this —
+  /// they are geometry, and the canvas computes them.
+  final SensingScene sensing;
 
   /// Which trigger this item's programs run under (`FR-M21-01`).
   ///
@@ -366,6 +375,7 @@ class Item {
         'seed': seed,
         if (runTrigger != 'flag') 'trigger': runTrigger,
         if (inputs.isNotEmpty) 'inputs': inputs,
+        if (!sensing.isDefault) 'sensing': sensing.toJson(),
         if (requireFinalPose) 'requireFinalPose': true,
       };
 
@@ -410,6 +420,9 @@ class Item {
         seed: (j['seed'] as int?) ?? 1,
         runTrigger: (j['trigger'] as String?) ?? 'flag',
         inputs: ((j['inputs'] as List<Object?>?) ?? const []).cast<String>(),
+        sensing: j['sensing'] == null
+            ? SensingScene.empty
+            : SensingScene.fromJson(j['sensing']! as Map<String, Object?>),
         requireFinalPose: (j['requireFinalPose'] as bool?) ?? false,
       );
 }
