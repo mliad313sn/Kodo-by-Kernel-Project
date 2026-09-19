@@ -495,6 +495,13 @@ Item golf({
   required List<String> wrong,
   required List<Hint> itemHints,
   List<String> paletteScope = const [],
+  /// Structural checks the block budget cannot make.
+  ///
+  /// A budget bounds how *much* a program may be; it says nothing about what it is made
+  /// of. World 6's golf items are about reaching a number by arithmetic, and a child who
+  /// types the answer meets the budget with room to spare — so the claim about the box
+  /// has to be made here, as it is on every other item type.
+  List<StructuralAssertion> assertions = const [],
   /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
   /// items are graded under their own event, or a `quand touche` script never
   /// fires and every answer draws nothing.
@@ -522,4 +529,5 @@ Item golf({
       diagnostics: drawingDiagnostics(),
       paletteScope: paletteScope,
       runTrigger: runTrigger,
+      assertions: assertions,
     );

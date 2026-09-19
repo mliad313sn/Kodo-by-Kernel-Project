@@ -57,7 +57,10 @@ abstract class StructuralAssertion {
       'nestedInside' =>
         NestedInside(json['outer']! as String, json['inner']! as String),
       'definesProcedure' => DefinesProcedure(min: (json['min'] as int?) ?? 1),
-      'usesVariable' => const UsesVariable(),
+      'usesVariable' => UsesVariable(
+          name: json['name'] as String?,
+          min: (json['min'] as int?) ?? 1,
+          minReads: (json['reads'] as int?) ?? 0),
       _ => throw ArgumentError('unknown structural assertion "$kind"'),
     };
   }
@@ -288,18 +291,51 @@ class DefinesProcedure extends StructuralAssertion {
   Map<String, Object?> toJson() => {'kind': kind, 'min': min};
 }
 
+/// A named box is used, and — when `minReads` says so — read back out again.
+///
+/// The bare form asks only that *some* variable is assigned. World 6 needs more than
+/// that: its first misconception is that the box holds the whole program, and a child
+/// who writes `$côté = 60` and then draws with a literal `60` has not disproved it. So
+/// `name` pins which box, and `minReads` counts the places it is spent rather than
+/// merely filled. Both stay optional, so the assertions authored before World 6 keep
+/// meaning exactly what they meant.
 class UsesVariable extends StructuralAssertion {
-  const UsesVariable();
+  const UsesVariable({this.name, this.min = 1, this.minReads = 0});
+
+  /// Without the `$` sigil, as the AST stores it. Null means any variable.
+  final String? name;
+
+  /// How many assignments to it the program must contain.
+  final int min;
+
+  /// How many times its value must be read back. Zero means the item does not care.
+  final int minReads;
 
   @override
   String get kind => 'usesVariable';
 
   @override
   AssertionResult check(Program program) {
-    final n = _countKind(program, 'Assign');
-    return AssertionResult(this, n >= 1, actual: n, expected: 1);
+    var writes = 0;
+    var reads = 0;
+    for (final node in walk(program)) {
+      if (node is Assign && (name == null || node.variable == name)) writes++;
+      if (node is VarRef && (name == null || node.name == name)) reads++;
+    }
+    // The write is reported first because it is the one that fails first: a program with
+    // no box at all should not be told it forgot to read from one.
+    if (writes < min) {
+      return AssertionResult(this, false, actual: writes, expected: min);
+    }
+    return AssertionResult(this, reads >= minReads,
+        actual: reads, expected: minReads);
   }
 
   @override
-  Map<String, Object?> toJson() => {'kind': kind};
+  Map<String, Object?> toJson() => {
+        'kind': kind,
+        if (name != null) 'name': name,
+        if (min != 1) 'min': min,
+        if (minReads != 0) 'reads': minReads,
+      };
 }

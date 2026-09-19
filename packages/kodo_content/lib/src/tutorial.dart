@@ -146,20 +146,51 @@ class TutorialStep {
 /// How a step decides the child did the thing.
 class SuccessCondition {
   const SuccessCondition(
-      {this.opcodeId, this.minCount = 1, this.pathSignature});
+      {this.opcodeId,
+      this.minCount = 1,
+      this.pathSignature,
+      this.assignsVariable});
 
   /// The opcode the child must have placed or run.
   final String? opcodeId;
+
+  /// How many of whichever checks are set. It is shared deliberately: a step that asks
+  /// for two of something means two, whether the something is a block or a box.
   final int minCount;
 
   /// The drawing the child's program must produce.
   final String? pathSignature;
+
+  /// A box the child must have filled — its name without the `$`, or `*` for any box.
+  ///
+  /// World 6 is the first world whose whole subject is not an opcode. `$côté = 60` is an
+  /// assignment, and until this existed a *On fait ensemble* step could only check that
+  /// the child had placed a `avance` — which is to say, it could check everything about
+  /// the step except the thing the step was teaching. The same gap `D-014` recorded for
+  /// the language, in the tutorial engine.
+  final String? assignsVariable;
+
+  /// Whether this condition checks anything at all.
+  ///
+  /// `SuccessCondition()` with every field left out is met by the empty program, so a
+  /// step carrying one asks the child to act and then congratulates them for not acting.
+  /// The gate below treats that as the same failure as having no condition, because to a
+  /// child it is the same failure.
+  bool get checksSomething =>
+      opcodeId != null || pathSignature != null || assignsVariable != null;
 
   bool isMetBy(Program program, {String? producedSignature}) {
     if (opcodeId != null) {
       final n = walk(program)
           .whereType<Command>()
           .where((c) => c.opcode.id == opcodeId)
+          .length;
+      if (n < minCount) return false;
+    }
+    if (assignsVariable != null) {
+      final n = walk(program)
+          .whereType<Assign>()
+          .where((a) => assignsVariable == '*' || a.variable == assignsVariable)
           .length;
       if (n < minCount) return false;
     }
@@ -173,12 +204,14 @@ class SuccessCondition {
         if (opcodeId != null) 'opcode': opcodeId,
         'minCount': minCount,
         if (pathSignature != null) 'path': pathSignature,
+        if (assignsVariable != null) 'assigns': assignsVariable,
       };
 
   static SuccessCondition fromJson(Map<String, Object?> j) => SuccessCondition(
         opcodeId: j['opcode'] as String?,
         minCount: (j['minCount'] as int?) ?? 1,
         pathSignature: j['path'] as String?,
+        assignsVariable: j['assigns'] as String?,
       );
 }
 
@@ -416,7 +449,7 @@ List<TutorialFailure> checkTutorial(Tutorial tutorial,
 
     // The M5 prompt's Do-not, made mechanical.
     if (step.expectedAction != ExpectedAction.watch &&
-        step.successCondition == null) {
+        !(step.successCondition?.checksSomething ?? false)) {
       fail(step.id, 'no-success-condition',
           'asks the child to act with no way to tell whether they did');
     }

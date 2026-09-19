@@ -1,11 +1,21 @@
-/// Worlds 0, 2 and 3, as shipped.
+/// Every shipped world, as shipped.
 ///
-/// The gate runs at authoring time in `tool/author_world0.dart` and
-/// `tool/author_world2.dart` and `tool/author_world3.dart`. It runs again here, over the JSON that actually shipped,
-/// because the thing that ships and the thing that was checked have to be the same thing.
+/// The publish gate runs at authoring time in `tool/author_world<N>.dart`. It runs again
+/// here, over the JSON that actually shipped, because the thing that ships and the thing
+/// that was checked have to be the same thing.
 ///
-/// Also the prerequisite edges: with Worlds 0, 1 and 2 present, the concept graph the
-/// scheduler walks can be checked for real rather than one world at a time.
+/// Two rules keep this file from rotting as worlds land, and both were learned the hard
+/// way — the first version of it named World 5 in eleven places and quietly stopped
+/// checking World 1's publish gate and every tutorial after World 2:
+///
+///  1. **`shippedWorlds` is the only list.** Every cross-world group iterates it. Adding
+///     a world is adding a number.
+///  2. **The committed volumes come from `spec/concepts.json`, not from a copy.** §6.3 is
+///     a claim about the specification, so the test reads the specification. A table
+///     retyped here could agree with itself while disagreeing with the ledger.
+///
+/// Also the prerequisite edges: with every world present, the concept graph the scheduler
+/// walks can be checked for real rather than one world at a time.
 library;
 
 import 'dart:convert';
@@ -14,6 +24,7 @@ import 'dart:io';
 import 'package:kodo_content/kodo_content.dart';
 import 'package:kodo_grader/kodo_grader.dart';
 import 'package:kodo_lang/kodo_lang.dart';
+import 'package:kodo_stage/kodo_stage.dart';
 import 'package:test/test.dart';
 
 ContentPack load(int world) {
@@ -30,52 +41,45 @@ PackManifest manifestOf(int world) => PackManifest.fromJson(jsonDecode(
         File('../../content/world$world.manifest.json').readAsStringSync())
     as Map<String, Object?>);
 
-void main() {
-  final world0 = load(0);
-  final world1 = load(1);
-  final world2 = load(2);
-  final world3 = load(3);
-  final world4 = load(4);
-  final world5 = load(5);
-  final worlds = {
-    0: world0,
-    1: world1,
-    2: world2,
-    3: world3,
-    4: world4,
-    5: world5,
+/// The ledger, read from the specification rather than retyped beside it.
+///
+/// Returns concept id → committed minimum, for the concepts of [onlyWorlds].
+Map<String, int> ledgerFor(Set<int> onlyWorlds) {
+  final file = File('../../spec/concepts.json');
+  final json = jsonDecode(file.readAsStringSync()) as Map<String, Object?>;
+  final concepts = (json['concepts']! as List<Object?>).cast<Map<String, Object?>>();
+  return {
+    for (final concept in concepts)
+      if (onlyWorlds.contains(concept['world'] as int))
+        concept['id']! as String: concept['itemsMin']! as int,
   };
+}
+
+/// The worlds that have been authored and shipped. **The one list.**
+const shippedWorlds = [0, 1, 2, 3, 4, 5, 6];
+
+void main() {
+  final worlds = {for (final n in shippedWorlds) n: load(n)};
+  final world0 = worlds[0]!;
+  final world1 = worlds[1]!;
+  final world2 = worlds[2]!;
+  final world3 = worlds[3]!;
+  final world4 = worlds[4]!;
+  final world5 = worlds[5]!;
+  final world6 = worlds[6]!;
 
   group('§6.3 · the shipped worlds carry the committed item volume', () {
-    const committed = {
-      'C0.1': 18,
-      'C0.2': 20,
-      'C0.3': 18,
-      'C0.4': 18,
-      'C1.1': 22,
-      'C1.2': 22,
-      'C1.3': 20,
-      'C1.4': 18,
-      'C1.5': 18,
-      'C2.1': 22,
-      'C2.2': 22,
-      'C2.3': 22,
-      'C2.4': 18,
-      'C3.1': 20,
-      'C3.2': 18,
-      'C3.3': 22,
-      'C3.4': 20,
-      'C3.5': 18,
-      'C4.1': 22,
-      'C4.2': 18,
-      'C4.3': 18,
-      'C4.4': 22,
-      'C4.5': 18,
-      'C5.1': 22,
-      'C5.2': 22,
-      'C5.3': 18,
-      'C5.4': 22,
-    };
+    final committed = ledgerFor(shippedWorlds.toSet());
+
+    test('the ledger covers every concept every shipped world declares', () {
+      final declared = {
+        for (final pack in worlds.values) ...pack.concepts.keys,
+      };
+      expect(declared.difference(committed.keys.toSet()), isEmpty,
+          reason: 'shipped concepts the ledger has never heard of');
+      expect(committed.keys.toSet().difference(declared), isEmpty,
+          reason: 'concepts the ledger commits that no shipped world carries');
+    });
 
     test('every concept meets or beats the ledger', () {
       for (final entry in committed.entries) {
@@ -88,15 +92,16 @@ void main() {
       }
     });
 
-    test('the six worlds ship 562 items between them', () {
+    test('the shipped worlds carry 670 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
       expect(world3.items, hasLength(100));
       expect(world4.items, hasLength(106));
       expect(world5.items, hasLength(90));
-      // 46 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 562);
+      expect(world6.items, hasLength(108));
+      // 55 % of the 1 214 the curriculum commits across all thirteen worlds.
+      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 670);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -121,25 +126,19 @@ void main() {
   });
 
   group('every shipped item passes the publish gate', () {
-    for (final entry in {
-      0: 'World 0',
-      2: 'World 2',
-      3: 'World 3',
-      4: 'World 4',
-      5: 'World 5',
-    }.entries) {
-      test('${entry.value}, over the JSON that shipped', () {
-        final failures = checkBank(worlds[entry.key]!.items);
+    for (final n in shippedWorlds) {
+      test('World $n, over the JSON that shipped', () {
+        final failures = checkBank(worlds[n]!.items);
         expect(failures, isEmpty, reason: failures.take(8).join('\n'));
       });
-    }
 
-    test('and every tutorial passes the content gate', () {
-      for (final pack in [world0, world2]) {
-        final failures = [for (final t in pack.tutorials) ...checkTutorial(t)];
+      test('World $n\'s tutorials pass the content gate', () {
+        final failures = [
+          for (final t in worlds[n]!.tutorials) ...checkTutorial(t)
+        ];
         expect(failures, isEmpty, reason: failures.join('\n'));
-      }
-    });
+      });
+    }
   });
 
   group('the concept graph holds across worlds', () {
@@ -467,6 +466,109 @@ void main() {
         expect(source, contains('direction'),
             reason: '${item.id} teaches absolute heading without using it');
       }
+    });
+  });
+
+  group('World 6 teaches the box, which the picture cannot show', () {
+    /* The whole risk of World 6 in one test. `$côté = 60` then `avance $côté` draws
+       exactly what `avance 60` draws, so an item that only compares pictures grades
+       vacuously: the child who never used a box passes. Every drawing item in this world
+       therefore has to say so structurally. */
+    test('every drawing item names the box it is about', () {
+      final drawing = world6.items.where((i) =>
+          i.type.wantsProgram &&
+          i.type != ItemType.t9OpenBuild &&
+          (i.referenceSolutionSource ?? '').contains(r'$'));
+      expect(drawing, isNotEmpty);
+      for (final item in drawing) {
+        final names = item.assertions.whereType<UsesVariable>();
+        expect(names, isNotEmpty,
+            reason: '${item.id} can be passed without ever filling a box');
+      }
+    });
+
+    test('and the distractor that proves it is there', () {
+      /* For every item asserting a read, at least one wrong answer must fail on the
+         assertion rather than on the drawing — otherwise the assertion is decoration and
+         nothing would notice if it were deleted. */
+      var proved = 0;
+      for (final item in world6.items) {
+        final reads = item.assertions.whereType<UsesVariable>();
+        if (reads.isEmpty) continue;
+        for (final source in item.wrongSolutionSources) {
+          final parsed = parse(source, KeywordTables.fr);
+          if (parsed.errors.isNotEmpty) continue;
+          if (reads.any((a) => !a.check(parsed.program).passed)) {
+            proved++;
+            break;
+          }
+        }
+      }
+      expect(proved, greaterThanOrEqualTo(20),
+          reason: 'only $proved items prove their own structural claim');
+    });
+
+    test('C6.5 is seeded, so a random item has one right answer', () {
+      final random = world6.items.where((i) =>
+          i.conceptId == 'C6.5' &&
+          i.type.wantsProgram &&
+          (i.referenceSolutionSource ?? '').contains('hasard'));
+      expect(random, isNotEmpty);
+      for (final item in random) {
+        final program = parse(item.referenceSolutionSource!, KeywordTables.fr);
+        expect(program.errors, isEmpty);
+        // Twice, from scratch: the same seed has to give the same drawing, or the
+        // "random means untestable" misconception would be correct.
+        final first = VectorCanvas();
+        final second = VectorCanvas();
+        runProgram(program.program, first, seed: item.seed);
+        runProgram(program.program, second, seed: item.seed);
+        expect(second.pathSignature(), first.pathSignature(),
+            reason: '${item.id} draws differently on the same seed');
+        expect(first.segmentCount, greaterThan(0));
+      }
+    });
+
+    test('C6.5 offers the misconception as a choice a child can be shown wrong',
+        () {
+      final predicts = world6.items.where(
+          (i) => i.conceptId == 'C6.5' && i.type == ItemType.t3Predict);
+      expect(predicts, hasLength(5));
+      for (final item in predicts) {
+        expect(
+            item.choices.any((c) =>
+                !c.correct && c.misconception == 'C6.5-random-is-untestable'),
+            isTrue,
+            reason: '${item.id} never lets the belief be picked');
+      }
+    });
+
+    test('no narration in World 6 says the word it is teaching', () {
+      // `FR-M5-03`: "variable" is on the jargon list. World 6 is where the idea arrives,
+      // and a tutorial that leads with the word has taught a word.
+      for (final tutorial in world6.tutorials) {
+        for (final step in tutorial.steps) {
+          for (final line in step.narrationKeys.values) {
+            expect(jargonIn(line), isEmpty, reason: '"$line"');
+          }
+        }
+      }
+    });
+
+    test('the tutorials check the box, not just the block beside it', () {
+      /* Before World 6 a success condition could only count opcodes, so a step teaching
+         assignment could only check that a `avance` had been placed. Every acting step
+         here has to check the thing it teaches. */
+      final acting = [
+        for (final tutorial in world6.tutorials)
+          for (final step in tutorial.steps)
+            if (step.expectedAction != ExpectedAction.watch) step,
+      ];
+      expect(acting, hasLength(10));
+      final boxed =
+          acting.where((s) => s.successCondition?.assignsVariable != null);
+      expect(boxed.length, greaterThanOrEqualTo(8),
+          reason: 'only ${boxed.length} of 10 acting steps check a box');
     });
   });
 
