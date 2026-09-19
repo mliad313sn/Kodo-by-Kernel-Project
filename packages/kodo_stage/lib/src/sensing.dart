@@ -96,3 +96,74 @@ mixin TurtleSensing on HeadlessCanvas implements SensingSurface {
     return math.sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
   }
 }
+
+/// What a stage looked like after a program ran, reduced to the things an item compares.
+///
+/// The grader compares drawings by rasterising them, and a costume is not a drawing. So
+/// World 10 needed a second comparison, and this is the value it runs on: the state a
+/// program can change that leaves no ink.
+///
+/// Authored items are graded by comparing two of these — the child's and the target's —
+/// so a costume item is not passed by a program that never switched costume, which is the
+/// vacuous grading every world since World 5 has had to be protected from.
+class StageState {
+  const StageState({
+    required this.costumeNumber,
+    required this.backdropId,
+    required this.score,
+    required this.said,
+    required this.effects,
+  });
+
+  /// One-based, as the child counts.
+  final int costumeNumber;
+  final String backdropId;
+
+  /// Sounds, drums and notes in the order they were asked for.
+  final List<String> score;
+
+  /// Speech bubbles, in order.
+  final List<String> said;
+
+  /// Effect name → value, for effects that are not at zero.
+  final Map<String, double> effects;
+
+  bool get isPlain =>
+      costumeNumber == 1 &&
+      backdropId == 'blank' &&
+      score.isEmpty &&
+      said.isEmpty &&
+      effects.isEmpty;
+
+  /// Which of the five differs first, in the order a child would notice.
+  ///
+  /// Null when the two match. The order is deliberate and the same rule the drawing
+  /// comparison follows: name the thing that is most visible, because a message about an
+  /// effect on a sprite wearing the wrong costume is true and useless.
+  String? firstDifference(StageState other) {
+    if (costumeNumber != other.costumeNumber) return 'costume';
+    if (backdropId != other.backdropId) return 'backdrop';
+    if (!_sameList(said, other.said)) return 'speech';
+    if (!_sameList(score, other.score)) return 'sound';
+    if (!_sameEffects(effects, other.effects)) return 'effect';
+    return null;
+  }
+
+  static bool _sameList(List<String> a, List<String> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
+  }
+
+  static bool _sameEffects(Map<String, double> a, Map<String, double> b) {
+    if (a.length != b.length) return false;
+    for (final e in a.entries) {
+      // A tenth of a percent. Effects are authored as whole numbers; the tolerance is
+      // there so a value arrived at by arithmetic is not failed for its last digit.
+      if (((b[e.key] ?? double.nan) - e.value).abs() > 0.1) return false;
+    }
+    return true;
+  }
+}

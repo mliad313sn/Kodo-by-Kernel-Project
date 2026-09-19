@@ -135,6 +135,45 @@ List<DiagnosticPattern> drawingDiagnostics(
         'The drawing is right, but Tika does not end up in the right place.',
       ),
     ),
+    /* World 10's five. A costume, a backdrop, a sound, a speech bubble and an effect
+       leave no ink, so the rasteriser cannot see any of them, and "ta figure ne va pas au
+       même endroit" would be the wrong sentence for a sprite that simply kept its first
+       costume. Each names what the grader compared, which is what `FR-M6-03` asks for. */
+    DiagnosticPattern(
+      when: 'wrongCostume',
+      textKeys: _b(
+        'Le lutin porte le costume {actual}. Il fallait le costume {expected}.',
+        'The sprite is wearing costume {actual}. It should be costume {expected}.',
+      ),
+    ),
+    DiagnosticPattern(
+      when: 'wrongBackdrop',
+      textKeys: _b(
+        'L\'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».',
+        'The backdrop showing is "{actual}". It should be "{expected}".',
+      ),
+    ),
+    DiagnosticPattern(
+      when: 'wrongSound',
+      textKeys: _b(
+        'Tu as joué : {actual}. Il fallait jouer : {expected}.',
+        'You played: {actual}. You should have played: {expected}.',
+      ),
+    ),
+    DiagnosticPattern(
+      when: 'wrongSpeech',
+      textKeys: _b(
+        'Le lutin a dit : {actual}. Il fallait dire : {expected}.',
+        'The sprite said: {actual}. It should have said: {expected}.',
+      ),
+    ),
+    DiagnosticPattern(
+      when: 'wrongEffect',
+      textKeys: _b(
+        'Les effets posés sont : {actual}. Il fallait : {expected}.',
+        'The effects set are: {actual}. They should be: {expected}.',
+      ),
+    ),
     DiagnosticPattern(
       when: 'tooManyBlocks',
       textKeys: _b(
@@ -186,6 +225,13 @@ Item buildToTarget({
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+  /// The stage this item is graded on, when it needs one (`FR-M21-04`).
+  ///
+  /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
+  /// both puts it on a stage and says how many costumes the sprites start with — a
+  /// sprite with none cannot change its look, and an item where nothing can happen
+  /// passes every answer.
+  StageSetup? stage,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -207,6 +253,7 @@ Item buildToTarget({
       requireFinalPose: requireFinalPose,
       runTrigger: runTrigger,
       sensing: sensing,
+      stage: stage,
     );
 
 /// Two programs that draw exactly what [solution] draws, written differently.
@@ -332,6 +379,13 @@ Item fixTheBug({
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+  /// The stage this item is graded on, when it needs one (`FR-M21-04`).
+  ///
+  /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
+  /// both puts it on a stage and says how many costumes the sprites start with — a
+  /// sprite with none cannot change its look, and an item where nothing can happen
+  /// passes every answer.
+  StageSetup? stage,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -354,6 +408,7 @@ Item fixTheBug({
       requireFinalPose: requireFinalPose,
       runTrigger: runTrigger,
       sensing: sensing,
+      stage: stage,
       assertions: assertions,
     );
 
@@ -391,6 +446,13 @@ Item fillTheGap({
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+  /// The stage this item is graded on, when it needs one (`FR-M21-04`).
+  ///
+  /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
+  /// both puts it on a stage and says how many costumes the sprites start with — a
+  /// sprite with none cannot change its look, and an item where nothing can happen
+  /// passes every answer.
+  StageSetup? stage,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -413,6 +475,7 @@ Item fillTheGap({
       requireFinalPose: requireFinalPose,
       runTrigger: runTrigger,
       sensing: sensing,
+      stage: stage,
       assertions: assertions,
     );
 
@@ -450,6 +513,13 @@ Item parsons({
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+  /// The stage this item is graded on, when it needs one (`FR-M21-04`).
+  ///
+  /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
+  /// both puts it on a stage and says how many costumes the sprites start with — a
+  /// sprite with none cannot change its look, and an item where nothing can happen
+  /// passes every answer.
+  StageSetup? stage,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -471,6 +541,7 @@ Item parsons({
       requireFinalPose: requireFinalPose,
       runTrigger: runTrigger,
       sensing: sensing,
+      stage: stage,
       assertions: assertions,
     );
 
@@ -498,6 +569,13 @@ Item openBuild({
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+  /// The stage this item is graded on, when it needs one (`FR-M21-04`).
+  ///
+  /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
+  /// both puts it on a stage and says how many costumes the sprites start with — a
+  /// sprite with none cannot change its look, and an item where nothing can happen
+  /// passes every answer.
+  StageSetup? stage,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -514,6 +592,7 @@ Item openBuild({
       paletteScope: paletteScope,
       runTrigger: runTrigger,
       sensing: sensing,
+      stage: stage,
     );
 
 /// One line of a rubric: what it says to the child, and what it checks.
@@ -551,6 +630,13 @@ Item golf({
   /// nothing, and an item where every answer passes is not an item. `touchebord` and
   /// `touchecouleur` need none of this — the canvas computes them from geometry.
   SensingScene sensing = SensingScene.empty,
+  /// The stage this item is graded on, when it needs one (`FR-M21-04`).
+  ///
+  /// Null is the canvas of Worlds 0 to 9. A World 10 item passes a `StageSetup`, which
+  /// both puts it on a stage and says how many costumes the sprites start with — a
+  /// sprite with none cannot change its look, and an item where nothing can happen
+  /// passes every answer.
+  StageSetup? stage,
   String runTrigger = 'flag',
   int version = 1,
 }) =>
@@ -572,5 +658,6 @@ Item golf({
       paletteScope: paletteScope,
       runTrigger: runTrigger,
       sensing: sensing,
+      stage: stage,
       assertions: assertions,
     );

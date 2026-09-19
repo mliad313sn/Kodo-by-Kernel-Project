@@ -337,6 +337,12 @@ final Map<Opcode, BlockHelp> blockHelp = {
   ),
 
   // --- Lutins, costumes, sons, scène (FR-M21-04) ----------------------------------------
+  Opcode.selectSprite: BlockHelp(
+    family: BlockFamily.apparence,
+    summaryKeys: _b('Choisit le lutin à qui parlent les blocs suivants.',
+        'Picks the sprite the next blocks talk to.'),
+    exampleSource: 'lutin "chat"\ndis "miaou"\nlutin "chien"',
+  ),
   Opcode.nextCostume: BlockHelp(
     family: BlockFamily.apparence,
     summaryKeys: _b('Passe au costume suivant. Deux d\'affilée font bouger Tika.',

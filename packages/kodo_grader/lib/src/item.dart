@@ -164,6 +164,26 @@ enum DiagnosticSituation {
   /// The figure is in the right place and drawn with the wrong pen width.
   wrongWidth,
 
+  /* World 10's five. A costume leaves no ink, so none of the situations above can name
+     what went wrong on a stage — and `wrongShape` for a sprite wearing the wrong costume
+     is the sentence `FR-M6-03` exists to forbid. */
+
+  /// The sprite is wearing a different costume from the target's.
+  wrongCostume,
+
+  /// The stage is showing a different backdrop.
+  wrongBackdrop,
+
+  /// The sounds asked for, or their order, are not the target's.
+  wrongSound,
+
+  /// What the sprite said is not what the target said.
+  wrongSpeech,
+
+  /// A graphic effect is set differently — or was left on when it should have been
+  /// cleared, which is concept C10.5's misconception exactly.
+  wrongEffect,
+
   /// The drawing is right and the program printed the wrong thing — or printed nothing.
   ///
   /// World 4's third concept is `positionx` / `positiony`, and the only way to show a
@@ -254,6 +274,7 @@ class Item {
     this.seed = 1,
     this.inputs = const [],
     this.sensing = SensingScene.empty,
+    this.stage,
     this.runTrigger = 'flag',
     this.requireFinalPose = false,
   });
@@ -316,6 +337,15 @@ class Item {
   /// they are geometry, and the canvas computes them.
   final SensingScene sensing;
 
+  /// The stage this item is graded on, or null for the plain canvas of Worlds 0 to 9.
+  ///
+  /// Setting it does two things at once, and both are necessary. It puts the item on a
+  /// `SpriteStage` rather than a `VectorCanvas`, so `costumesuivant` and `jouson` are
+  /// answered rather than refused; and it says what is already there, because
+  /// `costumesuivant` on a sprite with no costumes does nothing and an item where
+  /// nothing happens passes every answer.
+  final StageSetup? stage;
+
   /// Which trigger this item's programs run under (`FR-M21-01`).
   ///
   /// `flag` (the default), `clicked`, `key:<name>`, or `any`. Without it every World 5
@@ -376,6 +406,7 @@ class Item {
         if (runTrigger != 'flag') 'trigger': runTrigger,
         if (inputs.isNotEmpty) 'inputs': inputs,
         if (!sensing.isDefault) 'sensing': sensing.toJson(),
+        if (stage != null) 'stage': stage!.toJson(),
         if (requireFinalPose) 'requireFinalPose': true,
       };
 
@@ -423,6 +454,9 @@ class Item {
         sensing: j['sensing'] == null
             ? SensingScene.empty
             : SensingScene.fromJson(j['sensing']! as Map<String, Object?>),
+        stage: j['stage'] == null
+            ? null
+            : StageSetup.fromJson(j['stage']! as Map<String, Object?>),
         requireFinalPose: (j['requireFinalPose'] as bool?) ?? false,
       );
 }

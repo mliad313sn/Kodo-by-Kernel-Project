@@ -229,6 +229,45 @@ class SpriteStage extends HeadlessCanvas
 
   Backdrop get backdrop => backdrops[backdropIndex % backdrops.length];
 
+  /// The stage reduced to what an item compares (`FR-M21-04`).
+  ///
+  /// A costume leaves no ink, so the grader's raster comparison cannot see it. This is
+  /// the second signal, read off the selected sprite and the stage itself.
+  StageState get state => StageState(
+        costumeNumber: costumeNumber,
+        backdropId: backdrop.id,
+        score: [for (final event in score) event.toString()],
+        said: [for (final line in saidLines) line.text],
+        effects: {
+          for (final e in _selected.effects.toJson().entries)
+            if (e.value != 0) e.key: e.value,
+        },
+      );
+
+  /// Builds the stage an item asked for (`StageSetup`).
+  ///
+  /// Sprites with no costumes cannot change their look, so a costume item that did not
+  /// say how many it wanted would be graded on a stage where `costumesuivant` does
+  /// nothing — and every answer, right or wrong, would pass.
+  static SpriteStage from(StageSetup setup) {
+    final stage = SpriteStage();
+    stage.sprites.clear();
+    for (final id in setup.sprites) {
+      stage.addSprite(id, 'sprite.$id', costumes: [
+        for (var i = 1; i <= setup.costumes; i++)
+          Costume('$id-$i', 'costume.$id.$i'),
+      ]);
+    }
+    stage.select(setup.sprites.first);
+    for (final id in setup.backdrops) {
+      stage.backdrops.add(Backdrop(id, 'backdrop.$id'));
+    }
+    return stage;
+  }
+
+  @override
+  void selectSprite(String id) => select(id);
+
   void select(String spriteId) {
     final s = sprites.where((s) => s.id == spriteId);
     if (s.isNotEmpty) _selected = s.first;

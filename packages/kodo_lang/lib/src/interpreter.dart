@@ -1077,6 +1077,7 @@ class Interpreter {
          the number check before reaching its own case, which reported a type error about
          a program that was correct. */
       Opcode.keyDown,
+      Opcode.selectSprite,
       Opcode.setBackdrop,
       Opcode.setEffect,
       Opcode.say,
@@ -1230,6 +1231,10 @@ class Interpreter {
         if (stage == null) return _fail(ErrorCode.needsStage, node);
         _push(NumberValue(stage.costumeNumber));
         return true;
+      case Opcode.selectSprite:
+        final stage = _stage;
+        if (stage == null) return _fail(ErrorCode.needsStage, node);
+        stage.selectSprite(_asText(args[0]));
       case Opcode.setBackdrop:
         final stage = _stage;
         if (stage == null) return _fail(ErrorCode.needsStage, node);

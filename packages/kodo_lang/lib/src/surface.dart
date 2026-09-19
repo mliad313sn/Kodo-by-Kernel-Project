@@ -159,6 +159,56 @@ class SensingScene {
       );
 }
 
+/// What is already on the stage when an item is graded.
+///
+/// The third of the authored scenes, after `seed` and `SensingScene`, and it exists for
+/// the same reason: a program's result may not depend on something the author did not
+/// choose. `costumesuivant` on a sprite with no costumes does nothing at all, so without
+/// this every World 10 costume item would grade as "both answers changed nothing" and
+/// every answer would pass.
+///
+/// It describes the stage, never the program. What the child's program does to the
+/// costumes, the backdrop, the sounds and the effects is the thing being graded.
+class StageSetup {
+  const StageSetup({
+    this.sprites = const ['tika'],
+    this.costumes = 0,
+    this.backdrops = const [],
+  });
+
+  /// Sprite ids on the stage, in order. The first is selected when the program starts.
+  final List<String> sprites;
+
+  /// How many costumes each sprite has. Zero means a sprite that cannot change its look,
+  /// which is the default and is what Worlds 0 to 9 assume.
+  final int costumes;
+
+  /// Backdrop ids available beyond the blank one the stage always has.
+  final List<String> backdrops;
+
+  bool get isDefault =>
+      sprites.length == 1 &&
+      sprites.first == 'tika' &&
+      costumes == 0 &&
+      backdrops.isEmpty;
+
+  Map<String, Object?> toJson() => {
+        if (sprites.length != 1 || sprites.first != 'tika') 'sprites': sprites,
+        if (costumes != 0) 'costumes': costumes,
+        if (backdrops.isNotEmpty) 'backdrops': backdrops,
+      };
+
+  static const plain = StageSetup();
+
+  static StageSetup fromJson(Map<String, Object?> j) => StageSetup(
+        sprites: ((j['sprites'] as List<Object?>?) ?? const ['tika'])
+            .cast<String>(),
+        costumes: (j['costumes'] as int?) ?? 0,
+        backdrops:
+            ((j['backdrops'] as List<Object?>?) ?? const []).cast<String>(),
+      );
+}
+
 /// What a program can do to a stage: sprites, costumes, sounds, backdrops, effects
 /// (`FR-M21-04`).
 ///
@@ -167,6 +217,13 @@ class SensingScene {
 /// canvas for a costume is told so in a sentence. That is the test of whether an extension
 /// was designed or bolted on.
 abstract class StageSurface implements Surface {
+  /// Chooses which sprite the following blocks talk to.
+  ///
+  /// A stage with one sprite is a canvas with a costume, and C10.1's whole point is that
+  /// it is not. An id nobody has heard of leaves the selection alone rather than failing:
+  /// sprite names are content, and a missing one is a missing asset.
+  void selectSprite(String id);
+
   /// Advances to the next costume, wrapping. World 10's animation is this in a loop.
   void nextCostume();
 

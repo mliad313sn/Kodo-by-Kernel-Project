@@ -294,6 +294,7 @@ abstract final class KeywordTables {
       Opcode.touchingEdge: const KeywordEntry('touchebord'),
       Opcode.touchingColour: const KeywordEntry('touchecouleur'),
       // Lutins et scène
+      Opcode.selectSprite: const KeywordEntry('lutin'),
       Opcode.nextCostume: const KeywordEntry('costumesuivant',
           abbreviation: 'cs'),
       Opcode.setCostume: const KeywordEntry('costume'),
@@ -386,6 +387,7 @@ abstract final class KeywordTables {
       Opcode.touchingColour: const KeywordEntry('touchingcolour',
           aliases: ['touchingcolor']),
       // Sprites and stage
+      Opcode.selectSprite: const KeywordEntry('sprite'),
       Opcode.nextCostume: const KeywordEntry('nextcostume', abbreviation: 'nc'),
       Opcode.setCostume: const KeywordEntry('costume'),
       Opcode.costumeNumber: const KeywordEntry('costumenumber'),

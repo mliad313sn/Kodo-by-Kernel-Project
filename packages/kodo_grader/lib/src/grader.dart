@@ -202,10 +202,15 @@ class Grader {
     // --- behavioural ---------------------------------------------------------------------
     RasterMatch? behavioural;
     if (item.targetProgramSource != null) {
-      /* Both canvases are handed the item's authored scene before either runs, so the
+      /* Both surfaces are handed the item's authored scene before either runs, so the
          child's program and the target answer `touchepressée` the same way. A sensor
-         that read differently for the two would fail every correct answer. */
-      final attemptCanvas = VectorCanvas()..applyScene(item.sensing);
+         that read differently for the two would fail every correct answer.
+
+         And both are the SAME KIND of surface: a stage when the item asked for one, a
+         canvas otherwise. A stage item graded on a canvas is refused by the interpreter
+         before it draws anything; a canvas item graded on a stage would compare against
+         a different coordinate frame. */
+      final attemptCanvas = _surfaceFor(item);
       final trigger = _triggerFor(item.runTrigger);
       final run = runProgram(program, attemptCanvas,
           seed: item.seed, inputs: item.inputs, trigger: trigger);
@@ -219,7 +224,7 @@ class Grader {
         );
       }
 
-      final targetCanvas = VectorCanvas()..applyScene(item.sensing);
+      final targetCanvas = _surfaceFor(item);
       final targetProgram =
           parse(item.targetProgramSource!, KeywordTables.fr).program;
       runProgram(targetProgram, targetCanvas,
@@ -246,6 +251,27 @@ class Grader {
             'expectedCount': '${targetCanvas.output.length}',
           },
         );
+      }
+
+      /* The stage, which leaves no ink. A costume, a backdrop, a sound, a speech bubble
+         and an effect are all invisible to the rasteriser, so World 10 needed a second
+         comparison rather than a cleverer first one. It runs before the drawing is
+         compared, because on a stage item the costume is the subject and the drawing is
+         usually the same either way. */
+      if (attemptCanvas is SpriteStage && targetCanvas is SpriteStage) {
+        final mine = attemptCanvas.state;
+        final theirs = targetCanvas.state;
+        final difference = mine.firstDifference(theirs);
+        if (difference != null) {
+          return Verdict(
+            passed: false,
+            itemId: item.id,
+            itemVersion: item.version,
+            situation: _stageSituation(difference),
+            behavioural: behavioural,
+            messageArgs: _stageArgs(difference, mine, theirs),
+          );
+        }
       }
 
       // The path signature is the second behavioural signal, and the one that makes a
@@ -330,6 +356,38 @@ class Grader {
         behavioural: behavioural);
   }
 
+  /// The surface this item is graded on, set up the way the item asked for.
+  HeadlessCanvas _surfaceFor(Item item) {
+    final setup = item.stage;
+    final HeadlessCanvas surface =
+        setup == null ? VectorCanvas() : SpriteStage.from(setup);
+    (surface as TurtleSensing).applyScene(item.sensing);
+    return surface;
+  }
+
+  DiagnosticSituation _stageSituation(String difference) => switch (difference) {
+        'costume' => DiagnosticSituation.wrongCostume,
+        'backdrop' => DiagnosticSituation.wrongBackdrop,
+        'sound' => DiagnosticSituation.wrongSound,
+        'speech' => DiagnosticSituation.wrongSpeech,
+        _ => DiagnosticSituation.wrongEffect,
+      };
+
+  /// The numbers an authored stage message names, so it can say what it saw.
+  Map<String, String> _stageArgs(
+      String difference, StageState mine, StageState theirs) {
+    String show(StageState s) => switch (difference) {
+          'costume' => '${s.costumeNumber}',
+          'backdrop' => s.backdropId,
+          'sound' => s.score.isEmpty ? '—' : s.score.join(', '),
+          'speech' => s.said.isEmpty ? '—' : s.said.join(' / '),
+          _ => s.effects.isEmpty
+              ? '—'
+              : s.effects.entries.map((e) => '${e.key} ${e.value}').join(', '),
+        };
+    return {'actual': show(mine), 'expected': show(theirs)};
+  }
+
   /// The item's trigger, as the authoring tools write it.
   ///
   /// A string in the pack rather than an object, because a content pack is JSON and a
@@ -375,7 +433,9 @@ class Grader {
   ///
   /// "Ta figure a 4 côtés, la cible en a 6" is only possible because the grader counts
   /// both. A grader that returned a boolean would force every author to write "Incorrect".
-  Map<String, String> _shapeArgs(VectorCanvas attempt, VectorCanvas target) => {
+  Map<String, String> _shapeArgs(
+          HeadlessCanvas attempt, HeadlessCanvas target) =>
+      {
         'actual': '${attempt.segmentCount}',
         'expected': '${target.segmentCount}',
         'actualColours':

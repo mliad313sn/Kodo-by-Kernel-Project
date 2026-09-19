@@ -120,6 +120,17 @@ enum Opcode {
       'TOUCHING_COLOUR', OpcodeKind.function, OpcodeFamily.capteurs, 3, 3),
 
   // --- Lutins, costumes, sons, arrière-plans, effets (FR-M21-04) -----------------------
+
+  /* `lutin "chat"` — choose which sprite the following blocks talk to.
+  
+     Added for World 10, and for a reason worth recording: concept C10.1 is "un lutin est
+     un objet" and the misconception it exists to correct is *"there can be only one
+     character"*. Without a way to address a second sprite, the curriculum would have
+     been teaching a claim the language contradicts — the same gap `D-014` recorded when
+     the language was specified against Worlds 0 to 4 while the curriculum ran to World
+     12. The stage could already hold several sprites and select between them; only the
+     word was missing. */
+  selectSprite('SELECT_SPRITE', OpcodeKind.command, OpcodeFamily.apparence, 1, 1),
   nextCostume('NEXT_COSTUME', OpcodeKind.command, OpcodeFamily.apparence, 0, 0),
   setCostume('SET_COSTUME', OpcodeKind.command, OpcodeFamily.apparence, 1, 1),
   costumeNumber(
