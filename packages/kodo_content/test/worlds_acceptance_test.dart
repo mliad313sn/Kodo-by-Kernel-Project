@@ -56,7 +56,7 @@ Map<String, int> ledgerFor(Set<int> onlyWorlds) {
 }
 
 /// The worlds that have been authored and shipped. **The one list.**
-const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+const shippedWorlds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 void main() {
   final worlds = {for (final n in shippedWorlds) n: load(n)};
@@ -69,6 +69,7 @@ void main() {
   final world6 = worlds[6]!;
   final world7 = worlds[7]!;
   final world8 = worlds[8]!;
+  final world9 = worlds[9]!;
 
   group('§6.3 · the shipped worlds carry the committed item volume', () {
     final committed = ledgerFor(shippedWorlds.toSet());
@@ -94,7 +95,7 @@ void main() {
       }
     });
 
-    test('the shipped worlds carry 870 items between them', () {
+    test('the shipped worlds carry 962 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
@@ -104,8 +105,9 @@ void main() {
       expect(world6.items, hasLength(108));
       expect(world7.items, hasLength(114));
       expect(world8.items, hasLength(86));
-      // 72 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 870);
+      expect(world9.items, hasLength(92));
+      // 79 % of the 1 214 the curriculum commits across all thirteen worlds.
+      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 962);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -490,7 +492,7 @@ void main() {
      Remembering it a fourth time is not a plan, so it is a rule now, checked for every
      world that ships — and for every world that ever will. */
   group('a world whose subject the canvas cannot show says so structurally', () {
-    for (final n in [5, 6, 7, 8]) {
+    for (final n in [5, 6, 7, 8, 9]) {
       test('World $n\'s drawing items carry a structural claim', () {
         final items = worlds[n]!.items.where((i) =>
             i.type.wantsProgram &&
@@ -536,6 +538,106 @@ void main() {
                 'own structural claim');
       });
     }
+  });
+
+  group('World 9 teaches the name, which the canvas cannot show', () {
+    test('every drawing item claims the block it is about', () {
+      /* `carré 60` draws exactly what its body drawn inline draws, so an item whose
+         point is the block has to say so structurally — the fifth world in a row where
+         the subject is invisible on the page. */
+      final drawing = world9.items.where((i) =>
+          i.type.wantsProgram &&
+          i.type != ItemType.t9OpenBuild &&
+          (i.referenceSolutionSource ?? '').contains('apprends'));
+      expect(drawing, isNotEmpty);
+      for (final item in drawing) {
+        expect(item.assertions.whereType<DefinesProcedure>(), isNotEmpty,
+            reason: '${item.id} can be passed without teaching a block');
+      }
+    });
+
+    test('C9.1 offers "taught and never used" as a wrong answer', () {
+      /* The misconception is that defining runs it. The refutation is an empty canvas,
+         and it only teaches if a child can actually pick it: every C9.1 program item
+         carries a distractor that defines the block and never calls it. */
+      final items = world9.items.where((i) =>
+          i.conceptId == 'C9.1' &&
+          i.type.wantsProgram &&
+          i.type != ItemType.t9OpenBuild);
+      expect(items, isNotEmpty);
+      var withEmptyCanvas = 0;
+      for (final item in items) {
+        for (final source in item.wrongSolutionSources) {
+          final parsed = parse(source, KeywordTables.fr);
+          if (parsed.errors.isNotEmpty) continue;
+          final canvas = VectorCanvas();
+          runProgram(parsed.program, canvas, seed: item.seed);
+          if (canvas.segmentCount == 0) {
+            withEmptyCanvas++;
+            break;
+          }
+        }
+      }
+      expect(withEmptyCanvas, greaterThanOrEqualTo(items.length - 4),
+          reason: 'only $withEmptyCanvas of ${items.length} C9.1 items let a '
+              'child pick the program that teaches and never asks');
+    });
+
+    test('C9.2 reads its parameter, and says so with min: 0', () {
+      /* A parameter is read like a box and never assigned, so an assertion that demands
+         a write would fail every correct answer. This is the reason World 6's
+         `UsesVariable` grew a `min`. */
+      final items = world9.items.where((i) =>
+          i.conceptId == 'C9.2' && i.assertions.whereType<UsesVariable>().isNotEmpty);
+      expect(items, isNotEmpty);
+      for (final item in items) {
+        for (final claim in item.assertions.whereType<UsesVariable>()) {
+          expect(claim.min, 0,
+              reason: '${item.id} demands an assignment a parameter never has');
+          expect(claim.minReads, greaterThanOrEqualTo(1));
+        }
+        // And the reference solution really does satisfy it.
+        final program = parse(item.referenceSolutionSource!, KeywordTables.fr);
+        expect(program.errors, isEmpty);
+        for (final claim in item.assertions) {
+          expect(claim.check(program.program).passed, isTrue,
+              reason: '${item.id} fails its own claim');
+        }
+      }
+    });
+
+    test('C9.3 spends what it returns, so printing instead is an error', () {
+      /* The concept is that `retourne` hands a value back and `écris` does not. The
+         proof is that swapping them turns a working program into one that stops. */
+      final items = world9.items.where((i) =>
+          i.conceptId == 'C9.3' &&
+          i.type.wantsProgram &&
+          (i.referenceSolutionSource ?? '').contains('retourne'));
+      expect(items, isNotEmpty);
+      var stopped = 0;
+      for (final item in items) {
+        final swapped = parse(
+            item.referenceSolutionSource!.replaceFirst('retourne', 'écris'),
+            KeywordTables.fr);
+        if (swapped.errors.isNotEmpty) continue;
+        final canvas = VectorCanvas();
+        if (runProgram(swapped.program, canvas, seed: item.seed).error != null) {
+          stopped++;
+        }
+      }
+      expect(stopped, greaterThanOrEqualTo(items.length - 4),
+          reason: 'only $stopped of ${items.length} C9.3 items notice the swap');
+    });
+
+    test('no narration in World 9 says the word it is teaching', () {
+      for (final tutorial in world9.tutorials) {
+        for (final step in tutorial.steps) {
+          for (final line in step.narrationKeys.values) {
+            expect(jargonIn(line), isEmpty, reason: '"$line"');
+          }
+        }
+      }
+    });
   });
 
   group('World 8 teaches the loop that watches', () {
