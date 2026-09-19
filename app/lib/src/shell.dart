@@ -29,6 +29,11 @@ enum KodoScreen {
 
   // Reached from a root, never roots themselves.
   concept('concept', root: false),
+
+  /// The tutorial for one concept (M5). Between the concept list and its exercises,
+  /// because §7.2's three beats are how a child MEETS an idea — an exercise on a concept
+  /// nobody has shown them is a test.
+  tutoriel('tutoriel', root: false),
   item('item', root: false),
   settings('settings', root: false);
 
@@ -58,7 +63,11 @@ const Map<KodoScreen, List<KodoScreen>> navigationGraph = {
   KodoScreen.studio: [],
   KodoScreen.galerie: [],
   KodoScreen.moi: [KodoScreen.settings],
-  KodoScreen.concept: [KodoScreen.item],
+  KodoScreen.concept: [KodoScreen.tutoriel, KodoScreen.item],
+  /* A tutorial leads to its exercises and nowhere else. It is not a place a child comes
+     back to from the item screen: repeating a concept starts at the concept list, which
+     is where `firstPass` is decided. */
+  KodoScreen.tutoriel: [KodoScreen.item],
   KodoScreen.item: [],
   KodoScreen.settings: [],
 };

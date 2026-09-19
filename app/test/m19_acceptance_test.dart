@@ -16,6 +16,8 @@ import 'package:kodo/src/app.dart';
 import 'package:kodo/src/session.dart';
 import 'package:kodo/src/shell.dart';
 import 'package:kodo/src/drawing_painter.dart';
+import 'package:kodo/src/screens.dart';
+import 'package:kodo_app/kodo_app.dart';
 import 'package:kodo_access/kodo_access.dart';
 import 'package:kodo_content/kodo_content.dart';
 import 'package:kodo_grader/kodo_grader.dart';
@@ -654,6 +656,193 @@ void main() {
       }
       expect(open, greaterThan(40),
           reason: 'only $open open builds found across the curriculum');
+    });
+  });
+
+  /* M5, mounted. Thirteen worlds of authored tutorials existed and no screen showed them:
+     a child opening KODO went straight to exercises for a concept nobody had taught them,
+     which is a test, not a lesson. §7.2's three beats are the way a concept is MET. */
+  group('§7.2 · a concept is met before it is practised', () {
+    ContentPack shippedWorld(int world) => ContentPack.fromJson(
+        jsonDecode(File('assets/content/world$world.json').readAsStringSync())
+            as Map<String, Object?>);
+
+    KodoContent withWorld(int world) => KodoContent(
+        packs: [shippedWorld(world)], profileNames: const {'local': 'Moi'});
+
+    testWidgets('the concept list opens the tutorial, not the exercises',
+        (tester) async {
+      final pack = shippedWorld(1);
+      final conceptId = (pack.concepts.keys.toList()..sort()).first;
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      shell.goRoot(KodoScreen.carte);
+      shell.go(KodoScreen.concept, worldId: 1);
+      await pump(tester, shell, content: withWorld(1));
+
+      await tester.tap(find.byKey(Key('concept-$conceptId')));
+      await tester.pumpAndSettle();
+      expect(shell.current, KodoScreen.tutoriel);
+      expect(find.byType(TutorielScreen), findsOneWidget);
+    });
+
+    testWidgets('the narration is on screen from the first frame (FR-M5-03)',
+        (tester) async {
+      final pack = shippedWorld(1);
+      final tutorial = pack.tutorials.first;
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      shell.goRoot(KodoScreen.carte);
+      shell.go(KodoScreen.concept, worldId: 1);
+      shell.go(KodoScreen.tutoriel, conceptId: tutorial.conceptId);
+      await pump(tester, shell, content: withWorld(1));
+
+      // Words, not only a recording. A tutorial a child has to HEAR is a tutorial a
+      // child in a noisy classroom, or with no headphones, or who is deaf, does not have.
+      expect(find.text(tutorial.steps.first.narrationIn('fr')), findsOneWidget);
+    });
+
+    testWidgets('there is exactly one thing to press (FR-M5-02)',
+        (tester) async {
+      final pack = shippedWorld(1);
+      final tutorial = pack.tutorials.first;
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      shell.goRoot(KodoScreen.carte);
+      shell.go(KodoScreen.concept, worldId: 1);
+      shell.go(KodoScreen.tutoriel, conceptId: tutorial.conceptId);
+      await pump(tester, shell, content: withWorld(1));
+
+      expect(find.byKey(const Key('tutorial-cta')), findsOneWidget);
+      expect(find.text(tutorial.steps.first.callToActionIn('fr')),
+          findsOneWidget);
+      // And it is a full touch target on a 5.5" screen.
+      expect(tester.getSize(find.byKey(const Key('tutorial-cta'))).height,
+          greaterThanOrEqualTo(minimumTouchTarget));
+    });
+
+    testWidgets('the spotlight points where the step points', (tester) async {
+      final pack = shippedWorld(1);
+      final tutorial = pack.tutorials.first;
+      final target = tutorial.steps.first.spotlight;
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      shell.goRoot(KodoScreen.carte);
+      shell.go(KodoScreen.concept, worldId: 1);
+      shell.go(KodoScreen.tutoriel, conceptId: tutorial.conceptId);
+      await pump(tester, shell, content: withWorld(1));
+
+      expect(target, isNotNull,
+          reason: 'a step that asks for something points at where (FR-M5-02)');
+      expect(find.byKey(Key('spotlight-${target!.name}')), findsOneWidget);
+    });
+
+    testWidgets('a first pass cannot be skipped, and pressing on says why',
+        (tester) async {
+      final pack = shippedWorld(1);
+      // A *Je regarde* step is complete once Tika has done it, so take the tutorial to
+      // the step that asks the child for something.
+      final tutorial = pack.tutorials.first;
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      shell.goRoot(KodoScreen.carte);
+      shell.go(KodoScreen.concept, worldId: 1);
+      shell.go(KodoScreen.tutoriel, conceptId: tutorial.conceptId);
+      await pump(tester, shell, content: withWorld(1));
+
+      await tester.tap(find.byKey(const Key('tutorial-cta')));
+      await tester.pumpAndSettle();
+      final state = tester.state<TutorielScreenState>(
+          find.byType(TutorielScreen));
+      expect(state.player.stepIndex, 1);
+
+      // The child has not done the second step. Pressing on offers the step's own hint
+      // and does not move — FR-M5-04, and never named as a failure.
+      await tester.tap(find.byKey(const Key('tutorial-cta')));
+      await tester.pumpAndSettle();
+      expect(state.player.stepIndex, 1);
+      expect(find.byKey(const Key('tutorial-retry')), findsOneWidget);
+    });
+
+    testWidgets('finishing names the concept and hands over to the exercises',
+        (tester) async {
+      /* A one-step tutorial, so the walk to the end does not depend on satisfying
+         thirteen worlds' success conditions through the editor — which is M5's own
+         acceptance test. What this one asks is what the SCREEN does at the end. */
+      var handedOver = false;
+      final tutorial = Tutorial(
+        id: 'tut-C1.1',
+        conceptId: 'C1.1',
+        closingConceptNameKeys: const {
+          'fr': 'faire avancer Tika',
+          'en': 'making Tika go',
+        },
+        steps: [
+          TutorialStep(
+            id: 'C1.1-s1',
+            beat: Beat.jeRegarde,
+            narrationKeys: const {
+              'fr': 'Regarde. Tika avance.',
+              'en': 'Watch. Tika goes forward.',
+            },
+            audioKeys: const {
+              'fr': 'audio/fr/C1.1-s1.opus',
+              'en': 'audio/en/C1.1-s1.opus',
+            },
+            expectedAction: ExpectedAction.watch,
+            spotlight: SpotlightTarget.canvas,
+            demoProgramSource: 'avance 50',
+          ),
+        ],
+      );
+
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      await tester.pumpWidget(MaterialApp(
+        home: ShellScope(
+          shell: shell,
+          child: TutorielScreen(
+            tutorial: tutorial,
+            firstPass: true,
+            onFinished: () => handedOver = true,
+          ),
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('tutorial-cta')));
+      await tester.pumpAndSettle();
+
+      // The closing line names the concept in the child's own words (`FR-M5-06`), and
+      // it states a fact about what they can do rather than praising them.
+      expect(find.textContaining('faire avancer Tika'), findsOneWidget);
+      expect(handedOver, isFalse, reason: 'the child decides when to move on');
+
+      await tester.tap(find.byKey(const Key('tutorial-cta')));
+      await tester.pumpAndSettle();
+      expect(handedOver, isTrue);
+    });
+
+    testWidgets('every shipped world has a tutorial for every concept it teaches',
+        (tester) async {
+      /* The screen can only show what the content carries, so the claim that matters is
+         about the packs: no concept reaches a child without a lesson in front of it. */
+      for (var world = 0; world <= 12; world++) {
+        final file = File('assets/content/world$world.json');
+        if (!file.existsSync()) continue;
+        final pack = shippedWorld(world);
+        final taught = pack.tutorials.map((t) => t.conceptId).toSet();
+        for (final conceptId in pack.concepts.keys) {
+          expect(taught, contains(conceptId),
+              reason: 'world $world practises $conceptId and never teaches it');
+        }
+      }
     });
   });
 }

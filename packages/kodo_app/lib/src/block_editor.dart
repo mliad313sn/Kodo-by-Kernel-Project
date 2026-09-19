@@ -302,6 +302,9 @@ class BlockEditorState extends State<BlockEditor> {
 
   void releaseStack() => setState(() => _grabbedNodeId = null);
 
+  String _say(String key, [Map<String, String> args = const {}]) =>
+      uiStrings.render(key, UiLocale.byCode(widget.locale), args);
+
   String _familyName(BlockFamily family) =>
       familyNames[widget.locale]?[family.nameKey] ??
       familyNames['fr']![family.nameKey]!;
@@ -317,11 +320,22 @@ class BlockEditorState extends State<BlockEditor> {
         final script = _buildScript(rows);
 
         if (widget.compact) {
-          // Phone: stage on top, script in the middle, palette as a bottom sheet.
-          return Column(children: [
-            Expanded(child: script),
-            SizedBox(height: 210, child: palette),
-          ]);
+          /* Phone: script above, palette as a bottom sheet. The sheet takes 210 dp where
+             there is room and a share of what there is where there is not — a fixed 210
+             inside a shorter box (a tutorial, which spends height on narration and one
+             button) overflows, and an overflowing palette is blocks a child cannot reach
+             rather than a visual blemish. */
+          return LayoutBuilder(
+            builder: (context, box) => Column(children: [
+              Expanded(child: script),
+              SizedBox(
+                height: box.maxHeight.isFinite
+                    ? (box.maxHeight * 0.45).clamp(120.0, 210.0)
+                    : 210,
+                child: palette,
+              ),
+            ]),
+          );
         }
         return Row(children: [
           SizedBox(width: 260, child: palette),
@@ -432,9 +446,7 @@ class BlockEditorState extends State<BlockEditor> {
           key: Key('gap-$site'),
           depth: depth,
           family: at < rows.length ? rows[at].family : BlockFamily.mouvement,
-          semanticsLabel: widget.locale == 'en'
-              ? 'Put the blocks here'
-              : 'Poser les blocs ici',
+          semanticsLabel: _say('a11y.drop_here'),
           onDrop: () => dropStackAt(site),
         );
       },
@@ -463,6 +475,14 @@ class BlockEditorState extends State<BlockEditor> {
         }
         final slots = numberSlots(row.node);
         final names = choiceSlots(row.node);
+        /* `FR-M16-04`. Two sentences: what the block says and which family it is, then —
+           only when it is inside something — how deep. A child who cannot see the
+           indentation has no other way to know a block is inside a loop. */
+        final spoken = StringBuffer('${row.label}, ${_familyName(row.family)}.');
+        if (row.depth > 0) {
+          spoken.write(
+              ' ${_say('a11y.block_level', {'level': '${row.depth + 1}'})}');
+        }
         final chip = BlockChip(
             key: Key('block-${row.node.id}'),
             /* The words WITHOUT their numbers: the numbers are widgets now, and printing
@@ -471,8 +491,7 @@ class BlockEditorState extends State<BlockEditor> {
                 ? row.label
                 : _wordsOnly(row.label),
             family: row.family,
-            semanticsLabel: '${row.label}, ${_familyName(row.family)}'
-                '${row.depth > 0 ? ', niveau ${row.depth + 1}' : ''}',
+            semanticsLabel: spoken.toString(),
             selected: row.node.id == _selectedNodeId,
             onTap: () {
               /* Holding a stack changes what a tap means. Running a program while the
@@ -529,9 +548,7 @@ class BlockEditorState extends State<BlockEditor> {
           key: Key('grab-${row.node.id}'),
           family: row.family,
           held: row.node.id == _grabbedNodeId,
-          semanticsLabel: widget.locale == 'en'
-              ? 'Pick up this block and the ones below'
-              : 'Prendre ce bloc et ceux du dessous',
+          semanticsLabel: _say('a11y.grab_stack'),
           onGrab: () => grabStack(row.node.id),
         );
         /* `FR-M4-07`. A ring around the block rather than a change of its colour: the

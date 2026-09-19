@@ -190,6 +190,11 @@ void main() {
           const LayoutSlot(name: 'rubric heading', characters: 32, lines: 2),
       'class.':
           const LayoutSlot(name: 'notice panel', characters: 29, lines: 4),
+      /* M5's closing line sits full width under the tutorial, above one button, and it
+         carries a concept name the content pack chose — so it gets a panel's room rather
+         than a line's, and the check still holds it to a 5.5" screen at 140 %. */
+      'tutorial.':
+          const LayoutSlot(name: 'tutorial panel', characters: 29, lines: 3),
     };
 
     test('zero truncation at 140 % string length', () {

@@ -6,6 +6,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:kodo_access/kodo_access.dart';
 import 'package:kodo_lang/kodo_lang.dart' show Segment;
 import 'package:kodo_stage/kodo_stage.dart';
 
@@ -252,7 +253,8 @@ class TurtleCanvasViewState extends State<TurtleCanvasView> {
         _pan = Offset.zero;
       });
 
-  String _label(String fr, String en) => widget.locale == 'en' ? en : fr;
+  String _label(String key) =>
+      uiStrings.render(key, UiLocale.byCode(widget.locale));
 
   @override
   Widget build(BuildContext context) {
@@ -311,14 +313,14 @@ class TurtleCanvasViewState extends State<TurtleCanvasView> {
               _ZoomButton(
                 id: 'zoom-in',
                 icon: Icons.add,
-                label: _label('Agrandir le dessin', 'Make the drawing bigger'),
+                label: _label('a11y.zoom_in'),
                 onPressed: canZoomIn ? zoomIn : null,
               ),
               const SizedBox(height: 4),
               _ZoomButton(
                 id: 'zoom-out',
                 icon: Icons.remove,
-                label: _label('Réduire le dessin', 'Make the drawing smaller'),
+                label: _label('a11y.zoom_out'),
                 onPressed: canZoomOut ? zoomOut : null,
               ),
               if (_step != 0) ...[
@@ -326,7 +328,7 @@ class TurtleCanvasViewState extends State<TurtleCanvasView> {
                 _ZoomButton(
                   id: 'zoom-reset',
                   icon: Icons.fit_screen,
-                  label: _label('Voir tout le dessin', 'See the whole drawing'),
+                  label: _label('a11y.zoom_all'),
                   onPressed: resetZoom,
                 ),
               ],

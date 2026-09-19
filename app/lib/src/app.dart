@@ -150,6 +150,25 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
         // it does, and never a number this screen computed.
         return const MoiScreen(stars: 0);
 
+      /* M5, mounted. Thirteen worlds of authored tutorials existed and no screen showed
+         them: a child opening KODO went straight to exercises for a concept nobody had
+         taught. Which tutorial is the pack's, whether it may be skipped is M7's, and the
+         three beats are M5's — this only decides that a concept starts here. */
+      case KodoScreen.tutoriel:
+        final conceptId = shell.session.lastPlace.conceptId;
+        final tutorial = _tutorialFor(packs, conceptId);
+        if (tutorial == null) {
+          return const KodoScaffold(
+              titleKey: 'root.tutoriel', child: SizedBox.shrink());
+        }
+        return TutorielScreen(
+          tutorial: tutorial,
+          // `FR-M5-04`: skippable only on a repeat, and "a repeat" is whether the child
+          // has ever passed anything in this concept — M7's record, not a flag here.
+          firstPass: _loopFor(conceptId!).passedThisSession == 0,
+          onFinished: () => shell.go(KodoScreen.item, conceptId: conceptId),
+        );
+
       case KodoScreen.concept:
         final world =
             packs.where((p) => p.world == shell.session.lastPlace.worldId);
@@ -168,6 +187,21 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
       case KodoScreen.settings:
         return const SettingsScreen();
     }
+  }
+
+  /// The tutorial that teaches [conceptId], or null when the pack ships none.
+  ///
+  /// A concept with no tutorial is content that is not finished, not a screen to invent
+  /// something for — so the shell moves the child straight to the exercises rather than
+  /// showing them an empty lesson.
+  Tutorial? _tutorialFor(List<ContentPack> packs, String? conceptId) {
+    if (conceptId == null) return null;
+    for (final pack in packs) {
+      for (final tutorial in pack.tutorials) {
+        if (tutorial.conceptId == conceptId) return tutorial;
+      }
+    }
+    return null;
   }
 
   /// Which item to show. Deliberately the first of the concept and nothing cleverer:

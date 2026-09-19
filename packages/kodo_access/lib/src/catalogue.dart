@@ -136,6 +136,65 @@ final StringCatalogue uiStrings = StringCatalogue([
       context:
           'Confirms the number a child has just typed on the pad. A short word; '
           'it sits on a small button beside "Annuler".'),
+  /* M5's tutorial screen. §7.2's three beats are content, not interface, so the only
+     interface words the tutorial needs are the ones that are the same in every one of
+     them: what the screen is called, and the two sentences that end it. The call to
+     action itself comes from the step, because it names the one thing this step asks. */
+  _s('root.tutoriel', 'On apprend', 'Let us learn',
+      context:
+          'The title of the tutorial screen. First person plural on purpose: the '
+          'tutorial does it WITH the child, which is the whole of the three beats. '
+          'Never "Lesson" or "Course".'),
+  _s('tutorial.learned', 'Tu sais faire : {concept}.',
+      'You can do this now: {concept}.',
+      context:
+          'The closing line of a tutorial. {concept} is the concept named in the '
+          'child\'s own words, from the content pack. It states a fact about what '
+          'they can do, never praise.',
+      placeholders: ['concept']),
+  _s('button.to_exercises', 'À moi', 'My turn',
+      context:
+          'The button that leaves a finished tutorial for the exercises. It names '
+          'what happens next from the child\'s side, not the app\'s. A button, so it '
+          'must stay short enough not to wrap.'),
+  /* The controls M2 and M4 grew after the first audit. Each one is an icon on a button,
+     so the catalogue entry IS what a screen reader says — there is no visible label to
+     fall back on, and a wordless button is a button only a sighted child has. */
+  _s('a11y.zoom_in', 'Agrandir le dessin.', 'Make the drawing bigger.',
+      context:
+          'The + button over the canvas (`FR-M4-02`). It magnifies the drawing so a '
+          'child can look closely at part of it.'),
+  _s('a11y.zoom_out', 'Réduire le dessin.', 'Make the drawing smaller.',
+      context: 'The − button over the canvas. The opposite of a11y.zoom_in.'),
+  _s('a11y.zoom_all', 'Voir tout le dessin.', 'See the whole drawing.',
+      context:
+          'The button that puts a magnified canvas back to showing everything. '
+          'Only offered when the drawing is magnified.'),
+  _s('a11y.grab_stack', 'Prendre ce bloc et ceux du dessous.',
+      'Pick up this block and the ones below.',
+      context:
+          'The handle beside a block in the script (`FR-M2-06`). It says what will '
+          'move, which is the whole difference between a block editor and a list.'),
+  _s('a11y.drop_here', 'Poser les blocs ici.', 'Put the blocks here.',
+      context:
+          'A place a held stack of blocks can be put down. Every gap on screen says '
+          'this, so a child using a screen reader can place a stack without seeing '
+          'where the gaps are.'),
+  _s('a11y.keep_program', 'Garder mon programme.', 'Keep my program.',
+      context:
+          'The button that exports the program as text and as a picture '
+          '(`FR-M3-08`). "Keep", not "export": a child is saving something they made.'),
+  _s('a11y.block_level', 'Il est au niveau {level}.', 'It is at level {level}.',
+      context:
+          'Appended to a block\'s screen-reader label when the block is inside '
+          'another one. A child who cannot see the indentation has no other way to '
+          'know a block is inside a loop.',
+      placeholders: ['level']),
+  _s('a11y.spotlight', 'Regarde ici.', 'Look here.',
+      context:
+          'What a screen reader says for the highlighted area during a tutorial '
+          'step. A child who cannot see the spotlight still has to be told where '
+          'the tutorial is pointing.'),
   _s('a11y.number_field', 'Le nombre {value}. Appuie pour le changer.',
       'The number {value}. Press to change it.',
       context:

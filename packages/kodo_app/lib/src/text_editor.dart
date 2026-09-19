@@ -10,6 +10,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kodo_access/kodo_access.dart';
 import 'package:kodo_lang/kodo_lang.dart';
 
 import 'block_view.dart';
@@ -385,9 +386,8 @@ class TextEditorState extends State<TextEditor> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Semantics(
-                    label: widget.locale == 'en'
-                        ? 'Save my program'
-                        : 'Garder mon programme',
+                    label: uiStrings.render(
+                        'a11y.keep_program', UiLocale.byCode(widget.locale)),
                     button: true,
                     child: SizedBox(
                       width: minimumTouchTarget,

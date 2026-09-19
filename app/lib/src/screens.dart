@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:kodo_access/kodo_access.dart';
 import 'package:kodo_app/kodo_app.dart';
 import 'package:kodo_art/kodo_art.dart';
+import 'package:kodo_content/kodo_content.dart';
 import 'package:kodo_grader/kodo_grader.dart';
 import 'package:kodo_lang/kodo_lang.dart';
 
@@ -446,7 +447,10 @@ class ConceptScreen extends StatelessWidget {
                 key: Key('concept-$id'),
                 title: Text(id, style: const TextStyle(fontSize: 20)),
                 minTileHeight: 56,
-                onTap: () => shell.go(KodoScreen.item, conceptId: id),
+                /* Through the tutorial, not past it. §7.2: a concept is met before it
+                   is practised, and an exercise on a concept nobody has shown the child
+                   is a test. The tutorial screen moves them on when it is done. */
+                onTap: () => shell.go(KodoScreen.tutoriel, conceptId: id),
               ),
             ),
         ],
@@ -715,7 +719,13 @@ class _Work extends StatelessWidget {
            put the palette in two thirds of the width and left the script a sliver, so a
            placed block rendered as "ava / nce". The editor had the answer; nobody passed
            the flag. */
-        final compact = box.maxWidth < 600;
+        /* Measured on the editor's own share, not on the window. With the canvas beside
+           it the editor gets half the room, and a 400 dp editor needs the phone layout
+           as much as a 400 dp phone does — the first version asked the window, handed
+           the block palette 260 of 400 dp, and left the script 140: a block rendered
+           three characters wide. */
+        final editorWidth = drawn == null ? box.maxWidth : box.maxWidth / 2;
+        final compact = editorWidth < 600;
         final editor = BlockEditor(
           controller: controller,
           scope: scope,
@@ -974,6 +984,287 @@ class SettingsScreen extends StatelessWidget {
             value: s.accessibility.narrationOn,
             onChanged: (v) => shell
                 .setAccessibility(s.accessibility.copyWith(narrationOn: v)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------------------
+// The tutorial (M5, FR-M5-01 to FR-M5-06)
+// ---------------------------------------------------------------------------------------
+
+/// Runs one tutorial: Tika does it, they do it together, the child does it.
+///
+/// Until this existed the programme had a tutorial *engine*, thirteen worlds of authored
+/// tutorials, and no screen that mounted either — a child opening KODO went straight to
+/// exercises for a concept nobody had shown them. §7.2's three beats were content sitting
+/// in a pack.
+///
+/// It composes and decides nothing, like every screen here. Which step comes next, whether
+/// the child has done it, and whether a step may be skipped are all [TutorialPlayer]'s;
+/// the words are the pack's; the editor is M2's. What is this file's is the arrangement:
+/// the narration always visible (`FR-M5-03`), the spotlight where the step points, and
+/// exactly one thing to press (`FR-M5-02`).
+class TutorielScreen extends StatefulWidget {
+  const TutorielScreen({
+    super.key,
+    required this.tutorial,
+    required this.firstPass,
+    required this.onFinished,
+  });
+
+  final Tutorial tutorial;
+
+  /// `FR-M5-04`: no step is skippable on a first pass, every step is on a repeat.
+  final bool firstPass;
+
+  /// Where the child goes once the concept has been named: the exercises.
+  final VoidCallback onFinished;
+
+  @override
+  TutorielScreenState createState() => TutorielScreenState();
+}
+
+/// The host the player drives. It owns a scratch document and nothing else.
+///
+/// `FR-M5-05` is structural rather than promised: [TutorialHost] has no method that opens,
+/// names or saves a project, so a tutorial cannot touch a child's own work even by
+/// mistake. This class adds no such method either.
+class _ScreenHost implements TutorialHost {
+  _ScreenHost(this.onChanged);
+
+  final VoidCallback onChanged;
+
+  EditorController controller = EditorController(initialSource: '');
+  final VectorCanvas canvas = VectorCanvas();
+  SpotlightTarget? spotlightTarget;
+  String narration = '';
+  String? audioKey;
+  List<String>? paletteIds;
+
+  /// True while a demonstration is being shown but has not landed (`FR-M5-02`).
+  bool showingGhost = false;
+
+  @override
+  Program get scratchProgram => controller.program;
+
+  @override
+  String get scratchPathSignature => canvas.pathSignature();
+
+  @override
+  void demonstrate(Program program, DemoPhase phase) {
+    /* Ghosted, then real. A demo whose blocks simply appear is a magic trick — they were
+       somewhere else, now they are here — and the child learns that the computer did it.
+       The ghost is the promise; landing it is the demonstration. */
+    showingGhost = phase == DemoPhase.ghosted;
+    controller.setProgram(program, kind: 'tutorial_demo');
+    canvas.reset();
+    runProgram(program, canvas);
+    onChanged();
+  }
+
+  @override
+  void narrate(String text, {String? audioKey}) {
+    narration = text;
+    this.audioKey = audioKey;
+    onChanged();
+  }
+
+  @override
+  void restrictPalette(List<String> opcodeIds) {
+    paletteIds = opcodeIds;
+    onChanged();
+  }
+
+  @override
+  void spotlight(SpotlightTarget? target) {
+    spotlightTarget = target;
+    onChanged();
+  }
+
+  void childChanged() {
+    canvas.reset();
+    runProgram(controller.program, canvas);
+    onChanged();
+  }
+}
+
+/// Public so the M19 acceptance test can ask the player where it is. The state itself is
+/// bookkeeping; every decision in it belongs to [TutorialPlayer].
+class TutorielScreenState extends State<TutorielScreen> {
+  late final _ScreenHost _host = _ScreenHost(() {
+    if (mounted) setState(() {});
+  });
+  late final TutorialPlayer _player = TutorialPlayer(
+    tutorial: widget.tutorial,
+    host: _host,
+    locale: ShellScope.of(context).session.interfaceLocale.code,
+    firstPass: widget.firstPass,
+  );
+  bool _started = false;
+  String? _retryHint;
+
+  TutorialPlayer get player => _player;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_started) return;
+    _started = true;
+    _player.start();
+    _host.controller.addListener(_onChildEdit);
+  }
+
+  @override
+  void dispose() {
+    _host.controller.removeListener(_onChildEdit);
+    super.dispose();
+  }
+
+  /// The child edited the scratch document, so ask the step whether that was the thing.
+  ///
+  /// Checking on every edit rather than on a button is deliberate: `FR-M5-02`'s single
+  /// call to action means the step's one button is *continue*, and a child who has just
+  /// placed the right block should not also have to tell the tutorial they did.
+  void _onChildEdit() {
+    _host.childChanged();
+    if (_player.state != PlayerState.waiting) return;
+    if (_player.checkProgress()) {
+      setState(() => _retryHint = null);
+    }
+  }
+
+  void _press() {
+    if (_player.isFinished) {
+      widget.onFinished();
+      return;
+    }
+    if (_player.state == PlayerState.stepComplete) {
+      setState(() {
+        _retryHint = null;
+        _player.advance();
+      });
+      return;
+    }
+    /* The child pressed continue without having done the step. That is not a failure and
+       is never named as one: the step's own retry hint is offered, and the button stays
+       exactly where it was. */
+    setState(() => _retryHint = _player.retryHint());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final shell = ShellScope.of(context);
+    final locale = shell.session.interfaceLocale.code;
+    final prefs = shell.session.accessibility;
+    final step = _player.current;
+    final finished = _player.isFinished;
+
+    return KodoScaffold(
+      titleKey: 'root.tutoriel',
+      child: Column(
+        children: [
+          /* `FR-M5-03`: the words are ALWAYS on screen, whether or not the recording
+             plays. A tutorial a child has to hear is a tutorial a child in a noisy
+             classroom, or with no headphones, or who is deaf, does not have. */
+          _Prompt(
+            text: finished
+                ? _s(context, 'tutorial.learned',
+                    {'concept': _player.closingLine()})
+                : _host.narration,
+            locale: locale,
+            prefs: prefs,
+          ),
+          if (_retryHint != null)
+            _Panel(
+              key: const Key('tutorial-retry'),
+              // The step's own sentence, authored as content. The shell never writes a
+              // sentence about a child's work.
+              text: _retryHint!,
+              tone: _Tone.again,
+            ),
+          Expanded(
+            child: _Spotlight(
+              target: _host.spotlightTarget,
+              label: _s(context, 'a11y.spotlight'),
+              child: _Work(
+                controller: _host.controller,
+                /* The tutorial's own palette when it names one (`FR-M2-08`), and the
+                   world's otherwise. A tutorial that showed a block it is not about is
+                   a tutorial with something else to look at. */
+                scope: _host.paletteIds == null
+                    ? scopeForWorld(_worldOfConcept(widget.tutorial.conceptId))
+                    : PaletteScope.ofIds(_host.paletteIds!),
+                keywordLocale: shell.session.keywordLocale,
+                drawn: _host.canvas,
+                locale: locale,
+              ),
+            ),
+          ),
+          /* `FR-M5-02`: one button. Its words are the step's own — "Pose le bloc",
+             "Appuie sur le vert" — because the one thing a child is asked to do is the
+             one thing the step is about. */
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: SizedBox(
+              width: double.infinity,
+              height: minimumTouchTarget,
+              child: FilledButton(
+                key: const Key('tutorial-cta'),
+                onPressed: _press,
+                child: Text(finished
+                    ? _s(context, 'button.to_exercises')
+                    : step!.callToActionIn(locale)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// `C11.4` lives in World 11: the digits after the `C` are the world, not the first one.
+int _worldOfConcept(String conceptId) =>
+    int.tryParse(conceptId.replaceAll(RegExp(r'^C'), '').split('.').first) ?? 1;
+
+/// Dims everything but the one place the step points at (`FR-M5-02`).
+///
+/// A scrim rather than a moving cut-out, because the spotlight has to survive reduced
+/// motion (`FR-M16-03`) and because a child on a 2 GB phone should not pay for an
+/// animation to be told where to look. When a step points nowhere there is no scrim at
+/// all: dimming the whole screen to highlight nothing is worse than not dimming it.
+class _Spotlight extends StatelessWidget {
+  const _Spotlight({
+    required this.target,
+    required this.label,
+    required this.child,
+  });
+
+  final SpotlightTarget? target;
+  final String label;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (target == null) return child;
+    return Semantics(
+      label: label,
+      container: true,
+      child: Stack(
+        children: [
+          Positioned.fill(child: child),
+          Positioned.fill(
+            child: IgnorePointer(
+              child: Container(
+                key: Key('spotlight-${target!.name}'),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.amber.shade700, width: 3),
+                ),
+              ),
+            ),
           ),
         ],
       ),

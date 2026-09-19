@@ -172,10 +172,20 @@ List<HardCodedString> scanForHardCodedStrings(String file, String source) {
   final found = <HardCodedString>[];
   final lines = source.split('\n');
   for (var i = 0; i < lines.length; i++) {
-    final line = lines[i];
-    final trimmed = line.trimLeft();
+    final trimmed = lines[i].trimLeft();
     if (trimmed.startsWith('//') || trimmed.startsWith('///')) continue;
-    if (!_textSinks.any(line.contains)) continue;
+    if (!_textSinks.any(lines[i].contains)) continue;
+
+    /* The sink and the two lines under it, because a formatter wraps
+       `label: 'Poser les blocs ici'` onto its own line as soon as it is nested a few
+       levels deep — and a scanner that only reads the line the sink is on stops seeing
+       exactly the strings that are furthest inside a widget tree. Three real ones hid
+       there until this counted them. */
+    final line = [
+      lines[i],
+      for (var j = i + 1; j < lines.length && j <= i + 2; j++)
+        if (!lines[j].trimLeft().startsWith('//')) lines[j],
+    ].join(' ');
 
     for (final match
         in RegExp(r"""(['"])((?:\\.|(?!\1).)*)\1""").allMatches(line)) {
