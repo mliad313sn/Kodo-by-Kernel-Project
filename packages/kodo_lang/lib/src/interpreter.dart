@@ -339,9 +339,16 @@ class Interpreter {
         main.add(stmt);
       }
     }
-    /* The main script first, and it exists even when empty: a program that is nothing but
-       event scripts still has to be able to finish. */
-    _threads.add(_Thread()..k.add(_Seq(main, 0)));
+    /* The main script belongs to the FLAG. Everything a child wrote in Worlds 0 to 4 is
+       loose statements and the run button is the green flag, so under `FlagClicked` it
+       runs exactly as it always did. Under a key or a click it does not: pressing a key
+       should run the key's script and nothing else, and a program that re-ran its whole
+       body on every keypress would be unexplainable.
+
+       It is added even when empty, so a program that is nothing but event scripts still
+       has a thread and can still finish. */
+    final mainRuns = trigger is FlagClicked || trigger is AnyTrigger;
+    _threads.add(_Thread()..k.add(_Seq(mainRuns ? main : const [], 0)));
     for (final body in scripts) {
       _threads.add(_Thread()..k.add(_Seq(body, 0)));
     }
@@ -1462,9 +1469,10 @@ Interpreter runProgram(
   int seed = 1,
   RunLimits limits = const RunLimits(),
   List<String> inputs = const [],
+  RunTrigger trigger = const FlagClicked(),
 }) {
-  final interpreter =
-      Interpreter(program, surface, seed: seed, limits: limits, inputs: inputs);
+  final interpreter = Interpreter(program, surface,
+      seed: seed, limits: limits, inputs: inputs, trigger: trigger);
   interpreter.run();
   return interpreter;
 }

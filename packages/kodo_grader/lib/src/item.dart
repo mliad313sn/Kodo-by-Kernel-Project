@@ -253,6 +253,7 @@ class Item {
     this.blockBudget,
     this.seed = 1,
     this.inputs = const [],
+    this.runTrigger = 'flag',
     this.requireFinalPose = false,
   });
 
@@ -306,6 +307,17 @@ class Item {
   /// Scripted answers for `demande`, so an asking item can still be graded headlessly.
   final List<String> inputs;
 
+  /// Which trigger this item's programs run under (`FR-M21-01`).
+  ///
+  /// `flag` (the default), `clicked`, `key:<name>`, or `any`. Without it every World 5
+  /// item would grade vacuously: a `quand touche "espace"` script never fires under the
+  /// green flag, so the target and every answer would draw nothing and all of them would
+  /// pass. An item about events has to be able to say which event.
+  ///
+  /// `any` fires every script whatever its trigger, which is what a *"two scripts at
+  /// once"* item wants: the question is how they interleave, not which one starts.
+  final String runTrigger;
+
   /// Whether the turtle must finish where the target's turtle finished.
   ///
   /// Raster comparison cannot see this, and neither can a path signature over segments:
@@ -352,6 +364,7 @@ class Item {
         'palette': paletteScope,
         if (blockBudget != null) 'budget': blockBudget,
         'seed': seed,
+        if (runTrigger != 'flag') 'trigger': runTrigger,
         if (inputs.isNotEmpty) 'inputs': inputs,
         if (requireFinalPose) 'requireFinalPose': true,
       };
@@ -395,6 +408,7 @@ class Item {
             ((j['palette'] as List<Object?>?) ?? const []).cast<String>(),
         blockBudget: j['budget'] as int?,
         seed: (j['seed'] as int?) ?? 1,
+        runTrigger: (j['trigger'] as String?) ?? 'flag',
         inputs: ((j['inputs'] as List<Object?>?) ?? const []).cast<String>(),
         requireFinalPose: (j['requireFinalPose'] as bool?) ?? false,
       );

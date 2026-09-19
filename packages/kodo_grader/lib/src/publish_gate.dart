@@ -99,12 +99,36 @@ List<PublishFailure> checkItem(Item item, {Grader grader = const Grader()}) {
     }
   }
 
+  /* A T9 open build has no single right answer — that is what "open" means — so it is
+     judged by its rubric and exempted from the reference/alternatives/wrongs checks that
+     every other program item must pass. What it is NOT exempt from is having a rubric at
+     all: an open build with nothing to meet is a guessing game, and `FR-M6-06` requires
+     the rubric to be shown to the child before they start. */
+  final isOpenBuild = item.type == ItemType.t9OpenBuild;
+  if (isOpenBuild) {
+    if (item.rubric.isEmpty) {
+      fail('open-build-rubric',
+          'an open build needs a rubric; without one a child cannot know what '
+          'good looks like before they start');
+    }
+    for (var i = 0; i < item.rubric.length; i++) {
+      for (final locale in requiredLocales) {
+        if ((item.rubric[i].textKeys[locale] ?? '').trim().isEmpty) {
+          fail('open-build-rubric',
+              'rubric line #${i + 1} has no "$locale" text');
+        }
+      }
+    }
+  }
+
   // --- the item has to be gradable -------------------------------------------------------
-  if (item.type.wantsProgram) {
+  if (item.type.wantsProgram && !isOpenBuild) {
     if ((item.referenceSolutionSource ?? '').trim().isEmpty) {
       fail('reference-solution', 'no reference solution');
     }
-  } else {
+  } else if (!isOpenBuild) {
+    /* An open build is neither: the child writes a program and there is no single right
+       answer to compare it with. It is judged by its rubric, checked above. */
     if (item.choices.length < 2) {
       fail('choices', 'a choice item needs at least two candidates');
     }
@@ -135,7 +159,7 @@ List<PublishFailure> checkItem(Item item, {Grader grader = const Grader()}) {
   }
 
   // --- negative testing (the M6 prompt's acceptance test 1) -------------------------------
-  if (item.type.wantsProgram) {
+  if (item.type.wantsProgram && !isOpenBuild) {
     if (item.wrongSolutionSources.length < 3) {
       fail('three-wrong',
           'has ${item.wrongSolutionSources.length} wrong solutions, needs 3');

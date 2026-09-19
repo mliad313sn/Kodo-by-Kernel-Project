@@ -36,7 +36,15 @@ void main() {
   final world2 = load(2);
   final world3 = load(3);
   final world4 = load(4);
-  final worlds = {0: world0, 1: world1, 2: world2, 3: world3, 4: world4};
+  final world5 = load(5);
+  final worlds = {
+    0: world0,
+    1: world1,
+    2: world2,
+    3: world3,
+    4: world4,
+    5: world5,
+  };
 
   group('§6.3 · the shipped worlds carry the committed item volume', () {
     const committed = {
@@ -63,6 +71,10 @@ void main() {
       'C4.3': 18,
       'C4.4': 22,
       'C4.5': 18,
+      'C5.1': 22,
+      'C5.2': 22,
+      'C5.3': 18,
+      'C5.4': 22,
     };
 
     test('every concept meets or beats the ledger', () {
@@ -76,14 +88,15 @@ void main() {
       }
     });
 
-    test('the five worlds ship 472 items between them', () {
+    test('the six worlds ship 562 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
       expect(world3.items, hasLength(100));
       expect(world4.items, hasLength(106));
-      // 39 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 472);
+      expect(world5.items, hasLength(90));
+      // 46 % of the 1 214 the curriculum commits across all thirteen worlds.
+      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 562);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -108,8 +121,13 @@ void main() {
   });
 
   group('every shipped item passes the publish gate', () {
-    for (final entry
-        in {0: 'World 0', 2: 'World 2', 3: 'World 3', 4: 'World 4'}.entries) {
+    for (final entry in {
+      0: 'World 0',
+      2: 'World 2',
+      3: 'World 3',
+      4: 'World 4',
+      5: 'World 5',
+    }.entries) {
       test('${entry.value}, over the JSON that shipped', () {
         final failures = checkBank(worlds[entry.key]!.items);
         expect(failures, isEmpty, reason: failures.take(8).join('\n'));
@@ -322,6 +340,68 @@ void main() {
         expect(interpreter.status, RunStatus.finished,
             reason: '${item.id}: ${interpreter.error?.message('fr')}');
         expect(canvas.segments, isNotEmpty, reason: item.id);
+      }
+    });
+  });
+
+  group('World 5 teaches events, which the language could not say before', () {
+    /* The first world KODO was unable to write. D-014 gave the language `quand`, three
+       triggers and scripts that take turns; these are the tests that the content really
+       uses them and that the grader can tell one answer from another. */
+
+    test('every item declares the trigger it is graded under', () {
+      /* Without this every World 5 item grades vacuously: a `quand touche "espace"`
+         script never fires under the green flag, so the target and every answer draw
+         nothing and all of them pass. */
+      for (final item in world5.items.where((i) => i.type.wantsProgram)) {
+        if (item.conceptId == 'C5.2') {
+          expect(item.runTrigger, startsWith('key:'), reason: item.id);
+        } else if (item.conceptId == 'C5.3') {
+          expect(item.runTrigger, 'clicked', reason: item.id);
+        }
+      }
+    });
+
+    test('a missing trigger is caught structurally, not behaviourally', () {
+      /* A program with no `quand` at all still runs under the flag — it has to, or every
+         item in Worlds 0 to 4 stops working — so "you forgot the trigger" draws exactly
+         the right picture. The claim is structural and is checked that way. */
+      final item = world5.items.firstWhere(
+          (i) => i.conceptId == 'C5.1' && i.type == ItemType.t1BuildToTarget);
+      expect(item.assertions, isNotEmpty,
+          reason: 'the trigger is invisible in the drawing');
+
+      final withoutTrigger = item.referenceSolutionSource!
+          .replaceAll(RegExp(r'quand drapeau \{\n'), '')
+          .replaceAll(RegExp(r'\n\}$'), '')
+          .split('\n')
+          .map((l) => l.startsWith('  ') ? l.substring(2) : l)
+          .join('\n');
+      final verdict = Grader().grade(
+          item, ProgramResponse(parse(withoutTrigger, KeywordTables.fr).program));
+      expect(verdict.passed, isFalse);
+      expect(verdict.situation, DiagnosticSituation.structureMissing,
+          reason: 'the figure is right; the way of getting there is not');
+    });
+
+    test('C5.4 is about interleaving, so its items run every script', () {
+      for (final item in world5.items
+          .where((i) => i.conceptId == 'C5.4' && i.type.wantsProgram)) {
+        expect(item.runTrigger, 'any', reason: item.id);
+      }
+    });
+
+    test('every open build shows its rubric before the child starts', () {
+      // FR-M6-06. An open build with nothing to meet is a guessing game.
+      final builds =
+          world5.items.where((i) => i.type == ItemType.t9OpenBuild).toList();
+      expect(builds, isNotEmpty);
+      for (final item in builds) {
+        expect(item.rubric.length, greaterThanOrEqualTo(3), reason: item.id);
+        for (final line in item.rubric) {
+          expect(line.textKeys['fr'], isNotEmpty, reason: item.id);
+          expect(line.textKeys['en'], isNotEmpty, reason: item.id);
+        }
       }
     });
   });

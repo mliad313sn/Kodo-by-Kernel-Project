@@ -181,10 +181,18 @@ class UsesOpcode extends StructuralAssertion {
 
   @override
   AssertionResult check(Program program) {
+    /* Commands AND triggers. A trigger is not a `Command` — it is the head of a
+       `WhenEvent` — so a rubric line saying "your program starts on the green flag" would
+       have counted zero for a program that does, which is the worst kind of wrong: it
+       fails a child whose answer is right. */
     final n = walk(program)
-        .whereType<Command>()
-        .where((c) => c.opcode.id == opcodeId)
-        .length;
+            .whereType<Command>()
+            .where((c) => c.opcode.id == opcodeId)
+            .length +
+        walk(program)
+            .whereType<WhenEvent>()
+            .where((w) => w.trigger.id == opcodeId)
+            .length;
     final ok = n >= min && (max == null || n <= max!);
     return AssertionResult(this, ok,
         actual: n, expected: max == null ? min : '$min-$max');

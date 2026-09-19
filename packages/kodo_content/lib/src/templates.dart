@@ -176,6 +176,10 @@ Item buildToTarget({
   String? lookAtFr,
   String? lookAtEn,
   bool requireFinalPose = false,
+  /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
+  /// items are graded under their own event, or a `quand touche` script never
+  /// fires and every answer draws nothing.
+  String runTrigger = 'flag',
   int version = 1,
 }) =>
     Item(
@@ -194,6 +198,7 @@ Item buildToTarget({
       diagnostics: drawingDiagnostics(lookAtFr: lookAtFr, lookAtEn: lookAtEn),
       paletteScope: paletteScope,
       requireFinalPose: requireFinalPose,
+      runTrigger: runTrigger,
     );
 
 /// Two programs that draw exactly what [solution] draws, written differently.
@@ -300,6 +305,20 @@ Item fixTheBug({
   String? lookAtFr,
   String? lookAtEn,
   bool requireFinalPose = false,
+  /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
+  /// items are graded under their own event, or a `quand touche` script never
+  /// fires and every answer draws nothing.
+  /// Structural checks the drawing cannot make.
+  ///
+  /// World 5 needs these: a program with no `quand` at all still runs under the
+  /// green flag — it has to, or every item in Worlds 0 to 4 stops working — so
+  /// "you forgot the trigger" is a wrong answer that draws the right picture.
+  List<StructuralAssertion> assertions = const [],
+  /// Two programs that are also right, authored when the language cannot
+  /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
+  /// nothing else, so a body made of `recule` or `direction` yields one.
+  List<String>? alternatives,
+  String runTrigger = 'flag',
   int version = 1,
 }) =>
     Item(
@@ -312,12 +331,15 @@ Item fixTheBug({
       startingProgramSource: broken,
       targetProgramSource: solution,
       referenceSolutionSource: solution,
-      alternativeSolutionSources: equivalentsOf(solution),
+      alternativeSolutionSources:
+          alternatives ?? equivalentsOf(solution),
       wrongSolutionSources: [broken, ...wrong],
       hints: itemHints,
       diagnostics: drawingDiagnostics(lookAtFr: lookAtFr, lookAtEn: lookAtEn),
       paletteScope: paletteScope,
       requireFinalPose: requireFinalPose,
+      runTrigger: runTrigger,
+      assertions: assertions,
     );
 
 /// **T4 — fill the gap.** Same grading as a build, a different thing on screen.
@@ -335,6 +357,20 @@ Item fillTheGap({
   /// Needed wherever the marks coincide and only the pose differs — World 4's jumps do
   /// this constantly, because a jump leaves no ink to tell two answers apart.
   bool requireFinalPose = false,
+  /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
+  /// items are graded under their own event, or a `quand touche` script never
+  /// fires and every answer draws nothing.
+  /// Structural checks the drawing cannot make.
+  ///
+  /// World 5 needs these: a program with no `quand` at all still runs under the
+  /// green flag — it has to, or every item in Worlds 0 to 4 stops working — so
+  /// "you forgot the trigger" is a wrong answer that draws the right picture.
+  List<StructuralAssertion> assertions = const [],
+  /// Two programs that are also right, authored when the language cannot
+  /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
+  /// nothing else, so a body made of `recule` or `direction` yields one.
+  List<String>? alternatives,
+  String runTrigger = 'flag',
   int version = 1,
 }) =>
     Item(
@@ -347,12 +383,15 @@ Item fillTheGap({
       startingProgramSource: withHoles,
       targetProgramSource: solution,
       referenceSolutionSource: solution,
-      alternativeSolutionSources: equivalentsOf(solution),
+      alternativeSolutionSources:
+          alternatives ?? equivalentsOf(solution),
       wrongSolutionSources: wrong,
       hints: itemHints,
       diagnostics: drawingDiagnostics(),
       paletteScope: paletteScope,
       requireFinalPose: requireFinalPose,
+      runTrigger: runTrigger,
+      assertions: assertions,
     );
 
 /// **T5 — Parsons.** Shuffled lines to put back in order. Graded on what it draws, so a
@@ -370,6 +409,20 @@ Item parsons({
   /// Needed whenever a wrong ordering retraces the right one: a staircase assembled in the
   /// wrong order can leave exactly the same pixels and only a different final pose.
   bool requireFinalPose = false,
+  /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
+  /// items are graded under their own event, or a `quand touche` script never
+  /// fires and every answer draws nothing.
+  /// Structural checks the drawing cannot make.
+  ///
+  /// World 5 needs these: a program with no `quand` at all still runs under the
+  /// green flag — it has to, or every item in Worlds 0 to 4 stops working — so
+  /// "you forgot the trigger" is a wrong answer that draws the right picture.
+  List<StructuralAssertion> assertions = const [],
+  /// Two programs that are also right, authored when the language cannot
+  /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
+  /// nothing else, so a body made of `recule` or `direction` yields one.
+  List<String>? alternatives,
+  String runTrigger = 'flag',
   int version = 1,
 }) =>
     Item(
@@ -381,13 +434,55 @@ Item parsons({
       promptKeys: promptKeys,
       targetProgramSource: solution,
       referenceSolutionSource: solution,
-      alternativeSolutionSources: equivalentsOf(solution),
+      alternativeSolutionSources:
+          alternatives ?? equivalentsOf(solution),
       wrongSolutionSources: wrong,
       hints: itemHints,
       diagnostics: drawingDiagnostics(),
       paletteScope: paletteScope,
       requireFinalPose: requireFinalPose,
+      runTrigger: runTrigger,
+      assertions: assertions,
     );
+
+/// **T9 — open build.** A brief, a rubric, and no single right answer.
+///
+/// The rubric is shown to the child **before they start** (`FR-M6-06`), which is the whole
+/// difference between an open build and a guessing game: a child who does not know what
+/// "good" means can only produce something and hope. Each line is one plain sentence and
+/// one structural check, so the feedback can say which line is not met yet rather than
+/// giving a mark.
+///
+/// There is no target drawing. An open build that compares pixels is a build-to-target
+/// wearing a different name.
+Item openBuild({
+  required String id,
+  required String conceptId,
+  required Difficulty difficulty,
+  required Map<String, String> promptKeys,
+  required List<RubricLine> rubric,
+  required List<Hint> itemHints,
+  List<String> paletteScope = const [],
+  String runTrigger = 'flag',
+  int version = 1,
+}) =>
+    Item(
+      id: id,
+      version: version,
+      conceptId: conceptId,
+      type: ItemType.t9OpenBuild,
+      difficulty: difficulty,
+      promptKeys: promptKeys,
+      rubric: rubric,
+      hints: itemHints,
+      diagnostics: drawingDiagnostics(),
+      paletteScope: paletteScope,
+      runTrigger: runTrigger,
+    );
+
+/// One line of a rubric: what it says to the child, and what it checks.
+RubricLine rubricLine(String fr, String en, StructuralAssertion check) =>
+    RubricLine(textKeys: _b(fr, en), assertion: check);
 
 /// **T7 — golf.** A target and a block budget.
 Item golf({
@@ -400,6 +495,14 @@ Item golf({
   required List<String> wrong,
   required List<Hint> itemHints,
   List<String> paletteScope = const [],
+  /// Which trigger this item's programs run under (`FR-M21-01`). World 5's
+  /// items are graded under their own event, or a `quand touche` script never
+  /// fires and every answer draws nothing.
+  /// Two programs that are also right, authored when the language cannot
+  /// generate them: `equivalentsOf` rewrites `avance` and `tourne` lines and
+  /// nothing else, so a body made of `recule` or `direction` yields one.
+  List<String>? alternatives,
+  String runTrigger = 'flag',
   int version = 1,
 }) =>
     Item(
@@ -411,10 +514,12 @@ Item golf({
       promptKeys: promptKeys,
       targetProgramSource: solution,
       referenceSolutionSource: solution,
-      alternativeSolutionSources: equivalentsOf(solution),
+      alternativeSolutionSources:
+          alternatives ?? equivalentsOf(solution),
       wrongSolutionSources: wrong,
       blockBudget: budget,
       hints: itemHints,
       diagnostics: drawingDiagnostics(),
       paletteScope: paletteScope,
+      runTrigger: runTrigger,
     );

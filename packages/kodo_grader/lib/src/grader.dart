@@ -203,8 +203,9 @@ class Grader {
     RasterMatch? behavioural;
     if (item.targetProgramSource != null) {
       final attemptCanvas = VectorCanvas();
+      final trigger = _triggerFor(item.runTrigger);
       final run = runProgram(program, attemptCanvas,
-          seed: item.seed, inputs: item.inputs);
+          seed: item.seed, inputs: item.inputs, trigger: trigger);
       if (run.error != null) {
         return Verdict(
           passed: false,
@@ -219,7 +220,7 @@ class Grader {
       final targetProgram =
           parse(item.targetProgramSource!, KeywordTables.fr).program;
       runProgram(targetProgram, targetCanvas,
-          seed: item.seed, inputs: item.inputs);
+          seed: item.seed, inputs: item.inputs, trigger: trigger);
 
       behavioural = compareRaster(attemptCanvas, targetCanvas,
           tolerancePx: tolerancePx, scale: rasterScale);
@@ -324,6 +325,17 @@ class Grader {
         itemId: item.id,
         itemVersion: item.version,
         behavioural: behavioural);
+  }
+
+  /// The item's trigger, as the authoring tools write it.
+  ///
+  /// A string in the pack rather than an object, because a content pack is JSON and a
+  /// sealed class does not survive a round trip through a file a teacher can sideload.
+  RunTrigger _triggerFor(String spec) {
+    if (spec == 'any') return const AnyTrigger();
+    if (spec == 'clicked') return const Clicked();
+    if (spec.startsWith('key:')) return KeyPressed(spec.substring(4));
+    return const FlagClicked();
   }
 
   /// Printed lines, compared as a sequence.
