@@ -15,5 +15,6 @@ export 'src/canvas_painter.dart';
 export 'src/keyword_suggestions.dart';
 export 'src/editor_controller.dart';
 export 'src/palette_scope.dart';
+export 'src/run_cursor.dart';
 export 'src/syntax_theme.dart';
 export 'src/text_editor.dart';

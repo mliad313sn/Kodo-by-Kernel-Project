@@ -49,6 +49,7 @@ class BlockEditor extends StatefulWidget {
     this.choices = BlockChoices.empty,
     this.onRunStack,
     this.onShowHelp,
+    this.highlightedNodeId,
     this.compact = false,
   });
 
@@ -65,6 +66,13 @@ class BlockEditor extends StatefulWidget {
 
   /// `FR-M2-10`: one tap opens the reference entry with a runnable example.
   final void Function(Opcode opcode)? onShowHelp;
+
+  /// The statement a slow or stepped run is on (`FR-M4-07`).
+  ///
+  /// Given from outside rather than owned here, because the *same* value lights the text
+  /// view's line. Two views, one cursor — which is the block/text bridge proving itself
+  /// every second of a slow run.
+  final String? highlightedNodeId;
 
   /// Phone layout: the palette becomes a bottom sheet (`FR-M2-07`).
   final bool compact;
@@ -526,10 +534,27 @@ class BlockEditorState extends State<BlockEditor> {
               : 'Prendre ce bloc et ceux du dessous',
           onGrab: () => grabStack(row.node.id),
         );
+        /* `FR-M4-07`. A ring around the block rather than a change of its colour: the
+           colour IS the family (`FR-M16-01`), and a child who has learned that blue means
+           movement may not have it mean "running" for a second. */
+        final running = row.node.id == widget.highlightedNodeId;
         return Padding(
           padding: EdgeInsets.only(left: 16.0 * row.depth, bottom: 6),
-          child: Row(
-              children: [handle, const SizedBox(width: 4), Flexible(child: chip)]),
+          child: Container(
+            key: running ? const Key('running-block') : null,
+            decoration: running
+                ? BoxDecoration(
+                    border: Border.all(color: Colors.amber.shade700, width: 3),
+                    borderRadius: BorderRadius.circular(12),
+                  )
+                : null,
+            padding: const EdgeInsets.all(2),
+            child: Row(children: [
+              handle,
+              const SizedBox(width: 4),
+              Flexible(child: chip),
+            ]),
+          ),
         );
   }
 }

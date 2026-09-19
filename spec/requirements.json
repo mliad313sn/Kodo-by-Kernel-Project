@@ -444,7 +444,7 @@
       "priority": "M",
       "verification": "Visual test",
       "gate": "G3",
-      "status": "In progress",
+      "status": "Done",
       "owner": "M4 squad"
     },
     {

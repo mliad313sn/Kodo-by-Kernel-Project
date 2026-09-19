@@ -203,6 +203,7 @@ class TextEditor extends StatefulWidget {
     this.worldOpcodes = const [],
     this.showLineNumbers = true,
     this.compact = false,
+    this.highlightedLine,
   });
 
   final EditorController controller;
@@ -215,6 +216,14 @@ class TextEditor extends StatefulWidget {
   final bool showLineNumbers;
 
   final bool compact;
+
+  /// The line a slow or stepped run is on (`FR-M4-07`).
+  ///
+  /// Derived from the same cursor that lights the block, never computed here: two
+  /// highlights that were worked out separately would agree most of the time, and the
+  /// times they did not would teach a child that the blocks and the words are two
+  /// different programs.
+  final int? highlightedLine;
 
   @override
   State<TextEditor> createState() => TextEditorState();
@@ -356,14 +365,24 @@ class TextEditorState extends State<TextEditor> {
                               .styleFor(SyntaxCategory.error)
                               .colour
                               .withValues(alpha: 0.14)
-                          : (_focusedLine == lineNumber
-                              ? Colors.amber.withValues(alpha: 0.18)
-                              : null),
+                          : (widget.highlightedLine == lineNumber
+                              // `FR-M4-07`, and stronger than the tap focus below it: a
+                              // run is moving and has to be findable at a glance.
+                              ? Colors.amber.withValues(alpha: 0.38)
+                              : (_focusedLine == lineNumber
+                                  ? Colors.amber.withValues(alpha: 0.18)
+                                  : null)),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 2),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          /* `FR-M4-07`. A caret as well as the tint, because a tint alone
+                             is a colour and `FR-M16-01`'s rule — never one signal — holds
+                             for a running line as much as for a block. */
+                          if (widget.highlightedLine == lineNumber)
+                            const Icon(Icons.play_arrow,
+                                key: Key('running-line'), size: 14),
                           if (widget.showLineNumbers)
                             SizedBox(
                               width: 28,
