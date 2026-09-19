@@ -23,10 +23,17 @@ git apply /path/to/Kodo-by-Kernel-Project/delivery/meridian/patches/0001-*.patch
 #   ^ REQUIRED. Without it the import fails with 22P02 on any book whose ids
 #     contain letters — including Meridian's own export. See MER-13.
 
-mkdir -p server/.data/pgdata       # PGlite will not create the parent itself
-export PGLITE_DIR=./server/.data/pgdata
-#   ^ REQUIRED. Without it the server runs in memory and the seeded accounts
-#     vanish before you can sign in. See MER-12.
+git apply /path/to/Kodo-by-Kernel-Project/delivery/meridian/patches/0002-*.patch
+#   ^ REQUIRED FOR THIS BOOK. It makes the gate model configuration data and adds
+#     the requirement register, so Meridian can hold KODO's six looping gates and
+#     its 136 requirements instead of squashing them onto four and dropping them.
+#     Also fixes MER-12 (the default store), MER-14 (allocation identity and
+#     silently-dropped keys) and MER-15 (a refusal that says what is missing).
+#     18 new tests; 467 pass.
+
+# With patch 0002 applied, PGLITE_DIR is no longer needed: the default store is
+# ./server/.data/pgdata and the directory is created for you. Set PGLITE_DIR only to
+# put the book somewhere else, or PGLITE_DIR=:memory: to ask for memory on purpose.
 
 npm run seed && npm run dev
 

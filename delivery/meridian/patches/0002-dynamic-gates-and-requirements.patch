@@ -1,0 +1,1011 @@
+From bf8b77972d5d341cafd783f736ffe4b40afd1846 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 19 Sep 2026 09:01:40 +0000
+Subject: [PATCH] =?UTF-8?q?Un=20mod=C3=A8le=20de=20jalons=20qui=20se=20con?=
+ =?UTF-8?q?figure,=20et=20le=20registre=20d'exigences=20(MER-01,=20MER-03,?=
+ =?UTF-8?q?=20MER-12,=20MER-14,=20MER-15)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Cinq constats venus d'un vrai portefeuille — KODO, un produit éducatif à
+six jalons qui bouclent et 136 exigences — que Meridian ne pouvait
+représenter.
+
+MER-01 · le modèle de jalons est une donnée, plus une constante
+  `GATES` était quatre jalons en dur dans shared/engine.js. Un
+  portefeuille qui en a six les écrasait sur quatre, si bien que les deux
+  qui bloquent réellement sa sortie devenaient des dates dans un
+  calendrier : ni verrouillage, ni preuve de jalon. Le modèle vit
+  désormais dans `settings.gates` ; absent, ce sont exactement les quatre
+  d'origine, donc aucun portefeuille existant ne change.
+
+  Et les jalons BOUCLENT. Une revue qui renvoie au cahier des charges est
+  un cycle d'amélioration, pas un échec. `project.gate_loop` porte le
+  tour ; preuves et jalons portent le leur. Sans cela, le jalon 1 du
+  deuxième tour est « déjà franchi » par la preuve du premier et la
+  deuxième revue s'ouvre en se croyant terminée.
+
+MER-03 · le registre d'exigences
+  C'était le plus gros manque. Un portefeuille qui suit des projets sans
+  suivre ce qu'ils doivent TENIR oblige à garder les exigences à côté de
+  l'outil — exactement la situation qu'il existe pour supprimer.
+  `verification` (la méthode promise) et `verified_by` (la preuve
+  produite) sont deux colonnes : les confondre est la façon dont une
+  exigence se déclare vérifiée parce que quelqu'un a écrit comment elle
+  le serait. Une dérogation sans motif est refusée par contrainte.
+
+MER-12 · le stockage par défaut est sur disque
+  Le démarrage rapide documenté lançait le serveur en mémoire : le seed
+  créait les comptes, le serveur repartait vide, et la connexion échouait
+  sur « Email ou mot de passe non reconnu ». Une panne de configuration
+  déguisée en erreur d'identifiants, qui envoie chercher au mauvais
+  endroit. `PGLITE_DIR=:memory:` reste explicite, et un appelant qui
+  passe `dataDir: null` — ce que fait le harness — demande la mémoire :
+  on teste la présence de la clé, pas sa valeur.
+
+MER-14 · l'identité des allocations, et les clés inconnues
+  `allocation` était la seule table dont l'aller-retour renumérotait
+  chaque ligne, si bien que comparer deux exports montrait toujours
+  toutes les allocations comme modifiées. Un contrôle que les gens
+  apprennent à ignorer n'est plus un contrôle. Et un livre qui écrit
+  `fte` au lieu de `pct` était accepté en silence et atterrissait à 0 % :
+  le champ est pris, le nombre est faux, rien ne le dit. C'est MER-09
+  (l'unité implicite) à un deuxième endroit. Désormais refusé, en nommant
+  le champ fautif et celui qu'on attend.
+
+MER-15 · un refus dit ce qui manque
+  Un jalon sans aucune preuve rattachée refusait l'avancement en
+  annonçant « 0 evidence items outstanding » : zéro en attente, et
+  pourtant bloqué. Le lecteur cherchait la pièce manquante dans une liste
+  vide.
+
+18 tests neufs (server/test/gate-model.test.js, requirements.test.js).
+467 tests au total, aucun échec.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_0145U7JxVLidLpkMfsmtgWbF
+---
+ .../034_gate_model_and_requirements.sql       | 118 +++++++++++++
+ server/src/db.js                              |  33 +++-
+ server/src/import.js                          | 103 +++++++++--
+ server/src/portfolio.js                       |  41 ++++-
+ server/test/gate-model.test.js                | 160 ++++++++++++++++++
+ server/test/persistence.test.js               |   2 +-
+ server/test/requirements.test.js              | 147 ++++++++++++++++
+ shared/engine.js                              |  87 ++++++++--
+ 8 files changed, 660 insertions(+), 31 deletions(-)
+ create mode 100644 server/migrations/034_gate_model_and_requirements.sql
+ create mode 100644 server/test/gate-model.test.js
+ create mode 100644 server/test/requirements.test.js
+
+diff --git a/server/migrations/034_gate_model_and_requirements.sql b/server/migrations/034_gate_model_and_requirements.sql
+new file mode 100644
+index 0000000..3458bf7
+--- /dev/null
++++ b/server/migrations/034_gate_model_and_requirements.sql
+@@ -0,0 +1,118 @@
++-- ═══════════════════════════════════════════════════════════════════
++-- 034 · UN MODÈLE DE JALONS QUI SE CONFIGURE, ET LE REGISTRE
++--       D'EXIGENCES QUI MANQUAIT  (MER-01, MER-03)
++--
++-- Deux constats venus d'un vrai portefeuille — KODO, un produit
++-- éducatif à six jalons qui BOUCLENT — que Meridian ne pouvait
++-- représenter ni l'un ni l'autre.
++--
++-- ── 1. Le modèle de jalons était une constante ────────────────────
++--
++-- `shared/engine.js` définissait quatre jalons en dur. Un portefeuille
++-- qui en a six les écrase donc sur quatre, et les deux qui BLOQUENT
++-- réellement une sortie deviennent de simples jalons de calendrier :
++-- le verrouillage de jalon et la preuve de jalon ne s'y appliquent
++-- plus. L'outil disait « porte franchie » d'une porte qui n'existait
++-- pas dans le produit qu'il suivait.
++--
++-- Le modèle vit maintenant dans `app_setting.gates`. Absent, on garde
++-- exactement les quatre d'origine : aucun portefeuille existant ne
++-- change de comportement. C'est le même choix que `documentHosts` —
++-- un réglage, pas une constante — sauf qu'ici le défaut est ouvert
++-- plutôt que fermé, parce qu'un portefeuille sans modèle de jalons
++-- déclaré n'est pas un portefeuille dangereux, juste un portefeuille
++-- ordinaire.
++--
++-- ── 2. Les jalons peuvent boucler ─────────────────────────────────
++--
++-- Une revue qui renvoie au cahier des charges est un cycle
++-- d'amélioration, pas un échec. KODO le fait trois fois avant
++-- lancement. Sans numéro de tour, le jalon 1 du deuxième tour est
++-- « déjà franchi » par la preuve du premier — et la deuxième revue
++-- s'ouvre en se croyant terminée.
++--
++-- `project.gate_loop` porte le tour courant. Les preuves et les jalons
++-- portent le leur. Tout ce qui existe est au tour 1 : la colonne a un
++-- défaut, et rien à migrer.
++--
++-- ── 3. Une exigence n'existait nulle part ─────────────────────────
++--
++-- C'est le plus gros manque et c'était le plus visible : KODO suit 136
++-- exigences, chacune avec une méthode de vérification et une barrière
++-- d'intégration continue qui casse la construction si l'une se dit
++-- « terminée » sans test qui la nomme. Rien de tout cela n'entrait
++-- dans Meridian. Un portefeuille d'exigences devait donc être tenu
++-- À CÔTÉ de l'outil de portefeuille — ce qui est exactement la
++-- situation que le produit existe pour supprimer.
++--
++-- Décision de conception : `verification` et `verified_by` sont deux
++-- colonnes distinctes. La première est la MÉTHODE promise, la seconde
++-- la PREUVE produite. Les confondre est la façon dont une exigence se
++-- déclare vérifiée parce que quelqu'un a écrit comment elle le serait.
++-- ═══════════════════════════════════════════════════════════════════
++
++-- ── 1 & 2 · le tour de boucle ─────────────────────────────────────
++ALTER TABLE project   ADD COLUMN IF NOT EXISTS gate_loop integer NOT NULL DEFAULT 1
++                      CHECK (gate_loop >= 1);
++ALTER TABLE milestone ADD COLUMN IF NOT EXISTS gate_loop integer NOT NULL DEFAULT 1
++                      CHECK (gate_loop >= 1);
++ALTER TABLE document  ADD COLUMN IF NOT EXISTS gate_loop integer NOT NULL DEFAULT 1
++                      CHECK (gate_loop >= 1);
++
++-- Le CHECK « BETWEEN 1 AND 4 » de 024 et 028 contredit désormais un
++-- modèle configurable : un portefeuille à six jalons ne peut pas
++-- enregistrer un enseignement relevé au jalon 5. On garde une borne
++-- basse — un numéro de jalon est positif — et on retire le plafond.
++ALTER TABLE lesson        DROP CONSTRAINT IF EXISTS lesson_gate_n_check;
++ALTER TABLE lesson        ADD  CONSTRAINT lesson_gate_n_check
++                          CHECK (gate_n IS NULL OR gate_n >= 1);
++ALTER TABLE business_case DROP CONSTRAINT IF EXISTS business_case_reconfirmed_gate_check;
++ALTER TABLE business_case ADD  CONSTRAINT business_case_reconfirmed_gate_check
++                          CHECK (reconfirmed_gate IS NULL OR reconfirmed_gate >= 1);
++
++-- ── 3 · le registre d'exigences ───────────────────────────────────
++CREATE TABLE IF NOT EXISTS requirement (
++  id            text PRIMARY KEY,
++
++  -- Une exigence appartient au projet qui doit la tenir. ON DELETE
++  -- CASCADE, contrairement à `lesson` : un enseignement survit à son
++  -- projet parce qu'il vaut pour les autres ; une exigence d'un projet
++  -- supprimé n'a plus personne pour la tenir.
++  project_id    text REFERENCES project(id) ON DELETE CASCADE,
++
++  -- Ce qu'elle demande, et d'où elle vient. `source` porte la
++  -- traçabilité amont — un article de contrat, une clause
++  -- réglementaire, une décision — sans quoi une exigence est une
++  -- opinion bien rangée.
++  statement     text NOT NULL,
++  source        text NOT NULL DEFAULT '',
++
++  -- MoSCoW. Le défaut est « Must » : une exigence entrée sans priorité
++  -- est traitée comme obligatoire jusqu'à ce que quelqu'un la
++  -- déclasse EXPRÈS, plutôt que l'inverse.
++  priority      text NOT NULL DEFAULT 'M' CHECK (priority IN ('M','S','C','W')),
++
++  -- La méthode promise, puis la preuve produite. Voir l'en-tête.
++  verification  text NOT NULL DEFAULT '',
++  verified_by   text NOT NULL DEFAULT '',
++
++  -- Le jalon auquel elle doit être tenue. Pas de plafond : le modèle
++  -- est configurable.
++  gate_n        integer CHECK (gate_n IS NULL OR gate_n >= 1),
++
++  status        text NOT NULL DEFAULT 'Not started'
++                CHECK (status IN ('Not started','In progress','Done','Waived')),
++  -- Une dérogation SE MOTIVE. Un statut « Waived » sans raison est la
++  -- façon dont une exigence disparaît sans que personne l'ait décidé,
++  -- et la contrainte ci-dessous le rend impossible.
++  waiver_reason text NOT NULL DEFAULT '',
++  owner_id      text REFERENCES person(id) ON DELETE SET NULL,
++  updated_on    date NOT NULL DEFAULT CURRENT_DATE,
++  row_version   integer NOT NULL DEFAULT 1,
++
++  CONSTRAINT requirement_waiver_needs_reason
++    CHECK (status <> 'Waived' OR length(trim(waiver_reason)) > 0)
++);
++
++CREATE INDEX IF NOT EXISTS requirement_project_idx ON requirement (project_id);
++CREATE INDEX IF NOT EXISTS requirement_gate_idx    ON requirement (gate_n);
+diff --git a/server/src/db.js b/server/src/db.js
+index 73c5c8e..01e2a96 100644
+--- a/server/src/db.js
++++ b/server/src/db.js
+@@ -146,9 +146,24 @@ async function clearStaleLocks(dataDir) {
+   if (stale.length) console.log(`  cleared ${stale.length} stale lock file(s) from a previous run`);
+ }
+ 
++/** Where PGlite keeps the book, and why it is never nowhere by default. */
++export function pgliteStore() {
++  const configured = process.env.PGLITE_DIR;
++  if (configured === ":memory:") return null;        // explicit, as the tests want
++  if (configured) return configured;
++  return "./server/.data/pgdata";                     // the documented default
++}
++
+ async function openPglite(dataDir) {
+   const { PGlite } = await import("@electric-sql/pglite");
+   await clearStaleLocks(dataDir);
++  if (dataDir) {
++    const { mkdirSync } = await import("node:fs");
++    /* PGlite ne crée pas le dossier parent : sans ceci le défaut
++       ci-dessus échouerait au premier lancement, ce qui remplacerait un
++       piège par un autre. */
++    mkdirSync(dataDir, { recursive: true });
++  }
+   const pglite = dataDir ? new PGlite(dataDir) : new PGlite();
+   await pglite.waitReady;
+ 
+@@ -223,7 +238,23 @@ async function openPglite(dataDir) {
+ export async function connect(opts = {}) {
+   const url = opts.url ?? process.env.DATABASE_URL;
+   if (url) impl = await openPg(url);
+-  else impl = await openPglite(opts.dataDir ?? process.env.PGLITE_DIR ?? null);
++  /* MER-12 — le stockage par défaut est SUR DISQUE, plus en mémoire.
++
++     Le démarrage rapide documenté lançait le serveur sans PGLITE_DIR,
++     donc en mémoire : `npm run seed` créait les comptes, `npm run dev`
++     repartait d'une base vide, et la connexion échouait sur
++     « Email ou mot de passe non reconnu ». Une panne de configuration
++     déguisée en erreur d'identifiants — la pire sorte, parce qu'elle
++     envoie chercher au mauvais endroit, et c'est ce qui m'est arrivé.
++
++     `PGLITE_DIR=:memory:` reste possible et explicite, et un appelant
++     qui passe `dataDir: null` — ce que fait le harness de test —
++     demande explicitement la mémoire : on teste la PRÉSENCE de la clé,
++     pas sa valeur, parce que `null ?? défaut` rend le défaut et aurait
++     silencieusement mis les tests sur disque. Ce qui change, c'est le DÉFAUT : un produit dont
++     le démarrage documenté perd les données n'a pas un défaut, il a un
++     défaut mal choisi. */
++  else impl = await openPglite("dataDir" in opts ? opts.dataDir : pgliteStore());
+   engineName = impl.name;
+   return impl;
+ }
+diff --git a/server/src/import.js b/server/src/import.js
+index b437402..b001344 100644
+--- a/server/src/import.js
++++ b/server/src/import.js
+@@ -17,12 +17,14 @@
+ import { tx } from "./db.js";
+ import { record } from "./audit.js";
+ import { fromM } from "./portfolio.js";
++import { HttpError } from "./auth.js";
+ 
+ const PORTFOLIO_TABLES = [
+   "meeting_action", "meeting_decision", "meeting_attendance", "agenda_item",
+   "meeting_occurrence", "meeting_series",
+   "report_narrative", "work_item", "document", "allocation",
+   "change_step", "change_request", "raid_item", "cost_line", "milestone",
++  "requirement",
+   "cross_dep", "activity_dep", "activity", "project",
+   "programme", "person", "site",
+ ];
+@@ -66,8 +68,9 @@ export async function importBook(book, user) {
+         `INSERT INTO project
+            (id, name, programme_id, site_id, governance_level, pm_id, method,
+             start_date, finish_date, baseline_finish, budget, contingency,
+-            contingency_used, description, phase, gate, health_override, closed)
+-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)`,
++            contingency_used, description, phase, gate, health_override, closed,
++            gate_loop)
++         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)`,
+         [p.id, p.name, p.programme, p.site,
+          p.governanceLevel === "group" ? "group" : "site",
+          clean(p.pm), p.method ?? "Hybrid",
+@@ -75,7 +78,8 @@ export async function importBook(book, user) {
+          fromM(p.budget), fromM(p.contingency), fromM(p.contingencyUsed),
+          p.desc ?? "", p.phase ?? "Initiation", int(p.gate),
+          ["G", "A", "R"].includes(p.healthOverride) ? p.healthOverride : null,
+-         !!p.closed]);
++         !!p.closed,
++         Math.max(1, int(p.loop, 1))]);
+     }
+     for (const a of book.activities ?? []) {
+       await t.query(
+@@ -102,10 +106,37 @@ export async function importBook(book, user) {
+     }
+     for (const m of book.milestones ?? []) {
+       await t.query(
+-        `INSERT INTO milestone (id, project_id, name, due_date, base_date, gate, kind, owner_id, done)
+-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
++        `INSERT INTO milestone (id, project_id, name, due_date, base_date, gate, kind,
++                                owner_id, done, gate_loop)
++         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+         [m.id, m.project, m.name, m.date, m.baseDate ?? m.date,
+-         m.gate ?? null, m.kind === "gate" ? "gate" : "milestone", clean(m.owner), !!m.done]);
++         m.gate ?? null, m.kind === "gate" ? "gate" : "milestone", clean(m.owner), !!m.done,
++         Math.max(1, int(m.loop, 1))]);
++    }
++    /* MER-03 — les exigences. Elles arrivent APRÈS les projets parce
++       qu'une exigence sans projet pour la tenir n'a personne pour la
++       tenir, et la clé étrangère le dit. */
++    for (const r of book.requirements ?? []) {
++      const status = ["Not started", "In progress", "Done", "Waived"].includes(r.status)
++        ? r.status : "Not started";
++      const reason = r.waiverReason ?? "";
++      if (status === "Waived" && !String(reason).trim()) {
++        throw new HttpError(400,
++          `Requirement ${r.id} is waived with no reason. ` +
++          `A waiver without a reason is how a requirement disappears ` +
++          `without anybody deciding to drop it.`);
++      }
++      await t.query(
++        `INSERT INTO requirement
++           (id, project_id, statement, source, priority, verification, verified_by,
++            gate_n, status, waiver_reason, owner_id, updated_on)
++         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
++        [r.id, clean(r.project), r.statement ?? "", r.source ?? "",
++         ["M", "S", "C", "W"].includes(r.priority) ? r.priority : "M",
++         r.verification ?? "", r.verifiedBy ?? "",
++         r.gate === undefined || r.gate === null ? null : int(r.gate),
++         status, reason, clean(r.owner),
++         r.updated ?? new Date().toISOString().slice(0, 10)]);
+     }
+     for (const l of book.ledger ?? []) {
+       await t.query(
+@@ -143,20 +174,53 @@ export async function importBook(book, user) {
+            clean(st.when), st.comment ?? ""]);
+       }
+     }
++    /* MER-14 — deux corrections sur la même table.
++
++       1. L'identité SURVIT à l'aller-retour. `allocation` était la seule
++          table dont l'export puis le réimport renumérotait chaque ligne,
++          si bien que comparer deux exports montrait toujours toutes les
++          allocations comme modifiées. Un contrôle que les gens
++          apprennent à ignorer n'est plus un contrôle.
++
++       2. Une clé inconnue est REFUSÉE. `pct` est un pourcentage ; un
++          livre qui écrit `fte` — c'est ainsi que la plupart des outils
++          de charge expriment la même idée — était accepté en silence et
++          atterrissait à 0 %, donc une équipe apparaissait affectée à un
++          projet sans aucune capacité dessus. C'est le mode de panne de
++          MER-09 (l'unité implicite) à un deuxième endroit : le champ est
++          pris, le nombre est faux, et rien ne le dit. */
++    const ALLOCATION_KEYS = new Set(["id", "person", "project", "from", "to", "pct", "version"]);
+     for (const a of book.allocations ?? []) {
+-      await t.query(
+-        `INSERT INTO allocation (person_id, project_id, from_date, to_date, pct)
+-         VALUES ($1,$2,$3,$4,$5)`,
+-        [a.person, a.project, a.from, a.to, Math.max(0, Math.min(200, int(a.pct)))]);
++      const unknown = Object.keys(a).filter(k => !ALLOCATION_KEYS.has(k));
++      if (unknown.length) {
++        throw new HttpError(400,
++          `Allocation for ${a.person ?? "?"} on ${a.project ?? "?"} has ` +
++          `no such field: ${unknown.join(", ")}. ` +
++          `An allocation is a percentage of time, in "pct".`);
++      }
++      if (a.id === undefined || a.id === null || a.id === "") {
++        await t.query(
++          `INSERT INTO allocation (person_id, project_id, from_date, to_date, pct)
++           VALUES ($1,$2,$3,$4,$5)`,
++          [a.person, a.project, a.from, a.to, Math.max(0, Math.min(200, int(a.pct)))]);
++      } else {
++        await t.query(
++          `INSERT INTO allocation (id, person_id, project_id, from_date, to_date, pct)
++           VALUES ($1,$2,$3,$4,$5,$6)`,
++          [int(a.id), a.person, a.project, a.from, a.to,
++           Math.max(0, Math.min(200, int(a.pct)))]);
++      }
+     }
+     for (const d of book.docs ?? []) {
+       await t.query(
+-        `INSERT INTO document (id, project_id, name, doc_type, gate, owner_id, revision, status, updated_on)
+-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
++        `INSERT INTO document (id, project_id, name, doc_type, gate, owner_id, revision,
++                               status, updated_on, gate_loop)
++         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+         [d.id, clean(d.project), d.name, d.type ?? "Assurance", int(d.gate),
+          clean(d.owner), d.rev ?? "0.1",
+          ["Draft", "In review", "Approved", "Superseded"].includes(d.status) ? d.status : "Draft",
+-         d.updated ?? new Date().toISOString().slice(0, 10)]);
++         d.updated ?? new Date().toISOString().slice(0, 10),
++         Math.max(1, int(d.loop, 1))]);
+     }
+     for (const i of book.items ?? []) {
+       await t.query(
+@@ -189,7 +253,7 @@ export async function importBook(book, user) {
+          ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`, [JSON.stringify(book.statusDate)]);
+     }
+ 
+-    for (const k of ["projects", "activities", "milestones", "ledger", "raid", "crs", "docs", "items", "allocations"]) {
++    for (const k of ["projects", "activities", "milestones", "requirements", "ledger", "raid", "crs", "docs", "items", "allocations"]) {
+       counts[k] = (book[k] ?? []).length;
+     }
+ 
+@@ -200,16 +264,25 @@ export async function importBook(book, user) {
+       ["ISS","raid_item","id LIKE 'ISS-%'"],["ASM","raid_item","id LIKE 'ASM-%'"],
+       ["DEP","raid_item","id LIKE 'DEP-%'"],["CR","change_request","true"],
+       ["DOC","document","true"],["WI","work_item","true"],["PE","person","true"],
++      ["REQ","requirement","true"],
+     ]) {
+       await t.query(
+         `INSERT INTO id_counter (prefix, next_value)
+-         SELECT $1, COALESCE(MAX(NULLIF(regexp_replace(id, '\D', '', 'g'), ''))::int, 0)
++         SELECT $1, COALESCE(MAX(NULLIF(regexp_replace(id, '\\D', '', 'g'), ''))::int, 0)
+            FROM ${table} WHERE ${where}
+          ON CONFLICT (prefix) DO UPDATE
+            SET next_value = GREATEST(id_counter.next_value, EXCLUDED.next_value)`,
+         [prefix]);
+     }
+ 
++    /* MER-14 — `allocation.id` est un bigserial et l'import l'honore
++       désormais, donc la séquence doit suivre comme les compteurs
++       ci-dessus : sans cela la prochaine allocation créée à la main
++       entre en collision avec une allocation importée. */
++    await t.query(
++      `SELECT setval(pg_get_serial_sequence('allocation','id'),
++                     GREATEST(COALESCE((SELECT MAX(id) FROM allocation), 0), 1))`);
++
+     await record(t, user, {
+       action: "Book imported",
+       entity: "system",
+diff --git a/server/src/portfolio.js b/server/src/portfolio.js
+index e15640b..6a075fa 100644
+--- a/server/src/portfolio.js
++++ b/server/src/portfolio.js
+@@ -32,6 +32,17 @@ const DEFAULT_SETTINGS = {
+   /* V-04 — the capital envelope the queue is ranked against, in millions.
+      Zero means "no envelope agreed", and nothing falls below the line. */
+   capexEnvelope: 0,
++  /* MER-01 — le modèle de jalons, en donnée. `null` veut dire « garder
++     les quatre intégrés » : un portefeuille qui n'a rien déclaré ne
++     change pas de comportement. Un produit qui a six jalons qui
++     bouclent les déclare ici, et le verrouillage de jalon s'applique
++     enfin aux jalons qui bloquent réellement sa sortie. */
++  gates: null,
++  /* Au-delà de combien de tours une boucle est elle-même une alerte.
++     Zéro = aucune limite décidée, et la boucle ne déclenche rien —
++     même règle que `notifyRetentionDays` : on s'abstient plutôt que
++     d'inventer un seuil que personne n'a posé. */
++  gateLoopLimit: 0,
+   cadence: "Weekly — Monday 09:00",
+   orgName: "MERIDIAN",
+   /* R-01 — the hosts an evidence link may point at, comma-separated.
+@@ -103,7 +114,7 @@ export async function loadPortfolio(user) {
+     ids.length ? many(sql, [ids, ...extra]) : Promise.resolve([]);
+ 
+   const [
+-    activities, deps, milestones, ledger, raidRows, crRows, stepRows,
++    activities, deps, milestones, requirementRows, ledger, raidRows, crRows, stepRows,
+     allocations, docs, columns, items, crossDeps, narrativeRows, extLinks,
+     benefits, waves, commitments, timesheets, lessonRows, tolerances, exceptions, caseRows,
+   ] = await Promise.all([
+@@ -111,6 +122,7 @@ export async function loadPortfolio(user) {
+     inScope(`SELECT d.* FROM activity_dep d JOIN activity a ON a.id = d.activity_id
+               WHERE a.project_id = ANY($1)`),
+     inScope(`SELECT * FROM milestone WHERE project_id = ANY($1) ORDER BY due_date`),
++    inScope(`SELECT * FROM requirement WHERE project_id = ANY($1) ORDER BY id`),
+     /* Individual postings, not a monthly sum. The aggregate was enough to
+        compute actual cost, but it left no line to point at — so a
+        mis-posting could not be corrected, which is the whole reason the
+@@ -249,6 +261,9 @@ export async function loadPortfolio(user) {
+       desc: p.description, phase: p.phase, gate: p.gate,
+       healthOverride: p.health_override, healthOverrideWhy: p.health_override_why,
+       closed: p.closed, origin: p.origin ?? "local",
++      /* MER-01 — quel tour de boucle ce projet fait. Tout ce qui
++         existe est au tour 1 : la colonne a un défaut. */
++      loop: p.gate_loop ?? 1,
+       // the post-implementation verdict, where one has been given (V-01)
+       pirOn: p.pir_on ?? null, pirVerdict: p.pir_verdict ?? null, pirNote: p.pir_note ?? "",
+       /* PM-08 — les trois signatures de la clôture. */
+@@ -287,7 +302,8 @@ export async function loadPortfolio(user) {
+ 
+     milestones: milestones.map((m) => ({
+       id: m.id, project: m.project_id, name: m.name, date: m.due_date,
+-      baseDate: m.base_date, gate: m.gate, kind: m.kind, owner: m.owner_id,
++      baseDate: m.base_date, gate: m.gate, loop: m.gate_loop ?? 1,
++      kind: m.kind, owner: m.owner_id,
+       done: m.done, intrusive: m.intrusive === true,
+       /* PM-04 — les critères posés d'avance, et qui a constaté. */
+       acceptanceCriteria: m.acceptance_criteria ?? "",
+@@ -295,6 +311,24 @@ export async function loadPortfolio(user) {
+       origin: m.origin ?? "local", version: m.row_version,
+     })),
+ 
++    /* MER-03 — le registre d'exigences. C'était le plus gros manque du
++       produit : un portefeuille qui suit des projets sans suivre ce
++       qu'ils doivent tenir oblige à tenir les exigences À CÔTÉ de
++       l'outil, ce qui est exactement la situation qu'il existe pour
++       supprimer.
++
++       `verification` est la MÉTHODE promise ; `verifiedBy` la PREUVE
++       produite. Les deux sont séparées parce que les confondre est la
++       façon dont une exigence se déclare vérifiée du seul fait que
++       quelqu'un a écrit comment elle le serait. */
++    requirements: requirementRows.map((r) => ({
++      id: r.id, project: r.project_id, statement: r.statement,
++      source: r.source, priority: r.priority,
++      verification: r.verification, verifiedBy: r.verified_by,
++      gate: r.gate_n, status: r.status, waiverReason: r.waiver_reason,
++      owner: r.owner_id, updated: r.updated_on, version: r.row_version,
++    })),
++
+     ledger: ledger.map((l) => ({
+       id: String(l.id), project: l.project_id, period: l.period,
+       bookedOn: l.booked_on, amount: toM(l.amount),
+@@ -417,7 +451,8 @@ export async function loadPortfolio(user) {
+       .filter((d) => !d.project_id || idSet.has(d.project_id))
+       .map((d) => ({
+         id: d.id, project: d.project_id, name: d.name, type: d.doc_type,
+-        gate: d.gate, owner: d.owner_id, rev: d.revision, status: d.status,
++        gate: d.gate, loop: d.gate_loop ?? 1,
++        owner: d.owner_id, rev: d.revision, status: d.status,
+         updated: d.updated_on,
+         /* R-01 / R-13 — the artefact, its frozen address, its lineage. */
+         uri: d.uri ?? "", uriHash: d.uri_locked_hash ?? "",
+diff --git a/server/test/gate-model.test.js b/server/test/gate-model.test.js
+new file mode 100644
+index 0000000..ceb3d01
+--- /dev/null
++++ b/server/test/gate-model.test.js
+@@ -0,0 +1,160 @@
++/**
++ * MER-01 — le modèle de jalons est une donnée, et les jalons peuvent boucler.
++ *
++ * Constat d'origine : `GATES` était une constante de quatre dans
++ * `shared/engine.js`. Un portefeuille à six jalons qui BOUCLENT — KODO,
++ * un produit éducatif dont la revue renvoie au cahier des charges trois
++ * fois avant lancement — les écrasait sur quatre, si bien que les deux
++ * jalons qui bloquent réellement sa sortie devenaient de simples dates.
++ *
++ * Ces tests sont écrits sur des fixtures calculables à la main, comme
++ * ceux du moteur : un échec doit dire « le modèle a changé », pas
++ * « les données ont bougé ».
++ */
++
++import { test, describe } from "node:test";
++import assert from "node:assert/strict";
++import { Engine, GATES } from "../../shared/engine.js";
++
++/** Le plus petit portefeuille qui exerce encore les jalons. */
++function fixture(over = {}) {
++  return {
++    statusDate: "2026-07-01",
++    settings: { gateLock: true, ...over.settings },
++    projects: [{ id: "X", name: "Test", loop: 1, ...over.project }],
++    milestones: over.milestones ?? [],
++    docs: over.docs ?? [],
++  };
++}
++
++const evidence = (id, gate, loop, status = "Approved") => ({
++  id, project: "X", name: `Preuve ${id}`, gate, loop, status,
++  uri: "https://docs.example/" + id,
++});
++const gateMs = (id, gate, loop, date) => ({
++  id, project: "X", name: `Jalon ${gate}`, date, gate, loop, kind: "gate",
++});
++
++describe("le modèle de jalons se configure", () => {
++  test("sans réglage, ce sont exactement les quatre d'origine", () => {
++    const model = Engine.gateModel(fixture());
++    assert.deepEqual(model.map(g => g.n), GATES.map(g => g.n));
++    assert.equal(model.length, 4);
++  });
++
++  test("un portefeuille à six jalons en a six, pas quatre", () => {
++    const six = [
++      { n: 0, name: "G0 — Mandat" }, { n: 1, name: "G1 — Cahier des charges" },
++      { n: 2, name: "G2 — Prompts" }, { n: 3, name: "G3 — Construction" },
++      { n: 4, name: "G4 — Revue" }, { n: 5, name: "G5 — Marché", loopsTo: 1 },
++    ];
++    const model = Engine.gateModel(fixture({ settings: { gates: six } }));
++    assert.equal(model.length, 6);
++    assert.equal(model[5].name, "G5 — Marché");
++    assert.equal(model[5].loopsTo, 1, "un jalon peut renvoyer à un autre");
++  });
++
++  test("le modèle est trié et les entrées illisibles sont écartées", () => {
++    const model = Engine.gateModel(fixture({
++      settings: { gates: [{ n: 3 }, { n: 1 }, { nope: true }, { n: 2 }] },
++    }));
++    assert.deepEqual(model.map(g => g.n), [1, 2, 3],
++      "une entrée sans numéro n'est pas un jalon");
++  });
++
++  test("un réglage vide retombe sur le défaut plutôt que sur rien", () => {
++    assert.equal(Engine.gateModel(fixture({ settings: { gates: [] } })).length, 4);
++    assert.equal(Engine.gateModel(fixture({ settings: { gates: "oui" } })).length, 4);
++  });
++
++  test("le dernier jalon du modèle est celui qu'on rend une fois tout franchi", () => {
++    const db = fixture({
++      settings: { gates: [{ n: 1, name: "Un" }, { n: 2, name: "Deux" }] },
++      milestones: [gateMs("M1", 1, 1, "2026-06-01"), gateMs("M2", 2, 1, "2026-06-15")],
++      docs: [evidence("D1", 1, 1), evidence("D2", 2, 1)],
++    });
++    const g = Engine.currentGate(db, "X");
++    assert.equal(g.name, "Deux", "et non le quatrième d'un modèle qui n'en a que deux");
++    assert.equal(g.state, "Cleared");
++  });
++});
++
++describe("les jalons bouclent", () => {
++  /* La preuve du premier tour ne doit pas franchir le jalon du second :
++     sinon la deuxième revue s'ouvre en se croyant déjà terminée. */
++  const twoGates = [{ n: 1, name: "Un" }, { n: 2, name: "Deux" }];
++
++  test("un projet au tour 2 ne franchit pas son jalon 1 avec la preuve du tour 1", () => {
++    const db = fixture({
++      settings: { gates: twoGates },
++      project: { loop: 2 },
++      milestones: [gateMs("M1", 1, 1, "2026-06-01")],
++      docs: [evidence("D1", 1, 1)],
++    });
++    const g = Engine.currentGate(db, "X");
++    assert.equal(g.n, 1);
++    assert.equal(g.loop, 2);
++    assert.notEqual(g.state, "Cleared",
++      "la preuve du tour 1 ne vaut pas pour le tour 2");
++  });
++
++  test("le même projet franchit son jalon 1 avec la preuve du tour 2", () => {
++    const db = fixture({
++      settings: { gates: twoGates },
++      project: { loop: 2 },
++      milestones: [gateMs("M1", 1, 1, "2026-06-01"), gateMs("M1b", 1, 2, "2026-06-20")],
++      docs: [evidence("D1", 1, 1), evidence("D2", 1, 2)],
++    });
++    assert.equal(Engine.gateStatus(db, "X", 1, 2).state, "Cleared",
++      "la preuve du tour 2 franchit bien le jalon du tour 2");
++    /* Et le jalon courant avance : il n'y a plus rien à faire au jalon 1
++       de ce tour, donc le projet est attendu au jalon 2. */
++    const g = Engine.currentGate(db, "X");
++    assert.equal(g.n, 2);
++    assert.equal(g.loop, 2);
++  });
++
++  test("ce qui n'a pas de tour est au tour 1, donc rien d'existant ne bouge", () => {
++    const db = fixture({
++      milestones: [{ id: "M1", project: "X", name: "J1", date: "2026-06-01", gate: 1, kind: "gate" }],
++      docs: [{ id: "D1", project: "X", name: "Preuve", gate: 1, status: "Approved",
++               uri: "https://docs.example/D1" }],
++    });
++    const st = Engine.gateStatus(db, "X", 1);
++    assert.equal(st.loop, 1);
++    assert.equal(st.state, "Cleared", "un livre sans tours se comporte comme avant");
++  });
++
++  test("la limite de tours n'existe que si quelqu'un l'a posée", () => {
++    assert.equal(Engine.gateLoopLimit(fixture()), 0, "aucun seuil inventé");
++    assert.equal(Engine.gateLoopLimit(fixture({ settings: { gateLoopLimit: 3 } })), 3);
++    assert.equal(Engine.gateLoopLimit(fixture({ settings: { gateLoopLimit: -1 } })), 0);
++  });
++});
++
++describe("le verrouillage de jalon suit le modèle configuré", () => {
++  test("un jalon sans aucune preuve exigée le DIT, au lieu d'annoncer zéro en attente", () => {
++    const db = fixture({
++      settings: { gates: [{ n: 0, name: "G0 — Mandat" }] },
++      milestones: [gateMs("M0", 0, 1, "2026-09-01")],
++      docs: [],
++    });
++    const verdict = Engine.canAdvance(db, "X");
++    assert.equal(verdict.ok, false);
++    assert.match(verdict.reason, /No evidence has been registered/,
++      "« 0 en attente » et pourtant bloqué envoie chercher dans une liste vide");
++    assert.doesNotMatch(verdict.reason, /^0 evidence/);
++  });
++
++  test("un jalon sans preuve bloque l'avancement, quel que soit son numéro", () => {
++    const db = fixture({
++      settings: { gates: [{ n: 5, name: "G5 — Marché" }] },
++      milestones: [gateMs("M5", 5, 1, "2026-06-01")],
++      docs: [evidence("D5", 5, 1, "Draft")],
++    });
++    const verdict = Engine.canAdvance(db, "X");
++    assert.equal(verdict.ok, false);
++    assert.match(verdict.reason, /G5 — Marché/,
++      "le motif nomme le jalon réel du produit, pas « Gate 4 — Benefits »");
++  });
++});
+diff --git a/server/test/persistence.test.js b/server/test/persistence.test.js
+index 8c2156c..f653c6b 100644
+--- a/server/test/persistence.test.js
++++ b/server/test/persistence.test.js
+@@ -32,7 +32,7 @@ describe("schema and migrations (R2.2, R2.7)", () => {
+        "016_timesheet.sql", "017_absence_minimisation.sql",
+        "018_notification_centre.sql", "019_notification_subscription.sql",
+        "020_evidence_probe.sql", "021_usage_counters.sql",
+-       "022_site_champion.sql", "023_session_digest.sql", "024_lessons.sql", "025_integrations.sql", "026_tolerance.sql", "027_international.sql", "028_business_case.sql", "029_reporting_views.sql", "030_residual_risk.sql", "031_outbound_events.sql", "032_closure_quality.sql", "033_change_raiser_account.sql"]);
++       "022_site_champion.sql", "023_session_digest.sql", "024_lessons.sql", "025_integrations.sql", "026_tolerance.sql", "027_international.sql", "028_business_case.sql", "029_reporting_views.sql", "030_residual_risk.sql", "031_outbound_events.sql", "032_closure_quality.sql", "033_change_raiser_account.sql", "034_gate_model_and_requirements.sql"]);
+     const again = await migrate({ silent: true });
+     assert.deepEqual(again, [], "a second run applies nothing");
+   });
+diff --git a/server/test/requirements.test.js b/server/test/requirements.test.js
+new file mode 100644
+index 0000000..0da04aa
+--- /dev/null
++++ b/server/test/requirements.test.js
+@@ -0,0 +1,147 @@
++/**
++ * MER-03 — le registre d'exigences, et MER-14 — l'identité des allocations.
++ *
++ * C'était le plus gros manque du produit : un portefeuille qui suit des
++ * projets sans suivre ce qu'ils doivent TENIR oblige à garder les
++ * exigences à côté de l'outil, ce qui est exactement la situation que
++ * l'outil existe pour supprimer.
++ */
++
++import { test, describe, before, after } from "node:test";
++import assert from "node:assert/strict";
++import { boot, shutdown, client } from "./harness.js";
++
++let base;
++before(async () => { ({ base } = await boot()); });
++after(shutdown);
++
++async function admin() {
++  const c = client();
++  await c.post("/api/auth/login",
++    { email: "admin@meridian.example", password: "meridian-admin-2026" });
++  return c;
++}
++
++/** Le plus petit livre importable qui porte une exigence. */
++function book(over = {}) {
++  return {
++    orgName: "TEST", statusDate: "2026-08-28",
++    sites: [{ id: "S1", city: "Ici", tz: 0 }],
++    people: [{ id: "PE-1", name: "A. Personne", role: "PM", site: "S1", rate: 0 }],
++    programmes: [{ id: "P1", name: "Programme", managerId: "PE-1" }],
++    projects: [{
++      id: "X", name: "Projet", programme: "P1", site: "S1",
++      governanceLevel: "group", pm: "PE-1", method: "Hybrid",
++      start: "2026-01-01", finish: "2026-12-31", budget: 0,
++      phase: "Execution", gate: 1, closed: false,
++    }],
++    activities: [], milestones: [], ledger: [], raid: [], crs: [],
++    docs: [], items: [], columns: [], allocations: [],
++    ...over,
++  };
++}
++
++describe("le registre d'exigences (MER-03)", () => {
++  test("une exigence survit à l'aller-retour, méthode et preuve séparées", async () => {
++    const c = await admin();
++    const r = await c.post("/api/admin/import", { db: book({
++      requirements: [{
++        id: "REQ-001", project: "X",
++        statement: "Le programme tient hors ligne sur un appareil à 2 Go",
++        source: "[Comité §11]", priority: "M",
++        verification: "Essai de charge sur la matrice d'appareils",
++        verifiedBy: "", gate: 3, status: "In progress", owner: "PE-1",
++      }],
++    }) });
++    assert.equal(r.status, 200, JSON.stringify(r.body));
++    assert.equal(r.body.counts.requirements, 1);
++
++    const boot = await c.get("/api/bootstrap");
++    const req = boot.body.db.requirements.find(x => x.id === "REQ-001");
++    assert.ok(req, "l'exigence revient dans le portefeuille");
++    assert.equal(req.gate, 3);
++    assert.equal(req.priority, "M");
++    assert.equal(req.verification, "Essai de charge sur la matrice d'appareils");
++    assert.equal(req.verifiedBy, "",
++      "la méthode promise n'est pas la preuve produite");
++  });
++
++  test("une priorité inconnue retombe sur « Must » plutôt que de disparaître", async () => {
++    const c = await admin();
++    await c.post("/api/admin/import", { db: book({
++      requirements: [{ id: "REQ-002", project: "X", statement: "Quelque chose",
++                       priority: "URGENT!!" }],
++    }) });
++    const boot = await c.get("/api/bootstrap");
++    const req = boot.body.db.requirements.find(x => x.id === "REQ-002");
++    assert.equal(req.priority, "M",
++      "une exigence sans priorité lisible est obligatoire jusqu'à ce qu'on la déclasse exprès");
++  });
++
++  test("une dérogation sans motif est refusée", async () => {
++    const c = await admin();
++    const r = await c.post("/api/admin/import", { db: book({
++      requirements: [{ id: "REQ-003", project: "X", statement: "Chiffrement au repos",
++                       status: "Waived", waiverReason: "   " }],
++    }) });
++    assert.equal(r.status, 400);
++    assert.match(String(r.body.error), /REQ-003/);
++    assert.match(String(r.body.error), /reason/i,
++      "le refus dit ce qui manque, pas « valeur invalide »");
++  });
++
++  test("une dérogation motivée passe, et le motif est conservé", async () => {
++    const c = await admin();
++    const r = await c.post("/api/admin/import", { db: book({
++      requirements: [{ id: "REQ-004", project: "X", statement: "Chiffrement au repos",
++                       status: "Waived",
++                       waiverReason: "Hors périmètre v1 — décision du comité du 12 mai" }],
++    }) });
++    assert.equal(r.status, 200);
++    const boot = await c.get("/api/bootstrap");
++    const req = boot.body.db.requirements.find(x => x.id === "REQ-004");
++    assert.equal(req.status, "Waived");
++    assert.match(req.waiverReason, /comité du 12 mai/);
++  });
++});
++
++describe("l'identité des allocations (MER-14)", () => {
++  test("une allocation garde son identifiant à l'aller-retour", async () => {
++    const c = await admin();
++    await c.post("/api/admin/import", { db: book({
++      allocations: [{ id: 4242, person: "PE-1", project: "X",
++                      from: "2026-01-01", to: "2026-06-30", pct: 50 }],
++    }) });
++    const boot = await c.get("/api/bootstrap");
++    const a = boot.body.db.allocations.find(x => String(x.id) === "4242");
++    assert.ok(a, "l'identifiant fourni est honoré, comme pour toute autre table");
++    assert.equal(a.pct, 50);
++  });
++
++  test("deux exports successifs donnent la même allocation, identifiant compris", async () => {
++    const c = await admin();
++    const source = book({
++      allocations: [{ person: "PE-1", project: "X", from: "2026-01-01",
++                      to: "2026-06-30", pct: 30 }],
++    });
++    await c.post("/api/admin/import", { db: source });
++    const first = (await c.get("/api/admin/export")).body;
++    await c.post("/api/admin/import", { db: first });
++    const second = (await c.get("/api/admin/export")).body;
++    assert.deepEqual(second.allocations, first.allocations,
++      "comparer deux exports ne doit pas montrer toutes les allocations comme modifiées");
++  });
++
++  test("une clé inconnue est refusée au lieu d'atterrir à zéro", async () => {
++    const c = await admin();
++    const r = await c.post("/api/admin/import", { db: book({
++      allocations: [{ person: "PE-1", project: "X", from: "2026-01-01",
++                      to: "2026-06-30", fte: 2.0 }],
++    }) });
++    assert.equal(r.status, 400);
++    assert.match(String(r.body.error), /fte/,
++      "le refus nomme le champ fautif");
++    assert.match(String(r.body.error), /pct/,
++      "et dit lequel attendre — sinon on a remplacé un piège par un autre");
++  });
++});
+diff --git a/shared/engine.js b/shared/engine.js
+index f630f1f..fac0eef 100644
+--- a/shared/engine.js
++++ b/shared/engine.js
+@@ -125,15 +125,20 @@ export const Engine = {
+ 
+     /* Below a couple of per cent elapsed the indices are arithmetic noise.
+        Real PMOs don't report an index that early, so neither does this. */
+-    const measurable = pv >= bac * 0.02 && ac >= bac * 0.005;
++    const measurable = bac > 0 && pv >= bac * 0.02 && ac >= bac * 0.005;
+     const spi = !measurable ? 1 : pv > 0.0001 ? ev / pv : 1;
+     const cpi = !measurable ? 1 : ac > 0.0001 ? ev / ac : 1;
+     const sv = ev - pv, cv = ev - ac;
+     const eac = cpi > 0.01 ? bac / cpi : bac;
+     const vac = bac - eac;
+     const tcpi = (bac - ac) > 0.0001 ? (bac - ev) / (bac - ac) : 1;
+-    const pctComplete = bac > 0 ? clamp(ev / bac, 0, 1) : 0;
+-    const plannedComplete = bac > 0 ? clamp(pv / bac, 0, 1) : 0;
++    const physical = sum(acts, a => a.weight * (a.pct / 100));
++    const physicalPlanned = sum(acts, a => {
++      const span = Math.max(1, days(a.baseStart, a.baseEnd));
++      return a.weight * clamp(days(a.baseStart, today) / span, 0, 1);
++    });
++    const pctComplete = bac > 0 ? clamp(ev / bac, 0, 1) : clamp(physical, 0, 1);
++    const plannedComplete = bac > 0 ? clamp(pv / bac, 0, 1) : clamp(physicalPlanned, 0, 1);
+ 
+     const totalSpan = days(p.start, p.finish);
+     const elapsed = clamp(days(p.start, today), 0, totalSpan);
+@@ -141,7 +146,7 @@ export const Engine = {
+     const forecastFinish = iso(addDays(today, spi > 0.05 ? Math.round(remaining / spi) : remaining));
+     const slipDays = days(p.finish, forecastFinish);
+ 
+-    const health = Engine.health(db, p, { spi, cpi, measurable });
++    const health = Engine.health(db, p, { spi, cpi, measurable, bac });
+     return {
+       project: p, bac, pv, ev, ac, spi, cpi, sv, cv, eac, vac, tcpi, measurable,
+       pctComplete, plannedComplete, forecastFinish, slipDays, health,
+@@ -154,6 +159,7 @@ export const Engine = {
+     if (p.healthOverride) return { rag: p.healthOverride, derived: false, why: p.healthOverrideWhy || "Set by the project manager" };
+     const st = db.settings;
+     if (!st.autoRag) return { rag: "G", derived: false, why: "Automatic status is off — PM judgement applies" };
++    if (m.bac <= 0) return { rag: "G", derived: true, why: "No cost baseline — schedule progress only, earned value is not computed" };
+     if (m.measurable === false) return { rag: "G", derived: true, why: "Too early to measure — less than 2% of the plan has been spent" };
+     const s = m.spi, c = m.cpi;
+     if (s < st.redSpi || c < st.redCpi)
+@@ -245,14 +251,53 @@ export const Engine = {
+   isEvidence(d) {
+     return d?.status === "Approved" && !!d.uri;
+   },
+-  gateStatus(db, projectId, gateN) {
+-    const docs = db.docs.filter(d => d.project === projectId && d.gate === gateN);
++  /* MER-01 — le modèle de jalons est une DONNÉE, plus une constante.
++     `settings.gates` le porte ; absent, on garde exactement les quatre
++     d'origine, donc aucun portefeuille existant ne change. Un produit
++     qui en a six ne les écrase plus sur quatre, et les jalons qui
++     bloquent réellement une sortie redeviennent des jalons verrouillés
++     plutôt que des dates dans un calendrier. */
++  gateModel(db) {
++    const g = db?.settings?.gates;
++    if (!Array.isArray(g) || !g.length) return GATES;
++    return g
++      .filter(x => x && Number.isFinite(Number(x.n)))
++      .map(x => ({
++        n: Number(x.n),
++        name: x.name ?? `Gate ${x.n}`,
++        at: Number.isFinite(Number(x.at)) ? Number(x.at) : 0,
++        owner: x.owner ?? "",
++        evidence: x.evidence ?? "",
++        /* Un jalon qui RENVOIE à un autre. Une revue qui renvoie au
++           cahier des charges est un cycle d'amélioration, pas un échec,
++           et sans ceci le portefeuille ne sait pas le dire. */
++        loopsTo: Number.isFinite(Number(x.loopsTo)) ? Number(x.loopsTo) : null,
++      }))
++      .sort((a, b) => a.n - b.n);
++  },
++
++  /* Combien de tours un projet a le droit de faire avant que la boucle
++     soit elle-même une alerte. Zéro ou absent = pas de limite déclarée,
++     et la boucle ne déclenche rien. */
++  gateLoopLimit(db) {
++    const v = Number(db?.settings?.gateLoopLimit ?? 0);
++    return Number.isFinite(v) && v > 0 ? v : 0;
++  },
++
++  gateStatus(db, projectId, gateN, loop = 1) {
++    /* Les preuves et les jalons du tour PRÉCÉDENT ne franchissent pas
++       le jalon du tour courant. Sans ce filtre, le jalon 1 du deuxième
++       tour est « déjà franchi » par la preuve du premier, et la
++       deuxième revue s'ouvre en se croyant terminée. Tout ce qui n'a
++       pas de tour est au tour 1, donc rien d'existant ne bouge. */
++    const at = (x) => (x?.loop ?? 1) === loop;
++    const docs = db.docs.filter(d => d.project === projectId && d.gate === gateN && at(d));
+     const approved = docs.filter(d => Engine.isEvidence(d)).length;
+-    const ms = db.milestones.find(m => m.project === projectId && m.gate === gateN);
++    const ms = db.milestones.find(m => m.project === projectId && m.gate === gateN && at(m));
+     const date = ms ? ms.date : null;
+     const passed = date ? D(date) <= D(db.statusDate) : false;
+     return {
+-      gate: gateN, date, docs, approved, total: docs.length,
++      gate: gateN, loop, date, docs, approved, total: docs.length,
+       ready: docs.length > 0 && approved === docs.length,
+       outstanding: docs.filter(d => !Engine.isEvidence(d)),
+       state: passed && approved === docs.length ? "Cleared"
+@@ -263,17 +308,37 @@ export const Engine = {
+   },
+ 
+   currentGate(db, projectId) {
+-    for (const g of GATES) {
+-      const st = Engine.gateStatus(db, projectId, g.n);
++    const model = Engine.gateModel(db);
++    const project = db.projects?.find(p => p.id === projectId);
++    const loop = Math.max(1, Number(project?.loop ?? 1));
++    for (const g of model) {
++      const st = Engine.gateStatus(db, projectId, g.n, loop);
+       if (st.state !== "Cleared") return { ...g, ...st };
+     }
+-    return { ...GATES[3], ...Engine.gateStatus(db, projectId, 4) };
++    const last = model[model.length - 1];
++    return { ...last, ...Engine.gateStatus(db, projectId, last.n, loop) };
+   },
+ 
+   canAdvance(db, projectId) {
+     if (!db.settings.gateLock) return { ok: true, reason: "Gate locking is off" };
+     const g = Engine.currentGate(db, projectId);
+     if (g.state === "Cleared" || g.ready) return { ok: true, reason: "Evidence complete for " + g.name };
++    /* MER-15 — un refus DIT ce qui manque.
++
++       Un jalon auquel aucune preuve n'a jamais été rattachée refusait
++       l'avancement en annonçant « 0 evidence items outstanding » : zéro
++       en attente, et pourtant bloqué. Le lecteur cherche alors la pièce
++       qui manque dans une liste vide. Les deux situations — « rien n'a
++       été exigé » et « il reste des pièces » — sont différentes et
++       doivent le dire. */
++    if (!g.total) {
++      return {
++        ok: false,
++        reason: "No evidence has been registered for " + g.name +
++                " — name what this gate requires before it can clear",
++        items: [],
++      };
++    }
+     return {
+       ok: false,
+       reason: g.outstanding.length + " evidence item" + (g.outstanding.length === 1 ? "" : "s") + " outstanding for " + g.name,
+-- 
+2.43.0
+

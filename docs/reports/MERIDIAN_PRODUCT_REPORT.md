@@ -15,6 +15,11 @@
 > * **Two new findings outrank everything in the original list** — `MER-12` and `MER-13`.
 > * **`MER-14`** was found later, while seating the delivery organisation: allocations are the
 >   one table whose identity does not survive a round trip, and an `fte` key lands silently at 0 %.
+> * **`MER-01`, `MER-03`, `MER-12`, `MER-14` and `MER-15` are now fixed**, in
+>   `delivery/meridian/patches/0002-*.patch`: the gate model is configuration data and can
+>   loop, requirements are a first-class entity, the default store is on disk, allocation
+>   identity survives a round trip and an unknown key is refused, and an empty gate says so.
+>   18 new tests; the suite is 467 green.
 >   Both were invisible from source and both are S1.
 > * Fixes for all three are written, applied, and shipped as a patch at
 >   `delivery/meridian/patches/0001-importer-and-earned-value-fixes.patch`. **All 449 of
@@ -594,6 +599,27 @@ most resourcing tools express the same idea — is accepted silently and lands a
 That is the `MER-09` failure mode (money's implicit unit) in a second place: the field is
 taken, the number is wrong, and nothing says so. Rejecting an unknown key would have caught
 it; I caught it by exporting and reading the result.
+
+---
+
+### MER-15 · A gate with no evidence registered refuses in a way that names nothing — S3
+
+**Observed as fact.** A project sitting at a gate to which no document has ever been
+attached refuses to advance with: *"0 evidence items outstanding for G0 — Mandate."* Zero
+outstanding, and blocked. The reader then looks for the missing item in an empty list.
+
+**Why it happens.** `canAdvance` clears a gate on `ready`, which is `docs.length > 0 &&
+approved === docs.length`. With no documents at all, `ready` is false and `outstanding` is
+empty, so the refusal counts an empty array.
+
+**Why it matters.** These are two different situations and only one of them is the reader's
+problem to solve. *"Somebody has not yet said what this gate requires"* is a governance gap;
+*"three documents are still in draft"* is a work item. Reporting them with the same sentence
+— and a count of zero — sends the reader to the wrong place, which is the same failure mode
+as `MER-12`'s fake credentials error.
+
+**Fix, and it is in the patch.** An empty gate says so: *"No evidence has been registered
+for G0 — Mandate — name what this gate requires before it can clear."*
 
 ---
 
