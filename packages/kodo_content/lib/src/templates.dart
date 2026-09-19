@@ -86,6 +86,17 @@ List<DiagnosticPattern> drawingDiagnostics(
             'thickness.$tailEn',
       ),
     ),
+    /* What the program wrote out. The numbers are the ones the grader counted, so the
+       sentence can name the difference rather than say "incorrect". */
+    DiagnosticPattern(
+      when: 'wrongOutput',
+      textKeys: _b(
+        'Ton programme a écrit {actualCount} nombre(s) : {actual}. '
+            'Il fallait écrire : {expected}.$tailFr',
+        'Your program wrote {actualCount} number(s): {actual}. '
+            'It should have written: {expected}.$tailEn',
+      ),
+    ),
     DiagnosticPattern(
       when: 'wrongBackground',
       textKeys: _b(
@@ -320,6 +331,10 @@ Item fillTheGap({
   required List<String> wrong,
   required List<Hint> itemHints,
   List<String> paletteScope = const [],
+
+  /// Needed wherever the marks coincide and only the pose differs — World 4's jumps do
+  /// this constantly, because a jump leaves no ink to tell two answers apart.
+  bool requireFinalPose = false,
   int version = 1,
 }) =>
     Item(
@@ -337,6 +352,7 @@ Item fillTheGap({
       hints: itemHints,
       diagnostics: drawingDiagnostics(),
       paletteScope: paletteScope,
+      requireFinalPose: requireFinalPose,
     );
 
 /// **T5 — Parsons.** Shuffled lines to put back in order. Graded on what it draws, so a

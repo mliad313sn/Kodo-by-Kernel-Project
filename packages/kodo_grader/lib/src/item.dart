@@ -164,6 +164,14 @@ enum DiagnosticSituation {
   /// The figure is in the right place and drawn with the wrong pen width.
   wrongWidth,
 
+  /// The drawing is right and the program printed the wrong thing — or printed nothing.
+  ///
+  /// World 4's third concept is `positionx` / `positiony`, and the only way to show a
+  /// child that a position is a *value* is to print it. `écris` puts nothing on the
+  /// canvas, so until this existed every one of those items graded vacuously: printing
+  /// the two numbers in the wrong order, or printing only one of them, passed.
+  wrongOutput,
+
   /// The drawing is right and the paper is the wrong colour.
   wrongBackground,
 

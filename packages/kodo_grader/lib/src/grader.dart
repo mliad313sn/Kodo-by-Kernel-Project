@@ -224,6 +224,26 @@ class Grader {
       behavioural = compareRaster(attemptCanvas, targetCanvas,
           tolerancePx: tolerancePx, scale: rasterScale);
 
+      /* What the program PRINTED, which the canvas does not draw and the rasteriser
+         therefore cannot see. Checked only when the target prints something: an item
+         about a drawing must not start failing because a child added a message. */
+      if (targetCanvas.output.isNotEmpty &&
+          !_sameOutput(attemptCanvas.output, targetCanvas.output)) {
+        return Verdict(
+          passed: false,
+          itemId: item.id,
+          itemVersion: item.version,
+          situation: DiagnosticSituation.wrongOutput,
+          behavioural: behavioural,
+          messageArgs: {
+            'actual': attemptCanvas.output.join(', '),
+            'expected': targetCanvas.output.join(', '),
+            'actualCount': '${attemptCanvas.output.length}',
+            'expectedCount': '${targetCanvas.output.length}',
+          },
+        );
+      }
+
       // The path signature is the second behavioural signal, and the one that makes a
       // different-but-valid drawing order pass. It is already order-insensitive in M4.
       final samePath =
@@ -304,6 +324,19 @@ class Grader {
         itemId: item.id,
         itemVersion: item.version,
         behavioural: behavioural);
+  }
+
+  /// Printed lines, compared as a sequence.
+  ///
+  /// Order matters: "write your across number then your down number" is the whole of the
+  /// instruction, and a child who prints them the other way round has not done it. The
+  /// texts are trimmed because trailing space is not a mistake anybody meant to make.
+  bool _sameOutput(List<String> attempt, List<String> target) {
+    if (attempt.length != target.length) return false;
+    for (var i = 0; i < target.length; i++) {
+      if (attempt[i].trim() != target[i].trim()) return false;
+    }
+    return true;
   }
 
   DiagnosticSituation _situationFor(RasterMatch m) {

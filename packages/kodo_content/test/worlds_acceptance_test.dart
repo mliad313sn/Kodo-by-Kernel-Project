@@ -35,7 +35,8 @@ void main() {
   final world1 = load(1);
   final world2 = load(2);
   final world3 = load(3);
-  final worlds = {0: world0, 1: world1, 2: world2, 3: world3};
+  final world4 = load(4);
+  final worlds = {0: world0, 1: world1, 2: world2, 3: world3, 4: world4};
 
   group('§6.3 · the shipped worlds carry the committed item volume', () {
     const committed = {
@@ -57,6 +58,11 @@ void main() {
       'C3.3': 22,
       'C3.4': 20,
       'C3.5': 18,
+      'C4.1': 22,
+      'C4.2': 18,
+      'C4.3': 18,
+      'C4.4': 22,
+      'C4.5': 18,
     };
 
     test('every concept meets or beats the ledger', () {
@@ -70,14 +76,14 @@ void main() {
       }
     });
 
-    test('the four worlds ship 366 items between them', () {
+    test('the five worlds ship 472 items between them', () {
       expect(world0.items, hasLength(80));
       expect(world1.items, hasLength(100));
       expect(world2.items, hasLength(86));
       expect(world3.items, hasLength(100));
-      // 30 % of the 1 214 the curriculum commits across all thirteen worlds.
-      expect(
-          worlds.values.fold<int>(0, (n, p) => n + p.items.length), 366);
+      expect(world4.items, hasLength(106));
+      // 39 % of the 1 214 the curriculum commits across all thirteen worlds.
+      expect(worlds.values.fold<int>(0, (n, p) => n + p.items.length), 472);
     });
 
     test('§6.1 · every concept uses at least five item types', () {
@@ -102,7 +108,8 @@ void main() {
   });
 
   group('every shipped item passes the publish gate', () {
-    for (final entry in {0: 'World 0', 2: 'World 2', 3: 'World 3'}.entries) {
+    for (final entry
+        in {0: 'World 0', 2: 'World 2', 3: 'World 3', 4: 'World 4'}.entries) {
       test('${entry.value}, over the JSON that shipped', () {
         final failures = checkBank(worlds[entry.key]!.items);
         expect(failures, isEmpty, reason: failures.take(8).join('\n'));
@@ -315,6 +322,70 @@ void main() {
         expect(interpreter.status, RunStatus.finished,
             reason: '${item.id}: ${interpreter.error?.message('fr')}');
         expect(canvas.segments, isNotEmpty, reason: item.id);
+      }
+    });
+  });
+
+  group('World 4 teaches the plane, and a jump is not a move', () {
+    /* Authoring this world found two things, and both were in the GRADER rather than in
+       the content. The first was structural and is recorded in the items themselves: in
+       World 4 every movement command is a JUMP, so the pen is irrelevant — a distractor
+       that "forgets pen up" is not a wrong answer here, it is the same answer written
+       longer, and the publish gate refused thirty of them. The second is below. */
+
+    test('a jump never draws, so no C4 item depends on the pen', () {
+      for (final item in world4.items) {
+        for (final source in [
+          item.referenceSolutionSource,
+          ...item.wrongSolutionSources,
+        ]) {
+          if (source == null) continue;
+          expect(source, isNot(contains('lèvecrayon')),
+              reason: '${item.id} handles a pen in a world of jumps');
+        }
+      }
+    });
+
+    test('the grader can see what a program printed', () {
+      /* `écris` puts nothing on the canvas. Until the grader compared output, every C4.3
+         item graded vacuously: printing the two numbers in the wrong order passed, and so
+         did printing only one of them. A world whose third concept is "a position is a
+         value" cannot be marked by a comparison that only looks at ink. */
+      final item = world4.items.firstWhere((i) =>
+          i.conceptId == 'C4.3' && i.type == ItemType.t1BuildToTarget);
+      final reference = item.referenceSolutionSource!;
+      expect(reference, contains('écris'));
+
+      final grader = Grader();
+      expect(
+          grader
+              .grade(item, ProgramResponse(parse(reference, KeywordTables.fr).program))
+              .passed,
+          isTrue);
+
+      // The same program printing one number instead of two.
+      final truncated =
+          reference.split('\n').take(reference.split('\n').length - 1).join('\n');
+      final verdict = grader.grade(
+          item, ProgramResponse(parse(truncated, KeywordTables.fr).program));
+      expect(verdict.passed, isFalse);
+      expect(verdict.situation, DiagnosticSituation.wrongOutput);
+      expect(verdict.messageFor(item, 'fr'), isNotNull);
+    });
+
+    test('C4.1 items pin the pose, because a jump leaves no ink to compare', () {
+      for (final item in world4.items.where(
+          (i) => i.conceptId == 'C4.1' && i.targetProgramSource != null)) {
+        expect(item.requireFinalPose, isTrue, reason: item.id);
+      }
+    });
+
+    test('every C4.4 solution sets a bearing rather than turning', () {
+      for (final item in world4.items.where((i) => i.conceptId == 'C4.4')) {
+        final source = item.referenceSolutionSource;
+        if (source == null) continue;
+        expect(source, contains('direction'),
+            reason: '${item.id} teaches absolute heading without using it');
       }
     });
   });
