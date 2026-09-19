@@ -551,6 +551,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -712,6 +747,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -879,6 +949,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -1040,6 +1145,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -1207,6 +1347,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -1368,6 +1543,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -1536,6 +1746,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -1698,6 +1943,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -1866,6 +2146,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -2028,6 +2343,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -2196,6 +2546,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -2357,6 +2742,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -2524,6 +2944,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -2685,6 +3140,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -2852,6 +3342,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -3013,6 +3538,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -3181,6 +3741,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -3343,6 +3938,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -3511,6 +4141,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -3654,6 +4319,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -3835,6 +4535,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -4010,6 +4745,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -4191,6 +4961,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -4366,6 +5171,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -4572,6 +5412,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -4739,6 +5614,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -4912,6 +5822,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -5082,6 +6027,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -5249,6 +6229,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -5424,6 +6439,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -5593,6 +6643,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -5768,6 +6853,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -5937,6 +7057,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -6112,6 +7267,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -6280,6 +7470,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -6454,6 +7679,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -6622,6 +7882,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -6796,6 +8091,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -6964,6 +8294,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -7477,6 +8842,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -7663,6 +9063,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -7855,6 +9290,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -8041,6 +9511,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -8254,6 +9759,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -8417,6 +9957,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -8586,6 +10161,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -8752,6 +10362,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -8915,6 +10560,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -9448,6 +11128,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -9610,6 +11325,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -9778,6 +11528,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -9940,6 +11725,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -10691,6 +12511,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -10852,6 +12707,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -11019,6 +12909,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -11180,6 +13105,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -11347,6 +13307,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -11508,6 +13503,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -11675,6 +13705,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -11839,6 +13904,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -12000,6 +14100,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -12168,6 +14303,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -12333,6 +14503,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -12495,6 +14700,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -13009,6 +15249,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -13195,6 +15470,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -13387,6 +15697,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -13576,6 +15921,41 @@
           }
         },
         {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
+          }
+        },
+        {
           "when": "tooManyBlocks",
           "text": {
             "fr": "Tu as utilisé {actual} blocs. Il en faut {expected} au maximum.",
@@ -13762,6 +16142,41 @@
           "text": {
             "fr": "Le dessin est bon, mais Tika ne finit pas au bon endroit.",
             "en": "The drawing is right, but Tika does not end up in the right place."
+          }
+        },
+        {
+          "when": "wrongCostume",
+          "text": {
+            "fr": "Le lutin porte le costume {actual}. Il fallait le costume {expected}.",
+            "en": "The sprite is wearing costume {actual}. It should be costume {expected}."
+          }
+        },
+        {
+          "when": "wrongBackdrop",
+          "text": {
+            "fr": "L'arrière-plan affiché est « {actual} ». Il fallait « {expected} ».",
+            "en": "The backdrop showing is \"{actual}\". It should be \"{expected}\"."
+          }
+        },
+        {
+          "when": "wrongSound",
+          "text": {
+            "fr": "Tu as joué : {actual}. Il fallait jouer : {expected}.",
+            "en": "You played: {actual}. You should have played: {expected}."
+          }
+        },
+        {
+          "when": "wrongSpeech",
+          "text": {
+            "fr": "Le lutin a dit : {actual}. Il fallait dire : {expected}.",
+            "en": "The sprite said: {actual}. It should have said: {expected}."
+          }
+        },
+        {
+          "when": "wrongEffect",
+          "text": {
+            "fr": "Les effets posés sont : {actual}. Il fallait : {expected}.",
+            "en": "The effects set are: {actual}. They should be: {expected}."
           }
         },
         {
@@ -14433,5 +16848,5 @@
     "art/tika.svg",
     "art/world9-mesblocs.svg"
   ],
-  "sizeBytes": 478704
+  "sizeBytes": 566334
 }

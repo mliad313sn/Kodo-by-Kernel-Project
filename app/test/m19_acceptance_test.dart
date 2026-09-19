@@ -7,6 +7,7 @@
 library;
 
 import 'dart:io';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'package:kodo/src/shell.dart';
 import 'package:kodo/src/drawing_painter.dart';
 import 'package:kodo_access/kodo_access.dart';
 import 'package:kodo_content/kodo_content.dart';
+import 'package:kodo_grader/kodo_grader.dart';
 
 KodoContent emptyContent() =>
     const KodoContent(packs: [], profileNames: {'local': 'Moi'});
@@ -534,6 +536,124 @@ void main() {
       for (final root in KodoScreen.roots) {
         expect(find.byKey(Key('root-${root.route}')), findsOneWidget);
       }
+    });
+  });
+
+  group('FR-M6-06 · an open build shows what good looks like, first', () {
+    /// One pack holding one open build, so the item screen has something to open.
+    KodoContent rubricContent() => KodoContent(
+          packs: [
+            ContentPack(
+              world: 8,
+              version: 1,
+              nameKeys: const {'fr': 'Tant que', 'en': 'While'},
+              concepts: const {'C8.1': []},
+              tutorials: const [],
+              items: [
+                Item(
+                  id: 'C8.1-open',
+                  version: 1,
+                  conceptId: 'C8.1',
+                  type: ItemType.t9OpenBuild,
+                  difficulty: Difficulty.d3,
+                  promptKeys: const {
+                    'fr': 'Fais une figure avec un tantque.',
+                    'en': 'Make a shape with a while.',
+                  },
+                  rubric: const [
+                    RubricLine(
+                      textKeys: {
+                        'fr': 'Ton programme se sert d\'un tantque.',
+                        'en': 'Your program uses a while.',
+                      },
+                      assertion: ContainsNode('While'),
+                    ),
+                    RubricLine(
+                      textKeys: {
+                        'fr': 'Une boîte compte les tours.',
+                        'en': 'A box counts the turns.',
+                      },
+                      assertion: UsesVariable(min: 2, minReads: 2),
+                    ),
+                  ],
+                  hints: const [
+                    Hint(textKeys: {'fr': 'Remplis une boîte.', 'en': 'Fill a box.'}),
+                    Hint(textKeys: {'fr': 'Fais-la bouger.', 'en': 'Move it.'}),
+                  ],
+                ),
+              ],
+            ),
+          ],
+          profileNames: const {'local': 'Moi'},
+        );
+
+    testWidgets('the rubric is on screen before anything is built',
+        (tester) async {
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      await pump(tester, shell, content: rubricContent());
+      shell.goRoot(KodoScreen.entrainement);
+      shell.go(KodoScreen.item, conceptId: 'C8.1');
+      await tester.pumpAndSettle();
+
+      /* Before, not after. `FR-M6-06`'s whole content is the word "before": a child who
+         cannot see what "good" means can only produce something and hope, and an open
+         build judged by a rubric nobody showed them is a guessing game with a mark. */
+      expect(find.byKey(const Key('rubric')), findsOneWidget);
+      expect(find.text('Ton programme se sert d\'un tantque.'), findsOneWidget);
+      expect(find.text('Une boîte compte les tours.'), findsOneWidget);
+    });
+
+    testWidgets('it stays there while the child works', (tester) async {
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      await pump(tester, shell, content: rubricContent());
+      shell.goRoot(KodoScreen.entrainement);
+      shell.go(KodoScreen.item, conceptId: 'C8.1');
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('hint')));
+      await tester.pumpAndSettle();
+      // Asking for a hint must not push it off: it is not a thing you are shown once.
+      expect(find.byKey(const Key('rubric')), findsOneWidget);
+    });
+
+    testWidgets('and an item without one shows no empty panel', (tester) async {
+      final shell = KodoShell(
+          store: MemorySessionStore(),
+          session: const Session(profileId: 'local'));
+      await pump(tester, shell, content: mapContent());
+      shell.goRoot(KodoScreen.entrainement);
+      shell.go(KodoScreen.item, conceptId: 'C0.1');
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('rubric')), findsNothing);
+    });
+
+    test('every open build in the shipped curriculum has one to show', () {
+      /* The screen can only show what the content carries. The publish gate already
+         refuses an open build with no rubric; this is the same claim over the JSON that
+         actually shipped, for all thirteen worlds. */
+      var open = 0;
+      for (var world = 0; world <= 12; world++) {
+        final file = File('assets/content/world$world.json');
+        if (!file.existsSync()) continue;
+        final pack = ContentPack.fromJson(
+            jsonDecode(file.readAsStringSync()) as Map<String, Object?>);
+        for (final item in pack.items) {
+          if (item.type != ItemType.t9OpenBuild) continue;
+          open++;
+          expect(item.rubric, isNotEmpty, reason: item.id);
+          for (final line in item.rubric) {
+            for (final locale in requiredLocales) {
+              expect((line.textKeys[locale] ?? '').trim(), isNotEmpty,
+                  reason: '${item.id} has a rubric line with no "$locale" text');
+            }
+          }
+        }
+      }
+      expect(open, greaterThan(40),
+          reason: 'only $open open builds found across the curriculum');
     });
   });
 }

@@ -545,6 +545,13 @@ class _ItemScreenState extends State<ItemScreen> {
           child: Column(
             children: [
               _Prompt(text: item.promptIn(locale), locale: locale, prefs: prefs),
+              /* `FR-M6-06` — the rubric, before the child starts rather than after they
+                 finish. An open build has no single right answer, so a child who cannot
+                 see what "done" means can only produce something and hope; the rubric is
+                 the difference between an open question and a guessing game. It is on
+                 screen from the first frame and stays there while they work. */
+              if (item.rubric.isNotEmpty)
+                _Rubric(rubric: item.rubric, locale: locale),
               if (flight.hintsShown > 0 && loop.availableHint != null)
                 _Panel(
                   key: const Key('hint-text'),
@@ -606,6 +613,57 @@ class _Prompt extends StatelessWidget {
 }
 
 /// The editor and the drawing, side by side or stacked, depending on the room.
+/// What "done" looks like, shown before the child starts (`FR-M6-06`).
+///
+/// Each line is one plain sentence the author wrote. The structural check behind it is
+/// deliberately NOT shown: a child is told "ton dessin répète quelque chose", not
+/// `contains(Repeat) >= 1`, and the whole point of the rubric is that it is readable.
+class _Rubric extends StatelessWidget {
+  const _Rubric({required this.rubric, required this.locale});
+
+  final List<RubricLine> rubric;
+  final String locale;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      key: const Key('rubric'),
+      width: double.infinity,
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(_s(context, 'rubric.title'),
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 4),
+          for (final line in rubric)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // A bullet, not a tick: nothing has been judged yet.
+                  const Text('• '),
+                  Expanded(
+                    child: Text(
+                      line.textKeys[locale] ?? line.textKeys['fr'] ?? '',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 class _Work extends StatelessWidget {
   const _Work({
     required this.controller,

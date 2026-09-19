@@ -321,5 +321,119 @@ for _ in range(int(4)):
       expect(python, contains('return a + b'));
       expect(python, contains('write(plus(2, 3))'));
     });
+
+    test('every opcode has a Python name', () {
+      /* The same rule the block-help catalogue follows, and for the same reason: an
+         opcode added without a name here renders as its own id in a program a child was
+         told they could paste elsewhere. Adding `lutin` for World 10 is exactly the kind
+         of change that would have slipped through. */
+      final unnamed = <String>[];
+      for (final op in Opcode.values) {
+        final program = parse(
+            _sampleFor(op) ?? '', KeywordTables.fr);
+        if (_sampleFor(op) == null) continue;
+        expect(program.errors, isEmpty, reason: '${op.id}: ${_sampleFor(op)}');
+        final python = toPython(program.program, header: false);
+        if (python.contains(op.id)) unnamed.add(op.id);
+      }
+      expect(unnamed, isEmpty,
+          reason: 'these render as their own id: ${unnamed.join(', ')}');
+    });
+
+    test('a program using sprites still renders as runnable Python', () {
+      /* turtle has no sprites and no drums, so the projection defines a stub for each
+         thing it borrows. A rendering that raises NameError on line three does not keep
+         the promise the requirement makes — "your program, that you could paste
+         elsewhere". */
+      final program = parse(
+              'lutin "chat"\ndis "miaou"\ncostumesuivant\ntambour 1, 1',
+              KeywordTables.fr)
+          .program;
+      final python = toPython(program);
+      for (final stub in [
+        'def select_sprite(name):',
+        'def say(text):',
+        'def next_costume():',
+        'def play_drum(drum, beats):',
+      ]) {
+        expect(python, contains(stub));
+      }
+      expect(python, contains('select_sprite("chat")'));
+      // And nothing is stubbed that the program never used.
+      expect(python, isNot(contains('def set_backdrop')));
+    });
+
+    test('an event script becomes a function, not a promise', () {
+      final program = parse(
+              'quand drapeau {\n  avance 50\n}', KeywordTables.fr)
+          .program;
+      final python = toPython(program, header: false);
+      expect(python, contains('def on_flag_script():'));
+      expect(python, contains('forward(50)'));
+    });
   });
 }
+
+/// The smallest program that uses [op], or null when it cannot stand alone.
+String? _sampleFor(Opcode op) => switch (op) {
+      Opcode.moveForward => 'avance 10',
+      Opcode.moveBack => 'recule 10',
+      Opcode.turnLeft => 'tournegauche 10',
+      Opcode.turnRight => 'tournedroite 10',
+      Opcode.setDirection => 'direction 90',
+      Opcode.getDirection => r'écris obtenirdirection',
+      Opcode.center => 'centre',
+      Opcode.go => 'va 10, 10',
+      Opcode.goX => 'vax 10',
+      Opcode.goY => 'vay 10',
+      Opcode.positionX => 'écris positionx',
+      Opcode.positionY => 'écris positiony',
+      Opcode.penUp => 'lèvecrayon',
+      Opcode.penDown => 'baissecrayon',
+      Opcode.penWidth => 'largeurcrayon 2',
+      Opcode.penColor => 'couleurcrayon 1, 2, 3',
+      Opcode.canvasSize => 'taillecanevas 10, 10',
+      Opcode.canvasColor => 'couleurcanevas 1, 2, 3',
+      Opcode.clear => 'nettoietout',
+      Opcode.reset => 'initialise',
+      Opcode.show => 'montre',
+      Opcode.hide => 'cache',
+      Opcode.print => 'écris 1',
+      Opcode.fontSize => 'taillepolice 12',
+      Opcode.round => 'écris arrondi 1.5',
+      Opcode.random => 'écris hasard 1, 6',
+      Opcode.mod => 'écris mod 7, 3',
+      Opcode.sqrt => 'écris racine 9',
+      Opcode.pi => 'écris pi',
+      Opcode.sin => 'écris sin 0',
+      Opcode.cos => 'écris cos 0',
+      Opcode.tan => 'écris tan 0',
+      Opcode.arcsin => 'écris arcsin 0',
+      Opcode.arccos => 'écris arccos 1',
+      Opcode.arctan => 'écris arctan 0',
+      Opcode.message => 'message "salut"',
+      Opcode.ask => 'écris demande "nom ?"',
+      Opcode.toNumber => 'écris nombre "7"',
+      Opcode.wait => 'attends 1',
+      Opcode.assertion => 'assertion 1 == 1',
+      Opcode.whenFlag => 'quand drapeau {\n  avance 10\n}',
+      Opcode.whenKey => 'quand touche "a" {\n  avance 10\n}',
+      Opcode.whenClicked => 'quand clic {\n  avance 10\n}',
+      Opcode.keyDown => r'écris touchepressée "a"',
+      Opcode.mouseX => 'écris sourisx',
+      Opcode.mouseY => 'écris sourisy',
+      Opcode.mouseDown => 'écris sourisappuyée',
+      Opcode.touchingEdge => 'écris touchebord',
+      Opcode.touchingColour => 'écris touchecouleur 1, 2, 3',
+      Opcode.selectSprite => 'lutin "chat"',
+      Opcode.nextCostume => 'costumesuivant',
+      Opcode.setCostume => 'costume 1',
+      Opcode.costumeNumber => 'écris numérocostume',
+      Opcode.setBackdrop => 'arrièreplan "nuit"',
+      Opcode.setEffect => 'effet "fantôme", 50',
+      Opcode.clearEffects => 'effaceeffets',
+      Opcode.say => 'dis "salut"',
+      Opcode.playSound => 'jouson "miaou"',
+      Opcode.playDrum => 'tambour 1, 1',
+      Opcode.playNote => 'note 60, 1',
+    };

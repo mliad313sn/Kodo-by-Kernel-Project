@@ -29,6 +29,8 @@
 import 'package:kodo_content/kodo_content.dart';
 import 'package:kodo_grader/kodo_grader.dart';
 
+import 'authoring.dart';
+
 const conceptGraph = <String, List<String>>{
   'C9.1': ['C2.3'],
   'C9.2': ['C9.1'],

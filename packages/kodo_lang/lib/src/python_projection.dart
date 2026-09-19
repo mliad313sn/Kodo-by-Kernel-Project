@@ -48,6 +48,59 @@ const _pythonNames = <Opcode, String>{
   Opcode.arcsin: 'math.asin',
   Opcode.arccos: 'math.acos',
   Opcode.arctan: 'math.atan',
+  Opcode.toNumber: 'float',
+  /* Everything below has no turtle equivalent, so it is rendered as a plain function
+     call and the header defines a stub for it. A projection whose promise is "you could
+     paste this elsewhere" has to produce Python that runs; one that raises `NameError`
+     on line three keeps none of that promise. The stubs do nothing, which is honest —
+     `turtle` has no sprites and no drums. */
+  Opcode.keyDown: 'key_down',
+  Opcode.mouseX: 'mouse_x',
+  Opcode.mouseY: 'mouse_y',
+  Opcode.mouseDown: 'mouse_down',
+  Opcode.touchingEdge: 'touching_edge',
+  Opcode.touchingColour: 'touching_colour',
+  Opcode.selectSprite: 'select_sprite',
+  Opcode.nextCostume: 'next_costume',
+  Opcode.setCostume: 'set_costume',
+  Opcode.costumeNumber: 'costume_number',
+  Opcode.setBackdrop: 'set_backdrop',
+  Opcode.setEffect: 'set_effect',
+  Opcode.clearEffects: 'clear_effects',
+  Opcode.say: 'say',
+  Opcode.playSound: 'play_sound',
+  Opcode.playDrum: 'play_drum',
+  Opcode.playNote: 'play_note',
+  Opcode.whenFlag: 'on_flag',
+  Opcode.whenKey: 'on_key',
+  Opcode.whenClicked: 'on_click',
+};
+
+/// The opcodes `turtle` has no answer for, and the stub each one gets.
+///
+/// Only the ones a program actually uses are emitted, so a World 2 square still renders
+/// as four lines of turtle with nothing above it.
+const _stubbed = <Opcode, String>{
+  Opcode.keyDown: 'def key_down(name):\\n    return False',
+  Opcode.mouseX: 'def mouse_x():\\n    return 0',
+  Opcode.mouseY: 'def mouse_y():\\n    return 0',
+  Opcode.mouseDown: 'def mouse_down():\\n    return False',
+  Opcode.touchingEdge: 'def touching_edge():\\n    return False',
+  Opcode.touchingColour: 'def touching_colour(r, g, b):\\n    return False',
+  Opcode.selectSprite: 'def select_sprite(name):\\n    pass',
+  Opcode.nextCostume: 'def next_costume():\\n    pass',
+  Opcode.setCostume: 'def set_costume(number):\\n    pass',
+  Opcode.costumeNumber: 'def costume_number():\\n    return 1',
+  Opcode.setBackdrop: 'def set_backdrop(name):\\n    pass',
+  Opcode.setEffect: 'def set_effect(name, value):\\n    pass',
+  Opcode.clearEffects: 'def clear_effects():\\n    pass',
+  Opcode.say: 'def say(text):\\n    print(text)',
+  Opcode.playSound: 'def play_sound(name):\\n    pass',
+  Opcode.playDrum: 'def play_drum(drum, beats):\\n    pass',
+  Opcode.playNote: 'def play_note(pitch, beats):\\n    pass',
+  Opcode.whenFlag: 'def on_flag():\\n    pass',
+  Opcode.whenKey: 'def on_key(name):\\n    pass',
+  Opcode.whenClicked: 'def on_click():\\n    pass',
 };
 
 /// Renders [program] as Python. [header] adds the import preamble.
@@ -56,8 +109,21 @@ String toPython(Program program, {bool header = true}) {
   if (header) {
     out.writeln('import math');
     out.writeln('import random');
+    out.writeln('import time');
     out.writeln('from turtle import *');
     out.writeln();
+    // Only the stubs this program needs, in opcode order so the output is stable.
+    final used = walk(program).whereType<Command>().map((c) => c.opcode).toSet()
+      ..addAll(walk(program).whereType<WhenEvent>().map((w) => w.trigger));
+    final needed =
+        Opcode.values.where((o) => used.contains(o) && _stubbed.containsKey(o));
+    if (needed.isNotEmpty) {
+      out.writeln('# KODO a des lutins et des sons ; turtle n\'en a pas.');
+      for (final op in needed) {
+        out.writeln(_stubbed[op]);
+      }
+      out.writeln();
+    }
   }
   _writeBody(out, program.body, 0);
   return out.toString().trimRight();
@@ -127,6 +193,17 @@ void _writeStmt(StringBuffer out, AsStmt stmt, int depth) {
     case Exit():
       _pad(out, depth);
       out.writeln('raise SystemExit');
+    /* `quand drapeau { … }` becomes a function you could call. turtle has no events, so
+       the projection cannot promise the body runs by itself — but it can promise the
+       body is there, named after the thing that triggers it, which is what a child
+       reading their own program in another language needs. */
+    case WhenEvent(:final trigger, :final args, :final body):
+      _pad(out, depth);
+      final name = _pythonNames[trigger] ?? trigger.id.toLowerCase();
+      final params = args.map(_expr).join(', ');
+      out.writeln('def ${name}_script(${params.isEmpty ? '' : '_$params'}):'
+          .replaceAll('"', ''));
+      _writeBody(out, body, depth + 1);
     default:
       throw StateError('no Python for ${(stmt as Node).kind}');
   }

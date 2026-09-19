@@ -81,6 +81,16 @@ final StringCatalogue uiStrings = StringCatalogue([
           'Bottom tab 2 of 5: today\'s mix of exercises, behind one button. MUST fit '
           'about ten characters — it is a tab on a phone. Never "test", "quiz" or '
           '"exam": children are never told they are being assessed.'),
+  /* `FR-M6-06`. The heading over an open build's rubric, shown BEFORE the child starts.
+     Not "critères" and not "barème": §10 forbids the vocabulary of assessment, and a
+     child reading "what a good one has" is being told how to succeed rather than how
+     they will be marked. */
+  _s('rubric.title', 'Ce qu\'il faut dans ton dessin :',
+      'What your drawing needs:',
+      context:
+          'Heading over the list of things an open build has to have. It is shown from '
+          'the first frame, while the child works, never after. About thirty characters; '
+          'never "test", "note", "barème" or any word of assessment.'),
   _s('root.studio', 'Studio', 'Studio',
       context:
           'Bottom tab 3 of 5. Where a child\'s own projects live. The word is kept '

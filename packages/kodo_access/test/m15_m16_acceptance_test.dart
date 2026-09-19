@@ -182,6 +182,12 @@ void main() {
       'a11y.': const LayoutSlot(name: 'settings row', characters: 29, lines: 3),
       'share.':
           const LayoutSlot(name: 'notice panel', characters: 29, lines: 4),
+      /* `FR-M6-06`'s rubric heading sits full width above a list, so it has a panel's
+         room rather than a button's — but it still has to fit on a 5.5" screen at 140 %,
+         which is why the French reads "Ce qu'il faut dans ton dessin :" and not a
+         sentence. */
+      'rubric.':
+          const LayoutSlot(name: 'rubric heading', characters: 32, lines: 2),
       'class.':
           const LayoutSlot(name: 'notice panel', characters: 29, lines: 4),
     };

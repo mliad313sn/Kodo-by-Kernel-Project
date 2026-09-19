@@ -600,7 +600,7 @@
       "priority": "M",
       "verification": "UI test",
       "gate": "G3",
-      "status": "In progress",
+      "status": "Done",
       "owner": "M6 squad"
     },
     {
@@ -1128,7 +1128,7 @@
       "priority": "M",
       "verification": "Size budget check in CI",
       "gate": "G3",
-      "status": "In progress",
+      "status": "Done",
       "owner": "M14 squad"
     },
     {
@@ -1440,7 +1440,7 @@
       "priority": "M",
       "verification": "Airplane-mode soak",
       "gate": "G3",
-      "status": "In progress",
+      "status": "Done",
       "owner": "M14 squad"
     },
     {
@@ -1559,7 +1559,7 @@
       "priority": "S",
       "verification": "Renderer test over the shared AST; no second parser in the dependency graph",
       "gate": "G4",
-      "status": "In progress",
+      "status": "Done",
       "owner": "M3 squad",
       "moduleId": "M3"
     },

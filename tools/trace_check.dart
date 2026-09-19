@@ -101,7 +101,56 @@ void main() {
     }
   }
 
-  // --- 3. no references to requirements nobody agreed ------------------------------------
+  /* --- 3. the learning path never reaches for the network (`NFR-OFF-01`) --------------
+  
+     "100 % of learning features work offline" is a claim about what the code CANNOT do,
+     and the honest way to check it is to look for the ability rather than the use. A
+     package that can open a socket will eventually open one — on a launch day, in a
+     hurry, with the best of intentions — and a child in a classroom with no signal will
+     be the one who finds out.
+  
+     The packages listed here are the whole learning path: the language, the grader, the
+     canvas, the content, progression and the block editor. The app shell is NOT on the
+     list, because sync and the parent space are allowed to talk (`FR-M13`), and neither
+     is the school package, for the same reason. */
+  const offlinePackages = [
+    'kodo_lang',
+    'kodo_grader',
+    'kodo_stage',
+    'kodo_content',
+    'kodo_progress',
+    'kodo_app',
+    'kodo_access',
+  ];
+  const networkImports = [
+    'dart:io',
+    'package:http/',
+    'dart:html',
+    'package:web_socket_channel/',
+    'package:dio/',
+  ];
+  var offlineChecked = 0;
+  for (final file in libFiles) {
+    final package = offlinePackages
+        .where((p) => file.path.contains('/$p/lib/'))
+        .firstOrNull;
+    if (package == null) continue;
+    offlineChecked++;
+    final source = file.readAsStringSync();
+    for (final network in networkImports) {
+      // `dart:io` is a file system as well as a socket, and content packs are read from
+      // disk. The rule is therefore about the packages that must never need either: the
+      // ones above are pure, and the shell hands them what they need.
+      if (RegExp("import\\s+'${RegExp.escape(network)}").hasMatch(source)) {
+        _fail('${_relative(file.path, root.path)} imports $network — '
+            '$package is on the offline learning path (NFR-OFF-01)');
+      }
+    }
+  }
+  stdout.writeln('offline: $offlineChecked file(s) on the learning path carry no '
+      'way to reach the network');
+
+  // --- 4. no references to requirements nobody agreed ------------------------------------
   for (final file in [...testFiles, ...libFiles]) {
     for (final match in _requirementPattern.allMatches(file.readAsStringSync())) {
       final id = match.group(1)!;

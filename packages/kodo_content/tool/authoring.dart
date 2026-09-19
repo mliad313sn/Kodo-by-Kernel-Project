@@ -1,5 +1,10 @@
 /// Scaffolding the authoring tools share (§12).
 ///
+/// It lives in `tool/` rather than `lib/` and that is not tidiness. It reads and writes
+/// files, so it imports `dart:io` — and `NFR-OFF-01`'s gate forbids that anywhere on the
+/// learning path, because a package that can open a socket eventually will. Authoring
+/// runs on a laptop before anything ships; the app never sees this file.
+///
 /// Every world's tool was repeating the same eighty lines: a bilingual string helper, a
 /// tutorial wrapper, three step builders and a publish routine that checks the bank,
 /// counts the types, compares against the ledger and writes the pack. Eight copies of a
@@ -14,11 +19,8 @@ library;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:kodo_content/kodo_content.dart';
 import 'package:kodo_grader/kodo_grader.dart';
-
-import 'pack.dart';
-
-import 'tutorial.dart';
 
 /// A bilingual pair. The v1 locales, and a test keeps them the v1 locales.
 Map<String, String> b(String fr, String en) => {'fr': fr, 'en': en};

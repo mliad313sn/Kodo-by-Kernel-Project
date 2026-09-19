@@ -85,9 +85,9 @@ jobs:
       - name: Re-author and verify the content packs
         working-directory: packages/kodo_content
         run: |
-          dart run tool/author_world0.dart
-          dart run tool/author_world1.dart
-          dart run tool/author_world2.dart
+          for world in 0 1 2 3 4 5 6 7 8 9 10 11 12; do
+            dart run "tool/author_world$world.dart"
+          done
       - name: Content is in step with its source
         run: |
           git diff --exit-code content/ || {
@@ -96,9 +96,17 @@ jobs:
           }
 
       # Gate 6 — every requirement marked done is named by a test, M1 imports no platform
-      # library, and no code references a requirement nobody agreed.
+      # library, nothing on the learning path can reach the network (NFR-OFF-01), and no
+      # code references a requirement nobody agreed.
       - name: Requirement traceability
         run: dart tools/trace_check.dart
+
+      # Gate 7 — the size budgets. A world over 12 MB fails the build (FR-M14-02) and so
+      # does a curriculum over 180 MB (NFR-SIZE-01). The base app's 25 MB is reported as
+      # unmeasured rather than guessed: it needs a release build, and a check that
+      # silently skips the number it cannot see reads as a pass.
+      - name: Size budget
+        run: dart run tools/size_budget.dart
 
       - name: Publish the evidence
         if: always()
@@ -107,5 +115,6 @@ jobs:
           name: gate-evidence
           path: |
             build/traceability.md
+            build/size_budget.txt
             packages/kodo_lang/build/m1_performance.json
           if-no-files-found: warn
