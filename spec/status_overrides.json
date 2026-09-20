@@ -282,11 +282,11 @@
   "notes": {
     "_comment": "Why a requirement is still open, for the ones that cannot be closed from a repository. Written by the PO at the close of the content build.",
     "FR-M2-07": "Tap-to-place, the phone layout and the 48 dp floor are built and tested, and the layout now measures the editor's own share rather than the window. What remains is the requirement's own verification — a device matrix and a child panel — which no repository closes.",
-    "FR-M4-04": "Backdrop import and camera. Consent gating is built and tested; the platform pickers are not, and camera capture is out of v1 (D-007).",
-    "FR-M4-05": "Sound import and recording. Same shape as FR-M4-04: the consent gate is built, the microphone is a platform API.",
+    "FR-M4-04": "Backdrop import and camera. Consent gating is built and tested; the platform pickers are not, and D-016 rules that v1 ships no plugin that costs an Android permission — the release manifest asks for none at all, and that is the property being protected.",
+    "FR-M4-05": "Sound import and recording. Same shape as FR-M4-04, and closed out for v1 by D-016.",
     "FR-M4-08": "Ghosted future-path overlay. Built and tested: the preview comes from the same interpreter that will draw it, is dashed as well as pale (FR-M16-01), and is off under the leger budget (FR-M4-09). What cannot be closed from a repository is the requirement's own verification — a child panel value test.",
     "FR-M6-07": "Item interactive in 1.2s. Needs the reference device.",
-    "FR-M9-05": "Screen capture. A platform API.",
+    "FR-M9-05": "Screen capture. A platform API, and closed out for v1 by D-016. Export of the project, the PNG and the SVG all ship.",
     "FR-M14-03": "Resumable download and sideload. Built and tested: one transfer for Wi-Fi, a teacher's device and an SD card, resumable across a closed app through a serialised state, verified before install, and refusing to splice a pack that changed underneath it. What cannot be closed from a repository is the requirement's own verification — a field test.",
     "FR-M15-02": "Wolof is v1.2 by the specification itself. FR and EN are complete and gated at 100 %.",
     "FR-M19-03": "Process death. The shell writes on background and restores last place, and a simulated kill is tested; the 50-run force-kill is a device test.",
@@ -294,13 +294,13 @@
     "NFR-PERF-01": "Reference device.",
     "NFR-PERF-02": "Reference device.",
     "NFR-PERF-03": "Reference device.",
-    "NFR-SIZE-01": "The curriculum half is now gated in CI at 116.8 MB of 180 MB. The base app half needs a release build and is reported as unmeasured.",
+    "NFR-SIZE-01": "Base app under 25 MB. Still unmeasured: the Android SDK cannot be installed in the build environment (the egress policy denies dl.google.com), so no APK has been produced. The web build is measured: 39 MB deployed, of which 10.4 MB is precached for offline use.",
     "NFR-BATT-01": "Battery historian on a real handset.",
     "NFR-REL-01": "Field telemetry.",
     "NFR-SEC-01": "Pen test and interpreter fuzzing by someone who is not the author.",
     "NFR-COMP-01": "Device matrix.",
     "NFR-A11Y-01": "An external WCAG 2.2 AA audit. Deliberately external.",
     "NFR-COST-01": "A cost model review, which is a finance decision.",
-    "NFR-OFF-01": "Offline ability. Enforced three ways on Android: no learning content behind a network call (gated in CI), no INTERNET permission in the release manifest so the OS refuses a socket, and no automatic backup. NOT enforced on the web target: Flutter's service worker unregisters itself, so a cold web visit fetches the app over the network. Recorded in docs/reports/G5_FINAL_REVIEW.md, finding 4."
+    "NFR-OFF-01": "Offline ability. Android: no learning content behind a network call (gated), no INTERNET permission in the release manifest so the OS refuses a socket, and no automatic backup. Web: fixed at G5 — the build no longer fetches CanvasKit from gstatic.com, and a generated service worker precaches the application and all thirteen worlds. Proved by running it: app/tool/web_offline_check.js cuts the network in a real browser and reads a world's exercises. In CI, and in tools/verify_findings.dart as G5-04 and G5-05."
   }
 }

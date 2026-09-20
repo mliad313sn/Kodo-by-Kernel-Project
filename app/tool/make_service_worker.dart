@@ -1,0 +1,197 @@
+/// Makes the web build work with the network switched off.
+///
+/// Run it after `flutter build web`; the CI step and `tool/build_web.sh` both do.
+///
+///     flutter build web --release --no-web-resources-cdn
+///     dart run tool/make_service_worker.dart
+///
+/// **Why this is not Flutter's service worker.** Flutter ships one that is 784 bytes long
+/// and whose only job is to *unregister itself* — caching was removed from the framework.
+/// For most applications that is fine. For this one it is the central promise: a child in
+/// a classroom with one hour of connectivity a week has to be able to open KODO on the
+/// school laptop on Thursday. The Android build keeps that promise because the packs are
+/// inside the APK and the manifest asks for no network permission at all. The web build
+/// kept nothing.
+///
+/// **What is precached, and what is not.** The application and the whole curriculum are
+/// precached on install — about ten megabytes, fetched once. The graphics engine is not:
+/// a browser downloads the one CanvasKit variant it needs (Chromium's differs from
+/// Firefox's) and the worker keeps whatever it saw, so precaching both would mean sending
+/// seven unused megabytes to every visitor. The result is that the *first* visit needs a
+/// network, as any web page does, and every visit after it does not.
+///
+/// **It is registered from `web/index.html`, not by the Flutter loader.** Newer Flutter
+/// does not register a worker at all, so waiting for it to do so registers nothing — which
+/// is how this was found: a browser was opened, the network was cut, and the page died.
+///
+/// **Cross-origin is never cached.** There is nothing cross-origin in this build — a
+/// separate check proves it — and a worker that quietly kept third-party responses would
+/// be a way for one to arrive later without anyone noticing.
+library;
+
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:crypto/crypto.dart';
+
+/// Files that exist in `build/web` and are never fetched by a running application.
+///
+/// `.symbols` are the debugger's name maps — six megabytes of them — and a deploy that
+/// carries them is paying to host a symbol table for every child.
+bool _isDeadWeight(String path) => path.endsWith('.symbols');
+
+/// Files precached the moment the worker installs.
+///
+/// The curriculum is in here on purpose. It is what a child came for, it is the thing that
+/// must survive the connection going away, and it is already sitting in the same folder.
+bool _precache(String path) =>
+    path == 'index.html' ||
+    path == 'flutter_bootstrap.js' ||
+    path == 'main.dart.js' ||
+    path == 'flutter.js' ||
+    path == 'manifest.json' ||
+    path == 'favicon.png' ||
+    path == 'version.json' ||
+    path.startsWith('icons/') ||
+    path.startsWith('assets/');
+
+void main(List<String> args) {
+  final root = Directory(args.isEmpty ? 'build/web' : args.first);
+  if (!root.existsSync()) {
+    stderr.writeln('no ${root.path} — run `flutter build web` first');
+    exitCode = 1;
+    return;
+  }
+
+  var removed = 0, removedBytes = 0;
+  final files = <String>[];
+  for (final entity in root.listSync(recursive: true)) {
+    if (entity is! File) continue;
+    final path = entity.path.substring(root.path.length + 1);
+    if (_isDeadWeight(path)) {
+      removed++;
+      removedBytes += entity.lengthSync();
+      entity.deleteSync();
+      continue;
+    }
+    if (path == 'kodo_sw.js') continue;
+    if (path == 'flutter_service_worker.js') {
+      /* Flutter's own worker unregisters itself on activate. Leaving it in the deploy is
+         leaving a file that would tear ours down if anything ever registered it. */
+      removed++;
+      removedBytes += entity.lengthSync();
+      entity.deleteSync();
+      continue;
+    }
+    files.add(path);
+  }
+  files.sort();
+
+  final precached = files.where(_precache).toList();
+  final bytes = precached.fold<int>(
+      0, (sum, p) => sum + File('${root.path}/$p').lengthSync());
+
+  /* The cache name carries a digest of exactly what is in it, so a build that changes one
+     item of one world gives every browser a new cache and the old one is swept on
+     activate. A hand-bumped version number is a version number somebody forgets. */
+  final digest = sha256
+      .convert(utf8.encode(precached
+          .map((p) => '$p:${File('${root.path}/$p').lengthSync()}')
+          .join('\n')))
+      .toString()
+      .substring(0, 16);
+
+  File('${root.path}/kodo_sw.js').writeAsStringSync(_worker(precached, digest));
+
+  stdout
+    ..writeln('service worker: kodo-$digest')
+    ..writeln('  precached ${precached.length} files, '
+        '${(bytes / 1024 / 1024).toStringAsFixed(1)} MB')
+    ..writeln('  runtime-cached: everything else, same-origin only')
+    ..writeln('  removed $removed debug file(s), '
+        '${(removedBytes / 1024 / 1024).toStringAsFixed(1)} MB');
+}
+
+String _worker(List<String> precached, String digest) => '''
+// Generated by tool/make_service_worker.dart. Do not edit; edit the tool.
+//
+// KODO offline. The application and the whole curriculum are precached; the graphics
+// engine is kept the first time the browser asks for the variant it wants. After one
+// visit, KODO opens with the network off.
+'use strict';
+
+const CACHE = 'kodo-$digest';
+const PRECACHE = ${const JsonEncoder.withIndent('  ').convert(precached)};
+
+self.addEventListener('install', (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    // One at a time rather than addAll: addAll rejects the whole install if any single
+    // request fails, and a worker that refuses to install leaves a child with nothing.
+    await Promise.all(PRECACHE.map(async (path) => {
+      try {
+        const response = await fetch(new Request(path, {cache: 'reload'}));
+        if (response.ok) await cache.put(path, response);
+      } catch (e) {
+        // Logged, not fatal. What did arrive is still worth having.
+        console.warn('kodo: could not precache', path, e);
+      }
+    }));
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil((async () => {
+    for (const name of await caches.keys()) {
+      if (name !== CACHE && name.startsWith('kodo-')) await caches.delete(name);
+    }
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
+  // Same origin only. There is nothing else in this build, and a worker that quietly
+  // kept third-party responses would be a way for one to arrive later unnoticed.
+  if (url.origin !== self.location.origin) return;
+
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+
+    // A navigation always has an answer: the shell, from the cache, whatever the
+    // network is doing. Without this, opening KODO offline is a browser error page.
+    if (request.mode === 'navigate') {
+      const shell = await cache.match('index.html');
+      if (shell) {
+        // Refresh it in the background so a reconnected child gets the new build next
+        // time, without ever waiting for the network to decide.
+        event.waitUntil(fetch(request)
+            .then((fresh) => fresh.ok ? cache.put('index.html', fresh) : null)
+            .catch(() => {}));
+        return shell;
+      }
+    }
+
+    const hit = await cache.match(request, {ignoreSearch: true});
+    if (hit) return hit;
+
+    try {
+      const response = await fetch(request);
+      // This is how CanvasKit ends up offline: the browser asks for the variant it
+      // wants, once, and the worker keeps it.
+      if (response.ok && response.type === 'basic') {
+        cache.put(request, response.clone());
+      }
+      return response;
+    } catch (e) {
+      const shell = await cache.match('index.html');
+      if (request.mode === 'navigate' && shell) return shell;
+      throw e;
+    }
+  })());
+});
+''';

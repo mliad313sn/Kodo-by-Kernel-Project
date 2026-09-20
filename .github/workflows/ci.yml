@@ -103,7 +103,37 @@ jobs:
           flutter analyze --fatal-infos --fatal-warnings
           dart format --output=none --set-exit-if-changed .
           flutter test --reporter=expanded
+          # --no-web-resources-cdn, and it is not a preference. The default build fetches
+          # CanvasKit from gstatic.com at run time, which means KODO cannot start without
+          # Google and every child's IP reaches a third party before the first frame.
           flutter build web --release --no-web-resources-cdn
+          # Flutter's service worker is 784 bytes and unregisters itself. Ours precaches
+          # the application and the whole curriculum, so the second visit needs no
+          # network at all — which is the promise the Android build keeps by having no
+          # network permission, and the web build kept by nothing.
+          dart run tool/make_service_worker.dart
+
+      # Gate 4bb — the offline promise, proved by cutting the network.
+      #
+      # Not a grep over the source: the check serves the build, opens it in Chromium,
+      # waits for the worker to take the cache, then puts the browser genuinely offline
+      # and reloads, reads a world's exercises, and opens the app again in a fresh tab.
+      # It also records every origin the page asked for, which has to be none.
+      - name: The built web app runs with the network off
+        run: |
+          npm install --no-save playwright-core
+          npx playwright install --with-deps chromium
+          node app/tool/web_offline_check.js app/build/web build/web_offline.json
+
+      # Gate 4c — the compressor, checked by a decompressor it did not write.
+      #
+      # png.dart carries a hand-rolled LZ77 and RFC 1951's fixed Huffman tables, because a
+      # pure-Dart package with no dependencies has no compressor to call. The only honest
+      # way to believe one is to hand its output to somebody else's inflater.
+      - name: Exported drawings inflate under an independent decoder
+        run: |
+          ( cd packages/kodo_stage && dart run tool/emit_pngs.dart ../../build/png-check )
+          python3 tools/png_check.py build/png-check
 
       # Gate 5 — content. The authoring tool re-publishes every world through M6's publish
       # gate and M5's content gate, then the repository is diffed. A bank that ships and a
@@ -134,6 +164,11 @@ jobs:
       # silently skips the number it cannot see reads as a pass.
       - name: Size budget
         run: dart run tools/size_budget.dart
+
+      # Gate 7 — the verification loop. One check per finding of the G5 review, so a fix
+      # that is quietly reverted fails the build rather than the next review.
+      - name: Every reviewed finding is still fixed
+        run: dart run tools/verify_findings.dart --web
 
       - name: Publish the evidence
         if: always()

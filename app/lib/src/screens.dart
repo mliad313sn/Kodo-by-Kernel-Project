@@ -428,9 +428,24 @@ class MoiScreen extends StatelessWidget {
 }
 
 /// The concepts of one world.
+///
+/// Named, not numbered. This listed `C0.1`, `C0.2`, `C0.3` — the ids the curriculum uses
+/// to talk to itself — in front of an eight-year-old, on the screen where they choose what
+/// to learn next. The pack has carried the child-facing name all along: it is the sentence
+/// the tutorial closes with (`FR-M5-06`), which was written for exactly this purpose and
+/// then shown only at the end.
 class ConceptScreen extends StatelessWidget {
-  const ConceptScreen({super.key, required this.conceptIds});
+  const ConceptScreen({
+    super.key,
+    required this.conceptIds,
+    this.conceptNames = const {},
+  });
+
   final List<String> conceptIds;
+
+  /// Concept id → the words a child reads. Missing means the pack ships no tutorial for
+  /// it, which the content gate refuses — so this is a fallback that should never fire.
+  final Map<String, String> conceptNames;
 
   @override
   Widget build(BuildContext context) {
@@ -444,7 +459,8 @@ class ConceptScreen extends StatelessWidget {
             Material(
               child: ListTile(
                 key: Key('concept-$id'),
-                title: Text(id, style: const TextStyle(fontSize: 20)),
+                title: Text(conceptNames[id] ?? id,
+                    style: const TextStyle(fontSize: 20)),
                 minTileHeight: 56,
                 /* Through the tutorial, not past it. §7.2: a concept is met before it
                    is practised, and an exercise on a concept nobody has shown the child

@@ -479,6 +479,29 @@ answer to a specification gap found in delivery.
 
 ---
 
+## D-016 — v1 ships no platform plugins
+
+Full text: `docs/governance/D-016.md`.
+
+**In one line.** No Flutter plugin that costs an Android permission ships in v1, which
+closes out backdrop import (`FR-M4-04`), sound import and recording (`FR-M4-05`) and
+screen capture (`FR-M9-05`) until at least v1.2.
+
+**Why.** The G5 review measured something nobody had claimed: the release manifest asks for
+**no permissions at all**, so the operating system — not a code review — is what stops the
+process reaching the network, the camera or the microphone. That is the strongest form of
+KODO's central promise, and each of those three requirements spends it. The consent gates
+are built and tested; only the plugins are missing, and the plugins are the expensive part.
+
+**What a child loses.** Nothing the curriculum needs: backdrops can be drawn, sounds are
+made with `tambour` and `note`, and a drawing already exports as SVG and PNG.
+
+**Enforced by** the manifest test in `app/test/m19_acceptance_test.dart` and finding
+`G5-08` of `tools/verify_findings.dart`, both of which fail the build if a permission
+appears.
+
+---
+
 ## Open items the PO has *not* decided
 
 Recorded so that silence is not mistaken for a decision.
@@ -487,4 +510,5 @@ Recorded so that silence is not mistaken for a decision.
 | --- | --- | --- | --- |
 | O-01 | The agreed budget line behind `NFR-COST-01` | Needs the D-001 licence model priced against real school counts in the launch markets | Before P2 |
 | O-02 | Whether the family support tier of D-001 ever ships | Depends on whether the institutional lines cover marginal cost; deciding early adds a surface we may delete | Post-launch loop 1 |
+| O-04 | iOS, macOS and Windows targets | Only Android, Linux and Web are configured. Adding a target is a market decision with a support cost, and nobody has taken it — recording it here so its absence stops looking like an oversight | Before the v1.2 scope is set |
 | O-03 | Audio casting: two consistent FR and EN voices (§12) | Casting is a content decision belonging to seat 11, not a PO decision; the PO owns only the 15 % re-record reserve | Before World 0 narration freeze |

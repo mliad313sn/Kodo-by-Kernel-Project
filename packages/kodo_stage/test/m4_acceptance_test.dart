@@ -8,6 +8,8 @@
 /// 6. A colour-blind-safe default palette, with Annex C's RGB values as named presets.
 library;
 
+import 'dart:typed_data';
+
 import 'package:kodo_lang/kodo_lang.dart';
 import 'package:kodo_stage/kodo_stage.dart';
 import 'package:test/test.dart';
@@ -702,6 +704,93 @@ void stageCapabilityTests() {
       Interpreter(parsed.program, stage, trigger: const KeyPressed('espace'))
           .run();
       expect(stage.segments, hasLength(1));
+    });
+  });
+
+  /* The PNG encoder, after the review. `png.dart` carries a hand-rolled LZ77 and RFC
+     1951's fixed Huffman tables, because a pure-Dart package with no dependencies has no
+     compressor to call. These tests check the parts a structure check can reach; the part
+     that matters — that the bytes actually inflate — is checked by somebody else's zlib,
+     in `tools/png_check.py`, on every CI run. A compressor believed only by its own
+     decoder is not believed.
+  */
+  group('FR-M4-02 · an exported drawing is a file a child can keep', () {
+    Uint8List drawn(String source) {
+      final canvas = VectorCanvas();
+      Interpreter(parse(source, KeywordTables.fr).program, canvas).run();
+      return canvas.toPng();
+    }
+
+    ({int width, int height, int colourType, int idat}) header(Uint8List png) {
+      expect(
+          png.sublist(0, 8), [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A],
+          reason: 'not a PNG');
+      var at = 8;
+      var width = 0, height = 0, colourType = -1, idat = 0;
+      while (at < png.length) {
+        final length = (png[at] << 24) |
+            (png[at + 1] << 16) |
+            (png[at + 2] << 8) |
+            png[at + 3];
+        final kind = String.fromCharCodes(png.sublist(at + 4, at + 8));
+        if (kind == 'IHDR') {
+          width = (png[at + 8] << 24) |
+              (png[at + 9] << 16) |
+              (png[at + 10] << 8) |
+              png[at + 11];
+          height = (png[at + 12] << 24) |
+              (png[at + 13] << 16) |
+              (png[at + 14] << 8) |
+              png[at + 15];
+          colourType = png[at + 17];
+        }
+        if (kind == 'IDAT') idat += length;
+        at += 12 + length;
+      }
+      expect(at, png.length, reason: 'chunks do not fill the file');
+      return (width: width, height: height, colourType: colourType, idat: idat);
+    }
+
+    test('it is an indexed PNG of the right size', () {
+      final png = drawn('répète 4 {\n  avance 80\n  tournedroite 90\n}');
+      final h = header(png);
+      expect(h.width, 400);
+      expect(h.height, 400);
+      // Colour type 3: a palette. Two colours do not need three bytes each.
+      expect(h.colourType, 3);
+    });
+
+    test('a drawing costs kilobytes, not half a megabyte', () {
+      /* What this replaced: truecolour over stored zlib blocks, which charged 480 503
+         bytes for any drawing at all — a child with a dozen saved pictures was spending
+         six megabytes of a 2 GB phone on white. */
+      for (final source in const [
+        'lèvecrayon\navance 10',
+        'répète 4 {\n  avance 80\n  tournedroite 90\n}',
+        'répète 180 {\n  avance 90\n  tournedroite 178\n}',
+      ]) {
+        final png = drawn(source);
+        expect(png.length, lessThan(20000),
+            reason: 'a drawing should not cost ${png.length} bytes');
+      }
+    });
+
+    test('an empty page costs less than a busy one', () {
+      // The compressor is doing something, rather than emitting stored blocks under a
+      // new name: a page of one colour has to collapse further than a page of many runs.
+      final blank = drawn('lèvecrayon\navance 10').length;
+      final busy = drawn('répète 36 {\n  répète 4 {\n    avance 60\n'
+              '    tournedroite 90\n  }\n  tournedroite 10\n}')
+          .length;
+      expect(blank, lessThan(busy));
+      expect(blank * 3, lessThan(busy));
+    });
+
+    test('the same drawing exports the same bytes', () {
+      // Determinism, which is what lets the visual-regression tests compare at all.
+      final once = drawn('répète 6 {\n  avance 50\n  tournedroite 60\n}');
+      final twice = drawn('répète 6 {\n  avance 50\n  tournedroite 60\n}');
+      expect(once, twice);
     });
   });
 }

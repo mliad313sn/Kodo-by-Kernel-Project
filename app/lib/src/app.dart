@@ -172,10 +172,19 @@ class _KodoAppState extends State<KodoApp> with WidgetsBindingObserver {
       case KodoScreen.concept:
         final world =
             packs.where((p) => p.world == shell.session.lastPlace.worldId);
+        final pack = world.isEmpty ? null : world.first;
         return ConceptScreen(
-          conceptIds: world.isEmpty
-              ? const []
-              : (world.first.concepts.keys.toList()..sort()),
+          conceptIds:
+              pack == null ? const [] : (pack.concepts.keys.toList()..sort()),
+          /* The words are the pack's, from the sentence its tutorial closes with. The
+             shell does not name a concept; it has no business inventing one. */
+          conceptNames: pack == null
+              ? const {}
+              : {
+                  for (final tutorial in pack.tutorials)
+                    tutorial.conceptId: tutorial
+                        .conceptNameIn(shell.session.interfaceLocale.code),
+                },
         );
 
       case KodoScreen.studio:

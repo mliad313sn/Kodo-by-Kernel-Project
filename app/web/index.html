@@ -42,5 +42,28 @@
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
   <script src="flutter_bootstrap.js" async></script>
+
+  <!-- KODO offline.
+       Flutter stopped shipping a caching service worker; the one in the build is 784
+       bytes long and unregisters itself. This application cannot live with that: a child
+       in a classroom with one hour of connectivity a week has to be able to open KODO on
+       Thursday. So the worker is ours, it is generated from the build by
+       tool/make_service_worker.dart, and it is registered here rather than through the
+       Flutter loader, which no longer offers to.
+
+       Registered after load so it never competes with the first paint for bandwidth: the
+       first visit is a normal visit, and it is the second one that has to work with the
+       network off. -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('kodo_sw.js').catch(function (e) {
+          // A browser that refuses is a browser that stays online-only. It is not a
+          // reason to fail the page.
+          console.warn('kodo: offline support unavailable', e);
+        });
+      });
+    }
+  </script>
 </body>
 </html>

@@ -33,6 +33,7 @@ dependencies:
     path: ../packages/kodo_progress
   kodo_stage:
     path: ../packages/kodo_stage
+  crypto: ^3.0.6
   kodo_studio:
     path: ../packages/kodo_studio
 
