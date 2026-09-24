@@ -8,7 +8,8 @@ requirement register, the concept ledger, the risk register and the PO decision 
 so the portfolio is generated from the programme rather than re-typed into it.
 
     python3 tools/meridian_book.py
-    # then, in a running Meridian:  POST /api/v1/book/import  with the file as the body
+    # then, in a running Meridian, as an administrator:
+    #   POST /api/admin/import  with delivery/meridian/kodo_import_payload.json ({"db": book}) as the body
 
 Deliberately NOT invented: budgets. `NFR-COST-01` has no agreed figure and PO open item
 O-01 records that. Writing a plausible number here would put fiction into the one screen
@@ -557,6 +558,10 @@ def build():
     done = sum(1 for r in requirements["requirements"] if r.get("status") == "Done")
 
     return {
+        # Meridian 5.17.0+ refuses a book that does not say what its money
+        # means (its D-36.04). Every amount here is 0 (budgets are not
+        # invented, see the docstring), so the unit changes no figure.
+        "currencyUnit": "units",
         "orgName": "KODO",
         "statusDate": dt.date(2026, 9, 18).isoformat(),
         "sites": SITES,

@@ -38,15 +38,22 @@ git apply /path/to/Kodo-by-Kernel-Project/delivery/meridian/patches/0002-*.patch
 npm run seed && npm run dev
 
 # then, as an administrator
-curl -X POST http://localhost:4173/api/v1/admin/import \
-     -H 'Content-Type: application/json' \
+# (session route, not /api/v1: sign in first and pass the session cookie)
+curl -X POST 'http://localhost:4173/api/admin/import?dryRun=1&mode=merge' \
+     -b cookies.txt -H 'Content-Type: application/json' \
      --data @delivery/meridian/kodo_import_payload.json
+# then the same without dryRun=1 to write it
 ```
 
 Then sign in as `admin@meridian.example` / `meridian-admin-2026` (the seeded
 administrator) before importing.
 
-**The import is destructive.** `server/src/import.js` deletes every portfolio table before
+**Upstream since Meridian 5.17.0** (docs/36 C-03): patches 0001–0003 are merged into
+Meridian `main`, the import has a dry run (`?dryRun=1`) and a merge mode (`?mode=merge`),
+and a book must carry `"currencyUnit"` (their D-36.04), which the generator now writes.
+Verified against Meridian 5.36.1: the regenerated book merges with 0 rejects.
+
+**A replace import is destructive.** `server/src/import.js` deletes every portfolio table before
 it writes. Load it into a fresh instance or `npm run training`, never over a book you want
 to keep. (That this has no dry-run is finding `MER-09` of the product report.)
 
