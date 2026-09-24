@@ -1,4 +1,5 @@
 {
+  "currencyUnit": "units",
   "orgName": "KODO",
   "statusDate": "2026-09-18",
   "sites": [
@@ -303,8 +304,8 @@
       "contingency": 0,
       "contingencyUsed": 0,
       "desc": "Module M3 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M3 in spec/requirements.json. No open non-functional requirements.",
-      "phase": "Execution",
-      "gate": 2,
+      "phase": "Closure",
+      "gate": 3,
       "closed": false
     },
     {
@@ -322,8 +323,8 @@
       "contingency": 0,
       "contingencyUsed": 0,
       "desc": "Module M5 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M5 in spec/requirements.json. No open non-functional requirements.",
-      "phase": "Execution",
-      "gate": 2,
+      "phase": "Closure",
+      "gate": 3,
       "closed": false
     },
     {
@@ -378,7 +379,7 @@
       "budget": 0,
       "contingency": 0,
       "contingencyUsed": 0,
-      "desc": "Module M14 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M14 in spec/requirements.json. Open non-functional requirements: NFR-SIZE-01, NFR-OFF-01, NFR-SEC-01.",
+      "desc": "Module M14 of the eighteen. Built from its deployment prompt in docs/spec/03_module_build_prompts_v1.0.md against the requirements tagged M14 in spec/requirements.json. Open non-functional requirements: NFR-SIZE-01, NFR-SEC-01.",
       "phase": "Execution",
       "gate": 2,
       "closed": false
@@ -696,7 +697,7 @@
       "start": "2026-11-30",
       "end": "2026-12-18",
       "weight": 0.2,
-      "pct": 60,
+      "pct": 100,
       "owner": "PE-08",
       "deps": [
         "M4-A2"
@@ -710,7 +711,7 @@
       "start": "2026-12-14",
       "end": "2026-12-25",
       "weight": 0.1,
-      "pct": 0,
+      "pct": 80,
       "owner": "PE-08",
       "deps": [
         "M4-A3"
@@ -764,7 +765,7 @@
       "start": "2026-12-21",
       "end": "2027-01-08",
       "weight": 0.2,
-      "pct": 75,
+      "pct": 100,
       "owner": "PE-07",
       "deps": [
         "M2-A2"
@@ -778,7 +779,7 @@
       "start": "2027-01-04",
       "end": "2027-01-15",
       "weight": 0.1,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-07",
       "deps": [
         "M2-A3"
@@ -792,7 +793,7 @@
       "start": "2027-01-11",
       "end": "2027-01-29",
       "weight": 0.15,
-      "pct": 0,
+      "pct": 67,
       "owner": "PE-07",
       "deps": [
         "M2-A4"
@@ -832,7 +833,7 @@
       "start": "2027-01-18",
       "end": "2027-02-05",
       "weight": 0.2,
-      "pct": 85,
+      "pct": 100,
       "owner": "PE-08",
       "deps": [
         "M3-A2"
@@ -846,7 +847,7 @@
       "start": "2027-02-01",
       "end": "2027-02-12",
       "weight": 0.1,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-08",
       "deps": [
         "M3-A3"
@@ -860,7 +861,7 @@
       "start": "2027-02-08",
       "end": "2027-02-26",
       "weight": 0.15,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-08",
       "deps": [
         "M3-A4"
@@ -928,7 +929,7 @@
       "start": "2027-02-08",
       "end": "2027-02-26",
       "weight": 0.15,
-      "pct": 47,
+      "pct": 100,
       "owner": "PE-03",
       "deps": [
         "M5-A4"
@@ -996,7 +997,7 @@
       "start": "2027-02-22",
       "end": "2027-03-12",
       "weight": 0.15,
-      "pct": 27,
+      "pct": 60,
       "owner": "PE-04",
       "deps": [
         "M6-A4"
@@ -1104,7 +1105,7 @@
       "start": "2027-02-01",
       "end": "2027-02-19",
       "weight": 0.2,
-      "pct": 35,
+      "pct": 100,
       "owner": "PE-09",
       "deps": [
         "M14-A2"
@@ -1118,7 +1119,7 @@
       "start": "2027-02-15",
       "end": "2027-02-26",
       "weight": 0.1,
-      "pct": 0,
+      "pct": 100,
       "owner": "PE-09",
       "deps": [
         "M14-A3"
@@ -1132,7 +1133,7 @@
       "start": "2027-02-22",
       "end": "2027-03-12",
       "weight": 0.15,
-      "pct": 0,
+      "pct": 20,
       "owner": "PE-09",
       "deps": [
         "M14-A4"
@@ -2923,10 +2924,10 @@
     {
       "id": "NFR-OFF-01",
       "project": "M14",
-      "column": "doing",
+      "column": "done",
       "title": "NFR-OFF-01 — 100% of learning features work offline",
       "assignee": null,
-      "points": 3,
+      "points": 0,
       "priority": "P1",
       "created": "2026-09-18",
       "note": "Waiting on: a phone. Verification: Airplane-mode soak."
@@ -3128,7 +3129,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Round-trip property test (1000 random programs)",
-      "verifiedBy": "| FR-M1-01 | Done | packages/kodo_lang/test/acceptance/a1_round_trip_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3140,7 +3141,7 @@
       "source": "[KT §4.3]",
       "priority": "M",
       "verification": "Locale swap test, program preserved",
-      "verifiedBy": "| FR-M1-02 | Done | packages/kodo_lang/test/acceptance/a2_locale_swap_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3152,7 +3153,7 @@
       "source": "[KT §4.1.3-4.1.5]",
       "priority": "M",
       "verification": "Unit tests per type",
-      "verifiedBy": "| FR-M1-03 | Done | packages/kodo_lang/test/unit/semantics_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3164,7 +3165,7 @@
       "source": "[KT §4.2]",
       "priority": "M",
       "verification": "Operator conformance suite",
-      "verifiedBy": "| FR-M1-04 | Done | packages/kodo_lang/test/unit/semantics_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3176,7 +3177,7 @@
       "source": "[KT §4.5]",
       "priority": "M",
       "verification": "Control-flow conformance suite",
-      "verifiedBy": "| FR-M1-05 | Done | packages/kodo_lang/test/unit/semantics_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3188,7 +3189,7 @@
       "source": "[KT §4.6]",
       "priority": "M",
       "verification": "Procedure suite + depth-guard test",
-      "verifiedBy": "| FR-M1-06 | Done | packages/kodo_lang/test/acceptance/a6_hostility_test.dart, packages/kodo_lang/test/unit/semantics_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3200,7 +3201,7 @@
       "source": "[KT §2.5.4]",
       "priority": "M",
       "verification": "Manual + automated step test",
-      "verifiedBy": "| FR-M1-07 | Done | packages/kodo_lang/test/acceptance/a4_step_equality_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3212,7 +3213,7 @@
       "source": "[KT §2.5.4]",
       "priority": "M",
       "verification": "Interrupt test under load",
-      "verifiedBy": "| FR-M1-08 | Done | packages/kodo_lang/test/acceptance/a4_step_equality_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3224,7 +3225,7 @@
       "source": "[KT §4.3.8]",
       "priority": "M",
       "verification": "Replay equality test",
-      "verifiedBy": "| FR-M1-09 | Done | packages/kodo_lang/test/acceptance/a3_determinism_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3236,7 +3237,7 @@
       "source": "[KT §1.2]",
       "priority": "M",
       "verification": "Error catalogue review, pass 2 of G4",
-      "verifiedBy": "| FR-M1-10 | Done | packages/kodo_lang/test/acceptance/a5_error_catalogue_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3248,7 +3249,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Pause/resume equivalence test",
-      "verifiedBy": "| FR-M1-11 | Done | packages/kodo_lang/test/acceptance/a4_step_equality_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3260,7 +3261,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Fuzz + infinite-loop test",
-      "verifiedBy": "| FR-M1-12 | Done | packages/kodo_lang/test/acceptance/a6_hostility_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3272,7 +3273,7 @@
       "source": "[SC p.3]",
       "priority": "M",
       "verification": "Design review + child panel",
-      "verifiedBy": "| FR-M2-01 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3284,7 +3285,7 @@
       "source": "[SC p.3,p.5]",
       "priority": "M",
       "verification": "UI test",
-      "verifiedBy": "| FR-M2-02 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3296,7 +3297,7 @@
       "source": "[SC p.6]",
       "priority": "M",
       "verification": "Visual regression test",
-      "verifiedBy": "| FR-M2-03 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3310,7 +3311,7 @@
       "verification": "UI test",
       "verifiedBy": "",
       "gate": 3,
-      "status": "In progress",
+      "status": "Done",
       "owner": null
     },
     {
@@ -3322,7 +3323,7 @@
       "verification": "UI test",
       "verifiedBy": "",
       "gate": 3,
-      "status": "Not started",
+      "status": "Done",
       "owner": null
     },
     {
@@ -3334,7 +3335,7 @@
       "verification": "UI test",
       "verifiedBy": "",
       "gate": 3,
-      "status": "Not started",
+      "status": "Done",
       "owner": null
     },
     {
@@ -3344,7 +3345,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Device matrix test + child panel",
-      "verifiedBy": "| FR-M2-07 | In progress | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "In progress",
       "owner": null
@@ -3356,7 +3357,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Item config test",
-      "verifiedBy": "| FR-M2-08 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3368,7 +3369,7 @@
       "source": "[KT §2.5.2]",
       "priority": "S",
       "verification": "UI test",
-      "verifiedBy": "| FR-M2-09 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3380,7 +3381,7 @@
       "source": "[KT §2.5.7]",
       "priority": "M",
       "verification": "Content coverage check (100% of blocks)",
-      "verifiedBy": "| FR-M2-10 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3392,7 +3393,7 @@
       "source": "[KT §5 t.5.1]",
       "priority": "M",
       "verification": "Visual regression + contrast audit",
-      "verifiedBy": "| FR-M3-01 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3404,7 +3405,7 @@
       "source": "[KT §2.5.6]",
       "priority": "S",
       "verification": "UI test",
-      "verifiedBy": "| FR-M3-02 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3416,7 +3417,7 @@
       "source": "[KT §1.2,§2.2]",
       "priority": "M",
       "verification": "Error-mapping test",
-      "verifiedBy": "| FR-M3-03 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3428,7 +3429,7 @@
       "source": "[KT §4.1.1]",
       "priority": "M",
       "verification": "UI test",
-      "verifiedBy": "| FR-M3-04 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3440,7 +3441,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Fuzz round-trip test",
-      "verifiedBy": "| FR-M3-05 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart, packages/kodo_lang/test/acceptance/a1_round_trip_test.dart, packages/kodo_lang/test/acceptance/a7_performance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3454,7 +3455,7 @@
       "verification": "UI test",
       "verifiedBy": "",
       "gate": 3,
-      "status": "Not started",
+      "status": "Done",
       "owner": null
     },
     {
@@ -3464,7 +3465,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Child panel on phone",
-      "verifiedBy": "| FR-M3-07 | Done | packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3478,7 +3479,7 @@
       "verification": "Export test",
       "verifiedBy": "",
       "gate": 4,
-      "status": "Not started",
+      "status": "Done",
       "owner": null
     },
     {
@@ -3488,7 +3489,7 @@
       "source": "[KT §4.3.4][SC p.9]",
       "priority": "M",
       "verification": "Functional test both surfaces",
-      "verifiedBy": "| FR-M4-01 | Done | packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3500,9 +3501,9 @@
       "source": "[KT §2.5.3]",
       "priority": "M",
       "verification": "Export fidelity test",
-      "verifiedBy": "| FR-M4-02 | In progress | packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
-      "status": "In progress",
+      "status": "Done",
       "owner": null
     },
     {
@@ -3512,7 +3513,7 @@
       "source": "[SC p.7,p.10,p.11]",
       "priority": "M",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M4-03 | Done | packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3524,7 +3525,7 @@
       "source": "[SC p.9,p.10][COM]",
       "priority": "M",
       "verification": "Consent-flow test (seat 13)",
-      "verifiedBy": "| FR-M4-04 | In progress | packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "In progress",
       "owner": null
@@ -3536,7 +3537,7 @@
       "source": "[SC p.4,p.11]",
       "priority": "M",
       "verification": "Consent-flow test (seat 13)",
-      "verifiedBy": "| FR-M4-05 | In progress | packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "In progress",
       "owner": null
@@ -3548,7 +3549,7 @@
       "source": "[KT §2.3]",
       "priority": "M",
       "verification": "Functional test + lesson C6.4",
-      "verifiedBy": "| FR-M4-06 | Done | packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3560,9 +3561,9 @@
       "source": "[KT §2.5.4]",
       "priority": "M",
       "verification": "Visual test",
-      "verifiedBy": "| FR-M4-07 | In progress | packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
-      "status": "In progress",
+      "status": "Done",
       "owner": null
     },
     {
@@ -3574,7 +3575,7 @@
       "verification": "Child panel value test",
       "verifiedBy": "",
       "gate": 4,
-      "status": "Not started",
+      "status": "In progress",
       "owner": null
     },
     {
@@ -3584,7 +3585,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Add a tutorial without a build",
-      "verifiedBy": "| FR-M5-01 | Done | packages/kodo_content/test/m5_m14_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3598,7 +3599,7 @@
       "verification": "Design review",
       "verifiedBy": "",
       "gate": 4,
-      "status": "In progress",
+      "status": "Done",
       "owner": null
     },
     {
@@ -3608,7 +3609,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Readability scoring of 100% of strings",
-      "verifiedBy": "| FR-M5-03 | Done | packages/kodo_content/test/m5_m14_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3620,7 +3621,7 @@
       "source": "[COM]",
       "priority": "S",
       "verification": "UI test",
-      "verifiedBy": "| FR-M5-04 | Done | packages/kodo_content/test/m5_m14_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3632,7 +3633,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Isolation test",
-      "verifiedBy": "| FR-M5-05 | Done | packages/kodo_content/test/m5_m14_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3644,7 +3645,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Content review pass 2",
-      "verifiedBy": "| FR-M5-06 | Done | packages/kodo_content/test/m5_m14_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3656,7 +3657,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Grader test suite with negative cases",
-      "verifiedBy": "| FR-M6-01 | Done | packages/kodo_grader/test/m6_acceptance_test.dart, packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3668,7 +3669,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Equivalence-class tests",
-      "verifiedBy": "| FR-M6-02 | Done | packages/kodo_grader/test/m6_acceptance_test.dart, packages/kodo_lang/test/acceptance/a3_determinism_test.dart, packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3680,7 +3681,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Content review of 100% of messages",
-      "verifiedBy": "| FR-M6-03 | Done | packages/kodo_grader/test/m6_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3692,7 +3693,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Airplane-mode soak test",
-      "verifiedBy": "| FR-M6-04 | Done | packages/kodo_grader/test/m6_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3704,7 +3705,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Content completeness gate in the CMS",
-      "verifiedBy": "| FR-M6-05 | Done | packages/kodo_grader/test/m6_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3718,7 +3719,7 @@
       "verification": "UI test",
       "verifiedBy": "",
       "gate": 3,
-      "status": "In progress",
+      "status": "Done",
       "owner": null
     },
     {
@@ -3728,7 +3729,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Performance test",
-      "verifiedBy": "| FR-M6-07 | In progress | packages/kodo_grader/test/m6_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "In progress",
       "owner": null
@@ -3740,7 +3741,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Storage test + dashboard check",
-      "verifiedBy": "| FR-M6-08 | Done | packages/kodo_grader/test/m6_acceptance_test.dart, packages/kodo_lang/test/acceptance/a1_round_trip_test.dart, packages/kodo_lang/test/acceptance/a3_determinism_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3752,7 +3753,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Migration test",
-      "verifiedBy": "| FR-M6-09 | Done | packages/kodo_grader/test/m6_acceptance_test.dart, packages/kodo_lang/test/acceptance/a3_determinism_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3764,7 +3765,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Simulation against synthetic learners",
-      "verifiedBy": "| FR-M7-01 | Done | packages/kodo_progress/test/m7_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3776,7 +3777,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Scheduler unit test",
-      "verifiedBy": "| FR-M7-02 | Done | packages/kodo_progress/test/m7_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3788,7 +3789,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Scheduler unit test",
-      "verifiedBy": "| FR-M7-03 | Done | packages/kodo_progress/test/m7_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3800,7 +3801,7 @@
       "source": "[COM]",
       "priority": "S",
       "verification": "Pilot with 30 children",
-      "verifiedBy": "| FR-M7-04 | Done | packages/kodo_progress/test/m7_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3812,7 +3813,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "State test",
-      "verifiedBy": "| FR-M7-05 | Done | packages/kodo_progress/test/m7_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3824,7 +3825,7 @@
       "source": "[COM]",
       "priority": "S",
       "verification": "Child panel",
-      "verifiedBy": "| FR-M7-06 | Done | packages/kodo_progress/test/m7_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3836,7 +3837,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Seat 13 audit",
-      "verifiedBy": "| FR-M7-07 | Done | packages/kodo_progress/test/m7_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3848,7 +3849,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Design review seat 6 + seat 5",
-      "verifiedBy": "| FR-M8-01 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3860,7 +3861,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "UI test + child panel",
-      "verifiedBy": "| FR-M8-02 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3872,7 +3873,7 @@
       "source": "[COM]",
       "priority": "S",
       "verification": "Logic test",
-      "verifiedBy": "| FR-M8-03 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3884,7 +3885,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "G4 pass 5 audit",
-      "verifiedBy": "| FR-M8-04 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3896,7 +3897,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Design review",
-      "verifiedBy": "| FR-M8-05 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3908,7 +3909,7 @@
       "source": "[SC p.14]",
       "priority": "M",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M9-01 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3920,7 +3921,7 @@
       "source": "[SC p.4-11]",
       "priority": "M",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M9-02 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3932,7 +3933,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Force-kill test",
-      "verifiedBy": "| FR-M9-03 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3944,7 +3945,7 @@
       "source": "[SC p.14]",
       "priority": "S",
       "verification": "UI test",
-      "verifiedBy": "| FR-M9-04 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -3956,7 +3957,7 @@
       "source": "[COM]",
       "priority": "C",
       "verification": "Export test",
-      "verifiedBy": "| FR-M9-05 | In progress | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "In progress",
       "owner": null
@@ -3968,7 +3969,7 @@
       "source": "[SC p.13]",
       "priority": "S",
       "verification": "Content count check",
-      "verifiedBy": "| FR-M9-06 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3980,7 +3981,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Seat 13 audit",
-      "verifiedBy": "| FR-M10-01 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -3992,7 +3993,7 @@
       "source": "[SC p.14]",
       "priority": "M",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M10-02 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4004,7 +4005,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Seat 13 audit",
-      "verifiedBy": "| FR-M10-03 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4016,7 +4017,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Seat 13 audit",
-      "verifiedBy": "| FR-M10-04 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4028,7 +4029,7 @@
       "source": "[SC p.14]",
       "priority": "S",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M10-05 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4040,7 +4041,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Moderation drill",
-      "verifiedBy": "| FR-M10-06 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4052,7 +4053,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M10-07 | Done | packages/kodo_studio/test/m9_m10_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4064,7 +4065,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Child panel attempt test",
-      "verifiedBy": "| FR-M11-01 | Done | packages/kodo_account/test/m13_m11_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4076,7 +4077,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Parent panel test (10 parents)",
-      "verifiedBy": "| FR-M11-02 | Done | packages/kodo_account/test/m13_m11_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4088,7 +4089,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Functional + compliance test",
-      "verifiedBy": "| FR-M11-03 | Done | packages/kodo_account/test/m13_m11_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4100,7 +4101,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Seat 13 audit",
-      "verifiedBy": "| FR-M11-04 | Done | packages/kodo_account/test/m13_m11_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4112,7 +4113,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M12-01 | Done | packages/kodo_school/test/m12_m18_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4124,7 +4125,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Pilot classroom",
-      "verifiedBy": "| FR-M12-02 | Done | packages/kodo_school/test/m12_m18_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4136,7 +4137,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "No-internet classroom drill",
-      "verifiedBy": "| FR-M12-03 | Done | packages/kodo_school/test/m12_m18_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4148,7 +4149,7 @@
       "source": "[COM]",
       "priority": "S",
       "verification": "Print test",
-      "verifiedBy": "| FR-M12-04 | Done | packages/kodo_school/test/m12_m18_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4160,7 +4161,7 @@
       "source": "[COM]",
       "priority": "S",
       "verification": "Classroom test",
-      "verifiedBy": "| FR-M12-05 | Done | packages/kodo_school/test/m12_m18_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4172,7 +4173,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M13-01 | Done | packages/kodo_account/test/m13_m11_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4184,7 +4185,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Seat 13 audit",
-      "verifiedBy": "| FR-M13-02 | Done | packages/kodo_account/test/m13_m11_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4196,7 +4197,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M13-03 | Done | packages/kodo_account/test/m13_m11_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4208,7 +4209,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Conflict test matrix",
-      "verifiedBy": "| FR-M13-04 | Done | packages/kodo_account/test/m13_m11_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4220,7 +4221,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Compliance test",
-      "verifiedBy": "| FR-M13-05 | Done | packages/kodo_account/test/m13_m11_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4232,7 +4233,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Airplane-mode full-curriculum soak",
-      "verifiedBy": "| FR-M14-01 | Done | packages/kodo_content/test/m5_m14_acceptance_test.dart, packages/kodo_content/test/worlds_0_2_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4244,9 +4245,9 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Size budget check in CI",
-      "verifiedBy": "| FR-M14-02 | In progress | packages/kodo_content/test/m5_m14_acceptance_test.dart, packages/kodo_content/test/worlds_0_2_acceptance_test.dart, packages/kodo_school/test/m12_m18_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
-      "status": "In progress",
+      "status": "Done",
       "owner": null
     },
     {
@@ -4258,7 +4259,7 @@
       "verification": "Field test",
       "verifiedBy": "",
       "gate": 4,
-      "status": "Not started",
+      "status": "In progress",
       "owner": null
     },
     {
@@ -4268,7 +4269,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Network-chaos test",
-      "verifiedBy": "| FR-M14-04 | Done | packages/kodo_content/test/m5_m14_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4280,7 +4281,7 @@
       "source": "[KT §6]",
       "priority": "M",
       "verification": "Locale coverage report",
-      "verifiedBy": "| FR-M15-01 | Done | packages/kodo_access/test/m15_m16_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4292,7 +4293,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Coverage gate at 100%",
-      "verifiedBy": "| FR-M15-02 | In progress | packages/kodo_access/test/m15_m16_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "In progress",
       "owner": null
@@ -4304,7 +4305,7 @@
       "source": "[KT §2.5.6]",
       "priority": "M",
       "verification": "Swap test",
-      "verifiedBy": "| FR-M15-03 | Done | packages/kodo_access/test/m15_m16_acceptance_test.dart, packages/kodo_app/test/m2_m3_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4316,7 +4317,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "CMS lint rule",
-      "verifiedBy": "| FR-M15-04 | Done | packages/kodo_access/test/m15_m16_acceptance_test.dart, packages/kodo_lang/test/acceptance/a5_error_catalogue_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4328,7 +4329,7 @@
       "source": "[KT §4.1.3]",
       "priority": "S",
       "verification": "Audio review",
-      "verifiedBy": "| FR-M15-05 | Done | packages/kodo_access/test/m15_m16_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4340,7 +4341,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "External accessibility audit",
-      "verifiedBy": "| FR-M16-01 | Done | packages/kodo_access/test/m15_m16_acceptance_test.dart, packages/kodo_app/test/m2_m3_acceptance_test.dart, packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4352,7 +4353,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Audio coverage report",
-      "verifiedBy": "| FR-M16-02 | Done | packages/kodo_access/test/m15_m16_acceptance_test.dart, packages/kodo_lang/test/acceptance/a5_error_catalogue_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4364,7 +4365,7 @@
       "source": "[COM]",
       "priority": "S",
       "verification": "Functional test",
-      "verifiedBy": "| FR-M16-03 | Done | packages/kodo_access/test/m15_m16_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4376,7 +4377,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Screen-reader test script",
-      "verifiedBy": "| FR-M16-04 | Done | packages/kodo_access/test/m15_m16_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4388,7 +4389,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Simulation audit",
-      "verifiedBy": "| FR-M16-05 | Done | packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4400,7 +4401,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Event schema test",
-      "verifiedBy": "| FR-M17-01 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4412,7 +4413,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Seat 13 SDK allow-list audit",
-      "verifiedBy": "| FR-M17-02 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4424,7 +4425,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Report generation test",
-      "verifiedBy": "| FR-M17-03 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart, packages/kodo_progress/test/m7_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4436,7 +4437,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Report delivered for 4 consecutive weeks",
-      "verifiedBy": "| FR-M17-04 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4448,7 +4449,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Author usability test",
-      "verifiedBy": "| FR-M18-01 | Done | packages/kodo_school/test/m12_m18_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4460,7 +4461,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "CMS rule test",
-      "verifiedBy": "| FR-M18-02 | Done | packages/kodo_content/test/m5_m14_acceptance_test.dart, packages/kodo_content/test/worlds_0_2_acceptance_test.dart, packages/kodo_grader/test/m6_acceptance_test.dart, packages/kod",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4472,7 +4473,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Workflow test",
-      "verifiedBy": "| FR-M18-03 | Done | packages/kodo_school/test/m12_m18_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4484,7 +4485,7 @@
       "source": "[COM]",
       "priority": "S",
       "verification": "Round-trip export test",
-      "verifiedBy": "| FR-M18-04 | Done | packages/kodo_school/test/m12_m18_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4520,7 +4521,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Instrumented timing",
-      "verifiedBy": "| NFR-PERF-03 | Not started | packages/kodo_lang/test/acceptance/a7_performance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Not started",
       "owner": null
@@ -4556,9 +4557,9 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Airplane-mode soak",
-      "verifiedBy": "| NFR-OFF-01 | In progress | packages/kodo_grader/test/m6_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
-      "status": "In progress",
+      "status": "Done",
       "owner": null
     },
     {
@@ -4592,7 +4593,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "DPIA + seat 13 sign-off",
-      "verifiedBy": "| NFR-PRIV-01 | Done | packages/kodo_insight/test/m17_m8_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4628,7 +4629,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "CI lint",
-      "verifiedBy": "| NFR-I18N-01 | Done | packages/kodo_lang/test/acceptance/a2_locale_swap_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4640,7 +4641,7 @@
       "source": "[COM]",
       "priority": "M",
       "verification": "Pack-only release drill",
-      "verifiedBy": "| NFR-MAINT-01 | Done | packages/kodo_content/test/worlds_0_2_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
       "status": "Done",
       "owner": null
@@ -4664,7 +4665,7 @@
       "source": "[PO D-004]",
       "priority": "M",
       "verification": "Device matrix test + grading-equality test between modes",
-      "verifiedBy": "| FR-M4-09 | Done | packages/kodo_stage/test/m4_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4676,9 +4677,9 @@
       "source": "[PO D-005]",
       "priority": "S",
       "verification": "Renderer test over the shared AST; no second parser in the dependency graph",
-      "verifiedBy": "| FR-M3-09 | In progress | packages/kodo_lang/test/unit/semantics_test.dart |",
+      "verifiedBy": "",
       "gate": 4,
-      "status": "In progress",
+      "status": "Done",
       "owner": null
     },
     {
@@ -4688,7 +4689,7 @@
       "source": "[PO D-012]",
       "priority": "M",
       "verification": "The app builds and launches on each target in the device matrix",
-      "verifiedBy": "| FR-M19-01 | Done | app/test/m19_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4700,7 +4701,7 @@
       "source": "[PO D-012]",
       "priority": "M",
       "verification": "Navigation test: every screen reachable, every screen exitable, no dead end",
-      "verifiedBy": "| FR-M19-02 | Done | app/test/m19_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4712,7 +4713,7 @@
       "source": "[PO D-012]",
       "priority": "M",
       "verification": "Force-kill test on the reference device, 50 times, as FR-M9-03 does for the Studio",
-      "verifiedBy": "| FR-M19-03 | In progress | app/test/m19_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "In progress",
       "owner": null
@@ -4724,7 +4725,7 @@
       "source": "[PO D-012]",
       "priority": "M",
       "verification": "Setting each preference once changes every screen; asserted across the widget tree",
-      "verifiedBy": "| FR-M19-04 | Done | app/test/m19_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4736,7 +4737,7 @@
       "source": "[PO D-012]",
       "priority": "M",
       "verification": "Cold start measured on the reference device with aircraft mode on",
-      "verifiedBy": "| FR-M19-05 | In progress | app/test/m19_acceptance_test.dart |",
+      "verifiedBy": "",
       "gate": 3,
       "status": "In progress",
       "owner": null
@@ -4748,7 +4749,151 @@
       "source": "[PO D-012]",
       "priority": "M",
       "verification": "Dependency test: the shell imports module APIs and defines no grader, no mastery rule and no item",
-      "verifiedBy": "| FR-M19-06 | Done | app/test/m19_acceptance_test.dart |",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M20-01",
+      "project": null,
+      "statement": "Every world is a place with its own illustration; a world drawn as a numbered row is not shipped",
+      "source": "[PO D-013], [CDC §9.1]",
+      "priority": "M",
+      "verification": "All thirteen worlds have a distinct drawing and a distinct spoken description; asserted in kodo_art",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M20-02",
+      "project": null,
+      "statement": "Art is geometry as data with two projections — the app's painter and the SVG emitter — and never a second drawing",
+      "source": "[PO D-013]",
+      "priority": "M",
+      "verification": "Both projections are generated from the same Drawing; the published SVG carries the same description the app speaks",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M20-03",
+      "project": null,
+      "statement": "Every illustration on screen carries the sentence a screen reader speaks, in both interface languages",
+      "source": "[PO D-013], [FR-M16-04]",
+      "priority": "M",
+      "verification": "Widget test walks every Art on every screen and finds its description in the semantics tree",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M20-04",
+      "project": null,
+      "statement": "Colour is a role, not a hex: high contrast re-resolves the roles and never swaps the palette",
+      "source": "[PO D-013], [FR-M16-01], [FR-M16-03]",
+      "priority": "M",
+      "verification": "Every Tint resolves in both themes; no foreground ratio falls when high contrast is on",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M20-05",
+      "project": null,
+      "statement": "Every animation declares a reason (causality, continuity or feedback) and a reduced form; none exceeds the motion ceiling",
+      "source": "[PO D-013], [CDC §9.2], [FR-M16-03]",
+      "priority": "M",
+      "verification": "Motion table asserted in kodo_art: a reason, a reduced form that is not nothing, and 320 ms",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M20-06",
+      "project": null,
+      "statement": "Tika appears where a child is spoken to and never where a child is judged: no pose reacts to a verdict",
+      "source": "[PO D-013], [CDC §10]",
+      "priority": "M",
+      "verification": "The stage pose has no face; the portrait and thinking poses do; no screen binds a pose to a grading outcome",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M21-01",
+      "project": null,
+      "statement": "A program is a set of scripts: `quand` with a flag, key or click trigger, at top level only",
+      "source": "[PO D-014], [CDC §5.2 W5]",
+      "priority": "M",
+      "verification": "Each trigger fires only its own scripts; a nested `quand` is refused in a child-language sentence",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M21-02",
+      "project": null,
+      "statement": "Scripts interleave one statement at a time, share variables, and a stepped run draws what a full-speed run draws",
+      "source": "[PO D-014], [CDC §5.2 C5.4], [FR-M1-05]",
+      "priority": "M",
+      "verification": "Two scripts produce interleaved output, share one variable, and the stepped path signature equals the full-speed one",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M21-03",
+      "project": null,
+      "statement": "Sensing (key, mouse, edge, colour) answers from the item's scripted inputs, never from a live device",
+      "source": "[PO D-014], [CDC §5.2 W8]",
+      "priority": "M",
+      "verification": "The same program run twice gives the same answers; a canvas without sensing refuses in a sentence",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M21-04",
+      "project": null,
+      "statement": "A stage is an optional capability over Surface: costumes, backdrops, effects, speech and a recorded score",
+      "source": "[PO D-014], [CDC §5.2 W10]",
+      "priority": "M",
+      "verification": "Every existing Surface implementer still runs unchanged; a stage block on a plain canvas is refused in a sentence",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M21-05",
+      "project": null,
+      "statement": "Events, sensing and stage blocks are one AST with two projections, like every other block",
+      "source": "[PO D-014], [FR-M1-01]",
+      "priority": "M",
+      "verification": "An event script round-trips through the renderer and reads identically in FR and EN",
+      "verifiedBy": "",
+      "gate": 3,
+      "status": "Done",
+      "owner": null
+    },
+    {
+      "id": "FR-M21-06",
+      "project": null,
+      "statement": "Every concept in the ledger names blocks the language has; a concept the language cannot express fails the build",
+      "source": "[PO D-014]",
+      "priority": "M",
+      "verification": "tools/trace_check.dart compares the concept ledger against the opcode table and fails on a gap",
+      "verifiedBy": "",
       "gate": 3,
       "status": "Done",
       "owner": null
@@ -4758,7 +4903,7 @@
     "highlights": [
       "G1 and G2 closed on evidence. All six Annex E questions answered in the PO decision register (D-001 … D-011), each with rationale and reversal cost. R9, the only risk the workbook records as outside the Committee's authority, is closed with D-001.",
       "All eighteen modules are built. Eleven packages, ~28 000 lines of Dart, 441 tests passing, every module prompt's automatable acceptance tests green.",
-      "104 of 136 requirements are Done, and every one of them is named by a test — enforced in CI, which fails the build if a requirement claims Done without one.",
+      "128 of 148 requirements are Done, and every one of them is named by a test — enforced in CI, which fails the build if a requirement claims Done without one.",
       "Three worlds authored and published: 266 items over 13 concepts, every concept at or above its §6.3 commitment and using at least five item types. Each pack is re-authored through the publish gate in CI and then diffed, so a bank that ships and a bank that was checked are the same bank.",
       "The gates did their job. Thirty-four authoring faults were refused before anything was written, and nine build defects were found — four of which would have reached a child, including an editor that silently deleted a line of a child's saved work (M3-001, S1).",
       "The G3 vertical slice runs end to end and offline: pack verified, tutorial played, items scheduled, answers graded, mastery reached, next concept unlocked. Every component is the real one.",
